@@ -105,15 +105,19 @@ def _collect_media(references: list[dict]) -> list[dict]:
 
 
 def prepare_sections(raw_sections: list[dict]) -> list[dict]:
-    """把 summarizer 產出的 section（含 Markdown-lite 摘要與 references）轉成可直接渲染的資料。"""
+    """把 summarizer 產出的 section（含 Markdown-lite 摘要與 references）轉成可直接渲染的資料。
+    只呈現摘要實際引用到的來源與媒體：被模型忽略（如宣傳/訂閱推銷）的推文不會顯示連結或縮圖。"""
     prepared = []
     for sec in raw_sections:
+        summary = sec["summary"]
+        cited = {int(m.group(1)) for m in _CITE_RE.finditer(summary)}
+        refs = [r for r in sec["references"] if r["n"] in cited]
         prepared.append(
             {
                 "label": sec["label"],
-                "summary_html": _render_summary(sec["summary"], sec["references"]),
-                "references": sec["references"],
-                "media_items": _collect_media(sec["references"]),
+                "summary_html": _render_summary(summary, refs),
+                "references": refs,
+                "media_items": _collect_media(refs),
             }
         )
     return prepared
