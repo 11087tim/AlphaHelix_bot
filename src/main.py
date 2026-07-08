@@ -107,6 +107,7 @@ def run_fetch(cfg: Config) -> int:
     entry = {
         "id": now.strftime("%Y%m%d-%H%M"),
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
+        "model": cfg.openrouter_model,
         "account_sections": account_sections,
         "keyword_sections": keyword_sections,
         "emailed": False,

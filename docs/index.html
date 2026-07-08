@@ -14,6 +14,7 @@
     details.hour > summary::-webkit-details-marker { display: none; }
     details.hour > summary::before { content: "▸ "; display: inline-block; transition: transform .15s; }
     details.hour[open] > summary::before { content: "▾ "; }
+    .model { display: inline-block; font-size: 0.72rem; font-weight: 500; color: #555; background: #eef3f8; border: 1px solid #d7e3ee; border-radius: 999px; padding: 1px 8px; vertical-align: middle; }
     .hour-body { padding: 0 18px 14px; }
     h3.cat { font-size: 1rem; margin: 14px 0 6px; color: #555; }
     h4 { font-size: 0.98rem; margin: 10px 0 4px; color: #333; }
@@ -38,11 +39,11 @@
 </head>
 <body>
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-07-08 14:18｜每小時更新，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-07-08 14:23｜每小時更新，點各時段標題可展開/收合</p>
 
   
   <details class="hour" open>
-    <summary>🕐 2026-07-08 14:09</summary>
+    <summary>🕐 2026-07-08 14:09 <span class="model">anthropic/claude-opus-4.7</span></summary>
     <div class="hour-body">
   
   <h3 class="cat">📌 追蹤帳號</h3>
@@ -123,7 +124,7 @@
   </details>
   
   <details class="hour">
-    <summary>🕐 2026-07-08 12:17</summary>
+    <summary>🕐 2026-07-08 12:17 <span class="model">deepseek/deepseek-v4-flash</span></summary>
     <div class="hour-body">
   
   <h3 class="cat">📌 追蹤帳號</h3>
