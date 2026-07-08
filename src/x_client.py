@@ -7,9 +7,11 @@ import tweepy
 
 logger = logging.getLogger(__name__)
 
-TWEET_FIELDS = ["created_at", "public_metrics", "author_id"]
+TWEET_FIELDS = ["created_at", "public_metrics", "author_id", "attachments"]
 USER_FIELDS = ["username"]
-EXPANSIONS = ["author_id"]
+MEDIA_FIELDS = ["type", "url", "preview_image_url", "alt_text"]
+EXPANSIONS = ["author_id", "attachments.media_keys"]
+USER_TWEET_EXPANSIONS = ["attachments.media_keys"]
 
 
 def _build_client(bearer_token: str) -> tweepy.Client:
@@ -21,9 +23,49 @@ def _window_start(window_hours: float) -> datetime:
     return datetime.now(timezone.utc) - timedelta(hours=window_hours)
 
 
-def _simplify_tweets(tweets, users_by_id: dict, source: str, author_override: str | None = None) -> list[dict]:
+def _extract_media(tweet, media_by_key: dict) -> list[dict]:
+    """把一則推文附帶的媒體整理成簡化 dict：photo 用原圖，video/gif 用預覽縮圖。"""
+    keys = []
+    attachments = getattr(tweet, "attachments", None) or {}
+    if isinstance(attachments, dict):
+        keys = attachments.get("media_keys", []) or []
+    media = []
+    for key in keys:
+        m = media_by_key.get(key)
+        if not m:
+            continue
+        mtype = getattr(m, "type", "")
+        image_url = getattr(m, "url", None) or getattr(m, "preview_image_url", None)
+        if not image_url:
+            continue
+        media.append(
+            {
+                "type": mtype,  # photo / video / animated_gif
+                "image_url": image_url,
+                "alt_text": getattr(m, "alt_text", None) or "",
+            }
+        )
+    return media
+
+
+def _media_by_key(resp) -> dict:
+    result = {}
+    if resp.includes and "media" in resp.includes:
+        for m in resp.includes["media"]:
+            result[m.media_key] = m
+    return result
+
+
+def _simplify_tweets(
+    tweets,
+    users_by_id: dict,
+    source: str,
+    author_override: str | None = None,
+    media_by_key: dict | None = None,
+) -> list[dict]:
     if not tweets:
         return []
+    media_by_key = media_by_key or {}
     simplified = []
     for tweet in tweets:
         if author_override is not None:
@@ -40,6 +82,7 @@ def _simplify_tweets(tweets, users_by_id: dict, source: str, author_override: st
                 "created_at": str(tweet.created_at) if tweet.created_at else "",
                 "url": f"https://x.com/{username}/status/{tweet.id}",
                 "metrics": metrics,
+                "media": _extract_media(tweet, media_by_key),
                 "source": source,
             }
         )
@@ -72,11 +115,16 @@ def get_user_tweets(
         id=user_id,
         max_results=max(5, min(max_results, 100)),
         tweet_fields=TWEET_FIELDS,
+        media_fields=MEDIA_FIELDS,
+        expansions=USER_TWEET_EXPANSIONS,
         exclude=["retweets", "replies"],
         start_time=_window_start(window_hours),
     )
     tweets = (resp.data or [])[:max_results]
-    return _simplify_tweets(tweets, {}, source=f"account:{username}", author_override=username)
+    return _simplify_tweets(
+        tweets, {}, source=f"account:{username}",
+        author_override=username, media_by_key=_media_by_key(resp),
+    )
 
 
 def search_recent(
@@ -90,6 +138,7 @@ def search_recent(
         max_results=max(10, min(max_results, 100)),
         tweet_fields=TWEET_FIELDS,
         user_fields=USER_FIELDS,
+        media_fields=MEDIA_FIELDS,
         expansions=EXPANSIONS,
         start_time=_window_start(window_hours),
     )
@@ -97,4 +146,6 @@ def search_recent(
     if resp.includes and "users" in resp.includes:
         users_by_id = {u.id: u for u in resp.includes["users"]}
     tweets = (resp.data or [])[:max_results]
-    return _simplify_tweets(tweets, users_by_id, source=f"keyword:{query}")
+    return _simplify_tweets(
+        tweets, users_by_id, source=f"keyword:{query}", media_by_key=_media_by_key(resp)
+    )

@@ -16,6 +16,8 @@ class Config:
     keywords: list[str]
     max_results_per_source: int
     fetch_window_hours: float
+    media_enabled: bool
+    media_describe: bool
     openrouter_model: str
     openrouter_api_key: str
     site_title: str
@@ -87,6 +89,8 @@ def load_config(config_path: Path | None = None) -> Config:
         keywords=keywords,
         max_results_per_source=raw.get("max_results_per_source", 10),
         fetch_window_hours=raw.get("fetch_window_hours", 1),
+        media_enabled=(raw.get("media") or {}).get("enabled", True),
+        media_describe=(raw.get("media") or {}).get("describe", False),
         openrouter_model=openrouter.get("model", "anthropic/claude-3.5-haiku"),
         openrouter_api_key=openrouter_api_key,
         site_title=site.get("title", "我的 X 摘要"),

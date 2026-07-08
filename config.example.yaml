@@ -10,6 +10,10 @@ max_results_per_source: 10
 # 只抓「過去幾小時內」的貼文（時間窗，單位：小時）
 fetch_window_hours: 1
 
+media:
+  enabled: true    # 抓取並在網站/信件顯示貼文的圖片/影片縮圖
+  describe: false  # 用視覺模型讓 AI 看懂圖片並寫進摘要（需 vision 模型，會增加成本）
+
 openrouter:
   # 可隨時替換成 OpenRouter 上任何模型代號
   model: "anthropic/claude-haiku-4.5"

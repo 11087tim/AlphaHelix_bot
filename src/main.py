@@ -67,14 +67,17 @@ def _collect(cfg: Config, client, storage: Storage) -> tuple[list[dict], list[di
     return account_groups, keyword_groups, all_tweets
 
 
-def _summarize_groups(groups: list[dict], storage: Storage, cfg: Config) -> list[dict]:
+def _summarize_groups(
+    groups: list[dict], storage: Storage, cfg: Config, describe_media: bool
+) -> list[dict]:
     sections = []
     for group in groups:
         new_tweets = storage.filter_new(group["tweets"])
         if not new_tweets:
             continue
         result = summarizer.summarize_group(
-            new_tweets, group["label"], cfg.openrouter_api_key, cfg.openrouter_model
+            new_tweets, group["label"], cfg.openrouter_api_key, cfg.openrouter_model,
+            describe_media=describe_media,
         )
         if result and result["summary"]:
             sections.append(
@@ -94,8 +97,20 @@ def run_fetch(cfg: Config) -> int:
     digest_store = DigestStore()
 
     account_groups, keyword_groups, all_tweets = _collect(cfg, client, storage)
-    account_sections = _summarize_groups(account_groups, storage, cfg)
-    keyword_sections = _summarize_groups(keyword_groups, storage, cfg)
+
+    # 若不啟用媒體，直接清掉抓到的媒體，後續就不會描述也不會顯示
+    if not cfg.media_enabled:
+        for t in all_tweets:
+            t["media"] = []
+
+    # 是否用視覺模型描述圖片：需開啟 describe、且模型支援圖片輸入
+    describe_media = cfg.media_enabled and cfg.media_describe
+    if describe_media and not summarizer.model_supports_vision(cfg.openrouter_model, cfg.openrouter_api_key):
+        logger.warning("模型 %s 不支援圖片輸入，本次僅以文字摘要（不描述圖片）。", cfg.openrouter_model)
+        describe_media = False
+
+    account_sections = _summarize_groups(account_groups, storage, cfg, describe_media)
+    keyword_sections = _summarize_groups(keyword_groups, storage, cfg, describe_media)
 
     if not account_sections and not keyword_sections:
         # 即使沒有新推文，也把這次查到的帳號 ID 快取存下來，避免下一小時又重查

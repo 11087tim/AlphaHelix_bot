@@ -85,6 +85,25 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
     return Markup("".join(parts))
 
 
+def _collect_media(references: list[dict]) -> list[dict]:
+    """把各引用推文的媒體攤平成縮圖清單，每張標記所屬推文連結。"""
+    items = []
+    for ref in references:
+        for m in ref.get("media", []):
+            if not m.get("image_url"):
+                continue
+            items.append(
+                {
+                    "image_url": m["image_url"],
+                    "tweet_url": ref["url"],
+                    "type": m.get("type", "photo"),
+                    "alt": m.get("alt_text", ""),
+                    "n": ref["n"],
+                }
+            )
+    return items
+
+
 def prepare_sections(raw_sections: list[dict]) -> list[dict]:
     """把 summarizer 產出的 section（含 Markdown-lite 摘要與 references）轉成可直接渲染的資料。"""
     prepared = []
@@ -94,6 +113,7 @@ def prepare_sections(raw_sections: list[dict]) -> list[dict]:
                 "label": sec["label"],
                 "summary_html": _render_summary(sec["summary"], sec["references"]),
                 "references": sec["references"],
+                "media_items": _collect_media(sec["references"]),
             }
         )
     return prepared

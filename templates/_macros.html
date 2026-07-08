@@ -6,8 +6,22 @@
     </ol>
 {% endmacro %}
 
+{% macro render_media(media_items) %}
+  {% if media_items %}
+  <div class="media">
+    {% for m in media_items %}
+    <a class="media-item" href="{{ m.tweet_url }}" target="_blank" rel="noopener" title="推文 [{{ m.n }}]{% if m.alt %}：{{ m.alt }}{% endif %}">
+      <img src="{{ m.image_url }}" alt="{{ m.alt or ('推文 [' ~ m.n ~ '] 的媒體') }}" loading="lazy">
+      {% if m.type != 'photo' %}<span class="play">▶</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endmacro %}
+
 {% macro render_section(sec, collapsible_refs=false) %}
   <div class="summary">{{ sec.summary_html }}</div>
+  {{ render_media(sec.media_items) }}
   {% if sec.references %}
     {% if collapsible_refs %}
     <details class="refs">
