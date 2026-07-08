@@ -18,39 +18,81 @@ _env = Environment(
 )
 
 _CITE_RE = re.compile(r"\[(\d+)\]")
+_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+_HEADER_RE = re.compile(r"^#{1,6}\s+(.*)")
+_BULLET_RE = re.compile(r"^[-*]\s+(.*)")
+_ORDERED_RE = re.compile(r"^\d+[.)]\s+(.*)")
 
 
-def _linkify_citations(summary: str, references: list[dict]) -> Markup:
-    """把摘要內的 [n] 標記換成連到對應推文的可點擊連結，其餘文字做 HTML escape。"""
-    url_by_n = {ref["n"]: ref["url"] for ref in references}
+def _render_inline(text: str, url_by_n: dict) -> Markup:
+    """行內渲染：先整段 escape，再注入我們認可的 **粗體** 與 [n] 引用連結。"""
+    out = str(escape(text))  # 先 escape，** 與 [n] 都是純字元會保留下來
+    out = _BOLD_RE.sub(lambda m: f"<strong>{m.group(1)}</strong>", out)
 
-    # 逐段處理：非標記文字 escape，標記換成連結。所有片段都是 Markup，join 不會重複 escape。
-    parts: list[Markup] = []
-    last = 0
-    for m in _CITE_RE.finditer(summary):
-        parts.append(escape(summary[last:m.start()]))
+    def cite(m: re.Match) -> str:
         n = int(m.group(1))
         url = url_by_n.get(n)
-        if url:
-            # Markup(...).format 會自動 escape 參數，url 在屬性內、n 在內文都安全
-            parts.append(
-                Markup('<a class="cite" href="{}" target="_blank" rel="noopener">[{}]</a>').format(url, n)
-            )
-        else:
-            parts.append(escape(m.group(0)))  # 沒有對應連結就原樣顯示
-        last = m.end()
-    parts.append(escape(summary[last:]))
-    return Markup("").join(parts)
+        if not url:
+            return m.group(0)
+        return f'<a class="cite" href="{escape(url)}" target="_blank" rel="noopener">[{n}]</a>'
+
+    out = _CITE_RE.sub(cite, out)
+    return Markup(out)
+
+
+def _render_summary(summary: str, references: list[dict]) -> Markup:
+    """把 LLM 產出的 Markdown-lite 摘要（粗體/條列/標題/[n] 引用）渲染成安全的 HTML。"""
+    url_by_n = {ref["n"]: ref["url"] for ref in references}
+    parts: list[str] = []
+    list_items: list[str] = []
+    list_tag = ""  # "ul" 或 "ol"
+
+    def flush_list() -> None:
+        nonlocal list_tag
+        if list_items:
+            items = "".join(f"<li>{it}</li>" for it in list_items)
+            parts.append(f"<{list_tag}>{items}</{list_tag}>")
+            list_items.clear()
+            list_tag = ""
+
+    for raw in summary.split("\n"):
+        line = raw.strip()
+        if not line:
+            flush_list()
+            continue
+
+        header = _HEADER_RE.match(line)
+        if header:
+            flush_list()
+            parts.append(f'<p class="subhead">{_render_inline(header.group(1), url_by_n)}</p>')
+            continue
+
+        bullet = _BULLET_RE.match(line)
+        ordered = _ORDERED_RE.match(line)
+        if bullet or ordered:
+            tag = "ul" if bullet else "ol"
+            if list_tag and list_tag != tag:
+                flush_list()
+            list_tag = tag
+            content = (bullet or ordered).group(1)
+            list_items.append(str(_render_inline(content, url_by_n)))
+            continue
+
+        flush_list()
+        parts.append(f"<p>{_render_inline(line, url_by_n)}</p>")
+
+    flush_list()
+    return Markup("".join(parts))
 
 
 def prepare_sections(raw_sections: list[dict]) -> list[dict]:
-    """把 summarizer 產出的 section（含 [n] 標記與 references）轉成可直接渲染的資料。"""
+    """把 summarizer 產出的 section（含 Markdown-lite 摘要與 references）轉成可直接渲染的資料。"""
     prepared = []
     for sec in raw_sections:
         prepared.append(
             {
                 "label": sec["label"],
-                "summary_html": _linkify_citations(sec["summary"], sec["references"]),
+                "summary_html": _render_summary(sec["summary"], sec["references"]),
                 "references": sec["references"],
             }
         )
