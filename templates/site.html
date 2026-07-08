@@ -19,8 +19,8 @@
     h3.cat { font-size: 1rem; margin: 14px 0 6px; color: #555; }
     h4 { font-size: 0.98rem; margin: 10px 0 4px; color: #333; }
     .section { border-top: 1px solid #f0f0f0; padding-top: 8px; margin-top: 8px; }
-    .summary p { margin: 6px 0; }
-    .summary p.subhead { margin: 12px 0 4px; font-weight: 600; }
+    .summary p { margin: 6px 0; text-indent: 2em; }
+    .summary p.subhead { margin: 12px 0 4px; font-weight: 600; text-indent: 0; }
     .summary ul, .summary ol { margin: 6px 0; padding-left: 22px; }
     .summary li { margin: 3px 0; }
     a { color: #1d9bf0; }
@@ -35,14 +35,27 @@
     .refs li { margin: 2px 0; }
     footer { margin-top: 40px; color: #999; font-size: 0.8rem; text-align: center; }
     .empty { color: #999; }
+    .datebar { margin: 0 0 16px; font-size: 0.95rem; }
+    .datebar select { font-size: 0.95rem; padding: 4px 8px; border: 1px solid #cdd8e2; border-radius: 8px; background: #fff; }
   </style>
 </head>
 <body>
   <h1>{{ title }}</h1>
   <p class="meta">最後更新：{{ updated_at }}｜每小時更新，點各時段標題可展開/收合</p>
 
+  {% if dates %}
+  <div class="datebar">
+    選擇日期：
+    <select id="dateFilter">
+      {% for date in dates %}
+      <option value="{{ date }}">{{ date }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% endif %}
+
   {% for d in digests %}
-  <details class="hour"{% if loop.first %} open{% endif %}>
+  <details class="hour" data-date="{{ d.date }}"{% if loop.first %} open{% endif %}>
     <summary>🕐 {{ d.generated_at }}{% if d.model %} <span class="model">{{ d.model }}</span>{% endif %}</summary>
     <div class="hour-body">{{ hour_body(d, true) }}</div>
   </details>
@@ -51,5 +64,26 @@
   {% endfor %}
 
   <footer>由 Alphehelix X Bot 自動產生</footer>
+
+  <script>
+    (function () {
+      var sel = document.getElementById('dateFilter');
+      if (!sel) return;
+      var blocks = [].slice.call(document.querySelectorAll('details.hour'));
+      function apply(date) {
+        var firstShown = null;
+        blocks.forEach(function (b) {
+          var show = b.getAttribute('data-date') === date;
+          b.style.display = show ? '' : 'none';
+          if (show && !firstShown) firstShown = b;
+        });
+        // 展開所選日期的最新時段，其餘收合
+        blocks.forEach(function (b) { b.open = false; });
+        if (firstShown) firstShown.open = true;
+      }
+      sel.addEventListener('change', function () { apply(this.value); });
+      apply(sel.value);
+    })();
+  </script>
 </body>
 </html>

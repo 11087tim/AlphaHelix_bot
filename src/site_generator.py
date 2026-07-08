@@ -104,6 +104,7 @@ def _prepare_digest(d: dict) -> dict:
     return {
         "id": d["id"],
         "generated_at": d["generated_at"],
+        "date": d["generated_at"].split(" ")[0],  # YYYY-MM-DD，供日期篩選用
         "model": d.get("model", ""),
         "account_sections": prepare_sections(d.get("account_sections", [])),
         "keyword_sections": prepare_sections(d.get("keyword_sections", [])),
@@ -115,10 +116,17 @@ def render_site(title: str, digests: list[dict], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     prepared = [_prepare_digest(d) for d in digests]
 
+    # 可選日期清單，由新到舊、去重
+    dates: list[str] = []
+    for d in prepared:
+        if d["date"] not in dates:
+            dates.append(d["date"])
+
     html = _env.get_template("site.html").render(
         title=title,
         updated_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
         digests=prepared,
+        dates=dates,
     )
     (output_dir / "index.html").write_text(html, encoding="utf-8")
     logger.info("已更新網站：%s（%d 個時段）", output_dir / "index.html", len(prepared))
