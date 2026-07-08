@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  每小時抓取 + 摘要 + 更新網站（不寄信）。
+  安裝方式：
+    1. 把 __PYTHON__ 換成 venv 內 python 絕對路徑、__PROJECT_DIR__ 換成專案絕對路徑。
+    2. cp scripts/com.alphehelix.xbot.fetch.plist ~/Library/LaunchAgents/
+    3. launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.fetch.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.alphehelix.xbot.fetch</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__PYTHON__</string>
+        <string>-m</string>
+        <string>src.main</string>
+        <string>fetch</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__PROJECT_DIR__</string>
+
+    <!-- 每小時整點觸發（只給 Minute，Hour 不限） -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Minute</key><integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>__PROJECT_DIR__/xbot.log</string>
+    <key>StandardErrorPath</key>
+    <string>__PROJECT_DIR__/xbot.log</string>
+</dict>
+</plist>

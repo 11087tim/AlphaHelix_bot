@@ -7,6 +7,9 @@ keywords: []
 # 每個帳號/關鍵字每次最多抓幾則推文
 max_results_per_source: 10
 
+# 只抓「過去幾小時內」的貼文（時間窗，單位：小時）
+fetch_window_hours: 1
+
 openrouter:
   # 可隨時替換成 OpenRouter 上任何模型代號
   model: "anthropic/claude-haiku-4.5"
@@ -14,6 +17,7 @@ openrouter:
 site:
   title: "每日 X 摘要"
   output_dir: "docs"
+  url: "https://<your-account>.github.io/<repo>/"
 
 email:
   # 收件人：可填單一 email，或用清單填多個，例如：

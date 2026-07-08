@@ -1,0 +1,36 @@
+{% from "_macros.html" import hour_body %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: -apple-system, "Noto Sans TC", sans-serif; max-width: 720px; margin: 0 auto; padding: 16px; line-height: 1.7; color: #1a1a1a; }
+    h1 { font-size: 1.4rem; border-bottom: 2px solid #1d9bf0; padding-bottom: 6px; }
+    .meta { color: #666; font-size: 0.85rem; margin-bottom: 20px; }
+    .hour { border: 1px solid #e6e6e6; border-radius: 10px; padding: 4px 18px 14px; margin: 14px 0; }
+    .hour > h2 { font-size: 1.1rem; color: #1d9bf0; margin: 12px 0 4px; }
+    h3.cat { font-size: 1rem; margin: 12px 0 6px; color: #555; }
+    h4 { font-size: 0.98rem; margin: 10px 0 4px; color: #333; }
+    .section { border-top: 1px solid #f0f0f0; padding-top: 8px; margin-top: 8px; }
+    .summary { white-space: pre-wrap; }
+    a { color: #1d9bf0; }
+    a.cite { font-weight: 600; text-decoration: none; padding: 0 1px; }
+    .refs { margin-top: 12px; padding-top: 8px; border-top: 1px dashed #e2e2e2; font-size: 0.85rem; color: #666; }
+    .refs ol { margin: 6px 0 0; padding-left: 22px; }
+    footer { margin-top: 30px; color: #999; font-size: 0.8rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>{{ title }}</h1>
+  <p class="meta">本次涵蓋 {{ digests|length }} 個時段的摘要（{{ range_label }}）。完整可折疊版面請見網站：<a href="{{ site_url }}">{{ site_url }}</a></p>
+
+  {% for d in digests %}
+  <div class="hour">
+    <h2>🕐 {{ d.generated_at }}</h2>
+    {{ hour_body(d) }}
+  </div>
+  {% endfor %}
+
+  <footer>由 Alphehelix X Bot 自動產生</footer>
+</body>
+</html>

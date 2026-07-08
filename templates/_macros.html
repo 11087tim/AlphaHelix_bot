@@ -1,0 +1,45 @@
+{% macro _refs_list(references) %}
+    <ol>
+      {% for ref in references %}
+      <li><a href="{{ ref.url }}" target="_blank" rel="noopener">@{{ ref.author }} — 推文 [{{ ref.n }}]</a></li>
+      {% endfor %}
+    </ol>
+{% endmacro %}
+
+{% macro render_section(sec, collapsible_refs=false) %}
+  <div class="summary">{{ sec.summary_html }}</div>
+  {% if sec.references %}
+    {% if collapsible_refs %}
+    <details class="refs">
+      <summary>來源（{{ sec.references|length }}）</summary>
+      {{ _refs_list(sec.references) }}
+    </details>
+    {% else %}
+    <div class="refs">
+      來源：
+      {{ _refs_list(sec.references) }}
+    </div>
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+{% macro hour_body(d, collapsible_refs=false) %}
+  {% if d.account_sections %}
+  <h3 class="cat">📌 追蹤帳號</h3>
+  {% for sec in d.account_sections %}
+  <div class="section">
+    <h4>@{{ sec.label }}</h4>
+    {{ render_section(sec, collapsible_refs) }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% if d.keyword_sections %}
+  <h3 class="cat">🔥 關鍵字</h3>
+  {% for sec in d.keyword_sections %}
+  <div class="section">
+    <h4>{{ sec.label }}</h4>
+    {{ render_section(sec, collapsible_refs) }}
+  </div>
+  {% endfor %}
+  {% endif %}
+{% endmacro %}

@@ -15,10 +15,12 @@ class Config:
     accounts: list[str]
     keywords: list[str]
     max_results_per_source: int
+    fetch_window_hours: float
     openrouter_model: str
     openrouter_api_key: str
     site_title: str
     site_output_dir: Path
+    site_url: str
     email_to: list[str]
     email_subject_prefix: str
     gmail_address: str
@@ -83,10 +85,12 @@ def load_config(config_path: Path | None = None) -> Config:
         accounts=accounts,
         keywords=keywords,
         max_results_per_source=raw.get("max_results_per_source", 10),
+        fetch_window_hours=raw.get("fetch_window_hours", 1),
         openrouter_model=openrouter.get("model", "anthropic/claude-3.5-haiku"),
         openrouter_api_key=openrouter_api_key,
         site_title=site.get("title", "我的 X 摘要"),
         site_output_dir=PROJECT_ROOT / site.get("output_dir", "docs"),
+        site_url=site.get("url", ""),
         email_to=email_to,
         email_subject_prefix=email.get("subject_prefix", "[X Digest]"),
         gmail_address=gmail_address,
