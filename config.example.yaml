@@ -1,0 +1,25 @@
+# 要追蹤的 X 帳號（不含 @），例如 ["elonmusk", "OpenAI"]
+accounts: ["elonmusk", "OpenAI"]
+
+# 要追蹤的關鍵字或 hashtag，例如 ["#AI", "台積電"]
+keywords: []
+
+# 每個帳號/關鍵字每次最多抓幾則推文
+max_results_per_source: 10
+
+openrouter:
+  # 可隨時替換成 OpenRouter 上任何模型代號
+  model: "anthropic/claude-haiku-4.5"
+
+site:
+  title: "每日 X 摘要"
+  output_dir: "docs"
+
+email:
+  # 收件人：可填單一 email，或用清單填多個，例如：
+  #   to:
+  #     - "you@example.com"
+  #     - "someone@example.com"
+  to:
+    - "you@example.com"
+  subject_prefix: "[Daily X Digest]"

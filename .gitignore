@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+state.json
+*.log
+
+# 真正的設定檔含個人 email / 追蹤清單，不上傳；改用 config.example.yaml 當範本
+config.yaml
