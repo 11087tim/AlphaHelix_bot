@@ -21,6 +21,7 @@ class Config:
     site_title: str
     site_output_dir: Path
     site_url: str
+    site_auto_push: bool
     email_to: list[str]
     email_subject_prefix: str
     gmail_address: str
@@ -91,6 +92,7 @@ def load_config(config_path: Path | None = None) -> Config:
         site_title=site.get("title", "我的 X 摘要"),
         site_output_dir=PROJECT_ROOT / site.get("output_dir", "docs"),
         site_url=site.get("url", ""),
+        site_auto_push=site.get("auto_push", True),
         email_to=email_to,
         email_subject_prefix=email.get("subject_prefix", "[X Digest]"),
         gmail_address=gmail_address,

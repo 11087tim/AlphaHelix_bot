@@ -7,7 +7,7 @@ from datetime import datetime
 # 支援兩種執行方式：`python -m src.main`（套件）或 `python src/main.py`（腳本）
 if __package__:
     from .config import Config, ConfigError, load_config
-    from . import x_client, summarizer, site_generator, emailer
+    from . import x_client, summarizer, site_generator, emailer, publisher
     from .storage import Storage
     from .digest_store import DigestStore
 else:
@@ -15,7 +15,7 @@ else:
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
-    from src import x_client, summarizer, site_generator, emailer
+    from src import x_client, summarizer, site_generator, emailer, publisher
     from src.storage import Storage
     from src.digest_store import DigestStore
 
@@ -108,6 +108,11 @@ def run_fetch(cfg: Config) -> int:
     storage.mark_seen(all_tweets)
     storage.save()
     digest_store.save()
+
+    # 自動把網站更新推送到 GitHub（GitHub Pages 會自動重新部署）
+    if cfg.site_auto_push:
+        publisher.publish_docs()
+
     logger.info("完成本時段抓取。")
     return 0
 

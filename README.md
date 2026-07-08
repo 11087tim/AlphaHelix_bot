@@ -106,7 +106,9 @@ git remote add origin git@github.com:<your-account>/<repo>.git
 git push -u origin main
 ```
 
-到 GitHub repo 的 **Settings → Pages**，Source 選 `main` branch、資料夾選 `/docs`，即可用 `https://<your-account>.github.io/<repo>/` 瀏覽最新摘要。之後每次排程執行後，把更新後的 `docs/` commit & push 就會自動更新網站（可在 launchd 流程外自行加上 git 自動 push，或手動處理）。
+到 GitHub repo 的 **Settings → Pages**，Source 選 `main` branch、資料夾選 `/docs`，即可用 `https://<your-account>.github.io/<repo>/` 瀏覽最新摘要。
+
+**自動更新網站**：`config.yaml` 的 `site.auto_push: true` 開啟後，每次 `fetch` 產生網站後會自動 `git add docs/ && git commit && git push`，GitHub Pages 隨即自動重新部署，線上網站便自動更新（無變動時不會 push，不產生空 commit；push 失敗只記錄、不影響抓取）。前提是本機已設定好對 GitHub 的 push 權限（SSH 金鑰或憑證）。若想關閉改回手動 push，把 `auto_push` 設為 `false`。
 
 ## 專案結構
 

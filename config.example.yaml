@@ -18,6 +18,8 @@ site:
   title: "每日 X 摘要"
   output_dir: "docs"
   url: "https://<your-account>.github.io/<repo>/"
+  # fetch 產生網站後，自動把 docs/ commit & push 到 GitHub（Pages 會自動重新部署）
+  auto_push: true
 
 email:
   # 收件人：可填單一 email，或用清單填多個，例如：
