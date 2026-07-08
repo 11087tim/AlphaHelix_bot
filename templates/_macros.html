@@ -39,16 +39,16 @@
 
 {% macro hour_body(d, collapsible_refs=false) %}
   {% if d.account_sections %}
-  <h3 class="cat">📌 追蹤帳號</h3>
+  <h3 class="cat">📌 追蹤作者觀點彙整</h3>
   {% for sec in d.account_sections %}
   <div class="section">
-    <h4>@{{ sec.label }}</h4>
+    {% if sec.label %}<h4>{{ sec.label }}</h4>{% endif %}
     {{ render_section(sec, collapsible_refs) }}
   </div>
   {% endfor %}
   {% endif %}
   {% if d.keyword_sections %}
-  <h3 class="cat">🔥 關鍵字</h3>
+  <h3 class="cat">🔥 主題觀點彙整</h3>
   {% for sec in d.keyword_sections %}
   <div class="section">
     <h4>{{ sec.label }}</h4>

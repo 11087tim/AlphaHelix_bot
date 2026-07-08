@@ -10,6 +10,7 @@ if __package__:
     from . import x_client, summarizer, site_generator, emailer, publisher
     from .storage import Storage
     from .digest_store import DigestStore
+    from .pending_store import PendingStore
 else:
     from pathlib import Path
 
@@ -18,9 +19,10 @@ else:
     from src import x_client, summarizer, site_generator, emailer, publisher
     from src.storage import Storage
     from src.digest_store import DigestStore
+    from src.pending_store import PendingStore
 
-# 網站首頁最多顯示最近幾個時段的可折疊區塊
-SITE_HOURS = 48
+# 網站首頁最多顯示最近幾份彙整的可折疊區塊
+SITE_HOURS = 60
 
 logging.basicConfig(
     level=logging.INFO,
@@ -67,56 +69,96 @@ def _collect(cfg: Config, client, storage: Storage) -> tuple[list[dict], list[di
     return account_groups, keyword_groups, all_tweets
 
 
-def _summarize_groups(
-    groups: list[dict], storage: Storage, cfg: Config, describe_media: bool
-) -> list[dict]:
-    sections = []
-    for group in groups:
-        new_tweets = storage.filter_new(group["tweets"])
-        if not new_tweets:
+def _dedup(tweets: list[dict]) -> list[dict]:
+    """依 id 去重，保留首次出現（帳號來源優先於關鍵字，因 _collect 先加帳號）。"""
+    seen, out = set(), []
+    for t in tweets:
+        if t["id"] in seen:
             continue
-        result = summarizer.summarize_group(
-            new_tweets, group["label"], cfg.openrouter_api_key, cfg.openrouter_model,
-            describe_media=describe_media,
-            system_prompt=cfg.openrouter_system_prompt or None,
-        )
-        if result and result["summary"]:
-            sections.append(
-                {
-                    "label": group["label"],
-                    "summary": result["summary"],
-                    "references": result["references"],
-                }
-            )
-    return sections
+        seen.add(t["id"])
+        out.append(t)
+    return out
+
+
+def _resolve_describe_media(cfg: Config) -> bool:
+    """是否用視覺模型描述圖片：需開啟 describe、且模型支援圖片輸入。"""
+    if not (cfg.media_enabled and cfg.media_describe):
+        return False
+    if not summarizer.model_supports_vision(cfg.openrouter_model, cfg.openrouter_api_key):
+        logger.warning("模型 %s 不支援圖片輸入，本次僅以文字分析（不描述圖片）。", cfg.openrouter_model)
+        return False
+    return True
+
+
+def _analyze(label: str, tweets: list[dict], cfg: Config, describe_media: bool) -> dict | None:
+    result = summarizer.summarize_group(
+        tweets, label, cfg.openrouter_api_key, cfg.openrouter_model,
+        describe_media=describe_media,
+        system_prompt=cfg.openrouter_system_prompt or None,
+    )
+    if result and result["summary"]:
+        return {"label": label, "summary": result["summary"], "references": result["references"]}
+    return None
 
 
 def run_fetch(cfg: Config) -> int:
-    """每小時執行：抓取 → 摘要 → 存成一個時段的 digest → 更新網站（不寄信）。"""
+    """每小時執行：抓取各追蹤來源的新貼文，累積到待彙整區（不做 LLM、不更新網站、不寄信）。"""
     client = x_client._build_client(cfg.x_bearer_token)
     storage = Storage()
-    digest_store = DigestStore()
+    pending = PendingStore()
 
-    account_groups, keyword_groups, all_tweets = _collect(cfg, client, storage)
+    _, _, all_tweets = _collect(cfg, client, storage)
 
-    # 若不啟用媒體，直接清掉抓到的媒體，後續就不會描述也不會顯示
     if not cfg.media_enabled:
         for t in all_tweets:
             t["media"] = []
 
-    # 是否用視覺模型描述圖片：需開啟 describe、且模型支援圖片輸入
-    describe_media = cfg.media_enabled and cfg.media_describe
-    if describe_media and not summarizer.model_supports_vision(cfg.openrouter_model, cfg.openrouter_api_key):
-        logger.warning("模型 %s 不支援圖片輸入，本次僅以文字摘要（不描述圖片）。", cfg.openrouter_model)
-        describe_media = False
+    new_tweets = storage.filter_new(_dedup(all_tweets))
+    if new_tweets:
+        pending.add(new_tweets)
+        storage.mark_seen(new_tweets)
 
-    account_sections = _summarize_groups(account_groups, storage, cfg, describe_media)
-    keyword_sections = _summarize_groups(keyword_groups, storage, cfg, describe_media)
+    storage.save()   # 持久化帳號 ID 快取與 seen id
+    pending.save()
+    logger.info("本時段抓取完成：新增 %d 則待彙整（累積 %d 則）。", len(new_tweets), len(pending.all()))
+    return 0
+
+
+def run_synthesis(cfg: Config) -> int:
+    """每天三次執行：對累積的所有作者貼文做跨作者觀點彙整 → 更新網站 → 自動 push → 寄信 → 清空待彙整。"""
+    pending = PendingStore()
+    tweets = pending.all()
+    if not tweets:
+        logger.info("沒有待彙整的貼文，跳過。")
+        return 0
+
+    describe_media = _resolve_describe_media(cfg)
+
+    # 所有帳號作者合成一份跨作者觀點分析；關鍵字各自一份（本身即跨作者）
+    account_tweets = [t for t in tweets if str(t.get("source", "")).startswith("account:")]
+    keyword_map: dict[str, list[dict]] = {}
+    for t in tweets:
+        src = str(t.get("source", ""))
+        if src.startswith("keyword:"):
+            keyword_map.setdefault(src.split("keyword:", 1)[1], []).append(t)
+
+    account_sections = []
+    if account_tweets:
+        sec = _analyze("追蹤作者", account_tweets, cfg, describe_media)
+        if sec:
+            sec["label"] = ""  # 跨作者彙整，不用單一 handle 當標題
+            account_sections = [sec]
+
+    keyword_sections = []
+    for kw, kws in keyword_map.items():
+        sec = _analyze(kw, kws, cfg, describe_media)
+        if sec:
+            keyword_sections.append(sec)
 
     if not account_sections and not keyword_sections:
-        # 即使沒有新推文，也把這次查到的帳號 ID 快取存下來，避免下一小時又重查
-        storage.save()
-        logger.info("這一小時沒有新推文，跳過（不建立時段、不更新網站）。")
+        pending.clear()
+        pending.save()
+        logger.info("彙整後無實質內容（可能全為宣傳），清空待彙整。")
         return 0
 
     now = datetime.now()
@@ -126,55 +168,34 @@ def run_fetch(cfg: Config) -> int:
         "model": cfg.openrouter_model,
         "account_sections": account_sections,
         "keyword_sections": keyword_sections,
-        "emailed": False,
     }
+
+    digest_store = DigestStore()
     digest_store.append(entry)
-
     site_generator.render_site(cfg.site_title, digest_store.recent(SITE_HOURS), cfg.site_output_dir)
-
-    # 全部成功後才記錄 seen id 與 digest，避免中途失敗導致漏摘要
-    storage.mark_seen(all_tweets)
-    storage.save()
     digest_store.save()
 
-    # 自動把網站更新推送到 GitHub（GitHub Pages 會自動重新部署）
     if cfg.site_auto_push:
         publisher.publish_docs()
 
-    logger.info("完成本時段抓取。")
-    return 0
+    if cfg.email_to:
+        html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url)
+        subject = f"{cfg.email_subject_prefix} {now.strftime('%Y-%m-%d %H:%M')} 觀點彙整"
+        try:
+            emailer.send_html_email(
+                gmail_address=cfg.gmail_address,
+                gmail_app_password=cfg.gmail_app_password,
+                to=cfg.email_to,
+                subject=subject,
+                html_body=html,
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.error("寄信失敗：%s", exc)
 
-
-def run_email(cfg: Config) -> int:
-    """每天三次執行：把尚未寄出的時段摘要合併成一封信寄出。"""
-    if not cfg.email_to:
-        logger.info("未設定收件人，跳過寄信。")
-        return 0
-
-    digest_store = DigestStore()
-    unsent = digest_store.unsent()
-    if not unsent:
-        logger.info("沒有待寄的時段摘要，跳過寄信。")
-        return 0
-
-    # 由新到舊呈現
-    html = site_generator.render_email(cfg.site_title, list(reversed(unsent)), cfg.site_url)
-    subject = f"{cfg.email_subject_prefix} {datetime.now().strftime('%Y-%m-%d %H:%M')}（{len(unsent)} 個時段）"
-    try:
-        emailer.send_html_email(
-            gmail_address=cfg.gmail_address,
-            gmail_app_password=cfg.gmail_app_password,
-            to=cfg.email_to,
-            subject=subject,
-            html_body=html,
-        )
-    except Exception as exc:  # noqa: BLE001
-        logger.error("寄信失敗（不標記為已寄，下次會重試）：%s", exc)
-        return 1
-
-    digest_store.mark_emailed([d["id"] for d in unsent])
-    digest_store.save()
-    logger.info("完成寄信，共 %d 個時段。", len(unsent))
+    # 彙整成功並存檔後才清空待彙整（避免中途失敗導致漏掉）
+    pending.clear()
+    pending.save()
+    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段。", len(account_sections), len(keyword_sections))
     return 0
 
 
@@ -185,15 +206,15 @@ def run(mode: str) -> int:
         logger.error("設定錯誤：%s", exc)
         return 1
 
-    if mode == "email":
-        return run_email(cfg)
+    if mode in ("synthesis", "email"):  # email 為舊名相容
+        return run_synthesis(cfg)
     if mode == "fetch":
         return run_fetch(cfg)
-    logger.error("未知模式：%s（可用：fetch / email）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis）", mode)
     return 2
 
 
 if __name__ == "__main__":
-    # 用法：python -m src.main [fetch|email]，預設 fetch
+    # 用法：python -m src.main [fetch|synthesis]，預設 fetch
     mode = sys.argv[1] if len(sys.argv) > 1 else "fetch"
     sys.exit(run(mode))

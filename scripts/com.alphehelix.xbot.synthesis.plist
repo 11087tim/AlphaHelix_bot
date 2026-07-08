@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  每天三次（台灣時間 8:00 / 15:00 / 20:30）把尚未寄出的時段摘要合併寄信。
-  排程時間依 Mac 系統本地時區，請確認系統時區為 Asia/Taipei。
+  每天三次（台灣時間 8:00 / 15:00 / 20:30）對累積的所有作者貼文做跨作者觀點彙整，
+  並更新網站、自動 push、寄信。排程時間依 Mac 系統本地時區，請確認系統時區為 Asia/Taipei。
   安裝方式：
     1. 把 __PYTHON__ 換成 venv 內 python 絕對路徑、__PROJECT_DIR__ 換成專案絕對路徑。
-    2. cp scripts/com.alphehelix.xbot.email.plist ~/Library/LaunchAgents/
-    3. launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.email.plist
+    2. cp scripts/com.alphehelix.xbot.synthesis.plist ~/Library/LaunchAgents/
+    3. launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.synthesis.plist
 -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.alphehelix.xbot.email</string>
+    <string>com.alphehelix.xbot.synthesis</string>
 
     <key>ProgramArguments</key>
     <array>
         <string>__PYTHON__</string>
         <string>-m</string>
         <string>src.main</string>
-        <string>email</string>
+        <string>synthesis</string>
     </array>
 
     <key>WorkingDirectory</key>

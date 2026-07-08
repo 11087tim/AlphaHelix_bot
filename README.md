@@ -1,24 +1,26 @@
 # Alphehelix X Bot
 
-定時抓取「指定 X 帳號的貼文」與「指定關鍵字/hashtag 的近期熱門推文」，用 LLM（透過 OpenRouter）摘要後，輸出成靜態網站（GitHub Pages）並寄送 Email。
+定時抓取「指定 X 帳號的貼文」與「指定關鍵字/hashtag 的近期熱門推文」，用 LLM（透過 OpenRouter）做**跨作者觀點彙整與評斷**（不是逐則摘要，而是依主題比較各作者的異同、加入投資判斷），輸出成靜態網站（GitHub Pages）並寄送 Email。
 
 ## 運作方式（兩個排程）
 
-分成「抓取」與「寄信」兩個獨立工作：
+分成「抓取累積」與「彙整」兩個獨立工作：
 
 | 模式 | 指令 | 頻率 | 做什麼 |
 |---|---|---|---|
-| **fetch** | `python -m src.main fetch` | 每小時（24 次/天）| 抓「過去 1 小時內」的貼文 → LLM 摘要成「這一時段的事件摘要」→ 存進 `digests.json` → **更新網站**（不寄信）|
-| **email** | `python -m src.main email` | 每天 3 次（08:00 / 15:00 / 20:30）| 把「上次寄信後累積、尚未寄出的時段摘要」合併成一封信寄出 |
+| **fetch** | `python -m src.main fetch` | 每小時（24 次/天）| 抓「過去 1 小時內」各追蹤來源的新貼文 → 去重 → 累積到 `pending.json`（**不做 LLM、不更新網站、不寄信**，很便宜）|
+| **synthesis** | `python -m src.main synthesis` | 每天 3 次（08:00 / 15:00 / 20:30）| 把「上次彙整至今」累積的所有作者貼文做**跨作者觀點彙整**（依主題比較異同、加評斷）→ 更新網站 → 自動 push → 寄信 → 清空累積 |
 
 ```
-每小時 fetch: 抓取(X API, 1hr窗) → 去重 → LLM 摘要(含 [n] 引用) → 存 digests.json → 產生網站(docs/)
-每天 3 次 email: 撈未寄時段 → 合併 → 寄信(Gmail SMTP) → 標記已寄
+每小時 fetch:      抓取(X API, 1hr窗) → 去重 → 累積到 pending.json
+每天 3 次 synthesis: 取出 pending 全部貼文 → 跨作者觀點彙整(含 [n] 引用/圖片描述)
+                    → 產生網站(docs/) → 自動 push → 寄信(Gmail) → 清空 pending
 ```
 
-- **時間窗（1hr）**：由 `config.yaml` 的 `fetch_window_hours` 控制。因為每小時抓一次、窗也是 1 小時，剛好無縫銜接、不漏文。
-- **摘要格式**：每個時段整理成一段連貫敘述，句中用 `[1]`、`[2]` 引用標記連到對應推文，內文不放裸網址。
-- **版面**：網站每個時段是可折疊區塊（最新展開、舊的收合）；信件因 email 軟體不支援折疊，改為攤平按時段分段。
+- **為什麼分兩段**：跨作者比較需要「多位作者對同一主題的發言」才有料，1 小時內通常湊不齊，所以每小時只負責「便宜地收集」，真正的 LLM 分析集中在每天 3 次的彙整。
+- **彙整格式**：依主題組織，比較各作者「同意什麼、不同意什麼」，並加入評斷；句中用 `[1]`、`[2]` 引用標記連到對應推文，內文不放裸網址。
+- **版面**：網站每份彙整是可折疊區塊（最新展開、舊的收合）；信件因 email 軟體不支援折疊，改為攤平呈現。
+- **彙整規則可自訂**：改 `config.yaml` 的 `openrouter.system_prompt` 即可調整分析行為（留空則用內建預設）。
 
 ## 一、安裝
 
@@ -76,23 +78,23 @@ email:
 
 ```bash
 source .venv/bin/activate
-python -m src.main fetch    # 抓取 + 摘要 + 更新網站（不寄信）
-python -m src.main email    # 把尚未寄出的時段摘要合併寄信
+python -m src.main fetch       # 抓取新貼文累積到 pending（不做 LLM、不更新網站、不寄信）
+python -m src.main synthesis   # 對累積貼文做跨作者彙整 → 更新網站 → 自動 push → 寄信 → 清空 pending
 ```
 
-`fetch` 若這一小時沒有新推文，不會建立時段、不更新網站。`email` 若沒有待寄的時段，不會寄空信。
+`fetch` 若沒有新貼文，pending 不變。`synthesis` 若沒有累積貼文，不會產生彙整也不寄信。想單獨測彙整，可先跑幾次 `fetch` 再跑一次 `synthesis`。
 
 ## 五、安裝排程（launchd）
 
-需要安裝**兩個** LaunchAgent：`fetch`（每小時）與 `email`（每天三次）。
+需要安裝**兩個** LaunchAgent：`fetch`（每小時）與 `synthesis`（每天三次）。
 
-1. 分別編輯 `scripts/com.alphehelix.xbot.fetch.plist` 與 `scripts/com.alphehelix.xbot.email.plist`，把 `__PYTHON__` 換成 venv 內 python 絕對路徑（例如 `/Users/chenyanting/Alphehelix_X_bot/.venv/bin/python`），`__PROJECT_DIR__` 換成專案絕對路徑（`/Users/chenyanting/Alphehelix_X_bot`）。
+1. 分別編輯 `scripts/com.alphehelix.xbot.fetch.plist` 與 `scripts/com.alphehelix.xbot.synthesis.plist`，把 `__PYTHON__` 換成 venv 內 python 絕對路徑（例如 `/Users/chenyanting/Alphehelix_X_bot/.venv/bin/python`），`__PROJECT_DIR__` 換成專案絕對路徑（`/Users/chenyanting/Alphehelix_X_bot`）。
 2. 安裝並載入：
    ```bash
    cp scripts/com.alphehelix.xbot.fetch.plist ~/Library/LaunchAgents/
-   cp scripts/com.alphehelix.xbot.email.plist ~/Library/LaunchAgents/
+   cp scripts/com.alphehelix.xbot.synthesis.plist ~/Library/LaunchAgents/
    launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.fetch.plist
-   launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.email.plist
+   launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.synthesis.plist
    ```
 3. 排程時間依 Mac 系統本地時區，請確認系統時區為 **Asia/Taipei**。
 4. 移除排程：對兩個檔案分別 `launchctl unload ~/Library/LaunchAgents/<檔名>`。
@@ -115,30 +117,34 @@ git push -u origin main
 ## 專案結構
 
 ```
-├── config.yaml               # 帳號 / 關鍵字 / 模型等設定（不進版控）
+├── config.yaml               # 帳號 / 關鍵字 / 模型 / prompt 等設定（不進版控）
 ├── config.example.yaml       # 設定範本（進版控）
 ├── .env                      # 金鑰（不進版控）
-├── digests.json              # 每小時摘要儲存 + 已寄信標記（不進版控）
-├── state.json                # 已處理推文 id（不進版控）
+├── pending.json              # 已抓取、尚未彙整的原始貼文（不進版控）
+├── digests.json              # 每份彙整結果（供網站顯示，不進版控）
+├── state.json                # 已處理推文 id + 帳號 ID 快取（不進版控）
 ├── src/
 │   ├── config.py             # 讀取設定與環境變數
-│   ├── x_client.py           # X API v2 封裝（含時間窗）
-│   ├── storage.py            # 記錄已處理推文 id
-│   ├── digest_store.py       # 每小時摘要儲存與待寄追蹤
-│   ├── summarizer.py         # OpenRouter 摘要（含 [n] 引用）
+│   ├── x_client.py           # X API v2 封裝（時間窗 + 媒體）
+│   ├── storage.py            # 已處理推文 id 與帳號 ID 快取
+│   ├── pending_store.py      # 待彙整原始貼文暫存
+│   ├── digest_store.py       # 彙整結果儲存（供網站歷史）
+│   ├── summarizer.py         # OpenRouter 跨作者彙整（含 [n] 引用 / 視覺描述）
 │   ├── site_generator.py     # 產生網站（折疊）與 email HTML（攤平）
 │   ├── emailer.py            # Gmail SMTP 寄信
-│   └── main.py               # 主流程（fetch / email 兩模式）
+│   ├── publisher.py          # 自動 commit & push docs/
+│   └── main.py               # 主流程（fetch / synthesis 兩模式）
 ├── templates/
 │   ├── _macros.html          # 共用區塊樣板
-│   ├── site.html             # 網站（可折疊時段）
-│   └── email.html            # 信件（攤平時段）
+│   ├── site.html             # 網站（可折疊彙整）
+│   └── email.html            # 信件（攤平）
 ├── docs/                     # GitHub Pages 輸出
-└── scripts/                  # 兩個 launchd 排程範本（fetch / email）
+└── scripts/                  # 兩個 launchd 排程範本（fetch / synthesis）
 ```
 
 ## 注意事項
 
 - X API 按量計費，請依帳號/關鍵字數量與抓取量調整 `max_results_per_source`、`fetch_window_hours` 與排程頻率。
-- `.env`、`config.yaml`、`state.json`、`digests.json` 已列入 `.gitignore`，不會被 push，避免金鑰與個資外洩。
-- 網站要更新到線上，需在 `fetch` 後把 `docs/` 變動 commit & push（可另外加自動 push）。
+- 視覺描述（`media.describe`）會依圖片數增加成本；`MAX_IMAGES_PER_GROUP` 控制單次上限。
+- `.env`、`config.yaml`、`state.json`、`digests.json`、`pending.json` 已列入 `.gitignore`，不會被 push，避免金鑰與個資外洩。
+- 網站每天在 `synthesis` 時更新並自動 push（`site.auto_push: true`）。
