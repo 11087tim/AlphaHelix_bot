@@ -21,13 +21,16 @@ def _window_start(window_hours: float) -> datetime:
     return datetime.now(timezone.utc) - timedelta(hours=window_hours)
 
 
-def _simplify_tweets(tweets, users_by_id: dict, source: str) -> list[dict]:
+def _simplify_tweets(tweets, users_by_id: dict, source: str, author_override: str | None = None) -> list[dict]:
     if not tweets:
         return []
     simplified = []
     for tweet in tweets:
-        author = users_by_id.get(tweet.author_id)
-        username = author.username if author else "unknown"
+        if author_override is not None:
+            username = author_override
+        else:
+            author = users_by_id.get(tweet.author_id)
+            username = author.username if author else "unknown"
         metrics = tweet.public_metrics or {}
         simplified.append(
             {
@@ -43,17 +46,27 @@ def _simplify_tweets(tweets, users_by_id: dict, source: str) -> list[dict]:
     return simplified
 
 
+def get_user_id(client: tweepy.Client, username: str) -> str | None:
+    """把帳號名換算成數字 ID（算一次 User: Read）。找不到回傳 None。"""
+    resp = client.get_user(username=username)
+    if not resp.data:
+        return None
+    return str(resp.data.id)
+
+
 def get_user_tweets(
     client: tweepy.Client,
     username: str,
     max_results: int = 10,
     window_hours: float = 1,
+    user_id: str | None = None,
 ) -> list[dict]:
-    user_resp = client.get_user(username=username)
-    if not user_resp.data:
-        logger.warning("找不到帳號 @%s，略過。", username)
-        return []
-    user_id = user_resp.data.id
+    # 有傳入 user_id（來自快取）就直接用，省下每次的 get_user（User: Read）
+    if user_id is None:
+        user_id = get_user_id(client, username)
+        if user_id is None:
+            logger.warning("找不到帳號 @%s，略過。", username)
+            return []
 
     resp = client.get_users_tweets(
         id=user_id,
@@ -62,9 +75,8 @@ def get_user_tweets(
         exclude=["retweets", "replies"],
         start_time=_window_start(window_hours),
     )
-    users_by_id = {user_resp.data.id: user_resp.data}
     tweets = (resp.data or [])[:max_results]
-    return _simplify_tweets(tweets, users_by_id, source=f"account:{username}")
+    return _simplify_tweets(tweets, {}, source=f"account:{username}", author_override=username)
 
 
 def search_recent(

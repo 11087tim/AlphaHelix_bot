@@ -29,7 +29,7 @@ logging.basicConfig(
 logger = logging.getLogger("xbot")
 
 
-def _collect(cfg: Config, client) -> tuple[list[dict], list[dict], list[dict]]:
+def _collect(cfg: Config, client, storage: Storage) -> tuple[list[dict], list[dict], list[dict]]:
     """回傳 (account_groups, keyword_groups, all_tweets)。group = {label, tweets}。"""
     account_groups: list[dict] = []
     keyword_groups: list[dict] = []
@@ -37,8 +37,17 @@ def _collect(cfg: Config, client) -> tuple[list[dict], list[dict], list[dict]]:
 
     for username in cfg.accounts:
         try:
+            # 帳號 ID 固定，查一次就快取起來，之後省下每小時的 User: Read
+            user_id = storage.get_user_id(username)
+            if user_id is None:
+                user_id = x_client.get_user_id(client, username)
+                if user_id is None:
+                    logger.warning("找不到帳號 @%s，略過。", username)
+                    continue
+                storage.set_user_id(username, user_id)
+
             tweets = x_client.get_user_tweets(
-                client, username, cfg.max_results_per_source, cfg.fetch_window_hours
+                client, username, cfg.max_results_per_source, cfg.fetch_window_hours, user_id
             )
             account_groups.append({"label": username, "tweets": tweets})
             all_tweets.extend(tweets)
@@ -84,11 +93,13 @@ def run_fetch(cfg: Config) -> int:
     storage = Storage()
     digest_store = DigestStore()
 
-    account_groups, keyword_groups, all_tweets = _collect(cfg, client)
+    account_groups, keyword_groups, all_tweets = _collect(cfg, client, storage)
     account_sections = _summarize_groups(account_groups, storage, cfg)
     keyword_sections = _summarize_groups(keyword_groups, storage, cfg)
 
     if not account_sections and not keyword_sections:
+        # 即使沒有新推文，也把這次查到的帳號 ID 快取存下來，避免下一小時又重查
+        storage.save()
         logger.info("這一小時沒有新推文，跳過（不建立時段、不更新網站）。")
         return 0
 
