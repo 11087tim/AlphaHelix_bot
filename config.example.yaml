@@ -18,6 +18,12 @@ openrouter:
   # 可隨時替換成 OpenRouter 上任何模型代號
   model: "anthropic/claude-haiku-4.5"
 
+  # 摘要用的 system prompt。留空則使用程式內建預設值（src/summarizer.py 的 DEFAULT_SYSTEM_PROMPT）。
+  # 想自訂就用 | 區塊寫多行，例如：
+  # system_prompt: |
+  #   你是一個推文摘要助手，請用繁體中文整理重點，並用 [n] 標記引用來源…
+  system_prompt: ""
+
 site:
   title: "每日 X 摘要"
   output_dir: "docs"

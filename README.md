@@ -60,6 +60,8 @@ max_results_per_source: 10
 fetch_window_hours: 1              # 只抓過去幾小時內的貼文
 openrouter:
   model: "anthropic/claude-haiku-4.5"   # 可隨時替換成 OpenRouter 上任何模型
+  system_prompt: |                       # 摘要規則/風格，可自由編輯；留空則用內建預設
+    你是一個推文摘要助手…（改這裡即可調整摘要行為，改完下次執行生效）
 site:
   title: "我的 X 摘要"
   output_dir: "docs"

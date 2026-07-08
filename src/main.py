@@ -78,6 +78,7 @@ def _summarize_groups(
         result = summarizer.summarize_group(
             new_tweets, group["label"], cfg.openrouter_api_key, cfg.openrouter_model,
             describe_media=describe_media,
+            system_prompt=cfg.openrouter_system_prompt or None,
         )
         if result and result["summary"]:
             sections.append(

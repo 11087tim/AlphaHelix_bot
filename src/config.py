@@ -19,6 +19,7 @@ class Config:
     media_enabled: bool
     media_describe: bool
     openrouter_model: str
+    openrouter_system_prompt: str
     openrouter_api_key: str
     site_title: str
     site_output_dir: Path
@@ -92,6 +93,7 @@ def load_config(config_path: Path | None = None) -> Config:
         media_enabled=(raw.get("media") or {}).get("enabled", True),
         media_describe=(raw.get("media") or {}).get("describe", False),
         openrouter_model=openrouter.get("model", "anthropic/claude-3.5-haiku"),
+        openrouter_system_prompt=(openrouter.get("system_prompt") or "").strip(),
         openrouter_api_key=openrouter_api_key,
         site_title=site.get("title", "我的 X 摘要"),
         site_output_dir=PROJECT_ROOT / site.get("output_dir", "docs"),

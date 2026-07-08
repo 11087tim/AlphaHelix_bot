@@ -12,7 +12,7 @@ OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models"
 # 單次摘要最多送幾張圖給視覺模型，控制成本
 MAX_IMAGES_PER_GROUP = 12
 
-SYSTEM_PROMPT = (
+DEFAULT_SYSTEM_PROMPT = (
     "你是一個推文事件整理助手。你會收到某段時間內的一批推文，每則推文前面都有一個編號 [n]。\n"
     "請用繁體中文，把這段時間內發生的事件、討論與重點，整理成一段連貫、有脈絡的摘要"
     "（可用數個段落或條列，但要像在說明「這段時間發生了什麼」，而不是逐則翻譯）。\n"
@@ -96,6 +96,7 @@ def summarize_group(
     api_key: str,
     model: str,
     describe_media: bool = False,
+    system_prompt: str | None = None,
 ) -> dict | None:
     """回傳 {"summary": 帶 [n] 標記的摘要文字, "references": [{n, url, author, media}, ...]}。無推文則回傳 None。"""
     if not tweets:
@@ -119,7 +120,7 @@ def summarize_group(
         json={
             "model": model,
             "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": system_prompt or DEFAULT_SYSTEM_PROMPT},
                 {"role": "user", "content": user_content},
             ],
         },
