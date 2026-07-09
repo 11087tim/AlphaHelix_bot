@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 
 import requests
 
@@ -11,6 +12,19 @@ OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models"
 
 # 單次摘要最多送幾張圖給視覺模型，控制成本
 MAX_IMAGES_PER_GROUP = 12
+
+# 保險：移除模型偶爾會加的「…不納入/略過…」附註（含其中引用的宣傳推文編號），
+# 不依賴模型自律。只鎖定明確的「略過」字眼，避免誤刪正當提到訂閱議題的內容。
+_SKIP_NOTE_RE = re.compile(
+    r"[*＊]?\s*[（(][^（）()]*(不納入|未納入|不列入|略過|故不|不予採|不予納)[^（）()]*[）)]\s*[*＊]?"
+)
+
+
+def _strip_skip_notes(summary: str) -> str:
+    cleaned = _SKIP_NOTE_RE.sub("", summary)
+    # 收斂被清出來的多餘空行
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned.strip()
 
 DEFAULT_SYSTEM_PROMPT = (
     "你是一位協助投資判斷的分析助理。你會收到一段期間內、來自多位追蹤作者（或某個主題）的推文，"
@@ -133,7 +147,7 @@ def summarize_group(
     )
     response.raise_for_status()
     data = response.json()
-    summary = data["choices"][0]["message"]["content"].strip()
+    summary = _strip_skip_notes(data["choices"][0]["message"]["content"].strip())
 
     references = [
         {"n": idx, "url": t["url"], "author": t["author"], "media": t.get("media", [])}
