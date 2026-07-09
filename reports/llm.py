@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+import random
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -8,6 +10,7 @@ from dotenv import load_dotenv
 from .config import PROJECT_ROOT
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+_RETRYABLE = {429, 500, 502, 503, 529}
 
 
 def get_api_key() -> str:
@@ -18,22 +21,32 @@ def get_api_key() -> str:
     return key
 
 
-def _post(model: str, messages: list, api_key: str, timeout: int) -> dict:
-    resp = requests.post(
-        OPENROUTER_URL,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={"model": model, "messages": messages, "usage": {"include": True}},
-        timeout=timeout,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    usage = data.get("usage", {}) or {}
-    return {
-        "text": data["choices"][0]["message"]["content"].strip(),
-        "prompt_tokens": usage.get("prompt_tokens"),
-        "completion_tokens": usage.get("completion_tokens"),
-        "cost": usage.get("cost"),
-    }
+def _post(model: str, messages: list, api_key: str, timeout: int, retries: int = 4) -> dict:
+    last = None
+    for attempt in range(retries):
+        try:
+            resp = requests.post(
+                OPENROUTER_URL,
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                json={"model": model, "messages": messages, "usage": {"include": True}},
+                timeout=timeout,
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                usage = data.get("usage", {}) or {}
+                return {
+                    "text": data["choices"][0]["message"]["content"].strip(),
+                    "prompt_tokens": usage.get("prompt_tokens"),
+                    "completion_tokens": usage.get("completion_tokens"),
+                    "cost": usage.get("cost"),
+                }
+            last = f"HTTP {resp.status_code}: {resp.text[:180]}"
+            if resp.status_code not in _RETRYABLE:
+                break
+        except requests.RequestException as exc:
+            last = str(exc)
+        time.sleep((2 ** attempt) * 1.5 + random.uniform(0, 1))
+    raise RuntimeError(f"OpenRouter 呼叫失敗（{model}）：{last}")
 
 
 def chat(model: str, system: str, user: str, api_key: str, timeout: int = 180) -> dict:

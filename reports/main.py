@@ -9,6 +9,7 @@ if __package__:
     from .extract import run_extract
     from .fidelity_eval import run_eval
     from .analyze import analyze_report
+    from .aggregate import run_aggregate
 else:
     from pathlib import Path
 
@@ -18,11 +19,12 @@ else:
     from reports.extract import run_extract
     from reports.fidelity_eval import run_eval
     from reports.analyze import analyze_report
+    from reports.aggregate import run_aggregate
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger("reports")
 
-USAGE = "用法：python -m reports.main [fetch|extract|eval|analyze [股號 年 季]]"
+USAGE = "用法：python -m reports.main [fetch|extract|eval|analyze|aggregate [股號 ...]]"
 
 
 def main(argv: list[str]) -> int:
@@ -45,6 +47,11 @@ def main(argv: list[str]) -> int:
         if mode == "eval":
             return run_eval(cfg, stock, year, quarter)
         return analyze_report(cfg, stock, year, quarter)
+    if mode == "aggregate":
+        # aggregate [股號 [季數]]，預設近 8 季
+        stock = argv[1] if len(argv) > 1 else cfg.stocks[0]
+        n = int(argv[2]) if len(argv) > 2 else 8
+        return run_aggregate(cfg, stock, n)
     logger.error("未知模式：%s\n%s", mode, USAGE)
     return 2
 
