@@ -20,6 +20,7 @@ _env = Environment(
 _CITE_RE = re.compile(r"\[(\d+)\]")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 _HEADER_RE = re.compile(r"^#{1,6}\s+(.*)")
+_BOLD_LINE_RE = re.compile(r"^\*\*(.+?)\*\*[:：]?$")  # 整行都是粗體 → 視為主題小標（靠左）
 _BULLET_RE = re.compile(r"^[-*]\s+(.*)")
 _ORDERED_RE = re.compile(r"^\d+[.)]\s+(.*)")
 
@@ -65,6 +66,12 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
         if header:
             flush_list()
             parts.append(f'<p class="subhead">{_render_inline(header.group(1), url_by_n)}</p>')
+            continue
+
+        bold_line = _BOLD_LINE_RE.match(line)
+        if bold_line:
+            flush_list()
+            parts.append(f'<p class="subhead">{_render_inline(bold_line.group(1), url_by_n)}</p>')
             continue
 
         bullet = _BULLET_RE.match(line)
