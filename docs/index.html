@@ -42,11 +42,35 @@
     .empty { color: #999; }
     .datebar { margin: 0 0 16px; font-size: 0.95rem; }
     .datebar select { font-size: 0.95rem; padding: 4px 8px; border: 1px solid #cdd8e2; border-radius: 8px; background: #fff; }
+    html { scroll-behavior: smooth; }
+    /* 側欄大綱 */
+    .toc { position: fixed; top: 24px; left: 24px; width: 230px; max-height: calc(100vh - 48px); overflow-y: auto; background: #fff; border: 1px solid #e6e6e6; border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .toc-title { font-weight: 700; color: #1d9bf0; margin-bottom: 8px; font-size: 0.9rem; }
+    .toc ul { list-style: none; margin: 0; padding: 0; }
+    .toc li { margin: 1px 0; }
+    .toc a { display: block; color: #444; text-decoration: none; padding: 3px 6px; border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toc a:hover { background: #eef3f8; color: #1d9bf0; }
+    .toc a.lv1 { font-weight: 700; color: #1d9bf0; margin-top: 6px; }
+    .toc a.lv2 { padding-left: 16px; color: #555; font-size: 0.82rem; }
+    .toc .empty { color: #aaa; }
+    /* 螢幕不夠寬（放不下側欄）時隱藏，改用浮動按鈕開關 */
+    #tocToggle { display: none; position: fixed; top: 18px; left: 18px; z-index: 20; background: #1d9bf0; color: #fff; border: none; border-radius: 8px; padding: 8px 12px; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    @media (max-width: 1140px) {
+      .toc { transform: translateX(-110%); transition: transform .2s; z-index: 19; }
+      .toc.open { transform: none; }
+      #tocToggle { display: block; }
+    }
   </style>
 </head>
 <body>
+  <button id="tocToggle" type="button">☰ 大綱</button>
+  <nav class="toc" id="toc" aria-label="大綱">
+    <div class="toc-title">大綱</div>
+    <ul id="tocList"></ul>
+  </nav>
+
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-07-09 09:48｜每天彙整三次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-07-09 09:54｜每天彙整三次，點各時段標題可展開/收合</p>
 
   
   <div class="datebar">
@@ -475,9 +499,51 @@
 
   <script>
     (function () {
-      var sel = document.getElementById('dateFilter');
-      if (!sel) return;
       var blocks = [].slice.call(document.querySelectorAll('details.hour'));
+      var tocList = document.getElementById('tocList');
+      var toc = document.getElementById('toc');
+      var toggle = document.getElementById('tocToggle');
+      var uid = 0;
+
+      // 依目前「顯示中」的時段區塊，重建大綱（大主題 lv1 / 小主題 lv2）
+      function buildTOC() {
+        tocList.innerHTML = '';
+        var visible = blocks.filter(function (b) { return b.style.display !== 'none'; });
+        var count = 0;
+        visible.forEach(function (b) {
+          var heads = b.querySelectorAll('.summary p.maintopic, .summary p.subhead');
+          [].forEach.call(heads, function (h) {
+            if (!h.id) h.id = 'sec-' + (++uid);
+            var name = h.textContent.trim();
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = name;
+            a.title = name;  // hover 顯示完整名稱
+            a.className = h.classList.contains('maintopic') ? 'lv1' : 'lv2';
+            a.addEventListener('click', function (e) {
+              e.preventDefault();
+              // 展開所有祖先 <details> 再跳過去
+              var node = h;
+              while (node) {
+                if (node.tagName === 'DETAILS') node.open = true;
+                node = node.parentNode;
+              }
+              h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              if (window.matchMedia('(max-width: 1140px)').matches) toc.classList.remove('open');
+            });
+            li.appendChild(a);
+            tocList.appendChild(li);
+            count++;
+          });
+        });
+        if (count === 0) {
+          tocList.innerHTML = '<li class="empty">（本日無主題）</li>';
+        }
+      }
+
+      // 日期篩選
+      var sel = document.getElementById('dateFilter');
       function apply(date) {
         var firstShown = null;
         blocks.forEach(function (b) {
@@ -485,12 +551,21 @@
           b.style.display = show ? '' : 'none';
           if (show && !firstShown) firstShown = b;
         });
-        // 展開所選日期的最新時段，其餘收合
         blocks.forEach(function (b) { b.open = false; });
         if (firstShown) firstShown.open = true;
+        buildTOC();
       }
-      sel.addEventListener('change', function () { apply(this.value); });
-      apply(sel.value);
+      if (sel) {
+        sel.addEventListener('change', function () { apply(this.value); });
+        apply(sel.value);
+      } else {
+        buildTOC();
+      }
+
+      // 窄螢幕的大綱開關
+      if (toggle) {
+        toggle.addEventListener('click', function () { toc.classList.toggle('open'); });
+      }
     })();
   </script>
 </body>

@@ -14,3 +14,6 @@ config.yaml
 # 個人追蹤名單輸入檔
 X追蹤.xlsx
 *.xlsx
+
+# 本機預覽設定
+.claude/launch.json
