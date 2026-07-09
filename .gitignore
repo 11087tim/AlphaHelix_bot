@@ -17,3 +17,6 @@ X追蹤.xlsx
 
 # 本機預覽設定
 .claude/launch.json
+
+# 台股財報 pipeline 產出
+reports_data/

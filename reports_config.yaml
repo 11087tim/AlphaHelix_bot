@@ -1,0 +1,24 @@
+# === 台股財報抓取 pipeline 設定（獨立於 X bot）===
+
+# 要抓的股票代號（上市/上櫃皆可）。初期先放你指定的幾檔，日後可擴充到全市場。
+stocks: ["2330", "2454", "2317"]
+
+# 年度（西元）與季別（1~4；4 通常為年報/年度合併）
+years: [2024]
+quarters: [1, 2, 3, 4]
+
+# 財報類型偏好，會依序嘗試（抓到第一個存在的就好）
+#   consolidated = 合併財報；individual = 個體財報
+report_types: ["consolidated", "individual"]
+
+# 語言：zh = 中文、en = 英文
+#   對照 MOPS 檔名：AI1=中文合併、AI3=中文個體、AIA=英文合併、AIC=英文個體
+language: "zh"
+
+# 平行化與限速（MOPS 會擋暴力抓取，請保守）
+workers: 5              # 同時處理幾家「公司-年」
+min_interval_sec: 0.4   # 對 MOPS 每次請求的全域最小間隔（秒）
+max_retries: 3          # 單次請求失敗重試次數（指數退避）
+
+# 產出目錄（raw PDF / text / manifest 都放這，已 gitignore）
+data_dir: "reports_data"
