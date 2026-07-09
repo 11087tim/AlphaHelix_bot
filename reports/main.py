@@ -8,6 +8,7 @@ if __package__:
     from .fetcher import run_fetch
     from .extract import run_extract
     from .fidelity_eval import run_eval
+    from .analyze import analyze_report
 else:
     from pathlib import Path
 
@@ -16,11 +17,12 @@ else:
     from reports.fetcher import run_fetch
     from reports.extract import run_extract
     from reports.fidelity_eval import run_eval
+    from reports.analyze import analyze_report
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger("reports")
 
-USAGE = "用法：python -m reports.main [fetch|extract|eval [股號 年 季]]"
+USAGE = "用法：python -m reports.main [fetch|extract|eval|analyze [股號 年 季]]"
 
 
 def main(argv: list[str]) -> int:
@@ -35,12 +37,14 @@ def main(argv: list[str]) -> int:
         return run_fetch(cfg)
     if mode == "extract":
         return run_extract(cfg)
-    if mode == "eval":
-        # eval [股號 年 季]，未給則用 config 第一檔/年/季
+    if mode in ("eval", "analyze"):
+        # [股號 年 季]，未給則用 config 第一檔/年/最後一季
         stock = argv[1] if len(argv) > 1 else cfg.stocks[0]
         year = int(argv[2]) if len(argv) > 2 else cfg.years[0]
         quarter = int(argv[3]) if len(argv) > 3 else cfg.quarters[-1]
-        return run_eval(cfg, stock, year, quarter)
+        if mode == "eval":
+            return run_eval(cfg, stock, year, quarter)
+        return analyze_report(cfg, stock, year, quarter)
     logger.error("未知模式：%s\n%s", mode, USAGE)
     return 2
 

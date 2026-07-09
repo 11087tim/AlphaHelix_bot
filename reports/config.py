@@ -21,8 +21,11 @@ class ReportsConfig:
     data_dir: Path
     cheap_model: str
     strong_model: str
+    vision_model: str
     chunk_chars: int
     eval_sample_chunks: int
+    analysis_topics: list[dict]
+    vision_max_pages: int
 
 
 class ConfigError(RuntimeError):
@@ -62,6 +65,23 @@ def load_config(path: Path | None = None) -> ReportsConfig:
         data_dir=PROJECT_ROOT / data_dir if not Path(data_dir).is_absolute() else Path(data_dir),
         cheap_model=llm.get("cheap_model", "anthropic/claude-haiku-4.5"),
         strong_model=llm.get("strong_model", "anthropic/claude-opus-4.8"),
+        vision_model=llm.get("vision_model", "google/gemini-2.5-flash"),
         chunk_chars=int(llm.get("chunk_chars", 6000)),
         eval_sample_chunks=int(llm.get("eval_sample_chunks", 6)),
+        analysis_topics=(raw.get("analysis") or {}).get("topics") or _DEFAULT_TOPICS,
+        vision_max_pages=int((raw.get("analysis") or {}).get("vision_max_pages", 6)),
     )
+
+
+_DEFAULT_TOPICS = [
+    {"name": "重大會計政策", "match": ["會計政策"], "mode": "text",
+     "instruction": "整理重大會計政策要點，特別是影響收入/獲利認列、與同業不同、或今年有變動的部分。"},
+    {"name": "營運部門/分部資訊", "match": ["營運部門", "部門資訊", "分部"], "mode": "vision",
+     "instruction": "讀出各營運部門/分部的營收、獲利與資產數字，保留原始數字。"},
+    {"name": "關係人交易", "match": ["關係人"], "mode": "vision",
+     "instruction": "讀出主要關係人交易對象、交易類型（銷貨/進貨/資金貸與/背書保證等）與金額。"},
+    {"name": "重大或有負債及承諾", "match": ["或有負債", "承諾"], "mode": "text",
+     "instruction": "整理重大或有負債、未認列合約承諾、背書保證、重大資本支出承諾等重點與金額。"},
+    {"name": "重大期後事項", "match": ["期後事項"], "mode": "text",
+     "instruction": "整理資產負債表日之後發生的重大事項。"},
+]
