@@ -65,7 +65,7 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
         header = _HEADER_RE.match(line)
         if header:
             flush_list()
-            parts.append(f'<p class="subhead">{_render_inline(header.group(1), url_by_n)}</p>')
+            parts.append(f'<p class="maintopic">{_render_inline(header.group(1), url_by_n)}</p>')
             continue
 
         bold_line = _BOLD_LINE_RE.match(line)
