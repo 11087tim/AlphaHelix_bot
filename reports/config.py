@@ -19,6 +19,10 @@ class ReportsConfig:
     min_interval_sec: float
     max_retries: int
     data_dir: Path
+    cheap_model: str
+    strong_model: str
+    chunk_chars: int
+    eval_sample_chunks: int
 
 
 class ConfigError(RuntimeError):
@@ -45,6 +49,7 @@ def load_config(path: Path | None = None) -> ReportsConfig:
         raise ConfigError("language 只能是 zh（中文）或 en（英文）。")
 
     data_dir = raw.get("data_dir", "reports_data")
+    llm = raw.get("llm") or {}
     return ReportsConfig(
         stocks=stocks,
         years=[int(y) for y in (raw.get("years") or [])],
@@ -55,4 +60,8 @@ def load_config(path: Path | None = None) -> ReportsConfig:
         min_interval_sec=float(raw.get("min_interval_sec", 0.4)),
         max_retries=int(raw.get("max_retries", 3)),
         data_dir=PROJECT_ROOT / data_dir if not Path(data_dir).is_absolute() else Path(data_dir),
+        cheap_model=llm.get("cheap_model", "anthropic/claude-haiku-4.5"),
+        strong_model=llm.get("strong_model", "anthropic/claude-opus-4.8"),
+        chunk_chars=int(llm.get("chunk_chars", 6000)),
+        eval_sample_chunks=int(llm.get("eval_sample_chunks", 6)),
     )

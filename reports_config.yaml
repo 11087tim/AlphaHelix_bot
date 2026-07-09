@@ -22,3 +22,11 @@ max_retries: 3          # 單次請求失敗重試次數（指數退避）
 
 # 產出目錄（raw PDF / text / manifest 都放這，已 gitignore）
 data_dir: "reports_data"
+
+# LLM 分析設定（用 X bot 相同的 OPENROUTER_API_KEY，讀 .env）
+llm:
+  cheap_model: "anthropic/claude-haiku-4.5"   # 便宜模型：長文擷取
+  strong_model: "anthropic/claude-opus-4.8"   # 強模型：判斷/裁決
+  chunk_chars: 6000          # 每個文字分段長度
+  eval_sample_chunks: 6      # A/B 保真度驗證時抽樣幾個分段
+
