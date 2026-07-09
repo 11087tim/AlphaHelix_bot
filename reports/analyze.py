@@ -5,7 +5,7 @@ import logging
 import re
 
 from .config import ReportsConfig
-from . import llm
+from . import llm, router, twse
 from .storage import ReportStorage
 
 logger = logging.getLogger(__name__)
@@ -66,6 +66,33 @@ def _pages_text(doc, pdf_pages: list[int]) -> str:
     return "\n".join(doc[p].get_text() for p in pdf_pages if 0 <= p < len(doc))
 
 
+def _find_note(notes: list[dict], title: str) -> dict | None:
+    """把路由器給的 note_title 對應到目錄實際的節。"""
+    tn = _norm(title)
+    for note in notes:
+        nt = _norm(note["title"])
+        if nt and (nt in tn or tn in nt):
+            return note
+    best, score = None, 0
+    for note in notes:
+        nt = _norm(note["title"])
+        s = sum(1 for i in range(len(tn) - 1) if tn[i:i + 2] in nt)
+        if s > score:
+            best, score = note, s
+    return best if score >= 2 else None
+
+
+def _fixed_plan(cfg: ReportsConfig, notes: list[dict]) -> list[dict]:
+    """路由失敗時的回退：用固定主題清單。"""
+    plan = []
+    for t in cfg.analysis_topics:
+        note = _match_note(notes, t["match"])
+        if note:
+            plan.append({"note_title": note["title"], "focus": t["instruction"],
+                         "mode": "table" if t["mode"] == "vision" else "narrative"})
+    return plan
+
+
 def analyze_report(cfg: ReportsConfig, stock: str, year: int, quarter: int,
                    report_type: str = "consolidated") -> int:
     import fitz
@@ -80,37 +107,45 @@ def analyze_report(cfg: ReportsConfig, stock: str, year: int, quarter: int,
     notes = parse_toc_notes(doc)
     offset = detect_offset(doc, notes)
     api_key = llm.get_api_key()
-    logger.info("%s %dQ%d：附註 %d 節，頁位移 %d，分析 %d 個主題",
-                stock, year, quarter, len(notes), offset, len(cfg.analysis_topics))
 
-    out_lines = [f"# {stock} {year}Q{quarter} 財報附註分析（{report_type}/{cfg.language}）", ""]
-    total_cost = 0.0
+    info = twse.get_company_info(stock)
+    name, industry = info.get("name", ""), info.get("industry", "")
 
-    for topic in cfg.analysis_topics:
-        note = _match_note(notes, topic["match"])
+    # ③ 自適應層：Opus 讀「目錄+產業」決定這家公司要看什麼
+    plan, router_cost = router.plan_extraction(cfg, stock, name, industry, notes, api_key)
+    used_router = bool(plan)
+    if not plan:
+        plan = _fixed_plan(cfg, notes)
+    logger.info("%s %s（%s）：附註 %d 節、位移 %d｜%s 產出 %d 個擷取主題（路由成本 $%.4f）",
+                stock, name, industry, len(notes), offset,
+                "Opus 路由" if used_router else "固定回退", len(plan), router_cost)
+
+    out_lines = [f"# {stock} {name} {year}Q{quarter} 財報附註分析",
+                 f"<sub>產業：{industry}｜擷取計畫由 {'Opus 自適應路由' if used_router else '固定主題'} 產生</sub>", ""]
+    total_cost = router_cost
+
+    for item in plan:
+        note = _find_note(notes, item.get("note_title", ""))
         if not note:
-            logger.info("  主題「%s」：目錄找不到對應附註，略過", topic["name"])
+            logger.info("  「%s」：目錄找不到對應附註，略過", item.get("note_title"))
             continue
-        start_pdf = note["start"] + offset
-        end_pdf = note["end"] + offset
-        pdf_pages = list(range(start_pdf, end_pdf + 1))[: cfg.vision_max_pages]
-        user = f"【指示】{topic['instruction']}\n（本節為附註「{note['title']}」，印刷頁 {note['start']}–{note['end']}）"
+        mode = "vision" if item.get("mode") == "table" else "text"
+        pdf_pages = list(range(note["start"] + offset, note["end"] + offset + 1))[: cfg.vision_max_pages]
+        user = (f"【要擷取的重點】{item.get('focus', '')}\n"
+                f"（本節為附註「{note['title']}」，印刷頁 {note['start']}–{note['end']}）")
 
-        if topic["mode"] == "vision":
-            imgs = _render_pages(doc, pdf_pages)
-            res = llm.vision_chat(cfg.vision_model, EXTRACT_SYSTEM, user, imgs, api_key)
+        if mode == "vision":
+            res = llm.vision_chat(cfg.vision_model, EXTRACT_SYSTEM, user, _render_pages(doc, pdf_pages), api_key)
             model_used = cfg.vision_model
         else:
             text = _pages_text(doc, pdf_pages)[: cfg.chunk_chars * 6]
             res = llm.chat(cfg.cheap_model, EXTRACT_SYSTEM, user + "\n\n【內容】\n" + text, api_key)
             model_used = cfg.cheap_model
 
-        cost = res.get("cost") or 0
-        total_cost += cost
-        logger.info("  主題「%s」（%s, %d 頁, %s）✓ $%.4f",
-                    topic["name"], topic["mode"], len(pdf_pages), model_used, cost)
-        out_lines += [f"## {topic['name']}",
-                      f"<sub>附註「{note['title']}」印刷頁 {note['start']}–{note['end']}｜{topic['mode']}／{model_used}</sub>",
+        total_cost += res.get("cost") or 0
+        logger.info("  「%s」→ 附註「%s」（%s, %d 頁）✓", note["title"], note["title"], mode, len(pdf_pages))
+        out_lines += [f"## {note['title']}",
+                      f"<sub>印刷頁 {note['start']}–{note['end']}｜{mode}／{model_used}｜重點：{item.get('focus','')}</sub>",
                       "", res["text"], ""]
 
     out = storage.root / "analysis" / f"{stock}_{year}Q{quarter}_{cfg.language}.md"
