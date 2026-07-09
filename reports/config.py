@@ -26,6 +26,7 @@ class ReportsConfig:
     eval_sample_chunks: int
     analysis_topics: list[dict]
     vision_max_pages: int
+    synthesis_enabled: bool
 
 
 class ConfigError(RuntimeError):
@@ -70,6 +71,7 @@ def load_config(path: Path | None = None) -> ReportsConfig:
         eval_sample_chunks=int(llm.get("eval_sample_chunks", 6)),
         analysis_topics=(raw.get("analysis") or {}).get("topics") or _DEFAULT_TOPICS,
         vision_max_pages=int((raw.get("analysis") or {}).get("vision_max_pages", 6)),
+        synthesis_enabled=bool((raw.get("analysis") or {}).get("synthesis", True)),
     )
 
 

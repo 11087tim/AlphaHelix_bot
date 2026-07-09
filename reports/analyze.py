@@ -12,6 +12,16 @@ logger = logging.getLogger(__name__)
 
 _TOC_RE = re.compile(r"[（(]([一二三四五六七八九十百]+)[)）]([^\d]+?)(\d+)(?:～(\d+))?")
 
+SYNTH_SYSTEM = (
+    "你是資深投資分析師。以下是某台股公司財報附註各節的擷取結果。"
+    "請據此寫一份精簡、有判斷力的『投資重點彙整』，要有洞見、不要只是複述數字：\n"
+    "1. 本份財報最值得注意的 3～5 個重點（附具體數字）。\n"
+    "2. 跨項目的連結判讀（例如：資本支出承諾 vs 存貨 vs 分部營收 → 擴產是否合理；毛利/研發/客戶集中度的訊號）。\n"
+    "3. 潛在風險或紅旗（重大訴訟、關係人異常、或有負債、客戶過度集中、質押偏高等）。\n"
+    "4. 最後一行用「一句話：」總結對投資的意涵。\n"
+    "只根據提供的內容判讀，不要杜撰數字。繁體中文，用小標＋條列，精簡。"
+)
+
 EXTRACT_SYSTEM = (
     "你是專業的財報分析師。以下是台股公司財報「附註」中某一節的內容。"
     "請用繁體中文，依指示整理出對投資有用的重點，保留所有具體數字（金額、比率、年增減）。"
@@ -82,6 +92,14 @@ def _find_note(notes: list[dict], title: str) -> dict | None:
     return best if score >= 2 else None
 
 
+def _synthesize(cfg: ReportsConfig, stock: str, name: str, industry: str,
+                sections: list[dict], api_key: str) -> tuple[str, float]:
+    body = "\n\n".join(f"【{s['title']}】\n{s['text']}" for s in sections)
+    user = f"公司：{stock} {name}（產業：{industry}）\n\n各附註擷取結果：\n\n{body}"
+    res = llm.chat(cfg.strong_model, SYNTH_SYSTEM, user, api_key)
+    return res["text"], res.get("cost") or 0
+
+
 def _fixed_plan(cfg: ReportsConfig, notes: list[dict]) -> list[dict]:
     """路由失敗時的回退：用固定主題清單。"""
     plan = []
@@ -120,8 +138,10 @@ def analyze_report(cfg: ReportsConfig, stock: str, year: int, quarter: int,
                 stock, name, industry, len(notes), offset,
                 "Opus 路由" if used_router else "固定回退", len(plan), router_cost)
 
-    out_lines = [f"# {stock} {name} {year}Q{quarter} 財報附註分析",
-                 f"<sub>產業：{industry}｜擷取計畫由 {'Opus 自適應路由' if used_router else '固定主題'} 產生</sub>", ""]
+    header = [f"# {stock} {name} {year}Q{quarter} 財報附註分析",
+              f"<sub>產業：{industry}｜擷取計畫由 {'Opus 自適應路由' if used_router else '固定主題'} 產生</sub>", ""]
+    detail_lines: list[str] = []
+    sections: list[dict] = []
     total_cost = router_cost
 
     for item in plan:
@@ -144,12 +164,23 @@ def analyze_report(cfg: ReportsConfig, stock: str, year: int, quarter: int,
 
         total_cost += res.get("cost") or 0
         logger.info("  「%s」→ 附註「%s」（%s, %d 頁）✓", note["title"], note["title"], mode, len(pdf_pages))
-        out_lines += [f"## {note['title']}",
-                      f"<sub>印刷頁 {note['start']}–{note['end']}｜{mode}／{model_used}｜重點：{item.get('focus','')}</sub>",
-                      "", res["text"], ""]
+        sections.append({"title": note["title"], "text": res["text"]})
+        detail_lines += [f"## {note['title']}",
+                         f"<sub>印刷頁 {note['start']}–{note['end']}｜{mode}／{model_used}｜重點：{item.get('focus','')}</sub>",
+                         "", res["text"], ""]
+
+    # 最終彙整層：Opus 讀各節擷取結果 → 一頁投資 brief（跨項目洞察、風險紅旗）
+    brief_lines: list[str] = []
+    if cfg.synthesis_enabled and sections:
+        brief, bcost = _synthesize(cfg, stock, name, industry, sections, api_key)
+        total_cost += bcost
+        logger.info("  最終彙整（%s）✓ $%.4f", cfg.strong_model, bcost)
+        brief_lines = ["## 投資重點彙整",
+                       f"<sub>{cfg.strong_model} · 跨附註判讀</sub>", "", brief, "",
+                       "---", "", "# 各附註擷取明細", ""]
 
     out = storage.root / "analysis" / f"{stock}_{year}Q{quarter}_{cfg.language}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text("\n".join(out_lines), encoding="utf-8")
+    out.write_text("\n".join(header + brief_lines + detail_lines), encoding="utf-8")
     logger.info("完成。總成本 $%.4f，分析已寫入 %s", total_cost, out)
     return 0

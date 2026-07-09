@@ -30,3 +30,6 @@ llm:
   chunk_chars: 6000          # 每個文字分段長度
   eval_sample_chunks: 6      # A/B 保真度驗證時抽樣幾個分段
 
+analysis:
+  synthesis: true       # 最終彙整層：Opus 讀各節結果 → 一頁投資 brief
+  vision_max_pages: 6   # 視覺讀表每主題最多幾頁
