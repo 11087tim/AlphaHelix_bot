@@ -56,6 +56,26 @@ def main(argv: list[str]) -> int:
         print(f"# 主題/子題「{name}」相關公司：", "、".join(comps) or "（無，請確認名稱）")
         return 0
 
+    if cmd == "suggest" and len(argv) > 1:
+        from .suggest import suggest, to_yaml_block
+        from reports.llm import get_api_key
+
+        tk = argv[1].upper()
+        c = g.company(tk) or {}
+        draft, cost = suggest(tk, g, get_api_key())
+        print(f"# {tk} 供應鏈關係草稿（Opus 4.8，請審核）　成本 ${cost:.4f}\n")
+        print("角色：", draft.get("role", ""))
+        print("上游（供應商）：", "、".join(map(str, draft.get("upstream") or [])))
+        print("下游（客戶）：", "、".join(map(str, draft.get("downstream") or [])))
+        print("競爭對手：", "、".join(map(str, draft.get("competitors") or [])))
+        print("相關主題：", "、".join(map(str, draft.get("themes") or [])))
+        print("\n審核提醒：")
+        for n in draft.get("notes") or []:
+            print("  -", n)
+        print("\n可貼進 graph.yaml 的片段（審核後）：\n")
+        print(to_yaml_block(tk, c.get("name", draft.get("name", tk)), draft))
+        return 0
+
     print(USAGE)
     return 2
 
