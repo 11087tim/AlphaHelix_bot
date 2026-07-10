@@ -1,0 +1,23 @@
+# === 供應鏈 / 主題關係圖 — 格式範本 ===
+# 實際檔案 graph.yaml 含個人持股，已 gitignore。複製本檔為 graph.yaml 再填。
+# ticker 為主鍵；別名用 aka/aliases 收；關係邊可指向圖外實體。
+
+themes:
+  - name: 光通訊
+    subthemes:
+      - name: CPO
+        aliases: [共同封裝光學, co-packaged optics]
+        companies: [GLW]
+      - name: FAU/光學元件
+        aliases: [光纖陣列, fiber array unit]
+        companies: [GLW]
+
+companies:
+  GLW:
+    name: Corning
+    aka: [康寧]
+    role: 光纖 / 玻璃基板 / 光學元件
+    upstream: []
+    downstream: [NVDA, 光模組廠]
+    competitors: [AGC, 住友電工]
+    # themes 由 themes 區塊反查，不必在此重複

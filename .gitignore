@@ -20,3 +20,6 @@ X追蹤.xlsx
 
 # 台股財報 pipeline 產出
 reports_data/
+
+# 供應鏈圖含個人持股，不上傳
+graph.yaml
