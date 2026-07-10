@@ -24,13 +24,21 @@
     .summary p.subhead { margin: 12px 0 4px; font-size: 1.02rem; font-weight: 600; color: #333; text-indent: 0; }
     .summary ul, .summary ol { margin: 6px 0; padding-left: 22px; }
     .summary li { margin: 3px 0; }
-    .media { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
-    .media-item { position: relative; display: inline-block; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e2e2; }
-    .media-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .media-item .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; background: rgba(0,0,0,.28); }
     a { color: #1d9bf0; }
     a.cite { font-weight: 600; text-decoration: none; padding: 0 1px; }
     a.cite:hover { text-decoration: underline; }
+    .figref { font-weight: 600; color: #0f7a5a; cursor: pointer; padding: 0 1px; }
+    .figref:hover { text-decoration: underline; }
+    .refmedia { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 2px; }
+    .thumb { position: relative; display: inline-block; width: 108px; height: 108px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e2e2; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb .figno { position: absolute; left: 0; bottom: 0; font-size: 0.68rem; color: #fff; background: rgba(0,0,0,.55); padding: 1px 5px; border-top-right-radius: 6px; }
+    .thumb .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; background: rgba(0,0,0,.28); }
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.82); display: none; align-items: center; justify-content: center; z-index: 50; padding: 24px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 94vw; max-height: 86vh; border-radius: 8px; }
+    .lightbox .lb-cap { position: absolute; bottom: 16px; color: #eee; font-size: 0.85rem; }
+    .lightbox .lb-close { position: absolute; top: 14px; right: 20px; color: #fff; font-size: 1.8rem; cursor: pointer; line-height: 1; }
     details.refs { margin-top: 12px; padding-top: 8px; border-top: 1px dashed #e2e2e2; font-size: 0.85rem; color: #666; }
     details.refs > summary { cursor: pointer; color: #1d9bf0; font-weight: 600; list-style: none; user-select: none; }
     details.refs > summary::-webkit-details-marker { display: none; }
@@ -69,7 +77,7 @@
   </nav>
 
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-07-10 18:06｜每天彙整三次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-07-10 18:28｜每天彙整三次，點各時段標題可展開/收合</p>
 
   
   <div class="datebar">
@@ -98,88 +106,162 @@
     
   <div class="summary"><p class="maintopic">記憶體</p><p class="subhead">HBM/DRAM 與傳統 DRAM 漲價循環</p><p>本期記憶體題材熱度明顯升溫，情緒偏多。TrendForce 指出台灣南亞科（Nanya）搭上傳統 DRAM 漲價浪潮，毛利率正逼近全球記憶體巨頭水準 <a class="cite" href="https://x.com/trendforce/status/2075502204367364141" target="_blank" rel="noopener">[11]</a>，顯示這波漲價不只惠及先進製程/HBM 供應商，連 legacy DRAM 廠都受益，反映供給端整體吃緊。SK Hynix 於 Nasdaq 掛牌的消息也帶出正向氣氛 <a class="cite" href="https://x.com/Semicon_player/status/2075489345327472646" target="_blank" rel="noopener">[5]</a>。</p><p>（延伸推論：DRAM 供給偏緊、價格上行的環境，對同屬記憶體大廠、下游直接對接 NVDA/AMD/雲端的 MU 屬於順風訊號；但 MU 面臨 Samsung、SK Hynix 的競爭，若韓廠掛牌後擴張加速，需留意供給恢復對價格的壓力。）</p><p class="maintopic">晶圓代工</p><p class="subhead">先進製程漲價（供給導向轉折）</p><p>情緒偏多且具轉折意義。有作者報導三星針對 5nm/4nm 先進製程晶圓調漲約 15%，並點出半導體代工市場「從需求導向轉為供給導向」，三星採重點式調漲、與台積電全面漲價策略不同 <a class="cite" href="https://x.com/QQ_Timmy/status/2075497125236900291" target="_blank" rel="noopener">[21]</a>。這是本期較明確的產業結構性訊號——AI 需求爆發使代工端議價力上升。</p><p>（延伸推論：代工漲價對台積電（TSM）是營收/毛利的正向支撐；成本上升會傳導至下游 NVDA、AMD、AVGO 等設計廠，需留意其毛利被侵蝕的風險，但在 AI 需求強勁下轉嫁能力仍偏強。）</p><p class="maintopic">雲端/AI 資本支出與 AI 運算</p><p class="subhead">客製推論晶片（inference ASIC）</p><p>@ruima 提出結構性觀點：當 AI 部署量達一定門檻後，自研客製推論晶片的經濟效益相當大，尤其推論預期佔 70% 工作負載，在中國市場更為明顯 <a class="cite" href="https://x.com/ruima/status/2075508354194243841" target="_blank" rel="noopener">[8]</a>。這是偏多且具前瞻性的判斷，指向 ASIC 需求成長。</p><p>（延伸推論：推論自研 ASIC 趨勢利多 custom silicon 供應商 AVGO，以及其代工夥伴 TSM；相對地，通用 GPU（NVDA）在推論市場可能面臨自研晶片的替代壓力，值得留意。）</p><p class="subhead">AI 產品競爭與商業模式</p><p>@_FORAB 描述 ChatGPT 與 Claude 之間的額度重置「商戰」白熱化 <a class="cite" href="https://x.com/_FORAB/status/2075497039170064408" target="_blank" rel="noopener">[1]</a>，反映前線 AI 應用競爭激烈。@ruima 則質疑「靠雇用領域專家」作為 AI 下一波突破的說法，指出薪資偏低、且大量廉價且被低度雇用的合格人才可能複製此模式 <a class="cite" href="https://x.com/ruima/status/2075492030990762284" target="_blank" rel="noopener">[9]</a>，隱含對某些 AI 護城河的懷疑。@chamath 提出更宏觀的疑問：若「壟斷→雙寡頭→寡頭→商品化」的循環在 AI 加速下發生於最先進科技領域，「長期現金流」的真實價值該如何評估 <a class="cite" href="https://x.com/chamath/status/2075473841472545250" target="_blank" rel="noopener">[26]</a>——這是對 AI 領先者估值持謹慎/分歧態度的訊號。整體情緒偏分歧，多空論點並存。</p><p class="subhead">AI 世界模型</p><p>@AIHighlight 強調 LingBot-World 2.0 的重點不在一小時 demo，而在於長時間 self-rollout 下抗漂移（drift）的穩定性，稱其解決了讓其他 AI 世界模型崩解的難題 <a class="cite" href="https://x.com/AIHighlight/status/2075510143836471455" target="_blank" rel="noopener">[22]</a>。屬單一作者的技術面正向觀察，可視為世界模型能力進展的訊號。</p><p class="maintopic">AI 基礎設施</p><p class="subhead">資料中心儲能（AIDC energy storage）</p><p>TrendForce 指出儲能正從「可選附加」轉為 AIDC 必要基礎設施，為過去受價格戰所困的產業開啟高成長藍海，中國廠商正競相搶進 <a class="cite" href="https://x.com/trendforce/status/2075520491633131962" target="_blank" rel="noopener">[10]</a>，並列出 Shuangdeng、CATL、Envision、寧德系、Jinko 等眾多供應商 <a class="cite" href="https://x.com/trendforce/status/2075520491633131962" target="_blank" rel="noopener">[10]</a>。情緒偏多，並帶出一條 AI 資本支出下較少被關注的受惠支線——資料中心備用電力/儲能。此為值得追蹤的新興子題。</p><p class="maintopic">光通訊/AI 硬體關聯素材</p><p class="subhead">production run 進展</p><p>@PhotonCap 引述並認同「已從樣品（sample）進入量產（production run）」的說法 <a class="cite" href="https://x.com/PhotonCap/status/2075519579309355446" target="_blank" rel="noopener">[15]</a>，屬正向的產能里程碑訊號，但推文未明示標的與領域，無法確認具體公司，僅作為關注線索。</p><p class="maintopic">航太/衛星</p><p class="subhead">太空題材（SpaceX 估值敘事）</p><p>有推文引述 Musk 稱 SpaceX 若達成目標將「比地球其餘部分更有價值」的大膽預測 <a class="cite" href="https://x.com/TruthTrumpPost/status/2075516912948191301" target="_blank" rel="noopener">[12]</a>。屬敘事性、缺乏具體財務依據的言論，情緒偏誇張，投資意涵有限，僅反映太空題材的高關注度。</p><p class="maintopic">總體經濟</p><p class="subhead">貨幣供給與匯率背離</p><p>@MikeFritzell 比較日美 M2 年增率（日本 2.2%、美國 5.6%），指出美國貨幣供給增速更快，美元卻更強，認為「這種背離終將開始產生影響」 <a class="cite" href="https://x.com/MikeFritzell/status/2075484933376905540" target="_blank" rel="noopener">[27]</a>。屬對美元/日圓長期走勢的觀察與警示，情緒偏中性略帶對美元後續的疑慮，適合作為匯率、日股/日圓相關部位的宏觀背景參考。</p><p class="maintopic">航運/能源</p><p class="subhead">油輪運費與燃油</p><p>@ed_fin 分享油輪費率表，顯示部分航線（如 Baltic/EMED、UKC/USAC）運費上行、鹿特丹與新加坡等地 IFO 380、MGO、VLSFO 燃油價格全面走揚 <a class="cite" href="https://x.com/ed_fin/status/2075486008636739831" target="_blank" rel="noopener">[6]</a>。屬即時運價/燃油數據，指向油輪運費與船用燃油成本同步升溫，可作為航運與能源相關標的的短線基本面觀察。</p><p class="maintopic">其他觀察</p><p class="subhead">系統化選股（策略研究）</p><p>@suru27 分享以印度 NIFTY SmallCap 250 為基準的等權重系統化選股組合，10 個月報酬 28%、遠勝基準 6%，強調系統法看的是機率而非單一贏家 <a class="cite" href="https://x.com/suru27/status/2075506121864036768" target="_blank" rel="noopener">[17]</a>。屬策略/方法論分享，反映對規則化、機率化投資框架的偏好，非個股推薦。</p><p class="subhead">氦氣出口限制</p><p>@Superposition_V 提到氦氣暫時性出口限制，並認為「事情大條了」 <a class="cite" href="https://x.com/Superposition_V/status/2075512475848765858" target="_blank" rel="noopener">[23]</a>。氦氣為半導體與高科技製程關鍵氣體，若限制持續可能構成供應鏈風險訊號，惟推文資訊有限，僅列為需留意的觀察點。</p></div>
   
-  
-  <div class="media">
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075497039170064408" target="_blank" rel="noopener" title="推文 [1]">
-      <img src="https://pbs.twimg.com/media/HM2fHbCbMAA5bzR.jpg" alt="推文 [1] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/Semicon_player/status/2075489345327472646" target="_blank" rel="noopener" title="推文 [5]">
-      <img src="https://pbs.twimg.com/media/HM2ejzsaoAAB87Q.jpg" alt="推文 [5] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/ed_fin/status/2075486008636739831" target="_blank" rel="noopener" title="推文 [6]">
-      <img src="https://pbs.twimg.com/media/HM2bhaSXUAANOao.jpg" alt="推文 [6] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/trendforce/status/2075520491633131962" target="_blank" rel="noopener" title="推文 [10]">
-      <img src="https://pbs.twimg.com/media/HM264vwWgAAadUA.jpg" alt="推文 [10] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/TruthTrumpPost/status/2075516912948191301" target="_blank" rel="noopener" title="推文 [12]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2075505313961115648/img/zW9D_zpCpn2h0G7_.jpg" alt="推文 [12] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/suru27/status/2075506121864036768" target="_blank" rel="noopener" title="推文 [17]">
-      <img src="https://pbs.twimg.com/media/HM2rW9EaYAEn2Vt.jpg" alt="推文 [17] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/MikeFritzell/status/2075484933376905540" target="_blank" rel="noopener" title="推文 [27]">
-      <img src="https://pbs.twimg.com/media/HM2aCfEbkAAPE7A.jpg" alt="推文 [27] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/MikeFritzell/status/2075484933376905540" target="_blank" rel="noopener" title="推文 [27]">
-      <img src="https://pbs.twimg.com/media/HM2aSOnasAEpQkt.jpg" alt="推文 [27] 的媒體" loading="lazy">
-      
-    </a>
-    
-  </div>
-  
-
-  
     
     <details class="refs">
-      <summary>來源（15）</summary>
+      <summary>來源與附圖（15）</summary>
       
     <ol>
       
-      <li><a href="https://x.com/_FORAB/status/2075497039170064408" target="_blank" rel="noopener">@_FORAB — 推文 [1]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075497039170064408" target="_blank" rel="noopener">@_FORAB — 推文 [1]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2fHbCbMAA5bzR.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2fHbCbMAA5bzR.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/Semicon_player/status/2075489345327472646" target="_blank" rel="noopener">@Semicon_player — 推文 [5]</a></li>
+      <li>
+        <a href="https://x.com/Semicon_player/status/2075489345327472646" target="_blank" rel="noopener">@Semicon_player — 推文 [5]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2ejzsaoAAB87Q.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2ejzsaoAAB87Q.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ed_fin/status/2075486008636739831" target="_blank" rel="noopener">@ed_fin — 推文 [6]</a></li>
+      <li>
+        <a href="https://x.com/ed_fin/status/2075486008636739831" target="_blank" rel="noopener">@ed_fin — 推文 [6]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2bhaSXUAANOao.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2bhaSXUAANOao.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ruima/status/2075508354194243841" target="_blank" rel="noopener">@ruima — 推文 [8]</a></li>
+      <li>
+        <a href="https://x.com/ruima/status/2075508354194243841" target="_blank" rel="noopener">@ruima — 推文 [8]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/ruima/status/2075492030990762284" target="_blank" rel="noopener">@ruima — 推文 [9]</a></li>
+      <li>
+        <a href="https://x.com/ruima/status/2075492030990762284" target="_blank" rel="noopener">@ruima — 推文 [9]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/trendforce/status/2075520491633131962" target="_blank" rel="noopener">@trendforce — 推文 [10]</a></li>
+      <li>
+        <a href="https://x.com/trendforce/status/2075520491633131962" target="_blank" rel="noopener">@trendforce — 推文 [10]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM264vwWgAAadUA.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM264vwWgAAadUA.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/trendforce/status/2075502204367364141" target="_blank" rel="noopener">@trendforce — 推文 [11]</a></li>
+      <li>
+        <a href="https://x.com/trendforce/status/2075502204367364141" target="_blank" rel="noopener">@trendforce — 推文 [11]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TruthTrumpPost/status/2075516912948191301" target="_blank" rel="noopener">@TruthTrumpPost — 推文 [12]</a></li>
+      <li>
+        <a href="https://x.com/TruthTrumpPost/status/2075516912948191301" target="_blank" rel="noopener">@TruthTrumpPost — 推文 [12]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075505313961115648/img/zW9D_zpCpn2h0G7_.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2075505313961115648/img/zW9D_zpCpn2h0G7_.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/PhotonCap/status/2075519579309355446" target="_blank" rel="noopener">@PhotonCap — 推文 [15]</a></li>
+      <li>
+        <a href="https://x.com/PhotonCap/status/2075519579309355446" target="_blank" rel="noopener">@PhotonCap — 推文 [15]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/suru27/status/2075506121864036768" target="_blank" rel="noopener">@suru27 — 推文 [17]</a></li>
+      <li>
+        <a href="https://x.com/suru27/status/2075506121864036768" target="_blank" rel="noopener">@suru27 — 推文 [17]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2rW9EaYAEn2Vt.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2rW9EaYAEn2Vt.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075497125236900291" target="_blank" rel="noopener">@QQ_Timmy — 推文 [21]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075497125236900291" target="_blank" rel="noopener">@QQ_Timmy — 推文 [21]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/AIHighlight/status/2075510143836471455" target="_blank" rel="noopener">@AIHighlight — 推文 [22]</a></li>
+      <li>
+        <a href="https://x.com/AIHighlight/status/2075510143836471455" target="_blank" rel="noopener">@AIHighlight — 推文 [22]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Superposition_V/status/2075512475848765858" target="_blank" rel="noopener">@Superposition_V — 推文 [23]</a></li>
+      <li>
+        <a href="https://x.com/Superposition_V/status/2075512475848765858" target="_blank" rel="noopener">@Superposition_V — 推文 [23]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/chamath/status/2075473841472545250" target="_blank" rel="noopener">@chamath — 推文 [26]</a></li>
+      <li>
+        <a href="https://x.com/chamath/status/2075473841472545250" target="_blank" rel="noopener">@chamath — 推文 [26]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/MikeFritzell/status/2075484933376905540" target="_blank" rel="noopener">@MikeFritzell — 推文 [27]</a></li>
+      <li>
+        <a href="https://x.com/MikeFritzell/status/2075484933376905540" target="_blank" rel="noopener">@MikeFritzell — 推文 [27]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2aCfEbkAAPE7A.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2aCfEbkAAPE7A.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2aSOnasAEpQkt.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2aSOnasAEpQkt.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
     </ol>
 
@@ -205,361 +287,689 @@
     
   <div class="summary"><p class="maintopic">AI 硬體與 NVIDIA 系統架構</p><p class="subhead">Vera Rubin NVL72 系統設計拆解</p><p>SemiAnalysis 對 NVIDIA 下一代 Vera Rubin NVL72（VR NVL72）做了完整架構拆解，核心訊息是「極致協同設計」與製造創新。最關鍵的改變在於運算托盤（compute tray）採無纜線設計：以 Paladin HD2 板對板連接器取代纜線連接，透過 mini PCB 中板連接 <a class="cite" href="https://x.com/SemiAnalysis_/status/2075277415144620298" target="_blank" rel="noopener">[5]</a>。而纜線一直是 GB200/GB300 組裝的主要故障點，NVIDIA 宣稱此設計把托盤組裝時間從 Blackwell 的 2 小時縮短到 Rubin 的 5 分鐘 <a class="cite" href="https://x.com/SemiAnalysis_/status/2075277410212221262" target="_blank" rel="noopener">[8]</a>。主模組稱為 Strata 模組（對應 GB200/GB300 的 Bianca 板），每個含兩顆 Rubin GPU 和一顆 Vera CPU，Vera 的 LPDDR5X 記憶體改用 SOCAMM 插槽化 <a class="cite" href="https://x.com/SemiAnalysis_/status/2075277411927658924" target="_blank" rel="noopener">[7]</a>。此外 ConnectX NIC（CX-9）移到機箱前端的 Orchid 模組，並有 BlueField-4 模組 <a class="cite" href="https://x.com/SemiAnalysis_/status/2075277413576069484" target="_blank" rel="noopener">[6]</a>。QQ_Timmy 以繁中同步轉述了這份拆解 <a class="cite" href="https://x.com/QQ_Timmy/status/2075386115641724974" target="_blank" rel="noopener">[104]</a>。</p><p>評斷：無纜線設計是良率與可靠度的重大提升，直接利多板對板連接器（Paladin）、PCB 中板、SOCAMM 記憶體模組供應鏈。組裝時間縮短意味代工/組裝環節價值可能被壓縮，但零組件（連接器、PCB、電源）含量提升，投資重點應轉向這些非纜線的實體介面元件。</p><p class="subhead">光通訊與 CPO 的 TAM 擴張</p><p>pequityresearch 引述高盛研究，指 AI 基礎設施與每機架運算力上升，將帶動光通訊 TAM 從 GB300 NVL72 世代的約 150 億美元擴張 9 倍至 Rubin Ultra NVL576 世代的約 1,540 億美元 <a class="cite" href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener">[21]</a>。細部拆解顯示，隨世代演進，銅纜（scale-up）逐步被 CPO/光學模組取代——Rubin Ultra Spec B 的光學引擎與 FAU 佔比大幅上升 <a class="cite" href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener">[20]</a>。CPO TAM 在高端情境下 2026–28 累計達 970 億美元，2028 年 scale-out CPO 交換器需求上看 11 萬台 <a class="cite" href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener">[20]</a>。PhotonCap 補充 InP（磷化銦）正從「光學子題」升級為「實體 AI 基礎設施瓶頸」，並點名 Lumentum（$LITE）已在法說會揭示 InP 產能擴張 <a class="cite" href="https://x.com/PhotonCap/status/2075344193527124439" target="_blank" rel="noopener">[87]</a>，另關注比矽光快 10 倍的「電漿子（plasmonic）」技術興起 <a class="cite" href="https://x.com/PhotonCap/status/2075363195011862599" target="_blank" rel="noopener">[86]</a>。</p><p>評斷：光通訊是這波 AI 資本支出中確定性極高、且成長斜率陡峭的環節。銅轉光的世代轉換為光學模組、光引擎、FAU、InP 基板供應商創造結構性成長。InP 產能瓶頸值得列為關鍵觀察點——瓶頸往往意味定價權與毛利擴張。</p><p class="subhead">記憶體與被動元件的供需緊張</p><p>pequityresearch 引高盛 6 月供需熱力圖，DRAM 呈「極度緊張」，2026 年 like-for-like 價格漲幅預估 250–300%（ASP 300–350%），NAND 亦漲 200–250%；ABF 載板、PCB、CCL、T-glass 同樣偏緊 <a class="cite" href="https://x.com/pequityresearch/status/2075431792291479954" target="_blank" rel="noopener">[19]</a>。QQ_Timmy 進一步指出 T-glass 至 2027 年仍供不應求、缺口 30%+，其中 70% 用於 FCBGA 的 ABF 載板，日東紡佔全球產能 40% <a class="cite" href="https://x.com/QQ_Timmy/status/2075439300796350709" target="_blank" rel="noopener">[102]</a>；並提到勝宏科技製造端出問題打亂供應鏈，讓欣興、臻鼎市占提升，南亞塑膠因材料短缺被納入 Switch Tray 供應鏈 <a class="cite" href="https://x.com/QQ_Timmy/status/2075414196989399401" target="_blank" rel="noopener">[103]</a>。功率半導體（MOSFET/IGBT）交期延長至最長 52 週且價格上漲 <a class="cite" href="https://x.com/QQ_Timmy/status/2075383327264256236" target="_blank" rel="noopener">[106]</a>。TrendForce 則指中國正成為 NAND 擴產的首選樞紐，讓韓系記憶體廠加速擴產 <a class="cite" href="https://x.com/trendforce/status/2075380895461330980" target="_blank" rel="noopener">[76]</a>。</p><p>評斷：多來源交叉印證記憶體與上游材料（T-glass、ABF、CCL、功率半導體）進入超級景氣循環，價格與交期同步惡化是典型賣方市場訊號。T-glass 供應高度集中於日東紡，是潛在的定價權與斷點風險。勝宏製造問題造成的市占重分配，是台廠（欣興、臻鼎、南亞塑膠）的短期利多。</p><p class="subhead">Micron 與 SK Hynix 的投資機會</p><p>ParadisLabs 認為 Micron（$MU）是標普 500 中最被錯誤定價的股票——本年度營收成長約 250%（指數中最快），估值卻極低，是罕見的高成長+低估值組合 <a class="cite" href="https://x.com/ParadisLabs/status/2075305031994163607" target="_blank" rel="noopener">[26]</a>。SK Hynix 的 Nasdaq ADR（$SKHY）掛牌獲 7 倍超額認購 <a class="cite" href="https://x.com/benitoz/status/2075290442837713250" target="_blank" rel="noopener">[66]</a>，benitoz 反駁近期流傳的「HBM 是個錯誤」看空報告，稱查過 JEDEC 規格「堆疊沒問題」，成本是加在系統層而非 HBM 本身 <a class="cite" href="https://x.com/benitoz/status/2075290442837713250" target="_blank" rel="noopener">[66]</a>，SVTrivo 補充美國 401(k) 與 Roth IRA 可免稅買入是韓國晶片股的重大資金解鎖 <a class="cite" href="https://x.com/SVTrivo/status/2075338206007164986" target="_blank" rel="noopener">[46]</a>。不過 pequityresearch 觀察到 SK Hynix 因 ADR 出現拋售、幾分鐘內回吐 4% 漲幅 <a class="cite" href="https://x.com/pequityresearch/status/2075377318772568205" target="_blank" rel="noopener">[22]</a>。damnang2 提出更深層論點：記憶體公司正朝「客製化矽（custom silicon）商業模式」演進，是產品與工程模式的根本轉型，而非僅合約結構（LTA/SCA）改變 <a class="cite" href="https://x.com/damnang2/status/2075472021157532011" target="_blank" rel="noopener">[56]</a>。</p><p>評斷：記憶體多頭論點在此高度集中且互相強化（供需緊張、估值便宜、資金解鎖、規格站得住腳）。damnang2 的「客製矽轉型」若成立，將是估值重評的關鍵——記憶體從週期性大宗商品變成有黏性、高毛利的客製產品，值得追蹤 HBM 定價與客製化訂單結構的變化。ADR 掛牌後的短線拋售則提醒：資金面利多可能已被 price in，須留意「利多出盡」風險。</p><p class="maintopic">AI 模型競賽與商業模式</p><p class="subhead">Meta Superintelligence 進度與模型戰重啟</p><p>SemiAnalysis 發布 Meta Superintelligence 一年進度更新，點名頂級 RL 環境新創、「史上最激進的算力擴張」、2000km+ 的 scale-across <a class="cite" href="https://x.com/SemiAnalysis_/status/2075298749660725591" target="_blank" rel="noopener">[2]</a>。扎克伯格罕見「親自跑到 X」發文（上次發帖是 2023 年），首發 Muse AI 產品並宣布以業界最低價供應 API <a class="cite" href="https://x.com/_FORAB/status/2075397203095609668" target="_blank" rel="noopener">[36]</a><a class="cite" href="https://x.com/Alisvolatprop12/status/2075373668952404277" target="_blank" rel="noopener">[49]</a>。Alisvolatprop12 認為 Meta 選擇賣「模型 API」而非算力本身 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075372439262081109" target="_blank" rel="noopener">[51]</a>，且此舉相當程度是針對馬斯克的狙擊 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075373668952404277" target="_blank" rel="noopener">[49]</a>，並直言 xAI 在算力、模型、使用熟練度上都嚴重落後 Anthropic、OpenAI 甚至 Meta <a class="cite" href="https://x.com/Alisvolatprop12/status/2075374012591739051" target="_blank" rel="noopener">[48]</a>，但重點是「模型戰重啟對半導體是大利多」<a class="cite" href="https://x.com/Alisvolatprop12/status/2075373158321041584" target="_blank" rel="noopener">[50]</a>。ruima 引述 Anthropic ARR 已超過 500 億美元、毛利超 70%，對比扎克伯格「AI 實驗室收費太貴、我們做更便宜」的定位 <a class="cite" href="https://x.com/ruima/status/2075458250494107656" target="_blank" rel="noopener">[70]</a>。</p><p>評斷：Meta 以低價 API 打價格戰，是對 Anthropic/OpenAI 高毛利模式的直接威脅，也是模型商品化（commoditization）辯論的具體演練——這正是 chrisbarber 拋出的核心問題：AI 前沿會不會商品化 <a class="cite" href="https://x.com/chrisbarber/status/2075367402657943591" target="_blank" rel="noopener">[18]</a>。對投資的意涵：模型層價格戰對算力/硬體供應鏈是需求利多（大家都得堆算力），但對模型層本身的毛利是壓力。citrini、PythiaR 對 META 明確看多，PythiaR 直言「一家做了十年 AI/ML 的公司結果真的很擅長 AI」<a class="cite" href="https://x.com/PythiaR/status/2075310623823458619" target="_blank" rel="noopener">[156]</a>，citrini 稱這是會「漲到讓人事後裝作早就知道」的 setup、類比「Google $150」現象 <a class="cite" href="https://x.com/citrini/status/2075338662703681720" target="_blank" rel="noopener">[112]</a><a class="cite" href="https://x.com/citrini/status/2075338534576103568" target="_blank" rel="noopener">[113]</a>。</p><p class="subhead">OpenAI GPT-5.6 發表與產品線複雜化</p><p>OpenAI 發表 GPT-5.6 系列（Sol、Terra、Luna 三種尺寸）與 Codex/Work 兩種模式 <a class="cite" href="https://x.com/TechCrunch/status/2075346157455430040" target="_blank" rel="noopener">[145]</a>，並成為 Microsoft Copilot 的「首選模型」（在分手傳聞中）<a class="cite" href="https://x.com/TechCrunch/status/2075374505946763308" target="_blank" rel="noopener">[141]</a>。rasbt 吐槽產品線過度複雜：2 模式 × 3 模型 × 5 種 effort 等級 = 30 種配置，並問「Auto 模式去哪了」<a class="cite" href="https://x.com/rasbt/status/2075369179817902176" target="_blank" rel="noopener">[80]</a>。_FORAB 實測 5.6 的 Work 模式後「陷入悲傷」，因為它會自主持續工作、匯報、詢問改進建議再循環，若大規模應用「大廠堆人力的時代結束」、很多人會失業 <a class="cite" href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener">[35]</a>。TechCrunch 補充 OpenAI 關閉 Atlas 但 AI 瀏覽器野心仍在 <a class="cite" href="https://x.com/TechCrunch/status/2075340524668768280" target="_blank" rel="noopener">[147]</a>，且有 AI agent 新創直接讓 agent 跑完 1 億美元募資 <a class="cite" href="https://x.com/TechCrunch/status/2075341819026743707" target="_blank" rel="noopener">[146]</a>。</p><p>評斷：GPT-5.6 的「自主工作 agent」是勞動力替代論的實質進展，對企業生產力軟體與白領就業結構有長期衝擊。產品線複雜化（30 種配置）反映競爭下的功能堆疊，可能損及使用體驗——這是 Meta 打「簡單+低價」牌的可乘之機。</p><p class="subhead">xAI / Grok 4.5 與 Anthropic 地位</p><p>FundaAI 認為 Grok 4.5 讓 xAI/SpaceXAI 重回北美前沿實驗室之列，看多其資料飛輪與算力需求 <a class="cite" href="https://x.com/FundaAI/status/2075282661795582150" target="_blank" rel="noopener">[75]</a>。與此形成張力的是，馬斯克公開承認過去對 Anthropic 的看法錯誤，稱從 Mythos/Fable 看 Anthropic 明顯是「競爭者追不上的 AI 領導者」，並承諾不會用損害公司的方式阻擋 Anthropic <a class="cite" href="https://x.com/Alisvolatprop12/status/2075335851815694828" target="_blank" rel="noopener">[52]</a><a class="cite" href="https://x.com/TechCrunch/status/2075339558162694590" target="_blank" rel="noopener">[148]</a>。Alisvolatprop12 則對 xAI 競爭力持保留態度 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075374012591739051" target="_blank" rel="noopener">[48]</a>。</p><p>評斷：連馬斯克都公開推崇 Anthropic，強化了「前沿模型仍有難以複製的領先」的一方論點，與 Meta「模型會商品化、我做更便宜」形成正面對立。這正是投資 AI 模型層最核心的分歧：若前沿有護城河（Anthropic 派），模型層有超額利潤；若會商品化（Meta 派），價值往硬體與應用轉移。目前證據兩面都有，建議在硬體供應鏈上做較確定的配置。</p><p class="maintopic">半導體人才與代工</p><p class="subhead">晶片設計人才荒</p><p>SVTrivo 多次提到矽谷內部半導體設計人力嚴重短缺，一場 6 名晶片工程師的午餐都在談此事；某公司裁員計畫以軟體人力為主填補配額，ASIC 設計人力則保留 <a class="cite" href="https://x.com/SVTrivo/status/2075463821796483545" target="_blank" rel="noopener">[38]</a>。Semicon_player 呼應此議題，認為諷刺的是解方正是 AI（設計自動化、模擬並行化），且現場多半還只用到 A100 等級，未來加速空間大 <a class="cite" href="https://x.com/Semicon_player/status/2075413623187640516" target="_blank" rel="noopener">[61]</a>。</p><p>評斷：這是供給端的結構性訊號——晶片設計人才稀缺、軟體人力相對過剩，反映產業重心從軟體轉向硬體/客製矽。對 EDA、設計自動化工具與 ASIC 設計服務公司是長期利多；也印證前述「記憶體/晶片走向客製矽」的大趨勢。</p><p class="subhead">Samsung 代工動能與韓廠美國投資壓力</p><p>SVTrivo 指三星李在鎔與代工社長韓鎮萬出現在 Sun Valley 2026，與 Sam Altman、Tim Cook、Jony Ive、Rene Haas 交際，並稱代工全力支援、近期拿下 Tesla、NVIDIA 等訂單，2nm 世代動能強 <a class="cite" href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener">[41]</a>。政策面上，Alisvolatprop12 引述美國商務部長 Lutnick 公開呼籲三星、SK Hynix 擴大在美本土投資（在 Micron 活動上），並認為韓國政府已先發制人、Lutnick 反而慢了一步 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075334340536594623" target="_blank" rel="noopener">[53]</a><a class="cite" href="https://x.com/Alisvolatprop12/status/2075333979931128286" target="_blank" rel="noopener">[54]</a><a class="cite" href="https://x.com/Alisvolatprop12/status/2075333652171682125" target="_blank" rel="noopener">[55]</a>。</p><p>評斷：三星代工若確實拿下 Tesla/NVIDIA 訂單，是打破台積電獨大敘事的重要變數，值得追蹤 2nm 良率與客戶進展。美方施壓韓廠赴美設廠是地緣供應鏈重組的延續，短期增加韓廠資本支出負擔，長期則綁定美國市場。</p><p class="maintopic">機器人與人形機器人</p><p class="subhead">人形機器人的靈巧手與市場規模</p><p>ARK Invest 將從固定任務自動化轉向人形機器人的市場規模估為約 26 兆美元 <a class="cite" href="https://x.com/ARKInvest/status/2075322521759473868" target="_blank" rel="noopener">[126]</a>。anishmoonka 介紹 NEO 新機器手有 25 個活動關節（人手約 27 個），對比過去七十年標準機器手僅是二指爪 <a class="cite" href="https://x.com/anishmoonka/status/2075410933103386670" target="_blank" rel="noopener">[98]</a>。ruima 觀察今年有大量肌腱驅動（tendon-driven）人形手，並比較中國公司如 Linkerbot、Agilink——自由度相近但更聚焦工業應用，敏感度較低而精度、速度、負載能力更強 <a class="cite" href="https://x.com/ruima/status/2075460648692076636" target="_blank" rel="noopener">[69]</a>。marketplunger1 直言「這感覺像機器人的 ChatGPT 時刻」<a class="cite" href="https://x.com/marketplunger1/status/2075292579067744397" target="_blank" rel="noopener">[150]</a>。</p><p>評斷：人形機器人敘事同時獲得研究機構（ARK 26 兆 TAM）、產業觀察者與科普作者的多方關注，靈巧手是當前技術突破焦點。ruima 的中美路線對比很有價值：中國走工業導向（精度/負載），西方走通用/感知導向，這暗示供應鏈與應用場景可能分岔。投資上仍屬早期主題，TAM 估值極大但落地時程與獲利模式待驗證。</p><p class="maintopic">太空與中國科技產業</p><p class="subhead">中國火箭海上回收</p><p>_FORAB 報導中國長征十號乙在海南發射、一子級成功回收於海上平台，稱中國也走上 SpaceX 火箭回收之路，高清影片顯示回收精準度與調整極為平滑；該火箭芯級直徑 5 米、全長約 70 米，運力與獵鷹 9 號同區間，暗示「新一輪太空競賽可能正式開啟」<a class="cite" href="https://x.com/_FORAB/status/2075461328953885173" target="_blank" rel="noopener">[28]</a><a class="cite" href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener">[29]</a>。shanaka86 則強調中國「拒絕複製 SpaceX 的直立著陸」，而是用「捕捉」方式回收，且是首飛就達成 <a class="cite" href="https://x.com/shanaka86/status/2075468271868920135" target="_blank" rel="noopener">[124]</a>。</p><p>評斷：兩位作者對同一事件同意「中國火箭回收取得突破」，但強調點不同——_FORAB 側重與 SpaceX 對標的追趕意義，shanaka86 突出「首飛捕捉」的技術差異化。對投資的意涵偏中國航天供應鏈與商業發射成本下降的長期主題，短期缺乏直接可交易標的，但地緣競爭升溫值得納入宏觀觀察。</p><p class="subhead">中國科技公司動態</p><p>_FORAB 報導多則：騰訊計畫接盤 Manus 成最大股東以解決欠債（此前 Meta 20 億美元全資收購被中國政府以安全審查叫停，原團隊需償還 Meta）<a class="cite" href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener">[32]</a>；工信部文件下中國高校與私企正自查禁用 Claude Code <a class="cite" href="https://x.com/_FORAB/status/2075471442968494457" target="_blank" rel="noopener">[27]</a>；拼多多帳上千億現金卻以 33 億元買下上海陸家嘴星展銀行大廈，為今年上半年上海最大宗房地產交易 <a class="cite" href="https://x.com/_FORAB/status/2075424842950824361" target="_blank" rel="noopener">[33]</a>。</p><p>評斷：Claude Code 遭禁用凸顯中美 AI 工具的地緣脫鉤加速，對美系 AI 開發工具在中國市場是負面、對國產替代是利多。拼多多帳上現金充裕卻轉向買樓而非分紅/回購，反映中國電商成長放緩下的資本配置保守化，是股東回報疑慮的訊號。</p><p class="maintopic">其他投資與公司動態</p><p class="subhead">OpenAI 二號人物離任與基礎設施</p><p>anissagardizy8 獨家報導 OpenAI 二號人物 Fidji Simo 在延長病假後將卸任全職職務 <a class="cite" href="https://x.com/anissagardizy8/status/2075353518152798512" target="_blank" rel="noopener">[139]</a>，amir 補充此變動早在預期內、營收長 Denise Dresser 已在過渡期獲得更多曝光與職責 <a class="cite" href="https://x.com/amir/status/2075354222737117692" target="_blank" rel="noopener">[134]</a>。amir 另報導 Stargate（德州）土地/電力開發商 Lancium 正洽談出售少數股權，近期曾與 NVIDIA、Anthropic 接觸 <a class="cite" href="https://x.com/amir/status/2075341703641485605" target="_blank" rel="noopener">[136]</a>。</p><p>評斷：OpenAI 高層動盪與 AI 基礎設施的股權/資金交錯（Lancium 洽 NVIDIA、Anthropic），顯示 AI 資本結構日益「盤根錯節」<a class="cite" href="https://x.com/amir/status/2075282774068801889" target="_blank" rel="noopener">[138]</a>，交叉持股與循環投資可能放大系統性風險，值得警惕估值中的重複計算。</p><p class="subhead">雲端資本支出上修</p><p>pequityresearch 引 BofA：全球超大規模雲端資本支出估值上修，CY26 達 8,510 億美元（年增 78%）、CY27 達 1.15 兆美元（年增 35%），較 5 月 Q1 後展望大幅上調 <a class="cite" href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener">[23]</a>。</p><p>評斷：這是整份彙整中所有 AI 硬體多頭論點（記憶體、光通訊、CPO、NVIDIA 系統）的需求基礎。資本支出年增 78% 的上修幅度極大，是供應鏈景氣延續的宏觀支撐；但同時也墊高了「若資本支出見頂」時的回落風險，須密切追蹤 Q2 財報的實際指引。</p><p class="subhead">估值分歧與泡沫疑慮</p><p>hkuppy 以「這是 AI 泡沫的哪個階段？」表達對估值的警惕 <a class="cite" href="https://x.com/hkuppy/status/2075287742930358414" target="_blank" rel="noopener">[68]</a>。buccocapital 以反諷語氣「無法想像在房地產虧錢，因為我把錢配置給全球 500 家最好企業的數百萬員工」表達對指數化股權的信心 <a class="cite" href="https://x.com/buccocapital/status/2075319242073821365" target="_blank" rel="noopener">[159]</a>。MikeFritzell 對個股採價值視角：IMAX 執行長顯疲態、病假近兩月，判斷 IMAX 可能被出售 <a class="cite" href="https://x.com/MikeFritzell/status/2075370031068926059" target="_blank" rel="noopener">[122]</a>；並反駁 Duolingo 會被 ChatGPT 顛覆的「第一層思考」，認為 Duolingo 會把更好的 AI 家教加進訂閱 <a class="cite" href="https://x.com/MikeFritzell/status/2075360561492279454" target="_blank" rel="noopener">[123]</a>。</p><p>評斷：多頭敘事熱烈之際，hkuppy 的泡沫階段提問是必要的風險提醒。MikeFritzell 的「第二層思考」對 AI 顛覆敘事提供有益的反向視角——被視為受害者的公司（如 Duolingo）反而可能是 AI 的受益整合者，這類錯誤定價是選股機會。</p></div>
   
-  
-  <div class="media">
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2075277415144620298" target="_blank" rel="noopener" title="推文 [5]">
-      <img src="https://pbs.twimg.com/media/HMzdzW9XoAAqRou.jpg" alt="推文 [5] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2075277413576069484" target="_blank" rel="noopener" title="推文 [6]">
-      <img src="https://pbs.twimg.com/media/HMzdzayXsAAmvmM.jpg" alt="推文 [6] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2075277411927658924" target="_blank" rel="noopener" title="推文 [7]">
-      <img src="https://pbs.twimg.com/media/HMzdzZWWsAAuuKB.jpg" alt="推文 [7] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2075277410212221262" target="_blank" rel="noopener" title="推文 [8]">
-      <img src="https://pbs.twimg.com/media/HMzdzcIW0AEvEqR.jpg" alt="推文 [8] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075431792291479954" target="_blank" rel="noopener" title="推文 [19]">
-      <img src="https://pbs.twimg.com/media/HM1YFlSXAAAiYfF.png" alt="推文 [19] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075431792291479954" target="_blank" rel="noopener" title="推文 [19]">
-      <img src="https://pbs.twimg.com/media/HM1qJwIWsAACS2u.jpg" alt="推文 [19] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener" title="推文 [20]">
-      <img src="https://pbs.twimg.com/media/HM1MLcyXoAAjHNn.jpg" alt="推文 [20] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener" title="推文 [20]">
-      <img src="https://pbs.twimg.com/media/HM1MOrxWwAAPjAM.jpg" alt="推文 [20] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener" title="推文 [21]">
-      <img src="https://pbs.twimg.com/media/HM1LqqcXkAA9hih.jpg" alt="推文 [21] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener" title="推文 [21]">
-      <img src="https://pbs.twimg.com/media/HM1LtNsX0AAGhhL.jpg" alt="推文 [21] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener" title="推文 [21]">
-      <img src="https://pbs.twimg.com/media/HM1L3sCXAAArI8-.jpg" alt="推文 [21] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener" title="推文 [21]">
-      <img src="https://pbs.twimg.com/media/HM1MD6uWkAAyYpP.jpg" alt="推文 [21] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener" title="推文 [23]">
-      <img src="https://pbs.twimg.com/media/HM0ve62XAAAtna7.jpg" alt="推文 [23] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener" title="推文 [23]">
-      <img src="https://pbs.twimg.com/media/HM0viNjXAAAVN8s.jpg" alt="推文 [23] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener" title="推文 [23]">
-      <img src="https://pbs.twimg.com/media/HM0vk6vW4AANooC.png" alt="推文 [23] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/ParadisLabs/status/2075305031994163607" target="_blank" rel="noopener" title="推文 [26]">
-      <img src="https://pbs.twimg.com/media/HMzyBy6WYAANutT.jpg" alt="推文 [26] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075471442968494457" target="_blank" rel="noopener" title="推文 [27]">
-      <img src="https://pbs.twimg.com/media/HM2NtDGbkAAGa9q.jpg" alt="推文 [27] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075471442968494457" target="_blank" rel="noopener" title="推文 [27]">
-      <img src="https://pbs.twimg.com/media/HM2OJhTbcAA94Qu.jpg" alt="推文 [27] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075461328953885173" target="_blank" rel="noopener" title="推文 [28]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2075459534739722240/img/_68UwcZogWPRBng7.jpg" alt="推文 [28] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener" title="推文 [29]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2075451456518590464/img/PMISZei75SFYv-av.jpg" alt="推文 [29] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener" title="推文 [29]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2075451473736163328/img/7Job9yVfr-aYYCRO.jpg" alt="推文 [29] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener" title="推文 [29]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2075451488231661568/img/-oaZmLPGnhE00Df4.jpg" alt="推文 [29] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener" title="推文 [32]">
-      <img src="https://pbs.twimg.com/media/HM1oRnHaoAAhjBj.png" alt="推文 [32] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener" title="推文 [32]">
-      <img src="https://pbs.twimg.com/media/HM1ocYibgAAdjFr.png" alt="推文 [32] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener" title="推文 [32]">
-      <img src="https://pbs.twimg.com/media/HM1og2UbIAAcfZ_.png" alt="推文 [32] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075424842950824361" target="_blank" rel="noopener" title="推文 [33]">
-      <img src="https://pbs.twimg.com/media/HM1jzmUbIAAuRfX.png" alt="推文 [33] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075424842950824361" target="_blank" rel="noopener" title="推文 [33]">
-      <img src="https://pbs.twimg.com/media/HM1j0C-aoAABI3O.png" alt="推文 [33] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener" title="推文 [35]">
-      <img src="https://pbs.twimg.com/media/HM1QChzbIAA2Kcs.jpg" alt="推文 [35] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener" title="推文 [35]">
-      <img src="https://pbs.twimg.com/media/HM1QC3iakAEor-p.png" alt="推文 [35] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener" title="推文 [35]">
-      <img src="https://pbs.twimg.com/media/HM1QD6DaYAA4I2U.png" alt="推文 [35] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/_FORAB/status/2075397203095609668" target="_blank" rel="noopener" title="推文 [36]">
-      <img src="https://pbs.twimg.com/media/HM1KenZa0AAh9F1.png" alt="推文 [36] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener" title="推文 [41]">
-      <img src="https://pbs.twimg.com/media/HM17HUjaMAA_XW-.jpg" alt="推文 [41] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener" title="推文 [41]">
-      <img src="https://pbs.twimg.com/media/HM17Hg8bIAAQWR2.jpg" alt="推文 [41] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener" title="推文 [41]">
-      <img src="https://pbs.twimg.com/media/HM17HsJbcAADdP2.jpg" alt="推文 [41] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener" title="推文 [41]">
-      <img src="https://pbs.twimg.com/media/HM17H5pbIAALdZ_.jpg" alt="推文 [41] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/benitoz/status/2075290442837713250" target="_blank" rel="noopener" title="推文 [66]">
-      <img src="https://pbs.twimg.com/media/HMzpZj5aQAA_wYx.jpg" alt="推文 [66] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/FundaAI/status/2075282661795582150" target="_blank" rel="noopener" title="推文 [75]">
-      <img src="https://pbs.twimg.com/media/HMzih-TbYAAc7tJ.jpg" alt="推文 [75] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/rasbt/status/2075369179817902176" target="_blank" rel="noopener" title="推文 [80]">
-      <img src="https://pbs.twimg.com/media/HM0xNhsWoAAQ7GQ.jpg" alt="推文 [80] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/QQ_Timmy/status/2075414196989399401" target="_blank" rel="noopener" title="推文 [103]">
-      <img src="https://pbs.twimg.com/media/HM1ZuIGbsAAw1_r.jpg" alt="推文 [103] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/shanaka86/status/2075468271868920135" target="_blank" rel="noopener" title="推文 [124]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2075468207553744896/img/8T9jcPnZnLBXhE_Q.jpg" alt="推文 [124] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/ARKInvest/status/2075322521759473868" target="_blank" rel="noopener" title="推文 [126]">
-      <img src="https://pbs.twimg.com/media/HM0GfrhXoAAN5Lq.jpg" alt="推文 [126] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/amir/status/2075341703641485605" target="_blank" rel="noopener" title="推文 [136]">
-      <img src="https://pbs.twimg.com/media/HM0YCzxbwAA_HKY.jpg" alt="推文 [136] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/amir/status/2075282774068801889" target="_blank" rel="noopener" title="推文 [138]">
-      <img src="https://pbs.twimg.com/media/HMzim_DbwAAxhON.png" alt="推文 [138] 的媒體" loading="lazy">
-      
-    </a>
-    
-  </div>
-  
-
-  
     
     <details class="refs">
-      <summary>來源（64）</summary>
+      <summary>來源與附圖（64）</summary>
       
     <ol>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2075298749660725591" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [2]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2075298749660725591" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [2]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2075277415144620298" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [5]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2075277415144620298" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [5]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzW9XoAAqRou.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzdzW9XoAAqRou.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2075277413576069484" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [6]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2075277413576069484" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [6]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzayXsAAmvmM.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzdzayXsAAmvmM.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2075277411927658924" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [7]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2075277411927658924" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [7]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzZWWsAAuuKB.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzdzZWWsAAuuKB.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2075277410212221262" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2075277410212221262" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzcIW0AEvEqR.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzdzcIW0AEvEqR.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/chrisbarber/status/2075367402657943591" target="_blank" rel="noopener">@chrisbarber — 推文 [18]</a></li>
+      <li>
+        <a href="https://x.com/chrisbarber/status/2075367402657943591" target="_blank" rel="noopener">@chrisbarber — 推文 [18]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2075431792291479954" target="_blank" rel="noopener">@pequityresearch — 推文 [19]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2075431792291479954" target="_blank" rel="noopener">@pequityresearch — 推文 [19]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1YFlSXAAAiYfF.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1YFlSXAAAiYfF.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1qJwIWsAACS2u.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1qJwIWsAACS2u.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener">@pequityresearch — 推文 [20]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener">@pequityresearch — 推文 [20]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1MLcyXoAAjHNn.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1MLcyXoAAjHNn.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1MOrxWwAAPjAM.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1MOrxWwAAPjAM.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener">@pequityresearch — 推文 [21]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener">@pequityresearch — 推文 [21]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1LqqcXkAA9hih.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1LqqcXkAA9hih.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1LtNsX0AAGhhL.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1LtNsX0AAGhhL.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1L3sCXAAArI8-.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1L3sCXAAArI8-.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1MD6uWkAAyYpP.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1MD6uWkAAyYpP.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2075377318772568205" target="_blank" rel="noopener">@pequityresearch — 推文 [22]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2075377318772568205" target="_blank" rel="noopener">@pequityresearch — 推文 [22]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener">@pequityresearch — 推文 [23]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener">@pequityresearch — 推文 [23]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM0ve62XAAAtna7.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM0ve62XAAAtna7.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM0viNjXAAAVN8s.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM0viNjXAAAVN8s.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM0vk6vW4AANooC.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM0vk6vW4AANooC.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ParadisLabs/status/2075305031994163607" target="_blank" rel="noopener">@ParadisLabs — 推文 [26]</a></li>
+      <li>
+        <a href="https://x.com/ParadisLabs/status/2075305031994163607" target="_blank" rel="noopener">@ParadisLabs — 推文 [26]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzyBy6WYAANutT.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzyBy6WYAANutT.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075471442968494457" target="_blank" rel="noopener">@_FORAB — 推文 [27]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075471442968494457" target="_blank" rel="noopener">@_FORAB — 推文 [27]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2NtDGbkAAGa9q.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2NtDGbkAAGa9q.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM2OJhTbcAA94Qu.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM2OJhTbcAA94Qu.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075461328953885173" target="_blank" rel="noopener">@_FORAB — 推文 [28]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075461328953885173" target="_blank" rel="noopener">@_FORAB — 推文 [28]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075459534739722240/img/_68UwcZogWPRBng7.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2075459534739722240/img/_68UwcZogWPRBng7.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener">@_FORAB — 推文 [29]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener">@_FORAB — 推文 [29]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075451456518590464/img/PMISZei75SFYv-av.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2075451456518590464/img/PMISZei75SFYv-av.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075451473736163328/img/7Job9yVfr-aYYCRO.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2075451473736163328/img/7Job9yVfr-aYYCRO.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075451488231661568/img/-oaZmLPGnhE00Df4.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2075451488231661568/img/-oaZmLPGnhE00Df4.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener">@_FORAB — 推文 [32]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener">@_FORAB — 推文 [32]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1oRnHaoAAhjBj.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1oRnHaoAAhjBj.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1ocYibgAAdjFr.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1ocYibgAAdjFr.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1og2UbIAAcfZ_.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1og2UbIAAcfZ_.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075424842950824361" target="_blank" rel="noopener">@_FORAB — 推文 [33]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075424842950824361" target="_blank" rel="noopener">@_FORAB — 推文 [33]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1jzmUbIAAuRfX.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1jzmUbIAAuRfX.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1j0C-aoAABI3O.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1j0C-aoAABI3O.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener">@_FORAB — 推文 [35]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener">@_FORAB — 推文 [35]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1QChzbIAA2Kcs.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1QChzbIAA2Kcs.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1QC3iakAEor-p.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1QC3iakAEor-p.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1QD6DaYAA4I2U.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1QD6DaYAA4I2U.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/_FORAB/status/2075397203095609668" target="_blank" rel="noopener">@_FORAB — 推文 [36]</a></li>
+      <li>
+        <a href="https://x.com/_FORAB/status/2075397203095609668" target="_blank" rel="noopener">@_FORAB — 推文 [36]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1KenZa0AAh9F1.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1KenZa0AAh9F1.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SVTrivo/status/2075463821796483545" target="_blank" rel="noopener">@SVTrivo — 推文 [38]</a></li>
+      <li>
+        <a href="https://x.com/SVTrivo/status/2075463821796483545" target="_blank" rel="noopener">@SVTrivo — 推文 [38]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener">@SVTrivo — 推文 [41]</a></li>
+      <li>
+        <a href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener">@SVTrivo — 推文 [41]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM17HUjaMAA_XW-.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM17HUjaMAA_XW-.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM17Hg8bIAAQWR2.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM17Hg8bIAAQWR2.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM17HsJbcAADdP2.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM17HsJbcAADdP2.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM17H5pbIAALdZ_.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM17H5pbIAALdZ_.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SVTrivo/status/2075338206007164986" target="_blank" rel="noopener">@SVTrivo — 推文 [46]</a></li>
+      <li>
+        <a href="https://x.com/SVTrivo/status/2075338206007164986" target="_blank" rel="noopener">@SVTrivo — 推文 [46]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075374012591739051" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [48]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075374012591739051" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [48]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075373668952404277" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [49]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075373668952404277" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [49]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075373158321041584" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [50]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075373158321041584" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [50]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075372439262081109" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [51]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075372439262081109" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [51]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075335851815694828" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [52]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075335851815694828" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [52]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075334340536594623" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [53]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075334340536594623" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [53]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075333979931128286" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [54]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075333979931128286" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [54]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075333652171682125" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [55]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075333652171682125" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [55]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/damnang2/status/2075472021157532011" target="_blank" rel="noopener">@damnang2 — 推文 [56]</a></li>
+      <li>
+        <a href="https://x.com/damnang2/status/2075472021157532011" target="_blank" rel="noopener">@damnang2 — 推文 [56]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Semicon_player/status/2075413623187640516" target="_blank" rel="noopener">@Semicon_player — 推文 [61]</a></li>
+      <li>
+        <a href="https://x.com/Semicon_player/status/2075413623187640516" target="_blank" rel="noopener">@Semicon_player — 推文 [61]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/benitoz/status/2075290442837713250" target="_blank" rel="noopener">@benitoz — 推文 [66]</a></li>
+      <li>
+        <a href="https://x.com/benitoz/status/2075290442837713250" target="_blank" rel="noopener">@benitoz — 推文 [66]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzpZj5aQAA_wYx.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzpZj5aQAA_wYx.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/hkuppy/status/2075287742930358414" target="_blank" rel="noopener">@hkuppy — 推文 [68]</a></li>
+      <li>
+        <a href="https://x.com/hkuppy/status/2075287742930358414" target="_blank" rel="noopener">@hkuppy — 推文 [68]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/ruima/status/2075460648692076636" target="_blank" rel="noopener">@ruima — 推文 [69]</a></li>
+      <li>
+        <a href="https://x.com/ruima/status/2075460648692076636" target="_blank" rel="noopener">@ruima — 推文 [69]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/ruima/status/2075458250494107656" target="_blank" rel="noopener">@ruima — 推文 [70]</a></li>
+      <li>
+        <a href="https://x.com/ruima/status/2075458250494107656" target="_blank" rel="noopener">@ruima — 推文 [70]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/FundaAI/status/2075282661795582150" target="_blank" rel="noopener">@FundaAI — 推文 [75]</a></li>
+      <li>
+        <a href="https://x.com/FundaAI/status/2075282661795582150" target="_blank" rel="noopener">@FundaAI — 推文 [75]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzih-TbYAAc7tJ.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzih-TbYAAc7tJ.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/trendforce/status/2075380895461330980" target="_blank" rel="noopener">@trendforce — 推文 [76]</a></li>
+      <li>
+        <a href="https://x.com/trendforce/status/2075380895461330980" target="_blank" rel="noopener">@trendforce — 推文 [76]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/rasbt/status/2075369179817902176" target="_blank" rel="noopener">@rasbt — 推文 [80]</a></li>
+      <li>
+        <a href="https://x.com/rasbt/status/2075369179817902176" target="_blank" rel="noopener">@rasbt — 推文 [80]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM0xNhsWoAAQ7GQ.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM0xNhsWoAAQ7GQ.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/PhotonCap/status/2075363195011862599" target="_blank" rel="noopener">@PhotonCap — 推文 [86]</a></li>
+      <li>
+        <a href="https://x.com/PhotonCap/status/2075363195011862599" target="_blank" rel="noopener">@PhotonCap — 推文 [86]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/PhotonCap/status/2075344193527124439" target="_blank" rel="noopener">@PhotonCap — 推文 [87]</a></li>
+      <li>
+        <a href="https://x.com/PhotonCap/status/2075344193527124439" target="_blank" rel="noopener">@PhotonCap — 推文 [87]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/anishmoonka/status/2075410933103386670" target="_blank" rel="noopener">@anishmoonka — 推文 [98]</a></li>
+      <li>
+        <a href="https://x.com/anishmoonka/status/2075410933103386670" target="_blank" rel="noopener">@anishmoonka — 推文 [98]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075439300796350709" target="_blank" rel="noopener">@QQ_Timmy — 推文 [102]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075439300796350709" target="_blank" rel="noopener">@QQ_Timmy — 推文 [102]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075414196989399401" target="_blank" rel="noopener">@QQ_Timmy — 推文 [103]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075414196989399401" target="_blank" rel="noopener">@QQ_Timmy — 推文 [103]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM1ZuIGbsAAw1_r.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM1ZuIGbsAAw1_r.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075386115641724974" target="_blank" rel="noopener">@QQ_Timmy — 推文 [104]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075386115641724974" target="_blank" rel="noopener">@QQ_Timmy — 推文 [104]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075383327264256236" target="_blank" rel="noopener">@QQ_Timmy — 推文 [106]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075383327264256236" target="_blank" rel="noopener">@QQ_Timmy — 推文 [106]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/citrini/status/2075338662703681720" target="_blank" rel="noopener">@citrini — 推文 [112]</a></li>
+      <li>
+        <a href="https://x.com/citrini/status/2075338662703681720" target="_blank" rel="noopener">@citrini — 推文 [112]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/citrini/status/2075338534576103568" target="_blank" rel="noopener">@citrini — 推文 [113]</a></li>
+      <li>
+        <a href="https://x.com/citrini/status/2075338534576103568" target="_blank" rel="noopener">@citrini — 推文 [113]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/MikeFritzell/status/2075370031068926059" target="_blank" rel="noopener">@MikeFritzell — 推文 [122]</a></li>
+      <li>
+        <a href="https://x.com/MikeFritzell/status/2075370031068926059" target="_blank" rel="noopener">@MikeFritzell — 推文 [122]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/MikeFritzell/status/2075360561492279454" target="_blank" rel="noopener">@MikeFritzell — 推文 [123]</a></li>
+      <li>
+        <a href="https://x.com/MikeFritzell/status/2075360561492279454" target="_blank" rel="noopener">@MikeFritzell — 推文 [123]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/shanaka86/status/2075468271868920135" target="_blank" rel="noopener">@shanaka86 — 推文 [124]</a></li>
+      <li>
+        <a href="https://x.com/shanaka86/status/2075468271868920135" target="_blank" rel="noopener">@shanaka86 — 推文 [124]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075468207553744896/img/8T9jcPnZnLBXhE_Q.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2075468207553744896/img/8T9jcPnZnLBXhE_Q.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ARKInvest/status/2075322521759473868" target="_blank" rel="noopener">@ARKInvest — 推文 [126]</a></li>
+      <li>
+        <a href="https://x.com/ARKInvest/status/2075322521759473868" target="_blank" rel="noopener">@ARKInvest — 推文 [126]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM0GfrhXoAAN5Lq.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM0GfrhXoAAN5Lq.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/amir/status/2075354222737117692" target="_blank" rel="noopener">@amir — 推文 [134]</a></li>
+      <li>
+        <a href="https://x.com/amir/status/2075354222737117692" target="_blank" rel="noopener">@amir — 推文 [134]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/amir/status/2075341703641485605" target="_blank" rel="noopener">@amir — 推文 [136]</a></li>
+      <li>
+        <a href="https://x.com/amir/status/2075341703641485605" target="_blank" rel="noopener">@amir — 推文 [136]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HM0YCzxbwAA_HKY.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HM0YCzxbwAA_HKY.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/amir/status/2075282774068801889" target="_blank" rel="noopener">@amir — 推文 [138]</a></li>
+      <li>
+        <a href="https://x.com/amir/status/2075282774068801889" target="_blank" rel="noopener">@amir — 推文 [138]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMzim_DbwAAxhON.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMzim_DbwAAxhON.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/anissagardizy8/status/2075353518152798512" target="_blank" rel="noopener">@anissagardizy8 — 推文 [139]</a></li>
+      <li>
+        <a href="https://x.com/anissagardizy8/status/2075353518152798512" target="_blank" rel="noopener">@anissagardizy8 — 推文 [139]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2075374505946763308" target="_blank" rel="noopener">@TechCrunch — 推文 [141]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2075374505946763308" target="_blank" rel="noopener">@TechCrunch — 推文 [141]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2075346157455430040" target="_blank" rel="noopener">@TechCrunch — 推文 [145]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2075346157455430040" target="_blank" rel="noopener">@TechCrunch — 推文 [145]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2075341819026743707" target="_blank" rel="noopener">@TechCrunch — 推文 [146]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2075341819026743707" target="_blank" rel="noopener">@TechCrunch — 推文 [146]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2075340524668768280" target="_blank" rel="noopener">@TechCrunch — 推文 [147]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2075340524668768280" target="_blank" rel="noopener">@TechCrunch — 推文 [147]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2075339558162694590" target="_blank" rel="noopener">@TechCrunch — 推文 [148]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2075339558162694590" target="_blank" rel="noopener">@TechCrunch — 推文 [148]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/marketplunger1/status/2075292579067744397" target="_blank" rel="noopener">@marketplunger1 — 推文 [150]</a></li>
+      <li>
+        <a href="https://x.com/marketplunger1/status/2075292579067744397" target="_blank" rel="noopener">@marketplunger1 — 推文 [150]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/PythiaR/status/2075310623823458619" target="_blank" rel="noopener">@PythiaR — 推文 [156]</a></li>
+      <li>
+        <a href="https://x.com/PythiaR/status/2075310623823458619" target="_blank" rel="noopener">@PythiaR — 推文 [156]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/buccocapital/status/2075319242073821365" target="_blank" rel="noopener">@buccocapital — 推文 [159]</a></li>
+      <li>
+        <a href="https://x.com/buccocapital/status/2075319242073821365" target="_blank" rel="noopener">@buccocapital — 推文 [159]</a>
+        
+      </li>
       
     </ol>
 
@@ -585,235 +995,476 @@
     
   <div class="summary"><p class="maintopic">AI 伺服器與 GPU 供應鏈</p><p class="subhead">GPU 供需與 CoWoS 產能擴張</p><p>Nomura 的預估顯示 AI 伺服器市場動能仍強：TSMC 的 CoWoS 產能預期從 2026 年約 110 萬片近乎倍增至 2027 年約 200 萬片（+80% YoY），但因供應鏈瓶頸嚴重，實際產出保守估計為 180 萬片 <a class="cite" href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener">[2]</a>。從圖表看，GB/VR（Oberon）機櫃在伺服器組合中占比將由 2025 年 68% 拉升至 2027 年 80%，NVL72 機櫃「理想 vs 實際」數字差距（良率損失、零組件瓶頸）從 2025 年 49% 收斂到 2027 年 22%，代表供應鏈執行力正逐步改善；AI 伺服器營收 2026F 預估年增 78% <a class="cite" href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener">[2]</a>。這是對整條 CoWoS／機櫃供應鏈（台積電、ODM、緯穎等）具建設性的長線訊號，但「產能激進、產出保守」的落差也點出瓶頸仍是短期股價波動主因。</p><p class="subhead">NVL72 出貨追蹤與台鏈個股</p><p>QQ_Timmy 引述美系大行 6 月 GB 系列 NVL72 出貨調研：廣達約 2,300–2,400 櫃、緯創約 1,200–1,300 櫃、鴻海約 3,300 櫃，6 月合計約 8,000 櫃，券商維持全年 7–8 萬櫃預估 <a class="cite" href="https://x.com/QQ_Timmy/status/2075011600923378068" target="_blank" rel="noopener">[41]</a>。緯穎則因 2Q 營收優於預期、Trainium3 自 6 月起貢獻，獲亞系券商上調目標價 <a class="cite" href="https://x.com/QQ_Timmy/status/2075011600923378068" target="_blank" rel="noopener">[41]</a>。這與 Nomura 全年約 5.4 萬~6.2 萬 NVL72 機櫃的估算方向一致 <a class="cite" href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener">[2]</a>，實際月出貨節奏是驗證整體 AI capex 是否落地的關鍵數據，值得持續追蹤。</p><p class="subhead">先進封裝技術進展</p><p>QQ_Timmy 提到創意（GUC）在 ECTC 展示針對 CoWoS-R 的 UCIe-A 整合 STCO 流程，強調在 16–36 GT/s 高速下 RDL 已不再只是「導線與聚合物」，需完整電源感知 SI 簽核 <a class="cite" href="https://x.com/QQ_Timmy/status/2075013815725682732" target="_blank" rel="noopener">[39]</a>。這反映先進封裝的訊號完整性與電源設計難度大增，對具設計服務能力的 IP／ASIC 廠是進入門檻與價值提升的機會。</p><p class="subhead">Nvidia vs 自研晶片的競爭格局</p><p>JerryCap 引述觀點指出，儘管 Google TPU、Amazon Trainium、Meta MTIA 等自研晶片已存在多年，Nvidia 的 GPU 營收自 2015 年來仍暴增約 700 倍，且對超大型雲端業者的銷售 YoY 增 115%，接近整體雲端 capex 增速的兩倍 <a class="cite" href="https://x.com/JerryCap/status/2074944288614428972" target="_blank" rel="noopener">[71]</a>。此論點反駁了「ASIC 將侵蝕 Nvidia」的空頭敘事，強調 Nvidia 仍能吃到超過大盤的成長。這對評估 Nvidia 護城河是重要支撐，但需留意「近乎雙倍於 capex」的成長率長期難以維持。</p><p class="subhead">半導體指數技術面</p><p>pequityresearch 觀察費半（SOX）RSI 已跌到 46.78，自高點修正約 13.7%，判斷未來一兩週出現反彈不令人意外，但強調無保證 <a class="cite" href="https://x.com/pequityresearch/status/2074959156562333714" target="_blank" rel="noopener">[7]</a>。jimcramer 也提到 Broadcom 與 Lam 當日表現是好的市場訊號 <a class="cite" href="https://x.com/jimcramer/status/2074963718908060125" target="_blank" rel="noopener">[64]</a>。兩者都偏向短線築底、可能反彈的解讀，方向一致；不過 pequityresearch 明確以技術指標為據且保留不確定性，屬於偏機率性的觀察而非強力買進訊號。</p><p class="maintopic">xAI／SpaceX 與 GPU 資本支出</p><p>SemiAnalysis 指出隨 SpaceX 上市，投資人原期待太空與火箭題材，實際上看到的卻是「一整片伺服器機櫃」——xAI 作為今年 GB300 的主要買家，把太空競賽變成了 GPU 競賽 <a class="cite" href="https://x.com/SemiAnalysis_/status/2075022271563845638" target="_blank" rel="noopener">[1]</a>。這意味 SpaceX 上市的估值敘事中，AI 算力投入可能是隱藏變數，投資人須留意 xAI 的巨額 GPU 資本支出如何影響整體現金流與估值故事。</p><p>PythiaR 則從另一角度提出警訊：實測 Grok 發現它會做 OpenAI、Claude 不願做的事，並半開玩笑推測「若 80–90% 的 Grok 使用實質上是色情用途」，這在任何 $SPCX 的初評報告中都沒被提及 <a class="cite" href="https://x.com/PythiaR/status/2074967556214104549" target="_blank" rel="noopener">[73]</a><a class="cite" href="https://x.com/PythiaR/status/2074967307429056520" target="_blank" rel="noopener">[74]</a>。這點出對 xAI／Grok 營收品質與可持續性的實質疑慮——若使用量高度集中於灰色用途，對長期商業模式與監管風險是負面訊號。</p><p class="maintopic">大型語言模型競賽</p><p class="subhead">Grok 4.5 的能力評價</p><p>GavinSBaker 對 Grok 4.5 給出正面評價，稱其「按數字（benchmark）在程式碼上為帕累托優勢（Pareto dominant）」，並認為因其強調真實世界效用，benchmark 大方向應屬可信，後續要看實際「vibes」表現 <a class="cite" href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener">[80]</a>。他隨後連發多則「vibes」與「data driven vibes」的補充 <a class="cite" href="https://x.com/GavinSBaker/status/2074967474483679284" target="_blank" rel="noopener">[76]</a><a class="cite" href="https://x.com/GavinSBaker/status/2074966940389376076" target="_blank" rel="noopener">[77]</a><a class="cite" href="https://x.com/GavinSBaker/status/2074966757169578303" target="_blank" rel="noopener">[78]</a><a class="cite" href="https://x.com/GavinSBaker/status/2074944885581291541" target="_blank" rel="noopener">[79]</a>。這反映出前沿模型競爭正從純 benchmark 轉向實用體驗，對評估 xAI／各大 AI 實驗室的技術地位有參考價值。</p><p class="subhead">Claude Code 的工程化工具</p><p>bcherny 介紹 Claude Code 新增 /checkup 功能：清理未用的 skills/MCP/plugins 以節省 context、去重 CLAUDE.md、拆解與更新設定等 <a class="cite" href="https://x.com/bcherny/status/2074997911348244930" target="_blank" rel="noopener">[52]</a><a class="cite" href="https://x.com/bcherny/status/2074997571563479143" target="_blank" rel="noopener">[53]</a><a class="cite" href="https://x.com/bcherny/status/2074997570317779038" target="_blank" rel="noopener">[54]</a>。這顯示 Anthropic 持續強化開發者工具鏈的黏著度與工作流整合，是其在 coding agent 賽道鞏固地位的動作。</p><p class="subhead">模型量化與開源生態</p><p>Alisvolatprop12 發布 MiniMax-M3 的 MLX 動態量化版本，稱動用了自身所有量化經驗、並讚 DWQ 威力強大 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075019688942465125" target="_blank" rel="noopener">[13]</a><a class="cite" href="https://x.com/Alisvolatprop12/status/2075019073369559211" target="_blank" rel="noopener">[14]</a>。這反映開源模型在地端／MLX 生態的活躍度，對關注模型在地部署趨勢者有參考意義。</p><p class="maintopic">中國 AI 與機器人競爭力</p><p class="subhead">中國 AI 出口管制與定價武器</p><p>Alisvolatprop12 引述報導，中國正推動先進 AI 出口管制，可能成為「主權 AI（Sovereign AI）」的催化劑，並點出中國 AI 以「25 分之 1 的價格」作為武器，連 Airbnb 都在用中國 AI <a class="cite" href="https://x.com/Alisvolatprop12/status/2074986328727683234" target="_blank" rel="noopener">[15]</a>。ruima 的引語「美國賣 AI 靠價值觀，中國賣 AI 靠性價比（value）」呼應了此一定價戰邏輯 <a class="cite" href="https://x.com/ruima/status/2074994406302859371" target="_blank" rel="noopener">[27]</a>。兩者共同勾勒出中美 AI 的差異化競爭——中國以極低價搶市佔，可能對美系 AI 服務的定價與毛利形成長期壓力。</p><p class="subhead">Anthropic 與北京的角力</p><p>vince_chow1 報導 Anthropic 回擊北京，後者警告企業 Claude Code 內嵌追蹤用戶程式碼構成「嚴重威脅」；Anthropic 回應被建議卸載的中國用戶「本來就不該使用該工具」<a class="cite" href="https://x.com/vince_chow1/status/2074960295361909029" target="_blank" rel="noopener">[20]</a>。這凸顯地緣政治下美系 AI 工具在中國市場的合規與封鎖風險，與前述中國推動 AI 出口管制的動作相互交織。</p><p class="subhead">中國人形機器人的壓倒性優勢</p><p>pequityresearch 引 Yuanta 報告：宇樹（Unitree）獲中國證監會批准登陸科創板，從受理到核准僅 104 天為史上最快 <a class="cite" href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener">[6]</a>。圖表顯示中國在全球人形機器人專利新增與累積數量上壓倒性領先（Ubtech 累積專利居首），核心礦物（稀土、鈷、鋰、銅）與零組件（致動器、電池）供應鏈高度垂直整合，2025 年全球人形機器人安裝市佔近 85%（Unitree、Agibot 居前）<a class="cite" href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener">[6]</a>。這對評估人形機器人產業鏈是強力訊號：中國在專利、供應鏈與量產安裝上已建立結構性領先，Tesla 等美系玩家在裝機量上明顯落後。</p><p class="maintopic">GLP-1 與醫藥</p><p>MikeFritzell 提出 Novo Nordisk 的多頭論點：僅 13x EV/EBIT、口服 GLP-1 新爆品、產能擴張中、近期財報超預期，質疑「為何現在不是買點」<a class="cite" href="https://x.com/MikeFritzell/status/2074977555841749121" target="_blank" rel="noopener">[51]</a>。他並補充從消費者角度，口服藥片比注射「好接受 10 倍」<a class="cite" href="https://x.com/MikeFritzell/status/2074977827825570043" target="_blank" rel="noopener">[50]</a>。這是明確的價值型投資論點——低估值加上口服劑型可能大幅擴張可觸及市場（TAM），構成潛在的風險報酬不對稱機會，但需自行驗證口服 GLP-1 的療效與競爭態勢。</p><p class="maintopic">政策、地緣政治與市場事件</p><p class="subhead">美伊衝突升溫與油價</p><p>多位作者追蹤美伊局勢惡化：ParadisLabs 報導美伊停火破裂，美軍隔夜打擊逾 80 個伊朗目標（防空、海岸雷達、小艇），起因為伊朗攻擊三艘船隻 <a class="cite" href="https://x.com/ParadisLabs/status/2074954750101971078" target="_blank" rel="noopener">[10]</a>；CENTCOM 官方證實對伊朗發動額外打擊以維護荷姆茲海峽航行自由 <a class="cite" href="https://x.com/CENTCOM/status/2074950507186032971" target="_blank" rel="noopener">[32]</a>；Alisvolatprop12 引韓媒指美軍連兩日空襲伊朗 <a class="cite" href="https://x.com/Alisvolatprop12/status/2074974859411824734" target="_blank" rel="noopener">[16]</a>；QQ_Timmy 指川普宣告停火終結，油價單日飆漲近 8% <a class="cite" href="https://x.com/QQ_Timmy/status/2075011790526902275" target="_blank" rel="noopener">[40]</a>。多方消息一致指向荷姆茲海峽風險升溫，油價劇烈波動是短期宏觀交易與能源部位需納入的風險變數。</p><p class="subhead">Trump Accounts 與災難補助的政治性分配</p><p>pelositracker 指出 Trump Accounts（給每位美國兒童的稅務優惠投資帳戶、附 1,000 美元）正式上線，目標讓每個美國孩童從出生就進入市場 <a class="cite" href="https://x.com/pelositracker/status/2074941005904728252" target="_blank" rel="noopener">[31]</a>；同時報導川普 7 月 2 日否決給紐約、新澤西等民主黨州 2.27 億美元救災款，卻在兩天前批准 8.46 億美元給 9 個共和黨州（均為 2024 年投給川普的州）<a class="cite" href="https://x.com/pelositracker/status/2074946202425004252" target="_blank" rel="noopener">[29]</a>。這反映財政資源分配的政治化，對相關州別的地方財政與相關資產可能有差異化影響。</p><p class="subhead">特斯拉車主結構轉變</p><p>SVTrivo 引韓媒指出特斯拉在韓國正變成「中年大叔的車」——今年購車者 40~50 代多於 20~30 代，60 代也搶購，並評此為「把理所當然的事惡意寫成報導」<a class="cite" href="https://x.com/SVTrivo/status/2075026088061997079" target="_blank" rel="noopener">[11]</a><a class="cite" href="https://x.com/SVTrivo/status/2075020986014163314" target="_blank" rel="noopener">[12]</a>。這暗示特斯拉品牌客群老化／主流化，對其在年輕消費者心中的品牌調性是值得留意的軟性訊號。</p><p class="subhead">Tesla Model Y L 與 Robotaxi 佈局</p><p>ARKInvest 強調外界低估了 Model Y L——它不只是更大的車，其新功能有助於打造能滿足多種乘客需求的 Robotaxi 車隊，並涵蓋 Rocket Lab 的 Iridium 佈局與開源 AI 討論 <a class="cite" href="https://x.com/ARKInvest/status/2074964765546541337" target="_blank" rel="noopener">[55]</a>。這是 ARK 一貫的多頭框架，把新車型與 Robotaxi 成長敘事綁定，作為評估 Tesla 長線選擇權價值的觀點之一。</p><p class="maintopic">監管與科技產業動態</p><p>TechCrunch 匯集多則產業動態：法官雖有「疑慮」仍核准馬斯克 150 萬美元的 SEC 和解 <a class="cite" href="https://x.com/TechCrunch/status/2074995532892930229" target="_blank" rel="noopener">[57]</a>；Lovable 傳洽談將估值倍增至 132 億美元 <a class="cite" href="https://x.com/TechCrunch/status/2074987543490441499" target="_blank" rel="noopener">[58]</a>；美國聯邦監管要求自駕車公司停止干擾急救人員 <a class="cite" href="https://x.com/TechCrunch/status/2074975211716547005" target="_blank" rel="noopener">[59]</a>，這與 citrini 提到 OpenAI 邁向實用裝置 <a class="cite" href="https://x.com/citrini/status/2074954682590495129" target="_blank" rel="noopener">[48]</a> 及自駕相關監管趨嚴一致，凸顯自駕與 AI 硬體的監管風險正在升高。此外 Google 的深偽偵測系統被用來揭穿 McConnell 假圖 <a class="cite" href="https://x.com/TechCrunch/status/2074956594186735637" target="_blank" rel="noopener">[60]</a>，QuantumDiamonds 獲歐盟支持加速晶片製造 <a class="cite" href="https://x.com/TechCrunch/status/2074954532040429688" target="_blank" rel="noopener">[61]</a>，Manna 無人機配送擬大舉擴張美國市場 <a class="cite" href="https://x.com/TechCrunch/status/2074948703547510876" target="_blank" rel="noopener">[62]</a>，均為新興技術商業化的觀察點。</p><p class="maintopic">光通訊與零組件</p><p class="subhead">$AAOI 與 $AEHR 高信心多頭</p><p>ParadisLabs 對 $AAOI 與 $AEHR 抱高信心並持有部位：$AAOI 目標 2027 年中月收發器營收約 4.71 億美元，正進行 800G/1.6T 產能擴張，且即便擴產，需求預計到 2027 年 Q3 前仍超過產能 <a class="cite" href="https://x.com/ParadisLabs/status/2074984859160977844" target="_blank" rel="noopener">[9]</a>。這是搭上 AI 資料中心光模組升級（800G→1.6T）題材的明確多頭論點，供不應求的判斷若成立則有利定價與獲利，但需注意產能爬升執行風險。</p><p class="subhead">Bloom Energy 鈧供應恐慌</p><p>benitoz 從製造背景判斷 Bloom 的鈧（scandium）恐慌被過度反應——鈧並非整箱稀有金屬，而是陶瓷電池內的薄功能層，每箱約 50 克，1 公噸可做約 20,000 箱（約 6.5 GW），故 5 GW 規模目標對鈧的實際需求量有限 <a class="cite" href="https://x.com/benitoz/status/2075003520265372037" target="_blank" rel="noopener">[21]</a>。這是對市場恐慌的逆向、以第一性原理推算的分析，若成立則相關利空為錯殺，值得對 Bloom 供應鏈疑慮者參考。</p><p class="maintopic">記憶體與其他個股</p><p>jimcramer 提醒 SK Hynix 的交易「超額認購」被承銷商大肆宣傳是危險做法，希望仍以小幅折價定價以維持交易熱度而不嚇跑投資人 <a class="cite" href="https://x.com/jimcramer/status/2074997612705419513" target="_blank" rel="noopener">[63]</a>。這是對熱門記憶體題材新股定價的實務提醒——過度熱炒反而是反指標，對參與相關發行者是風險提示。</p><p>JerryCap 對 $INTU 給出負面初步評價（「1/3 💩」），並指其量化模型因 Fundsmith 的流程恐慌（賣壓）而嗅到機會 <a class="cite" href="https://x.com/JerryCap/status/2074988089668161803" target="_blank" rel="noopener">[68]</a><a class="cite" href="https://x.com/JerryCap/status/2074978843312750803" target="_blank" rel="noopener">[69]</a>。這反映在龍頭基金調節持股時，量化策略反而視為逆向買點的思路，但作者本身對基本面仍有保留。</p><p class="maintopic">投資方法論</p><p class="subhead">簡單的點子勝過複雜</p><p>patrick_oshag 引 Jeremy Giffon 談論最好的投資點子往往很簡單，以及 Richard Rainwater 的「一頁紙」測試——並直指許多投資人玩的是「顯得聰明」而非「賺錢」的遊戲 <a class="cite" href="https://x.com/patrick_oshag/status/2074963826173501622" target="_blank" rel="noopener">[72]</a>。PythiaR 則補充經營企業的視角：某些優勢會複利累積（招聘、資料），某些則因競爭趕上、世界改變而衰減，許多成功事業其實是「順勢乘浪」<a class="cite" href="https://x.com/PythiaR/status/2074940480526131600" target="_blank" rel="noopener">[75]</a>。兩者都指向務實、去除虛榮的投資與經營心態，對過度追求複雜策略者是有益的提醒。</p><p class="subhead">內容品質與發文頻率</p><p>pmje73 觀察 X 上最好的內容越來越來自不常發文的人，最差的來自頻繁發文者，而演算法似乎刻意忽略這點 <a class="cite" href="https://x.com/pmje73/status/2074942853013176518" target="_blank" rel="noopener">[67]</a>。這對如何篩選資訊來源、避免被高頻噪音干擾判斷，是實用的提醒。</p><p class="maintopic">AI 應用實測</p><p>ruima 實測微信 AI agent「小微」，交付「帶學步兒去上海迪士尼」的任務，讚賞語音對話極為流暢、有個性（會輕笑），雖需被提醒先前互動但具記憶能力 <a class="cite" href="https://x.com/ruima/status/2074996315797459367" target="_blank" rel="noopener">[26]</a>。這是中國大廠將 AI agent 嵌入超級 App 的具體落地案例，反映消費端 AI 助理的實用化進展，與前述中國 AI 高性價比打法相互印證。</p><p>RayDalio 則興奮宣布其數位分身「Digital Ray」，讓所有人能無限次與他對話 <a class="cite" href="https://x.com/RayDalio/status/2074956368801325106" target="_blank" rel="noopener">[56]</a>。這代表知識型 IP 以 AI 分身形式商業化的新方向，是內容與 AI 結合的趨勢觀察點。</p></div>
   
-  
-  <div class="media">
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2075022271563845638" target="_blank" rel="noopener" title="推文 [1]">
-      <img src="https://pbs.twimg.com/media/HMv1woFW0AAZE8B.jpg" alt="推文 [1] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener" title="推文 [2]">
-      <img src="https://pbs.twimg.com/media/HMvWooqXQAA2dR4.jpg" alt="推文 [2] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener" title="推文 [2]">
-      <img src="https://pbs.twimg.com/media/HMvWookW4AAeb9Q.png" alt="推文 [2] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener" title="推文 [6]">
-      <img src="https://pbs.twimg.com/media/HMvFJXzWgAAZ_bP.jpg" alt="推文 [6] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener" title="推文 [6]">
-      <img src="https://pbs.twimg.com/media/HMvFK-fXAAAtXcC.jpg" alt="推文 [6] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener" title="推文 [6]">
-      <img src="https://pbs.twimg.com/media/HMvFNVEXkAAqZBB.jpg" alt="推文 [6] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pequityresearch/status/2074959156562333714" target="_blank" rel="noopener" title="推文 [7]">
-      <img src="https://pbs.twimg.com/media/HMu7_xUWgAA7sYG.jpg" alt="推文 [7] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/ParadisLabs/status/2074954750101971078" target="_blank" rel="noopener" title="推文 [10]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2074943632109359104/img/sgEB_hGQlAhSWN1V.jpg" alt="推文 [10] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/SVTrivo/status/2075020986014163314" target="_blank" rel="noopener" title="推文 [12]">
-      <img src="https://pbs.twimg.com/media/HMv0lx-aIAA-BqM.jpg" alt="推文 [12] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/benitoz/status/2075003520265372037" target="_blank" rel="noopener" title="推文 [21]">
-      <img src="https://pbs.twimg.com/media/HMvksqubwAAI15l.jpg" alt="推文 [21] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/ruima/status/2074996315797459367" target="_blank" rel="noopener" title="推文 [26]">
-      <img src="https://pbs.twimg.com/media/HMveJyJasAAQkDt.jpg" alt="推文 [26] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pelositracker/status/2074946202425004252" target="_blank" rel="noopener" title="推文 [29]">
-      <img src="https://pbs.twimg.com/media/HMuwkzRW8AAiZTx.jpg" alt="推文 [29] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/pelositracker/status/2074941005904728252" target="_blank" rel="noopener" title="推文 [31]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2074940845472526336/img/ITrTyVAChab1Tfdg.jpg" alt="推文 [31] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/MikeFritzell/status/2074977555841749121" target="_blank" rel="noopener" title="推文 [51]">
-      <img src="https://pbs.twimg.com/media/HMvNFm9bAAAI6B8.jpg" alt="推文 [51] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/bcherny/status/2074997571563479143" target="_blank" rel="noopener" title="推文 [53]">
-      <img src="https://pbs.twimg.com/media/HMvfCIeXEAIZxtj.jpg" alt="推文 [53] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/RayDalio/status/2074956368801325106" target="_blank" rel="noopener" title="推文 [56]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2074955550815571968/img/yHv5u1aCaflNSreH.jpg" alt="推文 [56] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/JerryCap/status/2074988089668161803" target="_blank" rel="noopener" title="推文 [68]">
-      <img src="https://pbs.twimg.com/media/HMvWq9dXQAAFId6.jpg" alt="推文 [68] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/JerryCap/status/2074978843312750803" target="_blank" rel="noopener" title="推文 [69]">
-      <img src="https://pbs.twimg.com/media/HMvOQxaWsAAJvRd.jpg" alt="推文 [69] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/patrick_oshag/status/2074963826173501622" target="_blank" rel="noopener" title="推文 [72]">
-      <img src="https://pbs.twimg.com/amplify_video_thumb/2074951225779593216/img/E9SwwIWNnLBF_gZS.jpg" alt="推文 [72] 的媒體" loading="lazy">
-      <span class="play">▶</span>
-    </a>
-    
-    <a class="media-item" href="https://x.com/PythiaR/status/2074967307429056520" target="_blank" rel="noopener" title="推文 [74]">
-      <img src="https://pbs.twimg.com/media/HMvDxOGbQAAbF02.jpg" alt="推文 [74] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener" title="推文 [80]">
-      <img src="https://pbs.twimg.com/media/HMut7yhXMAI_OQp.jpg" alt="推文 [80] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener" title="推文 [80]">
-      <img src="https://pbs.twimg.com/media/HMut7ycXkAEQE8L.jpg" alt="推文 [80] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener" title="推文 [80]">
-      <img src="https://pbs.twimg.com/media/HMut7ycWkAASWON.jpg" alt="推文 [80] 的媒體" loading="lazy">
-      
-    </a>
-    
-  </div>
-  
-
-  
     
     <details class="refs">
-      <summary>來源（51）</summary>
+      <summary>來源與附圖（51）</summary>
       
     <ol>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2075022271563845638" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [1]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2075022271563845638" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [1]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMv1woFW0AAZE8B.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMv1woFW0AAZE8B.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener">@pequityresearch — 推文 [2]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener">@pequityresearch — 推文 [2]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvWooqXQAA2dR4.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvWooqXQAA2dR4.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvWookW4AAeb9Q.png" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvWookW4AAeb9Q.png" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener">@pequityresearch — 推文 [6]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener">@pequityresearch — 推文 [6]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvFJXzWgAAZ_bP.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvFJXzWgAAZ_bP.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvFK-fXAAAtXcC.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvFK-fXAAAtXcC.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvFNVEXkAAqZBB.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvFNVEXkAAqZBB.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pequityresearch/status/2074959156562333714" target="_blank" rel="noopener">@pequityresearch — 推文 [7]</a></li>
+      <li>
+        <a href="https://x.com/pequityresearch/status/2074959156562333714" target="_blank" rel="noopener">@pequityresearch — 推文 [7]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMu7_xUWgAA7sYG.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMu7_xUWgAA7sYG.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ParadisLabs/status/2074984859160977844" target="_blank" rel="noopener">@ParadisLabs — 推文 [9]</a></li>
+      <li>
+        <a href="https://x.com/ParadisLabs/status/2074984859160977844" target="_blank" rel="noopener">@ParadisLabs — 推文 [9]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/ParadisLabs/status/2074954750101971078" target="_blank" rel="noopener">@ParadisLabs — 推文 [10]</a></li>
+      <li>
+        <a href="https://x.com/ParadisLabs/status/2074954750101971078" target="_blank" rel="noopener">@ParadisLabs — 推文 [10]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074943632109359104/img/sgEB_hGQlAhSWN1V.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2074943632109359104/img/sgEB_hGQlAhSWN1V.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SVTrivo/status/2075026088061997079" target="_blank" rel="noopener">@SVTrivo — 推文 [11]</a></li>
+      <li>
+        <a href="https://x.com/SVTrivo/status/2075026088061997079" target="_blank" rel="noopener">@SVTrivo — 推文 [11]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SVTrivo/status/2075020986014163314" target="_blank" rel="noopener">@SVTrivo — 推文 [12]</a></li>
+      <li>
+        <a href="https://x.com/SVTrivo/status/2075020986014163314" target="_blank" rel="noopener">@SVTrivo — 推文 [12]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMv0lx-aIAA-BqM.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMv0lx-aIAA-BqM.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075019688942465125" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [13]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075019688942465125" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [13]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2075019073369559211" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [14]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2075019073369559211" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [14]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2074986328727683234" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [15]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2074986328727683234" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [15]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/Alisvolatprop12/status/2074974859411824734" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [16]</a></li>
+      <li>
+        <a href="https://x.com/Alisvolatprop12/status/2074974859411824734" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [16]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/vince_chow1/status/2074960295361909029" target="_blank" rel="noopener">@vince_chow1 — 推文 [20]</a></li>
+      <li>
+        <a href="https://x.com/vince_chow1/status/2074960295361909029" target="_blank" rel="noopener">@vince_chow1 — 推文 [20]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/benitoz/status/2075003520265372037" target="_blank" rel="noopener">@benitoz — 推文 [21]</a></li>
+      <li>
+        <a href="https://x.com/benitoz/status/2075003520265372037" target="_blank" rel="noopener">@benitoz — 推文 [21]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvksqubwAAI15l.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvksqubwAAI15l.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ruima/status/2074996315797459367" target="_blank" rel="noopener">@ruima — 推文 [26]</a></li>
+      <li>
+        <a href="https://x.com/ruima/status/2074996315797459367" target="_blank" rel="noopener">@ruima — 推文 [26]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMveJyJasAAQkDt.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMveJyJasAAQkDt.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/ruima/status/2074994406302859371" target="_blank" rel="noopener">@ruima — 推文 [27]</a></li>
+      <li>
+        <a href="https://x.com/ruima/status/2074994406302859371" target="_blank" rel="noopener">@ruima — 推文 [27]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/pelositracker/status/2074946202425004252" target="_blank" rel="noopener">@pelositracker — 推文 [29]</a></li>
+      <li>
+        <a href="https://x.com/pelositracker/status/2074946202425004252" target="_blank" rel="noopener">@pelositracker — 推文 [29]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMuwkzRW8AAiZTx.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMuwkzRW8AAiZTx.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/pelositracker/status/2074941005904728252" target="_blank" rel="noopener">@pelositracker — 推文 [31]</a></li>
+      <li>
+        <a href="https://x.com/pelositracker/status/2074941005904728252" target="_blank" rel="noopener">@pelositracker — 推文 [31]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074940845472526336/img/ITrTyVAChab1Tfdg.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2074940845472526336/img/ITrTyVAChab1Tfdg.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/CENTCOM/status/2074950507186032971" target="_blank" rel="noopener">@CENTCOM — 推文 [32]</a></li>
+      <li>
+        <a href="https://x.com/CENTCOM/status/2074950507186032971" target="_blank" rel="noopener">@CENTCOM — 推文 [32]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075013815725682732" target="_blank" rel="noopener">@QQ_Timmy — 推文 [39]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075013815725682732" target="_blank" rel="noopener">@QQ_Timmy — 推文 [39]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075011790526902275" target="_blank" rel="noopener">@QQ_Timmy — 推文 [40]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075011790526902275" target="_blank" rel="noopener">@QQ_Timmy — 推文 [40]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/QQ_Timmy/status/2075011600923378068" target="_blank" rel="noopener">@QQ_Timmy — 推文 [41]</a></li>
+      <li>
+        <a href="https://x.com/QQ_Timmy/status/2075011600923378068" target="_blank" rel="noopener">@QQ_Timmy — 推文 [41]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/citrini/status/2074954682590495129" target="_blank" rel="noopener">@citrini — 推文 [48]</a></li>
+      <li>
+        <a href="https://x.com/citrini/status/2074954682590495129" target="_blank" rel="noopener">@citrini — 推文 [48]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/MikeFritzell/status/2074977827825570043" target="_blank" rel="noopener">@MikeFritzell — 推文 [50]</a></li>
+      <li>
+        <a href="https://x.com/MikeFritzell/status/2074977827825570043" target="_blank" rel="noopener">@MikeFritzell — 推文 [50]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/MikeFritzell/status/2074977555841749121" target="_blank" rel="noopener">@MikeFritzell — 推文 [51]</a></li>
+      <li>
+        <a href="https://x.com/MikeFritzell/status/2074977555841749121" target="_blank" rel="noopener">@MikeFritzell — 推文 [51]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvNFm9bAAAI6B8.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvNFm9bAAAI6B8.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/bcherny/status/2074997911348244930" target="_blank" rel="noopener">@bcherny — 推文 [52]</a></li>
+      <li>
+        <a href="https://x.com/bcherny/status/2074997911348244930" target="_blank" rel="noopener">@bcherny — 推文 [52]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/bcherny/status/2074997571563479143" target="_blank" rel="noopener">@bcherny — 推文 [53]</a></li>
+      <li>
+        <a href="https://x.com/bcherny/status/2074997571563479143" target="_blank" rel="noopener">@bcherny — 推文 [53]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvfCIeXEAIZxtj.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvfCIeXEAIZxtj.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/bcherny/status/2074997570317779038" target="_blank" rel="noopener">@bcherny — 推文 [54]</a></li>
+      <li>
+        <a href="https://x.com/bcherny/status/2074997570317779038" target="_blank" rel="noopener">@bcherny — 推文 [54]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/ARKInvest/status/2074964765546541337" target="_blank" rel="noopener">@ARKInvest — 推文 [55]</a></li>
+      <li>
+        <a href="https://x.com/ARKInvest/status/2074964765546541337" target="_blank" rel="noopener">@ARKInvest — 推文 [55]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/RayDalio/status/2074956368801325106" target="_blank" rel="noopener">@RayDalio — 推文 [56]</a></li>
+      <li>
+        <a href="https://x.com/RayDalio/status/2074956368801325106" target="_blank" rel="noopener">@RayDalio — 推文 [56]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074955550815571968/img/yHv5u1aCaflNSreH.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2074955550815571968/img/yHv5u1aCaflNSreH.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2074995532892930229" target="_blank" rel="noopener">@TechCrunch — 推文 [57]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2074995532892930229" target="_blank" rel="noopener">@TechCrunch — 推文 [57]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2074987543490441499" target="_blank" rel="noopener">@TechCrunch — 推文 [58]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2074987543490441499" target="_blank" rel="noopener">@TechCrunch — 推文 [58]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2074975211716547005" target="_blank" rel="noopener">@TechCrunch — 推文 [59]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2074975211716547005" target="_blank" rel="noopener">@TechCrunch — 推文 [59]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2074956594186735637" target="_blank" rel="noopener">@TechCrunch — 推文 [60]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2074956594186735637" target="_blank" rel="noopener">@TechCrunch — 推文 [60]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2074954532040429688" target="_blank" rel="noopener">@TechCrunch — 推文 [61]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2074954532040429688" target="_blank" rel="noopener">@TechCrunch — 推文 [61]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/TechCrunch/status/2074948703547510876" target="_blank" rel="noopener">@TechCrunch — 推文 [62]</a></li>
+      <li>
+        <a href="https://x.com/TechCrunch/status/2074948703547510876" target="_blank" rel="noopener">@TechCrunch — 推文 [62]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jimcramer/status/2074997612705419513" target="_blank" rel="noopener">@jimcramer — 推文 [63]</a></li>
+      <li>
+        <a href="https://x.com/jimcramer/status/2074997612705419513" target="_blank" rel="noopener">@jimcramer — 推文 [63]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jimcramer/status/2074963718908060125" target="_blank" rel="noopener">@jimcramer — 推文 [64]</a></li>
+      <li>
+        <a href="https://x.com/jimcramer/status/2074963718908060125" target="_blank" rel="noopener">@jimcramer — 推文 [64]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/pmje73/status/2074942853013176518" target="_blank" rel="noopener">@pmje73 — 推文 [67]</a></li>
+      <li>
+        <a href="https://x.com/pmje73/status/2074942853013176518" target="_blank" rel="noopener">@pmje73 — 推文 [67]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/JerryCap/status/2074988089668161803" target="_blank" rel="noopener">@JerryCap — 推文 [68]</a></li>
+      <li>
+        <a href="https://x.com/JerryCap/status/2074988089668161803" target="_blank" rel="noopener">@JerryCap — 推文 [68]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvWq9dXQAAFId6.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvWq9dXQAAFId6.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/JerryCap/status/2074978843312750803" target="_blank" rel="noopener">@JerryCap — 推文 [69]</a></li>
+      <li>
+        <a href="https://x.com/JerryCap/status/2074978843312750803" target="_blank" rel="noopener">@JerryCap — 推文 [69]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvOQxaWsAAJvRd.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvOQxaWsAAJvRd.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/JerryCap/status/2074944288614428972" target="_blank" rel="noopener">@JerryCap — 推文 [71]</a></li>
+      <li>
+        <a href="https://x.com/JerryCap/status/2074944288614428972" target="_blank" rel="noopener">@JerryCap — 推文 [71]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/patrick_oshag/status/2074963826173501622" target="_blank" rel="noopener">@patrick_oshag — 推文 [72]</a></li>
+      <li>
+        <a href="https://x.com/patrick_oshag/status/2074963826173501622" target="_blank" rel="noopener">@patrick_oshag — 推文 [72]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074951225779593216/img/E9SwwIWNnLBF_gZS.jpg" data-fig="None" data-type="video" title="附圖None">
+            <img src="https://pbs.twimg.com/amplify_video_thumb/2074951225779593216/img/E9SwwIWNnLBF_gZS.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            <span class="play">▶</span>
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/PythiaR/status/2074967556214104549" target="_blank" rel="noopener">@PythiaR — 推文 [73]</a></li>
+      <li>
+        <a href="https://x.com/PythiaR/status/2074967556214104549" target="_blank" rel="noopener">@PythiaR — 推文 [73]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/PythiaR/status/2074967307429056520" target="_blank" rel="noopener">@PythiaR — 推文 [74]</a></li>
+      <li>
+        <a href="https://x.com/PythiaR/status/2074967307429056520" target="_blank" rel="noopener">@PythiaR — 推文 [74]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvDxOGbQAAbF02.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvDxOGbQAAbF02.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/PythiaR/status/2074940480526131600" target="_blank" rel="noopener">@PythiaR — 推文 [75]</a></li>
+      <li>
+        <a href="https://x.com/PythiaR/status/2074940480526131600" target="_blank" rel="noopener">@PythiaR — 推文 [75]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/GavinSBaker/status/2074967474483679284" target="_blank" rel="noopener">@GavinSBaker — 推文 [76]</a></li>
+      <li>
+        <a href="https://x.com/GavinSBaker/status/2074967474483679284" target="_blank" rel="noopener">@GavinSBaker — 推文 [76]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/GavinSBaker/status/2074966940389376076" target="_blank" rel="noopener">@GavinSBaker — 推文 [77]</a></li>
+      <li>
+        <a href="https://x.com/GavinSBaker/status/2074966940389376076" target="_blank" rel="noopener">@GavinSBaker — 推文 [77]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/GavinSBaker/status/2074966757169578303" target="_blank" rel="noopener">@GavinSBaker — 推文 [78]</a></li>
+      <li>
+        <a href="https://x.com/GavinSBaker/status/2074966757169578303" target="_blank" rel="noopener">@GavinSBaker — 推文 [78]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/GavinSBaker/status/2074944885581291541" target="_blank" rel="noopener">@GavinSBaker — 推文 [79]</a></li>
+      <li>
+        <a href="https://x.com/GavinSBaker/status/2074944885581291541" target="_blank" rel="noopener">@GavinSBaker — 推文 [79]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener">@GavinSBaker — 推文 [80]</a></li>
+      <li>
+        <a href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener">@GavinSBaker — 推文 [80]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMut7yhXMAI_OQp.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMut7yhXMAI_OQp.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMut7ycXkAEQE8L.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMut7ycXkAEQE8L.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMut7ycWkAASWON.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMut7ycWkAASWON.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
     </ol>
 
@@ -839,62 +1490,111 @@
     
   <div class="summary"><p class="subhead">AI 代理經濟（Agentic Economy）與穩定幣支付基礎設施</p><p>Jeremy Allaire 的一系列發言集中在「任務經濟即代理經濟」的願景，核心論點是：複雜的認知工作將能隨需求（on demand）由 AI 代理提供或消費，並採用「按用量計價」（consumption pricing）的模式 <a class="cite" href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">[2]</a><a class="cite" href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">[3]</a>。他進一步把這套代理經濟框架與 USDC 綁在一起，暗示穩定幣將成為代理之間簽訂「經濟合約」、進行機器對機器支付的結算層 <a class="cite" href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">[1]</a><a class="cite" href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">[2]</a>。</p><ul><li>投資意涵：Allaire 身為穩定幣發行方核心人物，他的敘事本質上是在把 USDC 定位為 AI 代理支付的清算基礎設施。這是一個「代理需要即時、可程式化的貨幣結算 → 穩定幣受惠」的邏輯鏈，但這些發言偏願景宣示、缺乏具體採用數據佐證，須注意其立場的利益相關性。</li></ul><p class="subhead">AI 代理的實際成本結構：快取經濟學</p><p>SemiAnalysis 從實務數據補上了 Allaire 願景背後「經濟性」的關鍵一環。其分析 150 萬筆以上的 Claude Code 請求後指出，約 95% 的 token 是快取命中（cache hits），使 token 帳單降低約 84%，相對於無快取可節省 6.3 倍成本 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener">[8]</a>。附圖顯示各模型的快取命中比例：Opus 4.6/4.7 達 95% 以上、Sonnet 4.6 為 93.5%，而 Haiku 4.5 僅 80.3%（因其常作為子代理或處理短任務），每次請求成本從 Haiku 的 $0.008 到 Fable 5 的 $0.319 不等 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener">[8]</a>。</p><ul><li>這與 Allaire「按用量計價的代理服務」直接呼應：SemiAnalysis 用數據說明，實際的 agentic coding 高度依賴快取來壓低成本，代理經濟的單位經濟效益（unit economics）遠比表面 token 標價複雜。</li><li>投資意涵：快取機制大幅改變推理成本曲線，對評估 AI 應用的毛利與雲端／推理需求的實際彈性極具參考價值；也提醒投資人不能單以標價 token 量推估算力需求。</li></ul><p class="subhead">先進封裝與 UCIe-A 互連（CoWoS-R）技術進展</p><p>SemiAnalysis 就 ECTC 2026 的技術報告，深入 GUC 展示的 CoWoS-R 風格 UCIe-A 整合流程 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener">[7]</a>。核心訊息是：在 16–36 GT/s 的高速下，RDL（重佈線層）已不只是「導線與聚合物」，其幾何結構本身成為訊號通道的一部分，需以 GSG 交錯傳輸線與接地屏蔽來改善隔離與偏移補償 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074971919607067122" target="_blank" rel="noopener">[6]</a>。難點在於同時協同優化訊號完整性（SI）與電源完整性（PI）——線寬、間距、接地佈局、via 位置、PDN 平面形狀等都會牽動插入損耗、回波損耗、串擾與電源雜訊 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074971921297375735" target="_blank" rel="noopener">[5]</a>。附圖的矽測資料顯示模擬與量測高度吻合（例如 6mm 測試鍵 IL 模擬 5.84dB／量測 5.90dB），並提供 16 與 32 GT/s 的眼圖驗證 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener">[7]</a>。</p><ul><li>投資意涵：這反映先進封裝在 UCIe chiplet 互連的物理設計正走向成熟且可矽測驗證，是 AI 晶片持續擴大 die-to-die 頻寬的關鍵支撐。對封裝、EDA、IP 供應鏈（如 GUC）具正面訊號。此為單一來源的技術深挖，無對立觀點。</li></ul><p class="subhead">美國就業市場與 AI 對勞動力的實際衝擊</p><p>SemiAnalysis 的宏觀系列針對非農就業報告提出幾個具辨識度的判斷：</p><ul><li><strong>AI 衝擊集中在「無門檻」的資訊服務業</strong>：目前職缺大跌主要出現在資訊服務業，AI 影響最快最深地打擊了非受保護（ungated）的經濟部門；但作者強調「對 AI 取代的恐懼跑得比實際壓力快得多，且恐懼會自我強化」<a class="cite" href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener">[13]</a>。附圖清楚顯示資訊業職缺率已跌至 2.7%，反觀製造業回升至 4.0% <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener">[13]</a>。</li><li><strong>消費者信心指標的取捨</strong>：作者判斷 Conference Board 的信心數據與離職率（quits）相關性高（+0.85），而較悲觀的密西根大學數據相關性弱（+0.12），因此更看重前者 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener">[14]</a>。這在附圖中以 z-score 對照清楚呈現 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener">[14]</a>。工業、製造、進口部門近半年職缺都在上升 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener">[14]</a>。</li><li><strong>結構性轉向</strong>：即使沒有大規模 AI 裁員，消費者若恐懼失業就會壓低加薪要求、減少支出，經濟成長引擎將從消費轉向投資 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863740634198067" target="_blank" rel="noopener">[12]</a>。</li><li><strong>對 Fed 的意涵</strong>：由於嬰兒潮退休、移民不再推升勞動力成長，維持失業率 4.3% 不變所需的招聘量僅約 55K <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863742261563715" target="_blank" rel="noopener">[11]</a>；即使非農落在共識的 +110K，也會對失業率形成下行壓力，讓 Fed 得以按兵不動——儘管消費者陷入恐慌 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863743616295310" target="_blank" rel="noopener">[10]</a>。</li></ul><ul><li>投資意涵：作者的核心敘事是「勞動市場結構性收緊」——低招聘門檻讓失業率難升，恐懼與實際基本面出現落差。這對利率預期偏鷹（Fed 有理由不急於降息），同時把成長動能重新導向投資（含 AI 資本支出），與前述 AI 代理／封裝的資本支出主題形成內在一致的宏觀背景。此系列亦為單一來源，論述自洽但需注意其「恐懼 &gt; 實際」的判斷若失準，AI 失業衝擊可能被低估。</li></ul><p class="subhead">跨主題綜合評斷</p><p>雖然兩位作者主題不同，但可看出一條連貫的投資敘事：Allaire 描繪代理經濟的「需求端與支付層」願景 <a class="cite" href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">[1]</a><a class="cite" href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">[2]</a><a class="cite" href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">[3]</a>，SemiAnalysis 則從成本結構 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener">[8]</a>、硬體互連 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074971921297375735" target="_blank" rel="noopener">[5]</a><a class="cite" href="https://x.com/SemiAnalysis_/status/2074971919607067122" target="_blank" rel="noopener">[6]</a><a class="cite" href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener">[7]</a> 與宏觀勞動／投資轉向 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074863743616295310" target="_blank" rel="noopener">[10]</a><a class="cite" href="https://x.com/SemiAnalysis_/status/2074863740634198067" target="_blank" rel="noopener">[12]</a><a class="cite" href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener">[13]</a> 提供「供給端與可行性」的實證支撐。沒有明顯彼此對立之處；主要風險訊號在於 Allaire 願景的利益相關性與缺乏採用數據，以及 SemiAnalysis 對「AI 失業恐懼大於實際」這一關鍵假設的依賴。</p></div>
   
-  
-  <div class="media">
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener" title="推文 [7]">
-      <img src="https://pbs.twimg.com/media/HMvH9oQWUAAChKN.jpg" alt="推文 [7] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener" title="推文 [8]">
-      <img src="https://pbs.twimg.com/media/HMuOtgRXMAA_Zor.jpg" alt="推文 [8] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener" title="推文 [13]">
-      <img src="https://pbs.twimg.com/media/HMtlkNMXwAE67nz.jpg" alt="推文 [13] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener" title="推文 [14]">
-      <img src="https://pbs.twimg.com/media/HMtlkcFXQAAFBXE.jpg" alt="推文 [14] 的媒體" loading="lazy">
-      
-    </a>
-    
-  </div>
-  
-
-  
     
     <details class="refs">
-      <summary>來源（12）</summary>
+      <summary>來源與附圖（12）</summary>
       
     <ol>
       
-      <li><a href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">@jerallaire — 推文 [1]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">@jerallaire — 推文 [1]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">@jerallaire — 推文 [2]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">@jerallaire — 推文 [2]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">@jerallaire — 推文 [3]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">@jerallaire — 推文 [3]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074971921297375735" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [5]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074971921297375735" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [5]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074971919607067122" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [6]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074971919607067122" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [6]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [7]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [7]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMvH9oQWUAAChKN.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMvH9oQWUAAChKN.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMuOtgRXMAA_Zor.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMuOtgRXMAA_Zor.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074863743616295310" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [10]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074863743616295310" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [10]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074863742261563715" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [11]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074863742261563715" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [11]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074863740634198067" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [12]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074863740634198067" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [12]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [13]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [13]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMtlkNMXwAE67nz.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMtlkNMXwAE67nz.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [14]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [14]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMtlkcFXQAAFBXE.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMtlkcFXQAAFBXE.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
     </ol>
 
@@ -920,54 +1620,96 @@
     
   <div class="summary"><p class="subhead">Agentic Economy 與鏈上經濟的融合</p><p>Jerallaire 集中火力在「代理人經濟（Agentic Economy）」這個主題，核心論點是：AI 代理人需要一套經濟運作系統與協調基礎設施，而這與鏈上經濟本質上是同一件事 <a class="cite" href="https://x.com/jerallaire/status/2074242743656714413" target="_blank" rel="noopener">[5]</a>。他描述的未來圖像是「任務經濟即代理人經濟」——代理人以服務形式存在、採用消費計價（consumption pricing）、並簽訂代理人之間的經濟契約 <a class="cite" href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">[2]</a>。他認為複雜認知工作將能隨需求由代理人之間相互調度並按用量計費 <a class="cite" href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">[3]</a>。</p><p>在落地層面，他把這套願景與 USDC 綁定，強調正在其上「安靜地建構」<a class="cite" href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">[1]</a>，並歸納出成功要素為：網路效應、平台效用、流動性與監管明確性 <a class="cite" href="https://x.com/jerallaire/status/2074208714802774174" target="_blank" rel="noopener">[6]</a>。</p><p>這是單一作者的連貫敘事，沒有其他作者對此提出對照或反駁。我的評斷：Jerallaire 作為穩定幣發行方的核心人物，其立場帶有明顯的利益導向——把「代理人經濟」定義成必然發生在鏈上、且以 USDC 為結算層，是為既有資產尋找新敘事的典型做法。這個願景邏輯自洽（機器對機器的微支付確實需要可程式化貨幣），但目前偏願景宣示、缺乏具體採用數據，投資上應視為「主題性期權」而非已驗證趨勢。</p><p class="subhead">TSMC 的護城河：EDA/IP 生態系而非製程本身</p><p>SemiAnalysis 用一整串推文（8 篇）論證了一個與市場主流認知不同的觀點：TSMC 真正的護城河不在 PPA、EUV 或良率，而在於環繞晶圓廠的 EDA/IP 生態系 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074539404454994333" target="_blank" rel="noopener">[16]</a>。其論證鏈條清晰：</p><ul><li>TSMC 的 Open Innovation Platform 已把 Synopsys、Cadence、Arm、Rambus、Alphawave 等 IP 廠商變成「預先驗證的流片網路」，且護城河是可量化的 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074539406766027025" target="_blank" rel="noopener">[15]</a>。</li><li>量化證據是其認證矽智財（SiP）庫從 2010 年的 3K 項成長到 2025 年的 93K 項，成長 31 倍 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074539407877489031" target="_blank" rel="noopener">[14]</a>。附圖顯示這是持續多年的複利式擴張，2022 年後絕對數量加速放大（55K→73K→83K→93K）<a class="cite" href="https://x.com/SemiAnalysis_/status/2074539404454994333" target="_blank" rel="noopener">[16]</a>。</li><li>每多一個預認證的 SerDes、HBM、PCIe、UCIe、記憶體、chiplet 介面模組，就降低在 TSMC 流片的風險，同時抬高把旗艦 ASIC 搬到三星或 Intel 代工的成本 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074539408737398843" target="_blank" rel="noopener">[13]</a>。</li><li>因此客戶不會只因競爭者宣稱更好的 PPA 就換代工廠，只有當「整個設計風險堆疊」能一起遷移才會換——這才是護城河 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074539409790173346" target="_blank" rel="noopener">[12]</a>。</li><li>這是雙向鎖定：晶圓廠用 EDA/IP 生態深化平台鎖定，EDA 廠商則透過代工認證取得與設計者接觸的先機 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074539410754798000" target="_blank" rel="noopener">[11]</a>。</li><li>結論延伸到競爭態勢：三星與 Intel 追趕的不只是 TSMC 的製程路線圖，更是那個「TSMC–EDA/IP 回饋迴路」<a class="cite" href="https://x.com/SemiAnalysis_/status/2074539411862122781" target="_blank" rel="noopener">[10]</a>。</li></ul><p>這同樣是單一機構的深度論述，沒有其他作者的對立觀點。我的評斷：這個框架對半導體投資有實質意涵——它解釋了為何三星、Intel 即使在製程節點上偶有帳面領先，市場份額仍難撼動 TSMC，因為換廠成本是「生態系」而非「單一技術指標」。同時也點出 EDA 三雄（Synopsys、Cadence）與 IP 廠（Arm、Alphawave）處於這條護城河的關鍵節點，具備結構性受益地位。風險提示則在於：這也意味著護城河屬於「生態系綁定」性質，一旦 chiplet 標準化（如 UCIe 開放介面）大幅降低跨廠整合成本，這個護城河理論上可能被削弱，值得後續追蹤。</p><p class="subhead">AI 運算硬體世代效能躍進</p><p>SemiAnalysis 另提供一則硬體效能對比：感謝 NVIDIA、SGLang、RadixArk 團隊，在互動性上達到最高 3.7 倍於 B300 的表現 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074599515256918065" target="_blank" rel="noopener">[8]</a>。附圖以 DeepSeek V4 Pro 1.6T 模型（FP4、8K/1K）為基準，比較 GB300 NVL72（搭配 Dynamo SGLang, MTP）與 B300：在中低互動性區間，GB300 的每 GPU token 吞吐量顯著高於 B300（低互動端約 12k vs 2.6k tok/s/gpu），但兩條曲線在高互動性（約 200 tok/s/user 以上）區間收斂 <a class="cite" href="https://x.com/SemiAnalysis_/status/2074599515256918065" target="_blank" rel="noopener">[8]</a>。</p><p>單一作者發言。我的評斷：這則資料的投資意涵在於量化了 NVIDIA 新世代（GB300 NVL72 機架級方案）相對前代的推論效能提升，且提升主要來自「機架級系統整合＋軟體堆疊（Dynamo/SGLang/MTP）」而非單純晶片本身——與前述 TSMC 護城河「系統與生態勝於單一指標」的論調相互呼應，強化了「整體堆疊競爭力」是這一輪 AI 硬體投資主軸的判斷。</p></div>
   
-  
-  <div class="media">
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2074599515256918065" target="_blank" rel="noopener" title="推文 [8]">
-      <img src="https://pbs.twimg.com/media/HMp1Q7UWUAI1-qM.jpg" alt="推文 [8] 的媒體" loading="lazy">
-      
-    </a>
-    
-    <a class="media-item" href="https://x.com/SemiAnalysis_/status/2074539404454994333" target="_blank" rel="noopener" title="推文 [16]">
-      <img src="https://pbs.twimg.com/media/HMo-l7PXYAAidbh.jpg" alt="推文 [16] 的媒體" loading="lazy">
-      
-    </a>
-    
-  </div>
-  
-
-  
     
     <details class="refs">
-      <summary>來源（13）</summary>
+      <summary>來源與附圖（13）</summary>
       
     <ol>
       
-      <li><a href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">@jerallaire — 推文 [1]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">@jerallaire — 推文 [1]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">@jerallaire — 推文 [2]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">@jerallaire — 推文 [2]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">@jerallaire — 推文 [3]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">@jerallaire — 推文 [3]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jerallaire/status/2074242743656714413" target="_blank" rel="noopener">@jerallaire — 推文 [5]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074242743656714413" target="_blank" rel="noopener">@jerallaire — 推文 [5]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/jerallaire/status/2074208714802774174" target="_blank" rel="noopener">@jerallaire — 推文 [6]</a></li>
+      <li>
+        <a href="https://x.com/jerallaire/status/2074208714802774174" target="_blank" rel="noopener">@jerallaire — 推文 [6]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074599515256918065" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074599515256918065" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMp1Q7UWUAI1-qM.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMp1Q7UWUAI1-qM.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539411862122781" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [10]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539411862122781" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [10]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539410754798000" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [11]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539410754798000" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [11]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539409790173346" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [12]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539409790173346" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [12]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539408737398843" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [13]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539408737398843" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [13]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539407877489031" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [14]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539407877489031" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [14]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539406766027025" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [15]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539406766027025" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [15]</a>
+        
+      </li>
       
-      <li><a href="https://x.com/SemiAnalysis_/status/2074539404454994333" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [16]</a></li>
+      <li>
+        <a href="https://x.com/SemiAnalysis_/status/2074539404454994333" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [16]</a>
+        
+        <span class="refmedia">
+          
+          <a class="thumb" href="https://pbs.twimg.com/media/HMo-l7PXYAAidbh.jpg" data-fig="None" data-type="photo" title="附圖None">
+            <img src="https://pbs.twimg.com/media/HMo-l7PXYAAidbh.jpg" alt="附圖None" loading="lazy">
+            <span class="figno">附圖None</span>
+            
+          </a>
+          
+        </span>
+        
+      </li>
       
     </ol>
 
@@ -985,7 +1727,45 @@
 
   <footer>由 Alphehelix X Bot 自動產生</footer>
 
+  <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="lbClose">&times;</span>
+    <img id="lbImg" src="" alt="預覽">
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+
   <script>
+    (function () {
+      // 圖片預覽（lightbox）：點縮圖或內文 [附圖N] 開啟，不連到 X
+      var lb = document.getElementById('lightbox');
+      var lbImg = document.getElementById('lbImg');
+      var lbCap = document.getElementById('lbCap');
+      function openLb(src, cap) {
+        lbImg.src = src; lbCap.textContent = cap || ''; lb.classList.add('open');
+      }
+      function closeLb() { lb.classList.remove('open'); lbImg.src = ''; }
+      document.getElementById('lbClose').addEventListener('click', closeLb);
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLb(); });
+
+      document.addEventListener('click', function (e) {
+        var thumb = e.target.closest('.thumb');
+        if (thumb) {
+          e.preventDefault();
+          var cap = '附圖' + (thumb.getAttribute('data-fig') || '') +
+                    (thumb.getAttribute('data-type') !== 'photo' ? '（影片畫面預覽）' : '');
+          openLb(thumb.getAttribute('href'), cap);
+          return;
+        }
+        var fig = e.target.closest('.figref');
+        if (fig) {
+          var n = fig.getAttribute('data-fig');
+          var sec = fig.closest('.section') || document;
+          var t = sec.querySelector('.thumb[data-fig="' + n + '"]');
+          if (t) openLb(t.getAttribute('href'),
+                        '附圖' + n + (t.getAttribute('data-type') !== 'photo' ? '（影片畫面預覽）' : ''));
+        }
+      });
+    })();
     (function () {
       var blocks = [].slice.call(document.querySelectorAll('details.hour'));
       var tocList = document.getElementById('tocList');

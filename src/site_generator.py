@@ -18,6 +18,7 @@ _env = Environment(
 )
 
 _CITE_RE = re.compile(r"\[(\d+)\]")
+_FIG_RE = re.compile(r"\[附圖(\d+)\]")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 _HEADER_RE = re.compile(r"^#{1,6}\s+(.*)")
 _BOLD_LINE_RE = re.compile(r"^\*\*(.+?)\*\*[:：]?$")  # 整行都是粗體 → 視為主題小標（靠左）
@@ -26,9 +27,12 @@ _ORDERED_RE = re.compile(r"^\d+[.)]\s+(.*)")
 
 
 def _render_inline(text: str, url_by_n: dict) -> Markup:
-    """行內渲染：先整段 escape，再注入我們認可的 **粗體** 與 [n] 引用連結。"""
-    out = str(escape(text))  # 先 escape，** 與 [n] 都是純字元會保留下來
+    """行內渲染：先整段 escape，再注入 **粗體**、[n] 引用連結、[附圖N] 預覽連結。"""
+    out = str(escape(text))  # 先 escape，**、[n]、[附圖N] 都是純字元會保留
     out = _BOLD_RE.sub(lambda m: f"<strong>{m.group(1)}</strong>", out)
+
+    # [附圖N] 先處理（避免被 [n] 規則吃到數字）
+    out = _FIG_RE.sub(lambda m: f'<span class="figref" data-fig="{m.group(1)}">[附圖{m.group(1)}]</span>', out)
 
     def cite(m: re.Match) -> str:
         n = int(m.group(1))
@@ -92,23 +96,28 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
     return Markup("".join(parts))
 
 
-def _collect_media(references: list[dict]) -> list[dict]:
-    """把各引用推文的媒體攤平成縮圖清單，每張標記所屬推文連結。"""
-    items = []
+def _prepare_refs(references: list[dict]) -> tuple[list[dict], list[dict]]:
+    """回傳 (refs_display, figures)。
+    refs_display：每筆來源推文帶自己的縮圖（含 fig_no）；figures：攤平的圖清單，供 lightbox 用。"""
+    refs_out, figures, seen = [], [], set()
     for ref in references:
+        media = []
         for m in ref.get("media", []):
             if not m.get("image_url"):
                 continue
-            items.append(
-                {
-                    "image_url": m["image_url"],
-                    "tweet_url": ref["url"],
-                    "type": m.get("type", "photo"),
-                    "alt": m.get("alt_text", ""),
-                    "n": ref["n"],
-                }
-            )
-    return items
+            item = {
+                "fig_no": m.get("fig_no"),
+                "image_url": m["image_url"],
+                "type": m.get("type", "photo"),
+                "alt": m.get("alt_text", ""),
+            }
+            media.append(item)
+            if item["fig_no"] and item["fig_no"] not in seen:
+                seen.add(item["fig_no"])
+                figures.append(item)
+        refs_out.append({"n": ref["n"], "url": ref["url"], "author": ref["author"], "media": media})
+    figures.sort(key=lambda f: f["fig_no"] or 0)
+    return refs_out, figures
 
 
 def prepare_sections(raw_sections: list[dict]) -> list[dict]:
@@ -119,12 +128,13 @@ def prepare_sections(raw_sections: list[dict]) -> list[dict]:
         summary = sec["summary"]
         cited = {int(m.group(1)) for m in _CITE_RE.finditer(summary)}
         refs = [r for r in sec["references"] if r["n"] in cited]
+        refs_display, figures = _prepare_refs(refs)
         prepared.append(
             {
                 "label": sec["label"],
                 "summary_html": _render_summary(summary, refs),
-                "references": refs,
-                "media_items": _collect_media(refs),
+                "references": refs_display,
+                "figures": figures,
             }
         )
     return prepared

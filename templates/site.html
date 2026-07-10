@@ -24,13 +24,21 @@
     .summary p.subhead { margin: 12px 0 4px; font-size: 1.02rem; font-weight: 600; color: #333; text-indent: 0; }
     .summary ul, .summary ol { margin: 6px 0; padding-left: 22px; }
     .summary li { margin: 3px 0; }
-    .media { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
-    .media-item { position: relative; display: inline-block; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e2e2; }
-    .media-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .media-item .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; background: rgba(0,0,0,.28); }
     a { color: #1d9bf0; }
     a.cite { font-weight: 600; text-decoration: none; padding: 0 1px; }
     a.cite:hover { text-decoration: underline; }
+    .figref { font-weight: 600; color: #0f7a5a; cursor: pointer; padding: 0 1px; }
+    .figref:hover { text-decoration: underline; }
+    .refmedia { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 2px; }
+    .thumb { position: relative; display: inline-block; width: 108px; height: 108px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e2e2; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb .figno { position: absolute; left: 0; bottom: 0; font-size: 0.68rem; color: #fff; background: rgba(0,0,0,.55); padding: 1px 5px; border-top-right-radius: 6px; }
+    .thumb .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; background: rgba(0,0,0,.28); }
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.82); display: none; align-items: center; justify-content: center; z-index: 50; padding: 24px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 94vw; max-height: 86vh; border-radius: 8px; }
+    .lightbox .lb-cap { position: absolute; bottom: 16px; color: #eee; font-size: 0.85rem; }
+    .lightbox .lb-close { position: absolute; top: 14px; right: 20px; color: #fff; font-size: 1.8rem; cursor: pointer; line-height: 1; }
     details.refs { margin-top: 12px; padding-top: 8px; border-top: 1px dashed #e2e2e2; font-size: 0.85rem; color: #666; }
     details.refs > summary { cursor: pointer; color: #1d9bf0; font-weight: 600; list-style: none; user-select: none; }
     details.refs > summary::-webkit-details-marker { display: none; }
@@ -93,7 +101,45 @@
 
   <footer>由 Alphehelix X Bot 自動產生</footer>
 
+  <div class="lightbox" id="lightbox">
+    <span class="lb-close" id="lbClose">&times;</span>
+    <img id="lbImg" src="" alt="預覽">
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+
   <script>
+    (function () {
+      // 圖片預覽（lightbox）：點縮圖或內文 [附圖N] 開啟，不連到 X
+      var lb = document.getElementById('lightbox');
+      var lbImg = document.getElementById('lbImg');
+      var lbCap = document.getElementById('lbCap');
+      function openLb(src, cap) {
+        lbImg.src = src; lbCap.textContent = cap || ''; lb.classList.add('open');
+      }
+      function closeLb() { lb.classList.remove('open'); lbImg.src = ''; }
+      document.getElementById('lbClose').addEventListener('click', closeLb);
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLb(); });
+
+      document.addEventListener('click', function (e) {
+        var thumb = e.target.closest('.thumb');
+        if (thumb) {
+          e.preventDefault();
+          var cap = '附圖' + (thumb.getAttribute('data-fig') || '') +
+                    (thumb.getAttribute('data-type') !== 'photo' ? '（影片畫面預覽）' : '');
+          openLb(thumb.getAttribute('href'), cap);
+          return;
+        }
+        var fig = e.target.closest('.figref');
+        if (fig) {
+          var n = fig.getAttribute('data-fig');
+          var sec = fig.closest('.section') || document;
+          var t = sec.querySelector('.thumb[data-fig="' + n + '"]');
+          if (t) openLb(t.getAttribute('href'),
+                        '附圖' + n + (t.getAttribute('data-type') !== 'photo' ? '（影片畫面預覽）' : ''));
+        }
+      });
+    })();
     (function () {
       var blocks = [].slice.call(document.querySelectorAll('details.hour'));
       var tocList = document.getElementById('tocList');

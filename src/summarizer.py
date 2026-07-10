@@ -45,7 +45,8 @@ DEFAULT_SYSTEM_PROMPT = (
     "主題名稱盡量對齊產業關係圖用語。\n"
     "2. 引用作者具體發言時附 [n]；只用實際引用到的編號。\n"
     "3. 絕對不要在內文貼任何網址或連結。\n"
-    "4. 若某則推文附有圖片，看懂並在【事實彙整】中帶入重點，一樣用 [n]。\n"
+    "4. 若某則推文附有圖片/影片，看懂並在【事實彙整】中帶入重點；若文中提到某張圖片/影片的內容，"
+    "用 [附圖N] 標示（N 為圖片編號），並一樣用 [n] 標推文來源。\n"
     "5. 嚴格排除任何宣傳、行銷、業配、招攬或推銷付費/訂閱服務的內容：主要目的是推銷或吸引訂閱的推文整則忽略，"
     "不摘要、不描述其圖片、不引用其編號，也不要加「某則在推銷故不納入」這類附註。\n"
     "6. 不要捏造推文或圖片沒有的資訊，不要多餘的開場白或結語，只輸出彙整本身。"
@@ -84,13 +85,24 @@ def _format_tweets_for_prompt(tweets: list[dict]) -> str:
     return "\n".join(lines)
 
 
+def _assign_figures(tweets: list[dict]) -> int:
+    """依推文順序給每張圖片編號（fig_no），供內文以 [附圖N] 引用與顯示對照。"""
+    k = 0
+    for t in tweets:
+        for m in t.get("media", []):
+            if m.get("image_url"):
+                k += 1
+                m["fig_no"] = k
+    return k
+
+
 def _build_multimodal_content(label: str, tweets: list[dict]) -> list[dict]:
-    """把推文與其圖片交錯成多模態 content：每則推文文字後面接上該則的圖片。"""
+    """把推文與其圖片交錯成多模態 content：每則推文文字後面接上該則的圖片（含 [附圖N] 標號）。"""
     content: list[dict] = [
         {
             "type": "text",
             "text": f"以下是「{label}」相關、來自多位作者在這段期間的推文（共 {len(tweets)} 則）。"
-                    "請依你被賦予的規則，做跨作者的觀點彙整與評斷（依主題組織、指出異同、加入判斷）：",
+                    "請依你被賦予的規則彙整；若在文中提到某張圖片/影片內容，用 [附圖N] 標示（N 見圖片標號）：",
         }
     ]
     image_budget = MAX_IMAGES_PER_GROUP
@@ -102,8 +114,8 @@ def _build_multimodal_content(label: str, tweets: list[dict]) -> list[dict]:
             url = m.get("image_url")
             if not url:
                 continue
-            label_txt = "（此推文附影片，以下為影片畫面縮圖）" if m.get("type") != "photo" else "（此推文附圖片）"
-            content.append({"type": "text", "text": f"[{idx}] {label_txt}"})
+            kind = "影片畫面" if m.get("type") != "photo" else "圖片"
+            content.append({"type": "text", "text": f"附圖{m.get('fig_no')}（來自推文[{idx}]，{kind}）："})
             content.append({"type": "image_url", "image_url": {"url": url}})
             image_budget -= 1
     return content
@@ -122,6 +134,7 @@ def summarize_group(
     if not tweets:
         return None
 
+    _assign_figures(tweets)  # 給圖片編號（供 [附圖N] 引用與顯示對照）
     intro = (
         f"以下是「{label}」相關、來自多位作者在這段期間的推文（共 {len(tweets)} 則）。"
         f"請依你被賦予的規則，做跨作者的觀點彙整與評斷（依主題／子主題組織、指出異同、加入判斷）："
