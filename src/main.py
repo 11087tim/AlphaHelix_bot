@@ -127,7 +127,7 @@ def run_fetch(cfg: Config) -> int:
 
 
 def run_synthesis(cfg: Config) -> int:
-    """每天三次執行：對累積的所有作者貼文做跨作者觀點彙整 → 更新網站 → 自動 push → 寄信 → 清空待彙整。"""
+    """每天兩次執行：對累積的所有作者貼文做跨作者觀點彙整 → 更新網站 → 自動 push → 寄信 → 清空待彙整。"""
     pending = PendingStore()
     tweets = pending.all()
     if not tweets:
