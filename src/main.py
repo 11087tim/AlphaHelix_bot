@@ -90,11 +90,13 @@ def _resolve_describe_media(cfg: Config) -> bool:
     return True
 
 
-def _analyze(label: str, tweets: list[dict], cfg: Config, describe_media: bool) -> dict | None:
+def _analyze(label: str, tweets: list[dict], cfg: Config, describe_media: bool,
+             graph_context: str | None = None) -> dict | None:
     result = summarizer.summarize_group(
         tweets, label, cfg.openrouter_api_key, cfg.openrouter_model,
         describe_media=describe_media,
         system_prompt=cfg.openrouter_system_prompt or None,
+        graph_context=graph_context,
     )
     if result and result["summary"]:
         return {"label": label, "summary": result["summary"], "references": result["references"]}
@@ -133,6 +135,7 @@ def run_synthesis(cfg: Config) -> int:
         return 0
 
     describe_media = _resolve_describe_media(cfg)
+    graph_context = graph_link.load_graph_context()  # 讓 Opus 判讀時可延伸供應鏈關聯
 
     # 所有帳號作者合成一份跨作者觀點分析；關鍵字各自一份（本身即跨作者）
     account_tweets = [t for t in tweets if str(t.get("source", "")).startswith("account:")]
@@ -144,14 +147,14 @@ def run_synthesis(cfg: Config) -> int:
 
     account_sections = []
     if account_tweets:
-        sec = _analyze("追蹤作者", account_tweets, cfg, describe_media)
+        sec = _analyze("追蹤作者", account_tweets, cfg, describe_media, graph_context)
         if sec:
             sec["label"] = ""  # 跨作者彙整，不用單一 handle 當標題
             account_sections = [sec]
 
     keyword_sections = []
     for kw, kws in keyword_map.items():
-        sec = _analyze(kw, kws, cfg, describe_media)
+        sec = _analyze(kw, kws, cfg, describe_media, graph_context)
         if sec:
             keyword_sections.append(sec)
 
@@ -168,7 +171,6 @@ def run_synthesis(cfg: Config) -> int:
         "model": cfg.openrouter_model,
         "account_sections": account_sections,
         "keyword_sections": keyword_sections,
-        "relevance": graph_link.compute_relevance(account_sections + keyword_sections),
     }
 
     digest_store = DigestStore()

@@ -21,6 +21,23 @@ class Graph:
         """hold=有部位、watch=關注中。"""
         return "hold" if ticker in self.holdings else "watch"
 
+    def to_prompt_context(self) -> str:
+        """把關係圖整理成給 LLM 參考的精簡文字（供推導供應鏈關聯用）。"""
+        lines = ["【產業關係圖（僅供你延伸推導用，不是要你逐條複述）】",
+                 "＊主題／子主題 → 相關公司："]
+        for t in self.themes:
+            for st in t.get("subthemes", []):
+                comps = "、".join(st.get("companies") or []) or "—"
+                al = f"（別名：{'、'.join(map(str, st.get('aliases') or []))}）" if st.get("aliases") else ""
+                lines.append(f"- {t['name']} / {st['name']}{al}：{comps}")
+        lines.append("＊公司供應鏈關係（上游供應商｜下游客戶｜競爭對手）：")
+        for tk, c in self.companies.items():
+            up = "、".join(c.get("upstream") or []) or "—"
+            down = "、".join(c.get("downstream") or []) or "—"
+            comp = "、".join(c.get("competitors") or []) or "—"
+            lines.append(f"- {tk}（{c.get('name', '')}）：上游[{up}]｜下游[{down}]｜競對[{comp}]")
+        return "\n".join(lines)
+
     def mentions(self, text: str) -> tuple[list[str], list[str]]:
         """在一段文字中找出提到的（公司 ticker、主題/子題）。回傳 (tickers, themes)。"""
         low = text.lower()

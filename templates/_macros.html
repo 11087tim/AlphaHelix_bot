@@ -38,13 +38,6 @@
 {% endmacro %}
 
 {% macro hour_body(d, collapsible_refs=false) %}
-  {% if d.relevance and (d.relevance.companies or d.relevance.themes) %}
-  <div class="relevance">
-    <span class="rlabel">關注雷達</span>
-    {% for c in d.relevance.companies %}<a class="tag co" href="https://x.com/search?q=%24{{ c.ticker }}" target="_blank" rel="noopener" title="{{ c.name }}">{{ c.ticker }}</a>{% endfor %}
-    {% for th in d.relevance.themes %}<span class="tag th">{{ th }}</span>{% endfor %}
-  </div>
-  {% endif %}
   {% if d.account_sections %}
   <h3 class="cat">📌 追蹤作者觀點彙整</h3>
   {% for sec in d.account_sections %}

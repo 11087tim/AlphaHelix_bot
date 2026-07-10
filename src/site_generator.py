@@ -137,7 +137,6 @@ def _prepare_digest(d: dict) -> dict:
         "generated_at": d["generated_at"],
         "date": d["generated_at"].split(" ")[0],  # YYYY-MM-DD，供日期篩選用
         "model": d.get("model", ""),
-        "relevance": d.get("relevance") or {},
         "account_sections": prepare_sections(d.get("account_sections", [])),
         "keyword_sections": prepare_sections(d.get("keyword_sections", [])),
     }
