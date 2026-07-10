@@ -202,6 +202,20 @@ def run_synthesis(cfg: Config) -> int:
     return 0
 
 
+def run_render(cfg: Config) -> int:
+    """只用既有 digests 重新產生網站（不抓取、不呼叫 LLM）；改版型/樣板後用來更新。"""
+    digest_store = DigestStore()
+    digests = digest_store.recent(SITE_HOURS)
+    if not digests:
+        logger.info("沒有既有 digest 可重新渲染。")
+        return 0
+    site_generator.render_site(cfg.site_title, digests, cfg.site_output_dir)
+    if cfg.site_auto_push:
+        publisher.publish_docs()
+    logger.info("已重新渲染網站（%d 個時段）。", len(digests))
+    return 0
+
+
 def run(mode: str) -> int:
     try:
         cfg = load_config()
@@ -213,10 +227,12 @@ def run(mode: str) -> int:
         return run_synthesis(cfg)
     if mode == "fetch":
         return run_fetch(cfg)
+    if mode == "render":  # 只重新產生網站（樣板改版後用）
+        return run_render(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis / run）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis / render / run）", mode)
     return 2
 
 

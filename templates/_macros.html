@@ -3,17 +3,6 @@
       {% for ref in references %}
       <li>
         <a href="{{ ref.url }}" target="_blank" rel="noopener">@{{ ref.author }} — 推文 [{{ ref.n }}]</a>
-        {% if ref.media %}
-        <span class="refmedia">
-          {% for m in ref.media %}
-          <a class="thumb" href="{{ m.image_url }}" data-fig="{{ m.fig_no }}" data-type="{{ m.type }}" title="附圖{{ m.fig_no }}{% if m.alt %}：{{ m.alt }}{% endif %}">
-            <img src="{{ m.image_url }}" alt="{{ m.alt or ('附圖' ~ m.fig_no) }}" loading="lazy">
-            <span class="figno">附圖{{ m.fig_no }}</span>
-            {% if m.type != 'photo' %}<span class="play">▶</span>{% endif %}
-          </a>
-          {% endfor %}
-        </span>
-        {% endif %}
       </li>
       {% endfor %}
     </ol>
@@ -24,12 +13,12 @@
   {% if sec.references %}
     {% if collapsible_refs %}
     <details class="refs">
-      <summary>來源與附圖（{{ sec.references|length }}）</summary>
+      <summary>來源（{{ sec.references|length }}）</summary>
       {{ _refs_list(sec.references) }}
     </details>
     {% else %}
     <div class="refs">
-      來源與附圖：
+      來源：
       {{ _refs_list(sec.references) }}
     </div>
     {% endif %}

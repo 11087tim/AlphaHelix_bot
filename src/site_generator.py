@@ -45,9 +45,8 @@ def _render_inline(text: str, url_by_n: dict) -> Markup:
     return Markup(out)
 
 
-def _render_summary(summary: str, references: list[dict]) -> Markup:
-    """把 LLM 產出的 Markdown-lite 摘要（粗體/條列/標題/[n] 引用）渲染成安全的 HTML。"""
-    url_by_n = {ref["n"]: ref["url"] for ref in references}
+def _render_lines(lines: list[str], url_by_n: dict) -> str:
+    """把一段 Markdown-lite 文字（粗體/條列/標題/[n] 引用）渲染成安全的 HTML 片段。"""
     parts: list[str] = []
     list_items: list[str] = []
     list_tag = ""  # "ul" 或 "ol"
@@ -60,7 +59,7 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
             list_items.clear()
             list_tag = ""
 
-    for raw in summary.split("\n"):
+    for raw in lines:
         line = raw.strip()
         if not line:
             flush_list()
@@ -93,15 +92,14 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
         parts.append(f"<p>{_render_inline(line, url_by_n)}</p>")
 
     flush_list()
-    return Markup("".join(parts))
+    return "".join(parts)
 
 
-def _prepare_refs(references: list[dict]) -> tuple[list[dict], list[dict]]:
-    """回傳 (refs_display, figures)。
-    refs_display：每筆來源推文帶自己的縮圖（含 fig_no）；figures：攤平的圖清單，供 lightbox 用。"""
-    refs_out, figures, seen = [], [], set()
+def _media_maps(references: list[dict]) -> tuple[dict, dict]:
+    """建立 n→media清單 與 fig_no→media 對照，供行內附圖使用。"""
+    media_by_n: dict[int, list[dict]] = {}
+    fig_by_no: dict[int, dict] = {}
     for ref in references:
-        media = []
         for m in ref.get("media", []):
             if not m.get("image_url"):
                 continue
@@ -111,30 +109,83 @@ def _prepare_refs(references: list[dict]) -> tuple[list[dict], list[dict]]:
                 "type": m.get("type", "photo"),
                 "alt": m.get("alt_text", ""),
             }
-            media.append(item)
-            if item["fig_no"] and item["fig_no"] not in seen:
-                seen.add(item["fig_no"])
-                figures.append(item)
-        refs_out.append({"n": ref["n"], "url": ref["url"], "author": ref["author"], "media": media})
-    figures.sort(key=lambda f: f["fig_no"] or 0)
-    return refs_out, figures
+            media_by_n.setdefault(ref["n"], []).append(item)
+            if item["fig_no"]:
+                fig_by_no[item["fig_no"]] = item
+    return media_by_n, fig_by_no
+
+
+def _figs_html(items: list[dict]) -> str:
+    """把一組附圖渲染成一列縮圖（點擊開 lightbox 預覽，不連到 X）。"""
+    cells = []
+    for m in items:
+        alt = escape(m["alt"] or f"附圖{m['fig_no']}")
+        play = '<span class="play">▶</span>' if m["type"] != "photo" else ""
+        cells.append(
+            f'<a class="thumb" href="{escape(m["image_url"])}" data-fig="{m["fig_no"]}" '
+            f'data-type="{escape(m["type"])}" title="附圖{m["fig_no"]}">'
+            f'<img src="{escape(m["image_url"])}" alt="{alt}" loading="lazy">'
+            f'<span class="figno">附圖{m["fig_no"]}</span>{play}</a>'
+        )
+    return '<div class="secfigs">' + "".join(cells) + "</div>"
+
+
+def _split_segments(summary: str) -> list[list[str]]:
+    """依大主題 `## ` 或子主題 `**標題**` 標題切段，讓每段可各自附上引用到的附圖。"""
+    segments: list[list[str]] = []
+    cur: list[str] = []
+    for raw in summary.split("\n"):
+        line = raw.strip()
+        is_head = _HEADER_RE.match(line) or _BOLD_LINE_RE.match(line)
+        if is_head and any(x.strip() for x in cur):
+            segments.append(cur)
+            cur = []
+        cur.append(raw)
+    if cur:
+        segments.append(cur)
+    return segments
+
+
+def _render_summary(summary: str, references: list[dict]) -> Markup:
+    """渲染摘要 HTML；每個大/小主題段落若引用到有圖的推文，把縮圖放在該段（延伸推論）下方。"""
+    url_by_n = {ref["n"]: ref["url"] for ref in references}
+    media_by_n, fig_by_no = _media_maps(references)
+
+    out: list[str] = []
+    for seg in _split_segments(summary):
+        out.append(_render_lines(seg, url_by_n))
+        text = "\n".join(seg)
+        figs: dict[int, dict] = {}
+        # 該段引用到的推文若有附圖，一併呈現
+        for m in _CITE_RE.finditer(text):
+            for item in media_by_n.get(int(m.group(1)), []):
+                if item["fig_no"]:
+                    figs[item["fig_no"]] = item
+        # 內文明確以 [附圖N] 提到的圖
+        for m in _FIG_RE.finditer(text):
+            fn = int(m.group(1))
+            if fn in fig_by_no:
+                figs[fn] = fig_by_no[fn]
+        if figs:
+            out.append(_figs_html(sorted(figs.values(), key=lambda f: f["fig_no"] or 0)))
+    return Markup("".join(out))
 
 
 def prepare_sections(raw_sections: list[dict]) -> list[dict]:
     """把 summarizer 產出的 section（含 Markdown-lite 摘要與 references）轉成可直接渲染的資料。
-    只呈現摘要實際引用到的來源與媒體：被模型忽略（如宣傳/訂閱推銷）的推文不會顯示連結或縮圖。"""
+    附圖跟著各主題段落走（放在段落下方）；底部只留純文字來源清單 [n]。
+    只呈現摘要實際引用到的來源：被模型忽略（如宣傳/訂閱推銷）的推文不會顯示。"""
     prepared = []
     for sec in raw_sections:
         summary = sec["summary"]
         cited = {int(m.group(1)) for m in _CITE_RE.finditer(summary)}
         refs = [r for r in sec["references"] if r["n"] in cited]
-        refs_display, figures = _prepare_refs(refs)
+        refs_display = [{"n": r["n"], "url": r["url"], "author": r["author"]} for r in refs]
         prepared.append(
             {
                 "label": sec["label"],
                 "summary_html": _render_summary(summary, refs),
                 "references": refs_display,
-                "figures": figures,
             }
         )
     return prepared
