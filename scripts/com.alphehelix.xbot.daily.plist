@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  每天 2 次（台灣時間 08:00 / 20:00）跑一次：收集(13h 窗) → 跨作者彙整 → 更新網站 → 自動 push → 寄信。
+  排程時間依 Mac 系統本地時區，請確認系統時區為 Asia/Taipei。
+  安裝：
+    cp scripts/com.alphehelix.xbot.daily.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.daily.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.alphehelix.xbot.daily</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/chenyanting/Alphehelix_X_bot/.venv/bin/python</string>
+        <string>-m</string>
+        <string>src.main</string>
+        <string>run</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/chenyanting/Alphehelix_X_bot</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict>
+            <key>Hour</key><integer>8</integer>
+            <key>Minute</key><integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key><integer>20</integer>
+            <key>Minute</key><integer>0</integer>
+        </dict>
+    </array>
+
+    <key>StandardOutPath</key>
+    <string>/Users/chenyanting/Alphehelix_X_bot/xbot.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/chenyanting/Alphehelix_X_bot/xbot.log</string>
+</dict>
+</plist>

@@ -210,11 +210,14 @@ def run(mode: str) -> int:
         return run_synthesis(cfg)
     if mode == "fetch":
         return run_fetch(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis）", mode)
+    if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
+        run_fetch(cfg)
+        return run_synthesis(cfg)
+    logger.error("未知模式：%s（可用：fetch / synthesis / run）", mode)
     return 2
 
 
 if __name__ == "__main__":
-    # 用法：python -m src.main [fetch|synthesis]，預設 fetch
+    # 用法：python -m src.main [fetch|synthesis|run]，預設 fetch
     mode = sys.argv[1] if len(sys.argv) > 1 else "fetch"
     sys.exit(run(mode))
