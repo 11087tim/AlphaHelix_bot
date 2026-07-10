@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import yaml
@@ -12,7 +13,54 @@ class Graph:
     def __init__(self, data: dict):
         self.themes = data.get("themes", []) or []
         self.companies = data.get("companies", {}) or {}
+        self.holdings = {str(t) for t in (data.get("holdings") or [])}  # 有實際部位者
+        self._normalize()
         self._alias_index = self._build_alias_index()
+
+    def status(self, ticker: str) -> str:
+        """hold=有部位、watch=關注中。"""
+        return "hold" if ticker in self.holdings else "watch"
+
+    def mentions(self, text: str) -> tuple[list[str], list[str]]:
+        """在一段文字中找出提到的（公司 ticker、主題/子題）。回傳 (tickers, themes)。"""
+        low = text.lower()
+        tickers: list[str] = []
+        for ticker, c in self.companies.items():
+            hit = False
+            # ticker 用字界比對（避免 TSM 命中 TSMC、MU 命中 much）；允許 $TSM
+            if re.search(rf"\$?\b{re.escape(ticker)}\b", text):
+                hit = True
+            else:  # 公司名/別名用子字串（含中文）
+                for a in [c.get("name", "")] + (c.get("aka") or []):
+                    a = str(a).strip().lower()
+                    if len(a) >= 2 and a in low:
+                        hit = True
+                        break
+            if hit and ticker not in tickers:
+                tickers.append(ticker)
+
+        themes: list[str] = []
+        for t in self.themes:
+            for st in t.get("subthemes", []):
+                for a in [st["name"]] + (st.get("aliases") or []):
+                    if len(str(a)) >= 2 and str(a).lower() in low:
+                        label = f"{t['name']}/{st['name']}"
+                        if label not in themes:
+                            themes.append(label)
+                        break
+        return tickers, themes
+
+    def _normalize(self) -> None:
+        """把 ticker 一律轉成字串（YAML 會把 5201/2330 這類數字代號解析成 int）。"""
+        self.companies = {str(k): v for k, v in self.companies.items()}
+        for c in self.companies.values():
+            for rel in ("upstream", "downstream", "competitors"):
+                if c.get(rel):
+                    c[rel] = [str(x) for x in c[rel]]
+        for t in self.themes:
+            for st in t.get("subthemes", []):
+                if st.get("companies"):
+                    st["companies"] = [str(x) for x in st["companies"]]
 
     def _build_alias_index(self) -> dict[str, str]:
         """別名/名稱（正規化）→ ticker，供實體標記用。"""

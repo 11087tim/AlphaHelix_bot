@@ -1,6 +1,9 @@
 # === 供應鏈 / 主題關係圖 — 格式範本 ===
 # 實際檔案 graph.yaml 含個人持股，已 gitignore。複製本檔為 graph.yaml 再填。
 # ticker 為主鍵；別名用 aka/aliases 收；關係邊可指向圖外實體。
+# companies 是你的「關注宇宙」；holdings 標記其中有實際部位者（可省略）。
+
+holdings: [GLW]
 
 themes:
   - name: 光通訊

@@ -7,7 +7,7 @@ from datetime import datetime
 # 支援兩種執行方式：`python -m src.main`（套件）或 `python src/main.py`（腳本）
 if __package__:
     from .config import Config, ConfigError, load_config
-    from . import x_client, summarizer, site_generator, emailer, publisher
+    from . import x_client, summarizer, site_generator, emailer, publisher, graph_link
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore
@@ -16,7 +16,7 @@ else:
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
-    from src import x_client, summarizer, site_generator, emailer, publisher
+    from src import x_client, summarizer, site_generator, emailer, publisher, graph_link
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore
@@ -168,6 +168,7 @@ def run_synthesis(cfg: Config) -> int:
         "model": cfg.openrouter_model,
         "account_sections": account_sections,
         "keyword_sections": keyword_sections,
+        "relevance": graph_link.compute_relevance(account_sections + keyword_sections),
     }
 
     digest_store = DigestStore()
