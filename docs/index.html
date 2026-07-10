@@ -30,7 +30,8 @@
     .figref { font-weight: 600; color: #0f7a5a; cursor: pointer; padding: 0 1px; }
     .figref:hover { text-decoration: underline; }
     .refmedia { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 2px; }
-    .thumb { position: relative; display: inline-block; width: 108px; height: 108px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e2e2; }
+    .secfigs { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
+    .thumb { position: relative; display: inline-block; width: 108px; height: 108px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e2e2; cursor: zoom-in; }
     .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .thumb .figno { position: absolute; left: 0; bottom: 0; font-size: 0.68rem; color: #fff; background: rgba(0,0,0,.55); padding: 1px 5px; border-top-right-radius: 6px; }
     .thumb .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; background: rgba(0,0,0,.28); }
@@ -77,7 +78,7 @@
   </nav>
 
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-07-10 18:43｜每天彙整三次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-07-10 18:52｜每天彙整三次，點各時段標題可展開/收合</p>
 
   
   <div class="datebar">
@@ -108,18 +109,16 @@
   
     
     <details class="refs">
-      <summary>來源與附圖（2）</summary>
+      <summary>來源（2）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075528492767400215" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [1]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Superposition_V/status/2075530349376135438" target="_blank" rel="noopener">@Superposition_V — 推文 [2]</a>
-        
       </li>
       
     </ol>
@@ -144,102 +143,44 @@
   <div class="section">
     
     
-  <div class="summary"><p class="maintopic">加密貨幣安全與洗錢</p><p class="subhead">Gate 交易所事件與 Xinbi 黑市</p><p>一、【事實彙整】</p><p>@_FORAB 指出，在 Gate 宣布要協助受害者追回資產後，鏈上追蹤博主 ZachXBT 表示受害者的資金已被轉移到亞洲最大洗錢黑市之一的 Xinbi，該平台此前曾遭英國政府制裁 <a class="cite" href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">[1]</a>。作者補充，一般正常用戶通常不會與該黑市有轉帳紀錄，因為會遭遇各交易所與監管機構的風控制裁 <a class="cite" href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">[1]</a>。附圖說明 Xinbi 是以中文為主要語言、以加密貨幣為交易媒介的網路黑市，犯罪分子可從中取得詐騙、洗錢相關的服務與工具（如遭竊個資、偽造身分文件）；Xinbi 曾遭揭露為竊取虛擬資產的北韓駭客洗錢，英國是第一個對其實施制裁的國家，其客戶包括柬埔寨最大詐騙園區 8 Park <span class="figref" data-fig="1">[附圖1]</span><a class="cite" href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">[1]</a>。</p><p class="maintopic">AI 模型／具身智能</p><p class="subhead">LingBot-Video 具身影片基礎模型（Robbyant／Ant Group）</p><p>一、【事實彙整】</p><p>@AIFrontliner 介紹來自螞蟻集團旗下具身 AI 公司 Robbyant 的 LingBot-Video 模型 <a class="cite" href="https://x.com/AIFrontliner/status/2075523161177620496" target="_blank" rel="noopener">[7]</a>。相關要點：</p><ul><li>團隊將其定位為首個大規模開源 MoE 架構、面向具身（embodiment）的影片基礎模型；採稀疏 MoE，總參數 30B、每步僅啟用 3B；在 1M token 序列下約比同規模的 dense 30B 快 3 倍（3.18x）<a class="cite" href="https://x.com/AIFrontliner/status/2075523227493736934" target="_blank" rel="noopener">[6]</a>。</li><li>模型的物理理解來自資料與獎勵而非外觀；預訓練在網路級標準影片之外，加入超過 70,000 小時面向具身的資料，涵蓋操作、導航、第一人稱視角與多種機器人形態（含人形與四足）<a class="cite" href="https://x.com/AIFrontliner/status/2075523297152823298" target="_blank" rel="noopener">[5]</a>。</li><li>作者以「要求影片模型倒一杯水，水卻直接穿過玻璃杯」為例，說明現有模型看似完美但物理錯誤，而正確的物理正是機器人所需 <a class="cite" href="https://x.com/AIFrontliner/status/2075523161177620496" target="_blank" rel="noopener">[7]</a>。</li><li>在 RBench 上取得最高平均分 0.620，領先所有開源與閉源模型（Wan 2.6 次之 0.607）；並在論文內部 TI2V 基準上居開源之首。該模型在 manipulation 與 quadruped 領先，Wan 2.6 則在 spatial 與 arm 欄位居前，作者形容為「領先但非橫掃」<a class="cite" href="https://x.com/AIFrontliner/status/2075523363284349203" target="_blank" rel="noopener">[4]</a>。</li><li>權重、程式碼與論文皆開源，並提供 demos、benchmarks、models、code 等連結 <a class="cite" href="https://x.com/AIFrontliner/status/2075523367830974734" target="_blank" rel="noopener">[3]</a>。</li></ul><p>🤖 延伸推論：此主題聚焦模型演算法與開源基準表現，推文未提及任何晶片、記憶體或代工等硬體供應鏈的採用細節，故不對產業關係圖上的公司做延伸推導。就趨勢面，具身 AI／世界模型的物理正確性成為競爭焦點，中國大廠（螞蟻）以開源 MoE 切入，反映該賽道熱度持續升溫。</p><p>（推文 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075527799255998624" target="_blank" rel="noopener">[2]</a>、<a class="cite" href="https://x.com/michaeljburry/status/2075522804057878635" target="_blank" rel="noopener">[8]</a> 與追蹤主題無關，不予彙整。）</p></div>
+  <div class="summary"><p class="maintopic">加密貨幣安全與洗錢</p><p class="subhead">Gate 交易所事件與 Xinbi 黑市</p><p>一、【事實彙整】</p><p>@_FORAB 指出，在 Gate 宣布要協助受害者追回資產後，鏈上追蹤博主 ZachXBT 表示受害者的資金已被轉移到亞洲最大洗錢黑市之一的 Xinbi，該平台此前曾遭英國政府制裁 <a class="cite" href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">[1]</a>。作者補充，一般正常用戶通常不會與該黑市有轉帳紀錄，因為會遭遇各交易所與監管機構的風控制裁 <a class="cite" href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">[1]</a>。附圖說明 Xinbi 是以中文為主要語言、以加密貨幣為交易媒介的網路黑市，犯罪分子可從中取得詐騙、洗錢相關的服務與工具（如遭竊個資、偽造身分文件）；Xinbi 曾遭揭露為竊取虛擬資產的北韓駭客洗錢，英國是第一個對其實施制裁的國家，其客戶包括柬埔寨最大詐騙園區 8 Park <span class="figref" data-fig="1">[附圖1]</span><a class="cite" href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">[1]</a>。</p><div class="secfigs"><a class="thumb" href="https://pbs.twimg.com/media/HM29u12aAAA4w-7.png" data-fig="1" data-type="photo" title="附圖1"><img src="https://pbs.twimg.com/media/HM29u12aAAA4w-7.png" alt="附圖1" loading="lazy"><span class="figno">附圖1</span></a></div><p class="maintopic">AI 模型／具身智能</p><p class="subhead">LingBot-Video 具身影片基礎模型（Robbyant／Ant Group）</p><p>一、【事實彙整】</p><p>@AIFrontliner 介紹來自螞蟻集團旗下具身 AI 公司 Robbyant 的 LingBot-Video 模型 <a class="cite" href="https://x.com/AIFrontliner/status/2075523161177620496" target="_blank" rel="noopener">[7]</a>。相關要點：</p><ul><li>團隊將其定位為首個大規模開源 MoE 架構、面向具身（embodiment）的影片基礎模型；採稀疏 MoE，總參數 30B、每步僅啟用 3B；在 1M token 序列下約比同規模的 dense 30B 快 3 倍（3.18x）<a class="cite" href="https://x.com/AIFrontliner/status/2075523227493736934" target="_blank" rel="noopener">[6]</a>。</li><li>模型的物理理解來自資料與獎勵而非外觀；預訓練在網路級標準影片之外，加入超過 70,000 小時面向具身的資料，涵蓋操作、導航、第一人稱視角與多種機器人形態（含人形與四足）<a class="cite" href="https://x.com/AIFrontliner/status/2075523297152823298" target="_blank" rel="noopener">[5]</a>。</li><li>作者以「要求影片模型倒一杯水，水卻直接穿過玻璃杯」為例，說明現有模型看似完美但物理錯誤，而正確的物理正是機器人所需 <a class="cite" href="https://x.com/AIFrontliner/status/2075523161177620496" target="_blank" rel="noopener">[7]</a>。</li><li>在 RBench 上取得最高平均分 0.620，領先所有開源與閉源模型（Wan 2.6 次之 0.607）；並在論文內部 TI2V 基準上居開源之首。該模型在 manipulation 與 quadruped 領先，Wan 2.6 則在 spatial 與 arm 欄位居前，作者形容為「領先但非橫掃」<a class="cite" href="https://x.com/AIFrontliner/status/2075523363284349203" target="_blank" rel="noopener">[4]</a>。</li><li>權重、程式碼與論文皆開源，並提供 demos、benchmarks、models、code 等連結 <a class="cite" href="https://x.com/AIFrontliner/status/2075523367830974734" target="_blank" rel="noopener">[3]</a>。</li></ul><p>🤖 延伸推論：此主題聚焦模型演算法與開源基準表現，推文未提及任何晶片、記憶體或代工等硬體供應鏈的採用細節，故不對產業關係圖上的公司做延伸推導。就趨勢面，具身 AI／世界模型的物理正確性成為競爭焦點，中國大廠（螞蟻）以開源 MoE 切入，反映該賽道熱度持續升溫。</p><p>（推文 <a class="cite" href="https://x.com/Alisvolatprop12/status/2075527799255998624" target="_blank" rel="noopener">[2]</a>、<a class="cite" href="https://x.com/michaeljburry/status/2075522804057878635" target="_blank" rel="noopener">[8]</a> 與追蹤主題無關，不予彙整。）</p><div class="secfigs"><a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523301212839936/img/9CowXru0LMgZ9ESN.jpg" data-fig="2" data-type="video" title="附圖2"><img src="https://pbs.twimg.com/amplify_video_thumb/2075523301212839936/img/9CowXru0LMgZ9ESN.jpg" alt="附圖2" loading="lazy"><span class="figno">附圖2</span><span class="play">▶</span></a><a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523233067978752/img/TPAJFAEwHguFPYn4.jpg" data-fig="3" data-type="video" title="附圖3"><img src="https://pbs.twimg.com/amplify_video_thumb/2075523233067978752/img/TPAJFAEwHguFPYn4.jpg" alt="附圖3" loading="lazy"><span class="figno">附圖3</span><span class="play">▶</span></a><a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523165443305472/img/gatOKPXhmmAwUaYM.jpg" data-fig="4" data-type="video" title="附圖4"><img src="https://pbs.twimg.com/amplify_video_thumb/2075523165443305472/img/gatOKPXhmmAwUaYM.jpg" alt="附圖4" loading="lazy"><span class="figno">附圖4</span><span class="play">▶</span></a><a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523078621114368/img/AkLISjjENAHkg4rV.jpg" data-fig="5" data-type="video" title="附圖5"><img src="https://pbs.twimg.com/amplify_video_thumb/2075523078621114368/img/AkLISjjENAHkg4rV.jpg" alt="附圖5" loading="lazy"><span class="figno">附圖5</span><span class="play">▶</span></a></div></div>
   
     
     <details class="refs">
-      <summary>來源與附圖（8）</summary>
+      <summary>來源（8）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075523781817413860" target="_blank" rel="noopener">@_FORAB — 推文 [1]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM29u12aAAA4w-7.png" data-fig="1" data-type="photo" title="附圖1">
-            <img src="https://pbs.twimg.com/media/HM29u12aAAA4w-7.png" alt="附圖1" loading="lazy">
-            <span class="figno">附圖1</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075527799255998624" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [2]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/AIFrontliner/status/2075523367830974734" target="_blank" rel="noopener">@AIFrontliner — 推文 [3]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/AIFrontliner/status/2075523363284349203" target="_blank" rel="noopener">@AIFrontliner — 推文 [4]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523301212839936/img/9CowXru0LMgZ9ESN.jpg" data-fig="2" data-type="video" title="附圖2">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075523301212839936/img/9CowXru0LMgZ9ESN.jpg" alt="附圖2" loading="lazy">
-            <span class="figno">附圖2</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/AIFrontliner/status/2075523297152823298" target="_blank" rel="noopener">@AIFrontliner — 推文 [5]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523233067978752/img/TPAJFAEwHguFPYn4.jpg" data-fig="3" data-type="video" title="附圖3">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075523233067978752/img/TPAJFAEwHguFPYn4.jpg" alt="附圖3" loading="lazy">
-            <span class="figno">附圖3</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/AIFrontliner/status/2075523227493736934" target="_blank" rel="noopener">@AIFrontliner — 推文 [6]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523165443305472/img/gatOKPXhmmAwUaYM.jpg" data-fig="4" data-type="video" title="附圖4">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075523165443305472/img/gatOKPXhmmAwUaYM.jpg" alt="附圖4" loading="lazy">
-            <span class="figno">附圖4</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/AIFrontliner/status/2075523161177620496" target="_blank" rel="noopener">@AIFrontliner — 推文 [7]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075523078621114368/img/AkLISjjENAHkg4rV.jpg" data-fig="5" data-type="video" title="附圖5">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075523078621114368/img/AkLISjjENAHkg4rV.jpg" alt="附圖5" loading="lazy">
-            <span class="figno">附圖5</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/michaeljburry/status/2075522804057878635" target="_blank" rel="noopener">@michaeljburry — 推文 [8]</a>
-        
       </li>
       
     </ol>
@@ -268,159 +209,68 @@
   
     
     <details class="refs">
-      <summary>來源與附圖（15）</summary>
+      <summary>來源（15）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075497039170064408" target="_blank" rel="noopener">@_FORAB — 推文 [1]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2fHbCbMAA5bzR.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2fHbCbMAA5bzR.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/Semicon_player/status/2075489345327472646" target="_blank" rel="noopener">@Semicon_player — 推文 [5]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2ejzsaoAAB87Q.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2ejzsaoAAB87Q.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ed_fin/status/2075486008636739831" target="_blank" rel="noopener">@ed_fin — 推文 [6]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2bhaSXUAANOao.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2bhaSXUAANOao.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ruima/status/2075508354194243841" target="_blank" rel="noopener">@ruima — 推文 [8]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/ruima/status/2075492030990762284" target="_blank" rel="noopener">@ruima — 推文 [9]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/trendforce/status/2075520491633131962" target="_blank" rel="noopener">@trendforce — 推文 [10]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM264vwWgAAadUA.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM264vwWgAAadUA.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/trendforce/status/2075502204367364141" target="_blank" rel="noopener">@trendforce — 推文 [11]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TruthTrumpPost/status/2075516912948191301" target="_blank" rel="noopener">@TruthTrumpPost — 推文 [12]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075505313961115648/img/zW9D_zpCpn2h0G7_.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075505313961115648/img/zW9D_zpCpn2h0G7_.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/PhotonCap/status/2075519579309355446" target="_blank" rel="noopener">@PhotonCap — 推文 [15]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/suru27/status/2075506121864036768" target="_blank" rel="noopener">@suru27 — 推文 [17]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2rW9EaYAEn2Vt.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2rW9EaYAEn2Vt.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075497125236900291" target="_blank" rel="noopener">@QQ_Timmy — 推文 [21]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/AIHighlight/status/2075510143836471455" target="_blank" rel="noopener">@AIHighlight — 推文 [22]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Superposition_V/status/2075512475848765858" target="_blank" rel="noopener">@Superposition_V — 推文 [23]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/chamath/status/2075473841472545250" target="_blank" rel="noopener">@chamath — 推文 [26]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/MikeFritzell/status/2075484933376905540" target="_blank" rel="noopener">@MikeFritzell — 推文 [27]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2aCfEbkAAPE7A.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2aCfEbkAAPE7A.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2aSOnasAEpQkt.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2aSOnasAEpQkt.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
     </ol>
@@ -449,686 +299,264 @@
   
     
     <details class="refs">
-      <summary>來源與附圖（64）</summary>
+      <summary>來源（64）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2075298749660725591" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [2]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2075277415144620298" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [5]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzW9XoAAqRou.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzdzW9XoAAqRou.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2075277413576069484" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [6]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzayXsAAmvmM.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzdzayXsAAmvmM.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2075277411927658924" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [7]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzZWWsAAuuKB.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzdzZWWsAAuuKB.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2075277410212221262" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzdzcIW0AEvEqR.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzdzcIW0AEvEqR.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/chrisbarber/status/2075367402657943591" target="_blank" rel="noopener">@chrisbarber — 推文 [18]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2075431792291479954" target="_blank" rel="noopener">@pequityresearch — 推文 [19]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1YFlSXAAAiYfF.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1YFlSXAAAiYfF.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1qJwIWsAACS2u.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1qJwIWsAACS2u.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2075398898177171885" target="_blank" rel="noopener">@pequityresearch — 推文 [20]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1MLcyXoAAjHNn.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1MLcyXoAAjHNn.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1MOrxWwAAPjAM.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1MOrxWwAAPjAM.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2075398895018954873" target="_blank" rel="noopener">@pequityresearch — 推文 [21]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1LqqcXkAA9hih.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1LqqcXkAA9hih.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1LtNsX0AAGhhL.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1LtNsX0AAGhhL.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1L3sCXAAArI8-.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1L3sCXAAArI8-.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1MD6uWkAAyYpP.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1MD6uWkAAyYpP.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2075377318772568205" target="_blank" rel="noopener">@pequityresearch — 推文 [22]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2075367775581663498" target="_blank" rel="noopener">@pequityresearch — 推文 [23]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM0ve62XAAAtna7.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM0ve62XAAAtna7.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM0viNjXAAAVN8s.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM0viNjXAAAVN8s.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM0vk6vW4AANooC.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM0vk6vW4AANooC.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ParadisLabs/status/2075305031994163607" target="_blank" rel="noopener">@ParadisLabs — 推文 [26]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzyBy6WYAANutT.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzyBy6WYAANutT.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075471442968494457" target="_blank" rel="noopener">@_FORAB — 推文 [27]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2NtDGbkAAGa9q.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2NtDGbkAAGa9q.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM2OJhTbcAA94Qu.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM2OJhTbcAA94Qu.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075461328953885173" target="_blank" rel="noopener">@_FORAB — 推文 [28]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075459534739722240/img/_68UwcZogWPRBng7.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075459534739722240/img/_68UwcZogWPRBng7.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075452439105565168" target="_blank" rel="noopener">@_FORAB — 推文 [29]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075451456518590464/img/PMISZei75SFYv-av.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075451456518590464/img/PMISZei75SFYv-av.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075451473736163328/img/7Job9yVfr-aYYCRO.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075451473736163328/img/7Job9yVfr-aYYCRO.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075451488231661568/img/-oaZmLPGnhE00Df4.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075451488231661568/img/-oaZmLPGnhE00Df4.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075430068101496935" target="_blank" rel="noopener">@_FORAB — 推文 [32]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1oRnHaoAAhjBj.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1oRnHaoAAhjBj.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1ocYibgAAdjFr.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1ocYibgAAdjFr.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1og2UbIAAcfZ_.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1og2UbIAAcfZ_.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075424842950824361" target="_blank" rel="noopener">@_FORAB — 推文 [33]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1jzmUbIAAuRfX.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1jzmUbIAAuRfX.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1j0C-aoAABI3O.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1j0C-aoAABI3O.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075403377639583812" target="_blank" rel="noopener">@_FORAB — 推文 [35]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1QChzbIAA2Kcs.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1QChzbIAA2Kcs.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1QC3iakAEor-p.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1QC3iakAEor-p.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1QD6DaYAA4I2U.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1QD6DaYAA4I2U.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/_FORAB/status/2075397203095609668" target="_blank" rel="noopener">@_FORAB — 推文 [36]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1KenZa0AAh9F1.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1KenZa0AAh9F1.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SVTrivo/status/2075463821796483545" target="_blank" rel="noopener">@SVTrivo — 推文 [38]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SVTrivo/status/2075450382109847574" target="_blank" rel="noopener">@SVTrivo — 推文 [41]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM17HUjaMAA_XW-.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM17HUjaMAA_XW-.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM17Hg8bIAAQWR2.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM17Hg8bIAAQWR2.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM17HsJbcAADdP2.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM17HsJbcAADdP2.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM17H5pbIAALdZ_.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM17H5pbIAALdZ_.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SVTrivo/status/2075338206007164986" target="_blank" rel="noopener">@SVTrivo — 推文 [46]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075374012591739051" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [48]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075373668952404277" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [49]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075373158321041584" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [50]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075372439262081109" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [51]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075335851815694828" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [52]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075334340536594623" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [53]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075333979931128286" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [54]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075333652171682125" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [55]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/damnang2/status/2075472021157532011" target="_blank" rel="noopener">@damnang2 — 推文 [56]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Semicon_player/status/2075413623187640516" target="_blank" rel="noopener">@Semicon_player — 推文 [61]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/benitoz/status/2075290442837713250" target="_blank" rel="noopener">@benitoz — 推文 [66]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzpZj5aQAA_wYx.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzpZj5aQAA_wYx.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/hkuppy/status/2075287742930358414" target="_blank" rel="noopener">@hkuppy — 推文 [68]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/ruima/status/2075460648692076636" target="_blank" rel="noopener">@ruima — 推文 [69]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/ruima/status/2075458250494107656" target="_blank" rel="noopener">@ruima — 推文 [70]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/FundaAI/status/2075282661795582150" target="_blank" rel="noopener">@FundaAI — 推文 [75]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzih-TbYAAc7tJ.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzih-TbYAAc7tJ.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/trendforce/status/2075380895461330980" target="_blank" rel="noopener">@trendforce — 推文 [76]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/rasbt/status/2075369179817902176" target="_blank" rel="noopener">@rasbt — 推文 [80]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM0xNhsWoAAQ7GQ.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM0xNhsWoAAQ7GQ.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/PhotonCap/status/2075363195011862599" target="_blank" rel="noopener">@PhotonCap — 推文 [86]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/PhotonCap/status/2075344193527124439" target="_blank" rel="noopener">@PhotonCap — 推文 [87]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/anishmoonka/status/2075410933103386670" target="_blank" rel="noopener">@anishmoonka — 推文 [98]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075439300796350709" target="_blank" rel="noopener">@QQ_Timmy — 推文 [102]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075414196989399401" target="_blank" rel="noopener">@QQ_Timmy — 推文 [103]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM1ZuIGbsAAw1_r.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM1ZuIGbsAAw1_r.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075386115641724974" target="_blank" rel="noopener">@QQ_Timmy — 推文 [104]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075383327264256236" target="_blank" rel="noopener">@QQ_Timmy — 推文 [106]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/citrini/status/2075338662703681720" target="_blank" rel="noopener">@citrini — 推文 [112]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/citrini/status/2075338534576103568" target="_blank" rel="noopener">@citrini — 推文 [113]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/MikeFritzell/status/2075370031068926059" target="_blank" rel="noopener">@MikeFritzell — 推文 [122]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/MikeFritzell/status/2075360561492279454" target="_blank" rel="noopener">@MikeFritzell — 推文 [123]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/shanaka86/status/2075468271868920135" target="_blank" rel="noopener">@shanaka86 — 推文 [124]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2075468207553744896/img/8T9jcPnZnLBXhE_Q.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2075468207553744896/img/8T9jcPnZnLBXhE_Q.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ARKInvest/status/2075322521759473868" target="_blank" rel="noopener">@ARKInvest — 推文 [126]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM0GfrhXoAAN5Lq.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM0GfrhXoAAN5Lq.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/amir/status/2075354222737117692" target="_blank" rel="noopener">@amir — 推文 [134]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/amir/status/2075341703641485605" target="_blank" rel="noopener">@amir — 推文 [136]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HM0YCzxbwAA_HKY.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HM0YCzxbwAA_HKY.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/amir/status/2075282774068801889" target="_blank" rel="noopener">@amir — 推文 [138]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMzim_DbwAAxhON.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMzim_DbwAAxhON.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/anissagardizy8/status/2075353518152798512" target="_blank" rel="noopener">@anissagardizy8 — 推文 [139]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2075374505946763308" target="_blank" rel="noopener">@TechCrunch — 推文 [141]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2075346157455430040" target="_blank" rel="noopener">@TechCrunch — 推文 [145]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2075341819026743707" target="_blank" rel="noopener">@TechCrunch — 推文 [146]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2075340524668768280" target="_blank" rel="noopener">@TechCrunch — 推文 [147]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2075339558162694590" target="_blank" rel="noopener">@TechCrunch — 推文 [148]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/marketplunger1/status/2075292579067744397" target="_blank" rel="noopener">@marketplunger1 — 推文 [150]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/PythiaR/status/2075310623823458619" target="_blank" rel="noopener">@PythiaR — 推文 [156]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/buccocapital/status/2075319242073821365" target="_blank" rel="noopener">@buccocapital — 推文 [159]</a>
-        
       </li>
       
     </ol>
@@ -1157,473 +585,212 @@
   
     
     <details class="refs">
-      <summary>來源與附圖（51）</summary>
+      <summary>來源（51）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2075022271563845638" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [1]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMv1woFW0AAZE8B.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMv1woFW0AAZE8B.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2075007026871300116" target="_blank" rel="noopener">@pequityresearch — 推文 [2]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvWooqXQAA2dR4.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvWooqXQAA2dR4.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvWookW4AAeb9Q.png" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvWookW4AAeb9Q.png" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2074968916707704914" target="_blank" rel="noopener">@pequityresearch — 推文 [6]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvFJXzWgAAZ_bP.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvFJXzWgAAZ_bP.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvFK-fXAAAtXcC.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvFK-fXAAAtXcC.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvFNVEXkAAqZBB.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvFNVEXkAAqZBB.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pequityresearch/status/2074959156562333714" target="_blank" rel="noopener">@pequityresearch — 推文 [7]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMu7_xUWgAA7sYG.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMu7_xUWgAA7sYG.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ParadisLabs/status/2074984859160977844" target="_blank" rel="noopener">@ParadisLabs — 推文 [9]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/ParadisLabs/status/2074954750101971078" target="_blank" rel="noopener">@ParadisLabs — 推文 [10]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074943632109359104/img/sgEB_hGQlAhSWN1V.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2074943632109359104/img/sgEB_hGQlAhSWN1V.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SVTrivo/status/2075026088061997079" target="_blank" rel="noopener">@SVTrivo — 推文 [11]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SVTrivo/status/2075020986014163314" target="_blank" rel="noopener">@SVTrivo — 推文 [12]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMv0lx-aIAA-BqM.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMv0lx-aIAA-BqM.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075019688942465125" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [13]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2075019073369559211" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [14]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2074986328727683234" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [15]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/Alisvolatprop12/status/2074974859411824734" target="_blank" rel="noopener">@Alisvolatprop12 — 推文 [16]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/vince_chow1/status/2074960295361909029" target="_blank" rel="noopener">@vince_chow1 — 推文 [20]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/benitoz/status/2075003520265372037" target="_blank" rel="noopener">@benitoz — 推文 [21]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvksqubwAAI15l.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvksqubwAAI15l.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ruima/status/2074996315797459367" target="_blank" rel="noopener">@ruima — 推文 [26]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMveJyJasAAQkDt.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMveJyJasAAQkDt.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/ruima/status/2074994406302859371" target="_blank" rel="noopener">@ruima — 推文 [27]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/pelositracker/status/2074946202425004252" target="_blank" rel="noopener">@pelositracker — 推文 [29]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMuwkzRW8AAiZTx.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMuwkzRW8AAiZTx.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/pelositracker/status/2074941005904728252" target="_blank" rel="noopener">@pelositracker — 推文 [31]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074940845472526336/img/ITrTyVAChab1Tfdg.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2074940845472526336/img/ITrTyVAChab1Tfdg.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/CENTCOM/status/2074950507186032971" target="_blank" rel="noopener">@CENTCOM — 推文 [32]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075013815725682732" target="_blank" rel="noopener">@QQ_Timmy — 推文 [39]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075011790526902275" target="_blank" rel="noopener">@QQ_Timmy — 推文 [40]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/QQ_Timmy/status/2075011600923378068" target="_blank" rel="noopener">@QQ_Timmy — 推文 [41]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/citrini/status/2074954682590495129" target="_blank" rel="noopener">@citrini — 推文 [48]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/MikeFritzell/status/2074977827825570043" target="_blank" rel="noopener">@MikeFritzell — 推文 [50]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/MikeFritzell/status/2074977555841749121" target="_blank" rel="noopener">@MikeFritzell — 推文 [51]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvNFm9bAAAI6B8.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvNFm9bAAAI6B8.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/bcherny/status/2074997911348244930" target="_blank" rel="noopener">@bcherny — 推文 [52]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/bcherny/status/2074997571563479143" target="_blank" rel="noopener">@bcherny — 推文 [53]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvfCIeXEAIZxtj.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvfCIeXEAIZxtj.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/bcherny/status/2074997570317779038" target="_blank" rel="noopener">@bcherny — 推文 [54]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/ARKInvest/status/2074964765546541337" target="_blank" rel="noopener">@ARKInvest — 推文 [55]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/RayDalio/status/2074956368801325106" target="_blank" rel="noopener">@RayDalio — 推文 [56]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074955550815571968/img/yHv5u1aCaflNSreH.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2074955550815571968/img/yHv5u1aCaflNSreH.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2074995532892930229" target="_blank" rel="noopener">@TechCrunch — 推文 [57]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2074987543490441499" target="_blank" rel="noopener">@TechCrunch — 推文 [58]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2074975211716547005" target="_blank" rel="noopener">@TechCrunch — 推文 [59]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2074956594186735637" target="_blank" rel="noopener">@TechCrunch — 推文 [60]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2074954532040429688" target="_blank" rel="noopener">@TechCrunch — 推文 [61]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/TechCrunch/status/2074948703547510876" target="_blank" rel="noopener">@TechCrunch — 推文 [62]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jimcramer/status/2074997612705419513" target="_blank" rel="noopener">@jimcramer — 推文 [63]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jimcramer/status/2074963718908060125" target="_blank" rel="noopener">@jimcramer — 推文 [64]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/pmje73/status/2074942853013176518" target="_blank" rel="noopener">@pmje73 — 推文 [67]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/JerryCap/status/2074988089668161803" target="_blank" rel="noopener">@JerryCap — 推文 [68]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvWq9dXQAAFId6.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvWq9dXQAAFId6.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/JerryCap/status/2074978843312750803" target="_blank" rel="noopener">@JerryCap — 推文 [69]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvOQxaWsAAJvRd.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvOQxaWsAAJvRd.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/JerryCap/status/2074944288614428972" target="_blank" rel="noopener">@JerryCap — 推文 [71]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/patrick_oshag/status/2074963826173501622" target="_blank" rel="noopener">@patrick_oshag — 推文 [72]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/amplify_video_thumb/2074951225779593216/img/E9SwwIWNnLBF_gZS.jpg" data-fig="None" data-type="video" title="附圖None">
-            <img src="https://pbs.twimg.com/amplify_video_thumb/2074951225779593216/img/E9SwwIWNnLBF_gZS.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            <span class="play">▶</span>
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/PythiaR/status/2074967556214104549" target="_blank" rel="noopener">@PythiaR — 推文 [73]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/PythiaR/status/2074967307429056520" target="_blank" rel="noopener">@PythiaR — 推文 [74]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvDxOGbQAAbF02.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvDxOGbQAAbF02.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/PythiaR/status/2074940480526131600" target="_blank" rel="noopener">@PythiaR — 推文 [75]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/GavinSBaker/status/2074967474483679284" target="_blank" rel="noopener">@GavinSBaker — 推文 [76]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/GavinSBaker/status/2074966940389376076" target="_blank" rel="noopener">@GavinSBaker — 推文 [77]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/GavinSBaker/status/2074966757169578303" target="_blank" rel="noopener">@GavinSBaker — 推文 [78]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/GavinSBaker/status/2074944885581291541" target="_blank" rel="noopener">@GavinSBaker — 推文 [79]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/GavinSBaker/status/2074943300725887104" target="_blank" rel="noopener">@GavinSBaker — 推文 [80]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMut7yhXMAI_OQp.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMut7yhXMAI_OQp.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMut7ycXkAEQE8L.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMut7ycXkAEQE8L.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMut7ycWkAASWON.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMut7ycWkAASWON.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
     </ol>
@@ -1652,108 +819,56 @@
   
     
     <details class="refs">
-      <summary>來源與附圖（12）</summary>
+      <summary>來源（12）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">@jerallaire — 推文 [1]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">@jerallaire — 推文 [2]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">@jerallaire — 推文 [3]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074971921297375735" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [5]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074971919607067122" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [6]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074971917618938072" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [7]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMvH9oQWUAAChKN.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMvH9oQWUAAChKN.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074908975196221654" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMuOtgRXMAA_Zor.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMuOtgRXMAA_Zor.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074863743616295310" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [10]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074863742261563715" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [11]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074863740634198067" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [12]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074863738805452853" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [13]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMtlkNMXwAE67nz.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMtlkNMXwAE67nz.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074863736876064837" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [14]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMtlkcFXQAAFBXE.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMtlkcFXQAAFBXE.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
     </ol>
@@ -1782,93 +897,60 @@
   
     
     <details class="refs">
-      <summary>來源與附圖（13）</summary>
+      <summary>來源（13）</summary>
       
     <ol>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074648532171055287" target="_blank" rel="noopener">@jerallaire — 推文 [1]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074648322761998400" target="_blank" rel="noopener">@jerallaire — 推文 [2]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074647426808332454" target="_blank" rel="noopener">@jerallaire — 推文 [3]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074242743656714413" target="_blank" rel="noopener">@jerallaire — 推文 [5]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/jerallaire/status/2074208714802774174" target="_blank" rel="noopener">@jerallaire — 推文 [6]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074599515256918065" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [8]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMp1Q7UWUAI1-qM.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMp1Q7UWUAI1-qM.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539411862122781" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [10]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539410754798000" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [11]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539409790173346" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [12]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539408737398843" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [13]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539407877489031" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [14]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539406766027025" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [15]</a>
-        
       </li>
       
       <li>
         <a href="https://x.com/SemiAnalysis_/status/2074539404454994333" target="_blank" rel="noopener">@SemiAnalysis_ — 推文 [16]</a>
-        
-        <span class="refmedia">
-          
-          <a class="thumb" href="https://pbs.twimg.com/media/HMo-l7PXYAAidbh.jpg" data-fig="None" data-type="photo" title="附圖None">
-            <img src="https://pbs.twimg.com/media/HMo-l7PXYAAidbh.jpg" alt="附圖None" loading="lazy">
-            <span class="figno">附圖None</span>
-            
-          </a>
-          
-        </span>
-        
       </li>
       
     </ol>
