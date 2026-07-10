@@ -1,8 +1,46 @@
 # Alphehelix X Bot
 
-定時抓取「指定 X 帳號的貼文」與「指定關鍵字/hashtag 的近期熱門推文」，用 LLM（透過 OpenRouter）做**跨作者觀點彙整與評斷**（不是逐則摘要，而是依主題比較各作者的異同、加入投資判斷），輸出成靜態網站（GitHub Pages）並寄送 Email。
+定時抓取「指定 X 帳號的貼文」與「指定關鍵字/hashtag 的近期熱門推文」，用 LLM（透過 OpenRouter）做**跨作者觀點彙整與評斷**（不是逐則摘要，而是依主題比較各作者的異同、加入投資判斷），輸出成靜態網站（GitHub Pages）並寄送 Email。本 repo 另含一套獨立的**台股財報分析 pipeline**（`reports/`）。
 
-## 運作方式（兩個排程）
+## 常用 CLI 指令速查
+
+先啟用虛擬環境：`cd ~/Alphehelix_X_bot && source .venv/bin/activate`
+
+### X 觀點彙整 bot（`src.main`）
+```bash
+python -m src.main fetch        # 只收集新貼文到 pending（不做 LLM、不寄信）
+python -m src.main synthesis    # 對累積貼文做跨作者彙整 → 網站 → 自動 push → 寄信
+python -m src.main run          # 一次跑完 fetch + synthesis（排程用）
+```
+
+### 台股財報分析 pipeline（`reports.main`）
+先編 `reports_config.yaml`（股號、年、季、語言、模型）。
+```bash
+python -m reports.main fetch                # 平行下載 MOPS 財報 PDF（去重、可續跑）
+python -m reports.main extract              # PDF → 純文字
+python -m reports.main analyze 2330 2024 4  # 單季自適應分析 → 投資 brief
+python -m reports.main aggregate 4927 8     # 近 8 季跨季趨勢彙集（平行分析、已分析的季跳過）
+python -m reports.main eval 2330 2024 4     # A/B 保真度驗證（便宜模型擷取 vs 原文）
+```
+產出在 `reports_data/`：`raw/`（PDF）、`text/`（文字）、`analysis/`（分析 .md）。
+
+### launchd 排程（X bot，每天 08:00 / 20:00）
+```bash
+tail -f xbot.log                                                  # 看執行紀錄
+launchctl start com.alphehelix.xbot.daily                        # 立刻手動跑一次
+launchctl unload ~/Library/LaunchAgents/com.alphehelix.xbot.daily.plist   # 停用
+launchctl load  ~/Library/LaunchAgents/com.alphehelix.xbot.daily.plist    # 啟用
+launchctl list | grep alphehelix                                 # 確認是否載入
+```
+
+### git（若自動 push 失敗想手動推）
+```bash
+git add docs/ && git commit -m "update" && git push
+```
+
+## 運作方式
+
+> 目前安裝的排程是**每天 2 次（08:00 / 20:00）的 `run` 模式**（一次跑完 fetch + synthesis，見上方指令速查）。以下說明底層的兩個獨立工作，`fetch` 與 `synthesis` 也可單獨使用。
 
 分成「抓取累積」與「彙整」兩個獨立工作：
 
