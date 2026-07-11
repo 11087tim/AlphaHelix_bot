@@ -7,7 +7,7 @@ from datetime import datetime
 # 支援兩種執行方式：`python -m src.main`（套件）或 `python src/main.py`（腳本）
 if __package__:
     from .config import Config, ConfigError, load_config
-    from . import x_client, summarizer, site_generator, emailer, publisher, graph_link
+    from . import x_client, summarizer, site_generator, emailer, publisher, graph_link, reports_bridge
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore, SNAPSHOT_PATH
@@ -16,7 +16,7 @@ else:
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
-    from src import x_client, summarizer, site_generator, emailer, publisher, graph_link
+    from src import x_client, summarizer, site_generator, emailer, publisher, graph_link, reports_bridge
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore, SNAPSHOT_PATH
@@ -126,6 +126,12 @@ def run_fetch(cfg: Config) -> int:
     return 0
 
 
+def _extra_context(graph_context: str | None, tweets: list[dict]) -> str | None:
+    """把產業關係圖與『這批推文提到之公司』的財報事實卡併成一段參考文字。"""
+    cards = reports_bridge.load_report_cards(tweets)  # 台股 X×財報跨源印證
+    return "\n\n".join(x for x in (graph_context, cards) if x) or None
+
+
 def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
     """對一批推文做跨作者觀點彙整，回傳 digest entry（無實質內容則回 None）。不含存檔/推送/寄信。"""
     describe_media = _resolve_describe_media(cfg)
@@ -141,14 +147,15 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
 
     account_sections = []
     if account_tweets:
-        sec = _analyze("追蹤作者", account_tweets, cfg, describe_media, graph_context)
+        sec = _analyze("追蹤作者", account_tweets, cfg, describe_media,
+                       _extra_context(graph_context, account_tweets))
         if sec:
             sec["label"] = ""  # 跨作者彙整，不用單一 handle 當標題
             account_sections = [sec]
 
     keyword_sections = []
     for kw, kws in keyword_map.items():
-        sec = _analyze(kw, kws, cfg, describe_media, graph_context)
+        sec = _analyze(kw, kws, cfg, describe_media, _extra_context(graph_context, kws))
         if sec:
             keyword_sections.append(sec)
 
