@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 
 DEFAULT_PATH = Path(__file__).resolve().parent.parent / "pending.json"
+# 最近一次彙整所用的原始推文快照；synthesis 清空 pending 前先存一份，供 resynth 免費重跑。
+SNAPSHOT_PATH = Path(__file__).resolve().parent.parent / "snapshot.json"
 
 # 安全上限，避免長時間未彙整時無限累積
 MAX_PENDING = 1000

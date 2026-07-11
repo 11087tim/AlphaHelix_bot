@@ -9,8 +9,10 @@
 ### X 觀點彙整 bot（`src.main`）
 ```bash
 python -m src.main fetch        # 只收集新貼文到 pending（不做 LLM、不寄信）
-python -m src.main synthesis    # 對累積貼文做跨作者彙整 → 網站 → 自動 push → 寄信
+python -m src.main synthesis    # 對累積貼文做跨作者彙整 → 網站 → 自動 push → 寄信（清空 pending 前先存 snapshot）
 python -m src.main run          # 一次跑完 fetch + synthesis（排程用）
+python -m src.main resynth      # 用 snapshot（或現有 pending）重跑彙整，只出本機預覽：不推送/不寄信/不清空。改 prompt 後免費看效果
+python -m src.main render       # 只用既有 digests 重繪網站 + push（改樣板後用，不呼叫 LLM）
 ```
 
 ### 台股財報分析 pipeline（`reports.main`）

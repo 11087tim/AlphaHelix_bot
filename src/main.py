@@ -10,7 +10,7 @@ if __package__:
     from . import x_client, summarizer, site_generator, emailer, publisher, graph_link
     from .storage import Storage
     from .digest_store import DigestStore
-    from .pending_store import PendingStore
+    from .pending_store import PendingStore, SNAPSHOT_PATH
 else:
     from pathlib import Path
 
@@ -19,7 +19,7 @@ else:
     from src import x_client, summarizer, site_generator, emailer, publisher, graph_link
     from src.storage import Storage
     from src.digest_store import DigestStore
-    from src.pending_store import PendingStore
+    from src.pending_store import PendingStore, SNAPSHOT_PATH
 
 # 網站首頁最多顯示最近幾份彙整的可折疊區塊
 SITE_HOURS = 60
@@ -126,14 +126,8 @@ def run_fetch(cfg: Config) -> int:
     return 0
 
 
-def run_synthesis(cfg: Config) -> int:
-    """每天兩次執行：對累積的所有作者貼文做跨作者觀點彙整 → 更新網站 → 自動 push → 寄信 → 清空待彙整。"""
-    pending = PendingStore()
-    tweets = pending.all()
-    if not tweets:
-        logger.info("沒有待彙整的貼文，跳過。")
-        return 0
-
+def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
+    """對一批推文做跨作者觀點彙整，回傳 digest entry（無實質內容則回 None）。不含存檔/推送/寄信。"""
     describe_media = _resolve_describe_media(cfg)
     graph_context = graph_link.load_graph_context()  # 讓 Opus 判讀時可延伸供應鏈關聯
 
@@ -159,19 +153,38 @@ def run_synthesis(cfg: Config) -> int:
             keyword_sections.append(sec)
 
     if not account_sections and not keyword_sections:
-        pending.clear()
-        pending.save()
-        logger.info("彙整後無實質內容（可能全為宣傳），清空待彙整。")
-        return 0
+        return None
 
     now = datetime.now()
-    entry = {
+    return {
         "id": now.strftime("%Y%m%d-%H%M"),
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
         "model": cfg.openrouter_model,
         "account_sections": account_sections,
         "keyword_sections": keyword_sections,
     }
+
+
+def run_synthesis(cfg: Config) -> int:
+    """每天兩次執行：對累積的所有作者貼文做跨作者觀點彙整 → 更新網站 → 自動 push → 寄信 → 清空待彙整。"""
+    pending = PendingStore()
+    tweets = pending.all()
+    if not tweets:
+        logger.info("沒有待彙整的貼文，跳過。")
+        return 0
+
+    # 清空 pending 前先存快照，讓改 prompt 後可用 resynth 免費重跑同一批（不必再花錢 fetch）
+    snapshot = PendingStore(SNAPSHOT_PATH)
+    snapshot.clear()
+    snapshot.add(list(tweets))
+    snapshot.save()
+
+    entry = _synthesize(cfg, tweets)
+    if entry is None:
+        pending.clear()
+        pending.save()
+        logger.info("彙整後無實質內容（可能全為宣傳），清空待彙整。")
+        return 0
 
     digest_store = DigestStore()
     digest_store.append(entry)
@@ -183,7 +196,7 @@ def run_synthesis(cfg: Config) -> int:
 
     if cfg.email_to:
         html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url)
-        subject = f"{cfg.email_subject_prefix} {now.strftime('%Y-%m-%d %H:%M')} 觀點彙整"
+        subject = f"{cfg.email_subject_prefix} {entry['generated_at']} 觀點彙整"
         try:
             emailer.send_html_email(
                 gmail_address=cfg.gmail_address,
@@ -198,7 +211,35 @@ def run_synthesis(cfg: Config) -> int:
     # 彙整成功並存檔後才清空待彙整（避免中途失敗導致漏掉）
     pending.clear()
     pending.save()
-    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段。", len(account_sections), len(keyword_sections))
+    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段。",
+                len(entry["account_sections"]), len(entry["keyword_sections"]))
+    return 0
+
+
+def run_resynth(cfg: Config) -> int:
+    """用快照（或目前 pending）重跑彙整，只在本機產生預覽網站；不推送、不寄信、不寫入 digest、不清空。
+    用途：改 prompt / graph 後，免費在同一批推文上反覆看效果。"""
+    snapshot = PendingStore(SNAPSHOT_PATH)
+    tweets = snapshot.all()
+    source = "snapshot.json"
+    if not tweets:  # 還沒有快照就退回目前累積中的 pending（同樣不清空）
+        tweets = PendingStore().all()
+        source = "pending.json"
+    if not tweets:
+        logger.info("沒有可重跑的推文（snapshot.json 與 pending.json 都是空的）。")
+        return 0
+
+    logger.info("resynth：使用 %s 的 %d 則推文重跑（不推送/不寄信/不清空）。", source, len(tweets))
+    entry = _synthesize(cfg, tweets)
+    if entry is None:
+        logger.info("重跑後無實質內容。")
+        return 0
+
+    # 預覽：把這次重跑的結果疊在既有歷史時段之上，但不寫回 digest_store
+    recent = DigestStore().recent(SITE_HOURS)
+    preview = [entry] + [d for d in recent if d.get("id") != entry["id"]]
+    site_generator.render_site(cfg.site_title, preview, cfg.site_output_dir)
+    logger.info("預覽已更新：開 %s/index.html 檢視（未推送、未寄信、未寫入 digest）。", cfg.site_output_dir)
     return 0
 
 
@@ -229,14 +270,16 @@ def run(mode: str) -> int:
         return run_fetch(cfg)
     if mode == "render":  # 只重新產生網站（樣板改版後用）
         return run_render(cfg)
+    if mode == "resynth":  # 用快照重跑彙整、只出本機預覽（改 prompt 後免費看效果）
+        return run_resynth(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis / render / run）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / run）", mode)
     return 2
 
 
 if __name__ == "__main__":
-    # 用法：python -m src.main [fetch|synthesis|run]，預設 fetch
+    # 用法：python -m src.main [fetch|synthesis|render|resynth|run]，預設 fetch
     mode = sys.argv[1] if len(sys.argv) > 1 else "fetch"
     sys.exit(run(mode))
