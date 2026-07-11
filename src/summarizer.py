@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 import re
 import time
@@ -11,8 +12,9 @@ logger = logging.getLogger(__name__)
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models"
 
-# 呼叫 LLM 的逾時與重試（大批量合成可能很慢；排程不該因單次連線閃斷而整批白跑）
-CHAT_TIMEOUT = 300
+# 呼叫 LLM 的逾時與重試。改用串流後，timeout 是「兩個 chunk 之間的閒置上限」，
+# 只要生成持續進展就不會觸發；排程不該因單次連線閃斷而整批白跑。
+CHAT_TIMEOUT = 120
 CHAT_MAX_RETRIES = 4
 
 # 單次摘要最多送幾張圖給視覺模型，控制成本
@@ -141,19 +143,54 @@ def _build_multimodal_content(label: str, tweets: list[dict]) -> list[dict]:
     return content
 
 
+def _consume_stream(resp: requests.Response) -> str:
+    """讀取 OpenRouter 的 SSE 串流，把各 chunk 的 delta.content 拼成完整內容。"""
+    # SSE 常不帶 charset，requests 會誤用 ISO-8859-1，導致中文被拆成亂碼 → 強制 UTF-8。
+    resp.encoding = "utf-8"
+    parts: list[str] = []
+    for raw in resp.iter_lines(decode_unicode=True):
+        if not raw or raw.startswith(":"):  # 空行或 keepalive 註解（如 ": OPENROUTER PROCESSING"）
+            continue
+        if not raw.startswith("data:"):
+            continue
+        data = raw[5:].strip()
+        if data == "[DONE]":
+            break
+        try:
+            obj = json.loads(data)
+        except json.JSONDecodeError:
+            continue
+        if obj.get("error"):
+            raise requests.exceptions.HTTPError(f"stream error: {obj['error']}")
+        choices = obj.get("choices") or []
+        if choices:
+            piece = (choices[0].get("delta") or {}).get("content")
+            if piece:
+                parts.append(piece)
+    return "".join(parts)
+
+
 def _post_chat(api_key: str, payload: dict) -> dict:
-    """呼叫 OpenRouter chat completions，對逾時／連線中斷／429／5xx 自動重試（指數退避）。"""
+    """以串流方式呼叫 OpenRouter chat completions，回傳與非串流相容的 dict。
+    對逾時／連線中斷／429／5xx 自動重試（指數退避）；串流下 timeout 只在 chunk 間閒置過久才觸發。"""
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    payload = {**payload, "stream": True}
     last_exc: Exception | None = None
     for attempt in range(1, CHAT_MAX_RETRIES + 1):
         try:
-            resp = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=CHAT_TIMEOUT)
-            if resp.status_code == 429 or resp.status_code >= 500:
-                raise requests.exceptions.HTTPError(f"HTTP {resp.status_code}", response=resp)
-            resp.raise_for_status()
-            return resp.json()
+            with requests.post(
+                OPENROUTER_URL, headers=headers, json=payload,
+                timeout=CHAT_TIMEOUT, stream=True,
+            ) as resp:
+                if resp.status_code == 429 or resp.status_code >= 500:
+                    raise requests.exceptions.HTTPError(f"HTTP {resp.status_code}", response=resp)
+                resp.raise_for_status()
+                content = _consume_stream(resp)
+            if not content.strip():
+                raise requests.exceptions.ChunkedEncodingError("串流未回傳任何內容")
+            return {"choices": [{"message": {"content": content}}]}
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError,
-                requests.exceptions.HTTPError) as exc:
+                requests.exceptions.ChunkedEncodingError, requests.exceptions.HTTPError) as exc:
             last_exc = exc
             if attempt == CHAT_MAX_RETRIES:
                 break
