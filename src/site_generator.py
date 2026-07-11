@@ -95,24 +95,20 @@ def _render_lines(lines: list[str], url_by_n: dict) -> str:
     return "".join(parts)
 
 
-def _media_maps(references: list[dict]) -> tuple[dict, dict]:
-    """建立 n→media清單 與 fig_no→media 對照，供行內附圖使用。"""
-    media_by_n: dict[int, list[dict]] = {}
+def _fig_map(references: list[dict]) -> dict:
+    """建立 fig_no→media 對照，供內文 [附圖N] 顯示縮圖。"""
     fig_by_no: dict[int, dict] = {}
     for ref in references:
         for m in ref.get("media", []):
-            if not m.get("image_url"):
+            if not m.get("image_url") or not m.get("fig_no"):
                 continue
-            item = {
-                "fig_no": m.get("fig_no"),
+            fig_by_no[m["fig_no"]] = {
+                "fig_no": m["fig_no"],
                 "image_url": m["image_url"],
                 "type": m.get("type", "photo"),
                 "alt": m.get("alt_text", ""),
             }
-            media_by_n.setdefault(ref["n"], []).append(item)
-            if item["fig_no"]:
-                fig_by_no[item["fig_no"]] = item
-    return media_by_n, fig_by_no
+    return fig_by_no
 
 
 def _figs_html(items: list[dict]) -> str:
@@ -147,22 +143,18 @@ def _split_segments(summary: str) -> list[list[str]]:
 
 
 def _render_summary(summary: str, references: list[dict]) -> Markup:
-    """渲染摘要 HTML；每個大/小主題段落若引用到有圖的推文，把縮圖放在該段（延伸推論）下方。"""
+    """渲染摘要 HTML；只呈現內文以 [附圖N] 明確引用到的圖（模型確實有討論到內容者），
+    放在該大/小主題段落（延伸推論）下方。單純被 [n] 引用、模型未提及內容的附圖不顯示，
+    避免倒出與內文無關的縮圖（來源清單仍保留該推文連結）。"""
     url_by_n = {ref["n"]: ref["url"] for ref in references}
-    media_by_n, fig_by_no = _media_maps(references)
+    fig_by_no = _fig_map(references)
 
     out: list[str] = []
     for seg in _split_segments(summary):
         out.append(_render_lines(seg, url_by_n))
         text = "\n".join(seg)
         figs: dict[int, dict] = {}
-        # 該段引用到的推文若有附圖，一併呈現
-        for m in _CITE_RE.finditer(text):
-            for item in media_by_n.get(int(m.group(1)), []):
-                if item["fig_no"]:
-                    figs[item["fig_no"]] = item
-        # 內文明確以 [附圖N] 提到的圖
-        for m in _FIG_RE.finditer(text):
+        for m in _FIG_RE.finditer(text):  # 只挑內文明確 [附圖N] 提到的圖
             fn = int(m.group(1))
             if fn in fig_by_no:
                 figs[fn] = fig_by_no[fn]
