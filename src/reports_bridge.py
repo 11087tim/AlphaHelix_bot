@@ -16,7 +16,8 @@ ANALYSIS_DIR = PROJECT_ROOT / "reports_data" / "analysis"
 
 _QUARTER_RE = re.compile(r"_(\d{4}Q[1-4])_zh\.md$")
 _DETAIL_MARKER = "# 各附註擷取明細"
-_ONE_LINER_RE = re.compile(r"\*\*一句話[：:]\s*(.+?)\*\*", re.S)
+# 「一句話」總結有兩種格式：**一句話：整句**（整句粗體）或 **一句話：** 整句（僅標籤粗體）
+_ONE_LINER_RE = re.compile(r"一句話[^：:]*[：:]\s*(.+)")
 _BOLD_LEAD_RE = re.compile(r"\*\*(.+?)\*\*")
 
 
@@ -74,15 +75,24 @@ def _headlines(section_text: str, only_flags: bool = False, limit: int = 3) -> l
     return out
 
 
+def _one_liner(body: str) -> str:
+    for ln in body.split("\n"):
+        if "一句話" in ln:
+            m = _ONE_LINER_RE.search(ln)
+            if m:
+                return re.sub(r"\s+", " ", m.group(1).strip().strip("*").strip())
+    return ""
+
+
 def _card(ticker: str, name: str, code: str, quarter: str, path: Path) -> str | None:
     body = path.read_text(encoding="utf-8").split(_DETAIL_MARKER)[0]
-    one = _ONE_LINER_RE.search(body)
-    one_liner = re.sub(r"\s+", " ", one.group(1).strip()) if one else ""
+    one_liner = _one_liner(body)
     points = _headlines(_section(body, "一、"))
     flags = _headlines(_section(body, "三、"), only_flags=True)
     if not (one_liner or points or flags):
         return None
-    parts = [f"● {name}（{ticker}／{code}）— 依 {quarter} 財報（過去季度，非最新報價/近況）："]
+    tag = code if str(ticker) == str(code) else f"{ticker}／{code}"  # 台股代號本身即 ticker 時不重複
+    parts = [f"● {name}（{tag}）— 依 {quarter} 財報（過去季度，非最新報價/近況）："]
     if one_liner:
         parts.append(f"  一句話：{one_liner}")
     if points:
