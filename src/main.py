@@ -8,20 +8,22 @@ from datetime import datetime
 if __package__:
     from .config import Config, ConfigError, load_config
     from . import (x_client, summarizer, site_generator, emailer, publisher,
-                   graph_link, reports_bridge, memory_link)
+                   graph_link, reports_bridge, memory_link, memory_extract)
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore, SNAPSHOT_PATH
+    from .memory_store import MemoryStore
 else:
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
     from src import (x_client, summarizer, site_generator, emailer, publisher,
-                     graph_link, reports_bridge, memory_link)
+                     graph_link, reports_bridge, memory_link, memory_extract)
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore, SNAPSHOT_PATH
+    from src.memory_store import MemoryStore
 
 # 網站首頁最多顯示最近幾份彙整的可折疊區塊
 SITE_HOURS = 60
@@ -139,8 +141,6 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
     """對一批推文做跨作者觀點彙整，回傳 digest entry（無實質內容則回 None）。不含存檔/推送/寄信。"""
     describe_media = _resolve_describe_media(cfg)
     graph_context = graph_link.load_graph_context()  # 讓 Opus 判讀時可延伸供應鏈關聯
-    # 跨時間記憶：讀最近幾份 digest 組成觀點時間線，讓 Opus 於頂部產出「📈 本期變化」
-    timeline = memory_link.build_timeline(DigestStore().recent(memory_link.MAX_DIGESTS))
 
     # 所有帳號作者合成一份跨作者觀點分析；關鍵字各自一份（本身即跨作者）
     account_tweets = [t for t in tweets if str(t.get("source", "")).startswith("account:")]
@@ -149,6 +149,9 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         src = str(t.get("source", ""))
         if src.startswith("keyword:"):
             keyword_map.setdefault(src.split("keyword:", 1)[1], []).append(t)
+
+    # 跨時間記憶：依本批提到的實體撈歷史立場軌跡，讓 Opus 於頂部產出「📈 本期變化」
+    timeline = memory_link.build_timeline(account_tweets, DigestStore().recent(memory_link.MAX_DIGESTS))
 
     account_sections = []
     if account_tweets:
@@ -178,6 +181,35 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
     }
 
 
+def _update_memory(cfg: Config, entry: dict) -> None:
+    """把剛產出的 digest 萃取成立場紀錄寫入記憶帳本。任何失敗都不得影響主流程。"""
+    try:
+        recs = memory_extract.extract_records(entry, cfg.memory_model, cfg.openrouter_api_key)
+        if recs:
+            store = MemoryStore()
+            store.add_records(recs)
+            store.save()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("更新記憶帳本失敗（不影響主流程）：%s", exc)
+
+
+def run_memory_backfill(cfg: Config) -> int:
+    """從既有 digests.json 回填記憶帳本（跳過已萃取過的 digest）。"""
+    store = MemoryStore()
+    digests = DigestStore().digests  # 由舊到新
+    added = 0
+    for entry in digests:
+        if store.has_digest(entry.get("id", "")):
+            continue
+        recs = memory_extract.extract_records(entry, cfg.memory_model, cfg.openrouter_api_key)
+        if recs:
+            store.add_records(recs)
+            added += len(recs)
+    store.save()
+    logger.info("記憶回填完成：新增 %d 筆立場紀錄（掃描 %d 份 digest）。", added, len(digests))
+    return 0
+
+
 def run_synthesis(cfg: Config) -> int:
     """每天兩次執行：對累積的所有作者貼文做跨作者觀點彙整 → 更新網站 → 自動 push → 寄信 → 清空待彙整。"""
     pending = PendingStore()
@@ -203,6 +235,8 @@ def run_synthesis(cfg: Config) -> int:
     digest_store.append(entry)
     site_generator.render_site(cfg.site_title, digest_store.recent(SITE_HOURS), cfg.site_output_dir)
     digest_store.save()
+
+    _update_memory(cfg, entry)  # 萃取立場寫入記憶帳本（供下次「本期變化」；失敗不影響主流程）
 
     if cfg.site_auto_push:
         publisher.publish_docs()
@@ -285,14 +319,16 @@ def run(mode: str) -> int:
         return run_render(cfg)
     if mode == "resynth":  # 用快照重跑彙整、只出本機預覽（改 prompt 後免費看效果）
         return run_resynth(cfg)
+    if mode == "memory-backfill":  # 從既有 digests.json 回填記憶帳本
+        return run_memory_backfill(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / run）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / run）", mode)
     return 2
 
 
 if __name__ == "__main__":
-    # 用法：python -m src.main [fetch|synthesis|render|resynth|run]，預設 fetch
+    # 用法：python -m src.main [fetch|synthesis|render|resynth|memory-backfill|run]，預設 fetch
     mode = sys.argv[1] if len(sys.argv) > 1 else "fetch"
     sys.exit(run(mode))

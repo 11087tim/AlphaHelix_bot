@@ -18,6 +18,9 @@ openrouter:
   # 可隨時替換成 OpenRouter 上任何模型代號
   model: "anthropic/claude-haiku-4.5"
 
+  # 跨時間記憶的立場萃取模型（Phase 2）。需判斷/校準但量小，預設 Sonnet；想省可改 Haiku。
+  memory_model: "anthropic/claude-sonnet-5"
+
   # 摘要用的 system prompt。留空則使用程式內建預設值（src/summarizer.py 的 DEFAULT_SYSTEM_PROMPT）。
   # 想自訂就用 | 區塊寫多行，例如：
   # system_prompt: |

@@ -20,6 +20,7 @@ class Config:
     media_describe: bool
     openrouter_model: str
     openrouter_system_prompt: str
+    memory_model: str
     openrouter_api_key: str
     site_title: str
     site_output_dir: Path
@@ -94,6 +95,8 @@ def load_config(config_path: Path | None = None) -> Config:
         media_describe=(raw.get("media") or {}).get("describe", False),
         openrouter_model=openrouter.get("model", "anthropic/claude-3.5-haiku"),
         openrouter_system_prompt=(openrouter.get("system_prompt") or "").strip(),
+        # 跨時間記憶的立場萃取模型：需判斷/校準但量小，用 Sonnet 較穩、成本可忽略
+        memory_model=openrouter.get("memory_model", "anthropic/claude-sonnet-5"),
         openrouter_api_key=openrouter_api_key,
         site_title=site.get("title", "我的 X 摘要"),
         site_output_dir=PROJECT_ROOT / site.get("output_dir", "docs"),
