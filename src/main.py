@@ -270,7 +270,7 @@ def run_synthesis(cfg: Config) -> int:
     # 彙整成功並存檔後才清空待彙整（避免中途失敗導致漏掉）
     pending.clear()
     pending.save()
-    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段、長訪談 %d 段。",
+    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段、Podcast/YouTube %d 段。",
                 len(entry["account_sections"]), len(entry["keyword_sections"]),
                 len(entry.get("podcast_sections", [])))
     return 0
