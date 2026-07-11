@@ -7,7 +7,8 @@ from datetime import datetime
 # 支援兩種執行方式：`python -m src.main`（套件）或 `python src/main.py`（腳本）
 if __package__:
     from .config import Config, ConfigError, load_config
-    from . import x_client, summarizer, site_generator, emailer, publisher, graph_link, reports_bridge
+    from . import (x_client, summarizer, site_generator, emailer, publisher,
+                   graph_link, reports_bridge, memory_link)
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore, SNAPSHOT_PATH
@@ -16,7 +17,8 @@ else:
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
-    from src import x_client, summarizer, site_generator, emailer, publisher, graph_link, reports_bridge
+    from src import (x_client, summarizer, site_generator, emailer, publisher,
+                     graph_link, reports_bridge, memory_link)
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore, SNAPSHOT_PATH
@@ -126,16 +128,19 @@ def run_fetch(cfg: Config) -> int:
     return 0
 
 
-def _extra_context(graph_context: str | None, tweets: list[dict]) -> str | None:
-    """把產業關係圖與『這批推文提到之公司』的財報事實卡併成一段參考文字。"""
+def _extra_context(graph_context: str | None, tweets: list[dict],
+                   timeline: str | None = None) -> str | None:
+    """把產業關係圖、財報事實卡、先前觀點時間線併成一段參考文字附在 prompt 末尾。"""
     cards = reports_bridge.load_report_cards(tweets)  # 台股 X×財報跨源印證
-    return "\n\n".join(x for x in (graph_context, cards) if x) or None
+    return "\n\n".join(x for x in (graph_context, cards, timeline) if x) or None
 
 
 def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
     """對一批推文做跨作者觀點彙整，回傳 digest entry（無實質內容則回 None）。不含存檔/推送/寄信。"""
     describe_media = _resolve_describe_media(cfg)
     graph_context = graph_link.load_graph_context()  # 讓 Opus 判讀時可延伸供應鏈關聯
+    # 跨時間記憶：讀最近幾份 digest 組成觀點時間線，讓 Opus 於頂部產出「📈 本期變化」
+    timeline = memory_link.build_timeline(DigestStore().recent(memory_link.MAX_DIGESTS))
 
     # 所有帳號作者合成一份跨作者觀點分析；關鍵字各自一份（本身即跨作者）
     account_tweets = [t for t in tweets if str(t.get("source", "")).startswith("account:")]
@@ -147,8 +152,9 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
 
     account_sections = []
     if account_tweets:
+        # 時間線只給帳號這組（主彙整），「📈 本期變化」放這組頂部即為整份 digest 之首
         sec = _analyze("追蹤作者", account_tweets, cfg, describe_media,
-                       _extra_context(graph_context, account_tweets))
+                       _extra_context(graph_context, account_tweets, timeline))
         if sec:
             sec["label"] = ""  # 跨作者彙整，不用單一 handle 當標題
             account_sections = [sec]
