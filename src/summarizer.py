@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import re
+import time
 
 import requests
 
@@ -9,6 +10,10 @@ logger = logging.getLogger(__name__)
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_MODELS_URL = "https://openrouter.ai/api/v1/models"
+
+# 呼叫 LLM 的逾時與重試（大批量合成可能很慢；排程不該因單次連線閃斷而整批白跑）
+CHAT_TIMEOUT = 300
+CHAT_MAX_RETRIES = 4
 
 # 單次摘要最多送幾張圖給視覺模型，控制成本
 MAX_IMAGES_PER_GROUP = 12
@@ -136,6 +141,29 @@ def _build_multimodal_content(label: str, tweets: list[dict]) -> list[dict]:
     return content
 
 
+def _post_chat(api_key: str, payload: dict) -> dict:
+    """呼叫 OpenRouter chat completions，對逾時／連線中斷／429／5xx 自動重試（指數退避）。"""
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    last_exc: Exception | None = None
+    for attempt in range(1, CHAT_MAX_RETRIES + 1):
+        try:
+            resp = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=CHAT_TIMEOUT)
+            if resp.status_code == 429 or resp.status_code >= 500:
+                raise requests.exceptions.HTTPError(f"HTTP {resp.status_code}", response=resp)
+            resp.raise_for_status()
+            return resp.json()
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError,
+                requests.exceptions.HTTPError) as exc:
+            last_exc = exc
+            if attempt == CHAT_MAX_RETRIES:
+                break
+            wait = min(2 ** attempt * 5, 60)  # 10s, 20s, 40s...（上限 60s）
+            logger.warning("OpenRouter 呼叫失敗（第 %d/%d 次）：%s；%d 秒後重試。",
+                           attempt, CHAT_MAX_RETRIES, exc, wait)
+            time.sleep(wait)
+    raise last_exc  # type: ignore[misc]
+
+
 def summarize_group(
     tweets: list[dict],
     label: str,
@@ -165,23 +193,16 @@ def summarize_group(
         if graph_context:
             user_content += f"\n\n{graph_context}"
 
-    response = requests.post(
-        OPENROUTER_URL,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        json={
+    data = _post_chat(
+        api_key,
+        {
             "model": model,
             "messages": [
                 {"role": "system", "content": system_prompt or DEFAULT_SYSTEM_PROMPT},
                 {"role": "user", "content": user_content},
             ],
         },
-        timeout=120,
     )
-    response.raise_for_status()
-    data = response.json()
     summary = _strip_skip_notes(data["choices"][0]["message"]["content"].strip())
 
     references = [
