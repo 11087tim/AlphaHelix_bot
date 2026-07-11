@@ -31,6 +31,12 @@ class Config:
     gmail_address: str
     gmail_app_password: str
     x_bearer_token: str
+    groq_api_key: str
+    podcast_enabled: bool
+    podcast_feeds: list[str]
+    podcast_window_hours: float
+    podcast_max_episodes: int
+    whisper_model: str
 
 
 class ConfigError(RuntimeError):
@@ -49,6 +55,7 @@ def load_config(config_path: Path | None = None) -> Config:
 
     x_bearer_token = os.environ.get("X_BEARER_TOKEN", "")
     openrouter_api_key = os.environ.get("OPENROUTER_API_KEY", "")
+    groq_api_key = os.environ.get("GROQ_API_KEY", "")  # 選用：長訪談轉錄（Whisper）
     gmail_address = os.environ.get("GMAIL_ADDRESS", "")
     # Gmail 應用程式密碼常被複製成 "xxxx xxxx xxxx xxxx" 格式，去掉空格避免登入失敗
     gmail_app_password = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "")
@@ -78,6 +85,8 @@ def load_config(config_path: Path | None = None) -> Config:
     site = raw.get("site") or {}
     email = raw.get("email") or {}
     openrouter = raw.get("openrouter") or {}
+    podcasts = raw.get("podcasts") or {}
+    podcast_feeds = [str(u).strip() for u in (podcasts.get("feeds") or []) if str(u).strip()]
 
     # email.to 支援單一字串或字串清單，統一正規化成 list
     raw_to = email.get("to", "")
@@ -107,4 +116,10 @@ def load_config(config_path: Path | None = None) -> Config:
         gmail_address=gmail_address,
         gmail_app_password=gmail_app_password,
         x_bearer_token=x_bearer_token,
+        groq_api_key=groq_api_key,
+        podcast_enabled=bool(podcasts.get("enabled", False)) and bool(podcast_feeds),
+        podcast_feeds=podcast_feeds,
+        podcast_window_hours=float(podcasts.get("window_hours", 72)),
+        podcast_max_episodes=int(podcasts.get("max_episodes", 3)),
+        whisper_model=podcasts.get("whisper_model", "whisper-large-v3-turbo"),
     )

@@ -42,3 +42,11 @@ email:
   to:
     - "you@example.com"
   subject_prefix: "[Daily X Digest]"
+
+# 長訪談/論壇來源（Podcast RSS → Whisper 轉錄 → 蒸餾進 digest）；需在 .env 設 GROQ_API_KEY
+podcasts:
+  enabled: false
+  feeds: []               # 填 podcast RSS 網址（用 itunes lookup 或 getrssfeed.com 由節目名查）
+  window_hours: 72
+  max_episodes: 3
+  whisper_model: "whisper-large-v3-turbo"

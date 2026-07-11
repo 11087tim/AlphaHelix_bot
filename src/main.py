@@ -8,7 +8,8 @@ from datetime import datetime
 if __package__:
     from .config import Config, ConfigError, load_config
     from . import (x_client, summarizer, site_generator, emailer, publisher,
-                   graph_link, reports_bridge, memory_link, memory_extract)
+                   graph_link, reports_bridge, memory_link, memory_extract,
+                   podcast_client, transcribe, podcast_distill)
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore, SNAPSHOT_PATH
@@ -19,7 +20,8 @@ else:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
     from src import (x_client, summarizer, site_generator, emailer, publisher,
-                     graph_link, reports_bridge, memory_link, memory_extract)
+                     graph_link, reports_bridge, memory_link, memory_extract,
+                     podcast_client, transcribe, podcast_distill)
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore, SNAPSHOT_PATH
@@ -168,6 +170,14 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         if sec:
             keyword_sections.append(sec)
 
+    # 長訪談/論壇（Podcast 蒸餾要點）自成一段，享有同樣的 graph/財報 延伸
+    podcast_items = [t for t in tweets if str(t.get("source", "")).startswith("podcast:")]
+    if podcast_items:
+        sec = _analyze("🎙️ 長訪談／論壇", podcast_items, cfg, describe_media,
+                       _extra_context(graph_context, podcast_items))
+        if sec:
+            keyword_sections.append(sec)
+
     if not account_sections and not keyword_sections:
         return None
 
@@ -304,6 +314,43 @@ def run_render(cfg: Config) -> int:
     return 0
 
 
+def run_podcast(cfg: Config) -> int:
+    """抓長訪談新集 → Whisper 轉錄 → 蒸餾成投資要點 → 加入 pending（下次 synthesis 會納入）。"""
+    if not cfg.podcast_enabled:
+        logger.info("podcasts.enabled 未開或無 feeds，略過。")
+        return 0
+    if not cfg.groq_api_key:
+        logger.error("缺少 GROQ_API_KEY（長訪談轉錄需要）。請到 console.groq.com 取得後填入 .env。")
+        return 1
+
+    seen = podcast_client.SeenStore()
+    episodes = podcast_client.fetch_new_episodes(
+        cfg.podcast_feeds, cfg.podcast_window_hours, cfg.podcast_max_episodes, seen)
+    if not episodes:
+        logger.info("沒有需要處理的新集。")
+        return 0
+
+    pending = PendingStore()
+    total = 0
+    for ep in episodes:
+        logger.info("處理：%s — %s", ep.get("show"), ep.get("title"))
+        try:
+            transcript = transcribe.transcribe_url(
+                ep["audio_url"], cfg.groq_api_key, cfg.whisper_model)
+            items = podcast_distill.distill(ep, transcript, cfg.memory_model, cfg.openrouter_api_key)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("處理失敗（保留未讀，下次重試）：%s", exc)
+            continue
+        pending.add(items)
+        seen.mark(ep["id"])  # 成功才標記，失敗留待下次
+        total += len(items)
+
+    pending.save()
+    seen.save()
+    logger.info("長訪談處理完成：新增 %d 條要點到 pending（來自 %d 集）。", total, len(episodes))
+    return 0
+
+
 def run(mode: str) -> int:
     try:
         cfg = load_config()
@@ -321,14 +368,16 @@ def run(mode: str) -> int:
         return run_resynth(cfg)
     if mode == "memory-backfill":  # 從既有 digests.json 回填記憶帳本
         return run_memory_backfill(cfg)
+    if mode == "podcast":  # 抓長訪談新集 → 轉錄 → 蒸餾 → 加入 pending
+        return run_podcast(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / run）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / podcast / run）", mode)
     return 2
 
 
 if __name__ == "__main__":
-    # 用法：python -m src.main [fetch|synthesis|render|resynth|memory-backfill|run]，預設 fetch
+    # 用法：python -m src.main [fetch|synthesis|render|resynth|memory-backfill|podcast|run]，預設 fetch
     mode = sys.argv[1] if len(sys.argv) > 1 else "fetch"
     sys.exit(run(mode))

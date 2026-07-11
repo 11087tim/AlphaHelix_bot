@@ -14,6 +14,7 @@ python -m src.main run          # 一次跑完 fetch + synthesis（排程用）
 python -m src.main resynth      # 用 snapshot（或現有 pending）重跑彙整，只出本機預覽：不推送/不寄信/不清空。改 prompt 後免費看效果
 python -m src.main render       # 只用既有 digests 重繪網站 + push（改樣板後用，不呼叫 LLM）
 python -m src.main memory-backfill  # 從既有 digests.json 回填跨時間記憶帳本 memory.json（Sonnet 萃取立場，跳過已萃取者）
+python -m src.main podcast       # 抓長訪談 podcast 新集 → Whisper 轉錄 → 蒸餾投資要點 → 加入 pending（需 .env 設 GROQ_API_KEY、系統裝 ffmpeg）
 ```
 
 ### 台股財報分析 pipeline（`reports.main`）

@@ -8,6 +8,7 @@ digests.json
 pending.json
 snapshot.json
 memory.json
+podcast_seen.json
 *.log
 
 # 真正的設定檔含個人 email / 追蹤清單，不上傳；改用 config.example.yaml 當範本
