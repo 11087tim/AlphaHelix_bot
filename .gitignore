@@ -24,3 +24,6 @@ reports_data/
 
 # 供應鏈圖含個人持股，不上傳
 graph.yaml
+
+# 台股分析清單含個人關注標的，不上傳；改用 reports_config.example.yaml 當範本
+reports_config.yaml
