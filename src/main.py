@@ -170,15 +170,16 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         if sec:
             keyword_sections.append(sec)
 
-    # 長訪談/論壇（Podcast 蒸餾要點）自成一段，享有同樣的 graph/財報 延伸
+    # 長訪談/論壇（Podcast 蒸餾要點）自成頂層分類，享有同樣的 graph/財報 延伸
     podcast_items = [t for t in tweets if str(t.get("source", "")).startswith("podcast:")]
+    podcast_sections = []
     if podcast_items:
-        sec = _analyze("🎙️ 長訪談／論壇", podcast_items, cfg, describe_media,
+        sec = _analyze("", podcast_items, cfg, describe_media,
                        _extra_context(graph_context, podcast_items))
         if sec:
-            keyword_sections.append(sec)
+            podcast_sections = [sec]
 
-    if not account_sections and not keyword_sections:
+    if not account_sections and not keyword_sections and not podcast_sections:
         return None
 
     now = datetime.now()
@@ -188,6 +189,7 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         "model": cfg.openrouter_model,
         "account_sections": account_sections,
         "keyword_sections": keyword_sections,
+        "podcast_sections": podcast_sections,
     }
 
 
@@ -268,8 +270,9 @@ def run_synthesis(cfg: Config) -> int:
     # 彙整成功並存檔後才清空待彙整（避免中途失敗導致漏掉）
     pending.clear()
     pending.save()
-    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段。",
-                len(entry["account_sections"]), len(entry["keyword_sections"]))
+    logger.info("完成彙整：帳號觀點 %d 段、關鍵字 %d 段、長訪談 %d 段。",
+                len(entry["account_sections"]), len(entry["keyword_sections"]),
+                len(entry.get("podcast_sections", [])))
     return 0
 
 

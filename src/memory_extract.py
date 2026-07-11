@@ -44,7 +44,8 @@ def _entity_catalog() -> tuple[str, dict]:
 
 def _digest_text(entry: dict) -> str:
     parts = []
-    for sec in (entry.get("account_sections") or []) + (entry.get("keyword_sections") or []):
+    for sec in ((entry.get("account_sections") or []) + (entry.get("keyword_sections") or [])
+                + (entry.get("podcast_sections") or [])):
         s = sec.get("summary", "").strip()
         if s:
             parts.append(s)

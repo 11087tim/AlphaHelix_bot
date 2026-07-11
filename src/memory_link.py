@@ -101,7 +101,8 @@ def _phase1_timeline(recent_digests: list[dict], k: int = MAX_DIGESTS) -> str | 
     blocks: list[str] = []
     for d in picked:
         items: list[tuple[str, str]] = []
-        for sec in (d.get("account_sections") or []) + (d.get("keyword_sections") or []):
+        for sec in ((d.get("account_sections") or []) + (d.get("keyword_sections") or [])
+                    + (d.get("podcast_sections") or [])):
             items.extend(_pairs(sec.get("summary", "")))
         if not items:
             continue

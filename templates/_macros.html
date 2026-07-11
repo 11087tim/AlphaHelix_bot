@@ -1,25 +1,25 @@
-{% macro _refs_list(references) %}
+{% macro _refs_list(references, noun='推文', at=true) %}
     <ol>
       {% for ref in references %}
       <li>
-        <a href="{{ ref.url }}" target="_blank" rel="noopener">@{{ ref.author }} — 推文 [{{ ref.n }}]</a>
+        <a href="{{ ref.url }}" target="_blank" rel="noopener">{% if at %}@{% endif %}{{ ref.author }} — {{ noun }} [{{ ref.n }}]</a>
       </li>
       {% endfor %}
     </ol>
 {% endmacro %}
 
-{% macro render_section(sec, collapsible_refs=false) %}
+{% macro render_section(sec, collapsible_refs=false, noun='推文', at=true) %}
   <div class="summary">{{ sec.summary_html }}</div>
   {% if sec.references %}
     {% if collapsible_refs %}
     <details class="refs">
       <summary>來源（{{ sec.references|length }}）</summary>
-      {{ _refs_list(sec.references) }}
+      {{ _refs_list(sec.references, noun, at) }}
     </details>
     {% else %}
     <div class="refs">
       來源：
-      {{ _refs_list(sec.references) }}
+      {{ _refs_list(sec.references, noun, at) }}
     </div>
     {% endif %}
   {% endif %}
@@ -41,6 +41,15 @@
   <div class="section">
     <h4>{{ sec.label }}</h4>
     {{ render_section(sec, collapsible_refs) }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% if d.podcast_sections %}
+  <h3 class="cat">🎙️ 長訪談／論壇</h3>
+  {% for sec in d.podcast_sections %}
+  <div class="section">
+    {% if sec.label %}<h4>{{ sec.label }}</h4>{% endif %}
+    {{ render_section(sec, collapsible_refs, '訪談', false) }}
   </div>
   {% endfor %}
   {% endif %}

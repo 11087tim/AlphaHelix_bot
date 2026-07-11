@@ -192,6 +192,7 @@ def _prepare_digest(d: dict) -> dict:
         "model": d.get("model", ""),
         "account_sections": prepare_sections(d.get("account_sections", [])),
         "keyword_sections": prepare_sections(d.get("keyword_sections", [])),
+        "podcast_sections": prepare_sections(d.get("podcast_sections", [])),
     }
 
 
