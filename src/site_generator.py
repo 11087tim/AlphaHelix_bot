@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -163,16 +163,39 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
     return Markup("".join(out))
 
 
+def _compress_ns(ns: list[int]) -> str:
+    """把引用編號壓成區間字串，如 [1,2,3,5] → '1–3, 5'。"""
+    ns = sorted(set(ns))
+    parts, i = [], 0
+    while i < len(ns):
+        j = i
+        while j + 1 < len(ns) and ns[j + 1] == ns[j] + 1:
+            j += 1
+        parts.append(str(ns[i]) if i == j else f"{ns[i]}–{ns[j]}")
+        i = j + 1
+    return ", ".join(parts)
+
+
 def prepare_sections(raw_sections: list[dict]) -> list[dict]:
     """把 summarizer 產出的 section（含 Markdown-lite 摘要與 references）轉成可直接渲染的資料。
-    附圖跟著各主題段落走（放在段落下方）；底部只留純文字來源清單 [n]。
-    只呈現摘要實際引用到的來源：被模型忽略（如宣傳/訂閱推銷）的推文不會顯示。"""
+    附圖跟著各主題段落走；底部來源清單【依連結去重】——同一集 podcast 只列一次、編號收合成 [1–N]，
+    推文因每則連結不同維持逐則。只呈現摘要實際引用到的來源。"""
     prepared = []
     for sec in raw_sections:
         summary = sec["summary"]
         cited = {int(m.group(1)) for m in _CITE_RE.finditer(summary)}
         refs = [r for r in sec["references"] if r["n"] in cited]
-        refs_display = [{"n": r["n"], "url": r["url"], "author": r["author"]} for r in refs]
+        # 依連結分組：同一 URL（如同一集）只顯示一列，收合其所有引用編號
+        grouped: dict[str, dict] = {}
+        order: list[str] = []
+        for r in refs:
+            key = r["url"]
+            if key not in grouped:
+                grouped[key] = {"url": r["url"], "author": r["author"], "ns": []}
+                order.append(key)
+            grouped[key]["ns"].append(r["n"])
+        refs_display = [{"url": grouped[k]["url"], "author": grouped[k]["author"],
+                         "ns_label": _compress_ns(grouped[k]["ns"])} for k in order]
         prepared.append(
             {
                 "label": sec["label"],
@@ -217,18 +240,25 @@ def render_site(title: str, digests: list[dict], output_dir: Path) -> None:
     logger.info("已更新網站：%s（%d 個時段）", output_dir / "index.html", len(prepared))
 
 
-def render_email(title: str, digests: list[dict], site_url: str = "") -> str:
-    """從待寄的每小時摘要清單（由新到舊）產生 email HTML（攤平、不折疊）。"""
+def render_email(title: str, digests: list[dict], site_url: str = "",
+                 window_hours: float = 0) -> str:
+    """產生 email HTML（攤平、不折疊）。涵蓋時段以「起（最早涵蓋起點）～ 迄（最新產生時間）」呈現。"""
     prepared = [_prepare_digest(d) for d in digests]
-    if not prepared:
-        range_label = ""
-    elif prepared[0]["generated_at"] == prepared[-1]["generated_at"]:
-        range_label = prepared[0]["generated_at"]  # 單一時段就不顯示頭尾相同的區間
-    else:
-        range_label = f"{prepared[-1]['generated_at']} ～ {prepared[0]['generated_at']}"
+    prepared.sort(key=lambda d: d["generated_at"])  # 由舊到新
+    range_label = ""
+    if prepared:
+        end = prepared[-1]["generated_at"]
+        start = prepared[0]["generated_at"]
+        if window_hours:  # 起點回推抓取時間窗，代表這份涵蓋的活動起點
+            try:
+                start = (datetime.strptime(start, "%Y-%m-%d %H:%M")
+                         - timedelta(hours=window_hours)).strftime("%Y-%m-%d %H:%M")
+            except ValueError:
+                pass
+        range_label = end if start == end else f"{start} ～ {end}"
     return _env.get_template("email.html").render(
         title=title,
-        digests=prepared,
+        digests=list(reversed(prepared)),  # 顯示由新到舊
         range_label=range_label,
         site_url=site_url,
     )

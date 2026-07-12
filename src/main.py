@@ -255,7 +255,8 @@ def run_synthesis(cfg: Config) -> int:
         publisher.publish_docs()
 
     if cfg.email_to:
-        html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url)
+        html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url,
+                                           window_hours=cfg.fetch_window_hours)
         subject = f"{cfg.email_subject_prefix} {entry['generated_at']} 觀點彙整"
         try:
             emailer.send_html_email(

@@ -2,7 +2,7 @@
     <ol>
       {% for ref in references %}
       <li>
-        <a href="{{ ref.url }}" target="_blank" rel="noopener">{% if at %}@{% endif %}{{ ref.author }} — {{ noun }} [{{ ref.n }}]</a>
+        <a href="{{ ref.url }}" target="_blank" rel="noopener">{% if at %}@{% endif %}{{ ref.author }} — {{ noun }} [{{ ref.ns_label }}]</a>
       </li>
       {% endfor %}
     </ol>
