@@ -77,27 +77,49 @@ def _parse_feed(xml_bytes: bytes) -> tuple[str, list[dict]]:
     return show, episodes
 
 
-def fetch_new_episodes(feeds: list[str], window_hours: float, max_episodes: int,
+MAX_TOTAL_PER_RUN = 25  # 安全上限：單次跨所有 feed 最多處理幾集，避免成本失控
+
+
+def _fetch_feed(url: str):
+    resp = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+    resp.raise_for_status()
+    return _parse_feed(resp.content)
+
+
+def fetch_new_episodes(feeds: list[str], window_hours: float, per_feed: int,
                        seen: SeenStore) -> list[dict]:
-    """跨所有 feed 找出近 window_hours 內、未處理過的新集，最多 max_episodes 集（新到舊）。"""
+    """每個 feed 各取近 window_hours 內、未處理過的最新 per_feed 集；全部彙整（新到舊、總量有上限）。"""
     cutoff = datetime.now(timezone.utc) - timedelta(hours=window_hours)
+    _old = datetime.min.replace(tzinfo=timezone.utc)
     found: list[dict] = []
     for url in feeds:
         try:
-            resp = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
-            resp.raise_for_status()
-            show, episodes = _parse_feed(resp.content)
+            show, episodes = _fetch_feed(url)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("讀取 podcast feed 失敗 %s：%s", url, exc)
+            continue
+        fresh = [e for e in episodes
+                 if not seen.is_seen(e["id"]) and not (e["published"] and e["published"] < cutoff)]
+        fresh.sort(key=lambda e: e["published"] or _old, reverse=True)
+        picked = fresh[:per_feed]
+        found.extend(picked)
+        if picked:
+            logger.info("feed「%s」：%d 集，取最新未處理 %d 集", show, len(episodes), len(picked))
+    found.sort(key=lambda e: e["published"] or _old, reverse=True)
+    return found[:MAX_TOTAL_PER_RUN]
+
+
+def mark_all_seen(feeds: list[str], seen: SeenStore) -> int:
+    """把所有 feed 目前的集數全標為已讀（基準線），之後只處理新發布的集。回傳標記數。"""
+    n = 0
+    for url in feeds:
+        try:
+            _show, episodes = _fetch_feed(url)
         except Exception as exc:  # noqa: BLE001
             logger.warning("讀取 podcast feed 失敗 %s：%s", url, exc)
             continue
         for ep in episodes:
-            if seen.is_seen(ep["id"]):
-                continue
-            if ep["published"] and ep["published"] < cutoff:
-                continue
-            found.append(ep)
-        logger.info("feed「%s」：%d 集，新且在時間窗內 %d 集",
-                    show, len(episodes), sum(1 for e in found if e["show"] == show))
-    found.sort(key=lambda e: e["published"] or datetime.min.replace(tzinfo=timezone.utc),
-               reverse=True)
-    return found[:max_episodes]
+            if not seen.is_seen(ep["id"]):
+                seen.mark(ep["id"])
+                n += 1
+    return n

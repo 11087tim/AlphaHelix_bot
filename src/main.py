@@ -354,6 +354,18 @@ def run_podcast(cfg: Config) -> int:
     return 0
 
 
+def run_podcast_seed(cfg: Config) -> int:
+    """把所有 feed 目前的集數標為基準（已讀），之後 podcast 只處理新發布的集（避免回填整批舊集）。"""
+    if not cfg.podcast_feeds:
+        logger.info("沒有設定 podcast feeds。")
+        return 0
+    seen = podcast_client.SeenStore()
+    n = podcast_client.mark_all_seen(cfg.podcast_feeds, seen)
+    seen.save()
+    logger.info("已標記 %d 集為基準；往後只處理新發布的集。", n)
+    return 0
+
+
 def run(mode: str) -> int:
     try:
         cfg = load_config()
@@ -373,10 +385,12 @@ def run(mode: str) -> int:
         return run_memory_backfill(cfg)
     if mode == "podcast":  # 抓長訪談新集 → 轉錄 → 蒸餾 → 加入 pending
         return run_podcast(cfg)
+    if mode == "podcast-seed":  # 把目前集數設為基準，之後只處理新集
+        return run_podcast_seed(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / podcast / run）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / podcast / podcast-seed / run）", mode)
     return 2
 
 
