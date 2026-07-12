@@ -16,6 +16,9 @@ python -m src.main render       # 只用既有 digests 重繪網站 + push（改
 python -m src.main memory-backfill  # 從既有 digests.json 回填跨時間記憶帳本 memory.json（Sonnet 萃取立場，跳過已萃取者）
 python -m src.main podcast       # 抓長訪談 podcast 新集 → Whisper 轉錄 → 蒸餾投資要點 → 加入 pending（需 .env 設 GROQ_API_KEY、系統裝 ffmpeg）
 python -m src.main podcast-seed  # 把各 feed 目前集數設為基準（已讀），之後 podcast 只處理新發布的集；新增 feed 後想略過其舊集時也可用
+python -m src.main youtube       # 抓 YouTube 頻道新片 → 免費字幕(youtube-transcript-api) → 蒸餾 → 加入 pending
+python -m src.main youtube-seed  # 把各頻道目前影片設為基準，之後只處理新上片
+python -m src.main longform      # Podcast + YouTube 一次跑完（每日 19:30 排程用）
 ```
 
 ### 台股財報分析 pipeline（`reports.main`）

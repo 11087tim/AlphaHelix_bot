@@ -37,6 +37,10 @@ class Config:
     podcast_window_hours: float
     podcast_max_episodes: int
     whisper_model: str
+    youtube_enabled: bool
+    youtube_channels: list[str]
+    youtube_window_hours: float
+    youtube_max_videos: int
 
 
 class ConfigError(RuntimeError):
@@ -87,6 +91,8 @@ def load_config(config_path: Path | None = None) -> Config:
     openrouter = raw.get("openrouter") or {}
     podcasts = raw.get("podcasts") or {}
     podcast_feeds = [str(u).strip() for u in (podcasts.get("feeds") or []) if str(u).strip()]
+    youtube = raw.get("youtube") or {}
+    youtube_channels = [str(c).strip() for c in (youtube.get("channels") or []) if str(c).strip()]
 
     # email.to 支援單一字串或字串清單，統一正規化成 list
     raw_to = email.get("to", "")
@@ -122,4 +128,8 @@ def load_config(config_path: Path | None = None) -> Config:
         podcast_window_hours=float(podcasts.get("window_hours", 72)),
         podcast_max_episodes=int(podcasts.get("max_episodes", 3)),
         whisper_model=podcasts.get("whisper_model", "whisper-large-v3-turbo"),
+        youtube_enabled=bool(youtube.get("enabled", False)) and bool(youtube_channels),
+        youtube_channels=youtube_channels,
+        youtube_window_hours=float(youtube.get("window_hours", 336)),
+        youtube_max_videos=int(youtube.get("max_videos", 2)),
     )

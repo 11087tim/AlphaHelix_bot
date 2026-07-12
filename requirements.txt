@@ -5,3 +5,4 @@ PyYAML>=6.0
 python-dotenv>=1.0.0
 pypdf>=4.0.0
 pycryptodome>=3.19
+youtube-transcript-api

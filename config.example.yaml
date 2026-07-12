@@ -50,3 +50,10 @@ podcasts:
   window_hours: 72
   max_episodes: 3
   whisper_model: "whisper-large-v3-turbo"
+
+# YouTube 長影音來源（頻道 RSS → 免費字幕 youtube-transcript-api → 蒸餾進 digest）
+youtube:
+  enabled: false
+  channels: []          # channel_id（UC…）；可用 python -c "from src.youtube_client import resolve_channel_id; print(resolve_channel_id('@Asianometry'))" 查
+  window_hours: 336
+  max_videos: 2

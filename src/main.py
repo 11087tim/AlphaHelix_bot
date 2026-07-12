@@ -9,7 +9,7 @@ if __package__:
     from .config import Config, ConfigError, load_config
     from . import (x_client, summarizer, site_generator, emailer, publisher,
                    graph_link, reports_bridge, memory_link, memory_extract,
-                   podcast_client, transcribe, podcast_distill)
+                   podcast_client, transcribe, podcast_distill, youtube_client)
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore, SNAPSHOT_PATH
@@ -21,7 +21,7 @@ else:
     from src.config import Config, ConfigError, load_config
     from src import (x_client, summarizer, site_generator, emailer, publisher,
                      graph_link, reports_bridge, memory_link, memory_extract,
-                     podcast_client, transcribe, podcast_distill)
+                     podcast_client, transcribe, podcast_distill, youtube_client)
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore, SNAPSHOT_PATH
@@ -170,8 +170,9 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         if sec:
             keyword_sections.append(sec)
 
-    # 長訪談/論壇（Podcast 蒸餾要點）自成頂層分類，享有同樣的 graph/財報 延伸
-    podcast_items = [t for t in tweets if str(t.get("source", "")).startswith("podcast:")]
+    # 長訪談/論壇（Podcast + YouTube 蒸餾要點）自成頂層分類，享有同樣的 graph/財報 延伸
+    podcast_items = [t for t in tweets
+                     if str(t.get("source", "")).startswith(("podcast:", "youtube:"))]
     podcast_sections = []
     if podcast_items:
         sec = _analyze("", podcast_items, cfg, describe_media,
@@ -354,6 +355,59 @@ def run_podcast(cfg: Config) -> int:
     return 0
 
 
+def run_youtube(cfg: Config) -> int:
+    """抓 YouTube 頻道新片 → 免費字幕 → 蒸餾成投資要點 → 加入 pending（下次 synthesis 納入）。"""
+    if not cfg.youtube_enabled:
+        logger.info("youtube.enabled 未開或無 channels，略過。")
+        return 0
+    seen = podcast_client.SeenStore()  # 與 podcast 共用「已處理媒體」記錄
+    videos = youtube_client.fetch_new_videos(
+        cfg.youtube_channels, cfg.youtube_window_hours, cfg.youtube_max_videos, seen)
+    if not videos:
+        logger.info("沒有需要處理的新影片。")
+        return 0
+
+    pending = PendingStore()
+    total = 0
+    for v in videos:
+        logger.info("處理 YouTube：%s — %s", v.get("show"), v.get("title"))
+        try:
+            transcript = youtube_client.get_transcript(v["video_id"])
+            items = podcast_distill.distill(v, transcript, cfg.memory_model, cfg.openrouter_api_key)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("處理失敗（保留未讀，下次重試）：%s", exc)
+            continue
+        for it in items:  # 標成 youtube 來源，仍歸「🎙️ Podcast／YouTube」段
+            it["source"] = f"youtube:{v.get('show', 'YouTube')}"
+        pending.add(items)
+        seen.mark(v["id"])
+        total += len(items)
+
+    pending.save()
+    seen.save()
+    logger.info("YouTube 處理完成：新增 %d 條要點（來自 %d 支影片）。", total, len(videos))
+    return 0
+
+
+def run_youtube_seed(cfg: Config) -> int:
+    """把各頻道目前影片設為基準（已讀），之後只處理新上片。"""
+    if not cfg.youtube_channels:
+        logger.info("沒有設定 youtube channels。")
+        return 0
+    seen = podcast_client.SeenStore()
+    n = youtube_client.mark_all_seen(cfg.youtube_channels, seen)
+    seen.save()
+    logger.info("已標記 %d 支影片為基準；往後只處理新上片。", n)
+    return 0
+
+
+def run_longform(cfg: Config) -> int:
+    """長內容一次跑完：Podcast + YouTube（供每日排程用）。"""
+    rc = run_podcast(cfg)
+    ry = run_youtube(cfg)
+    return rc or ry
+
+
 def run_podcast_seed(cfg: Config) -> int:
     """把所有 feed 目前的集數標為基準（已讀），之後 podcast 只處理新發布的集（避免回填整批舊集）。"""
     if not cfg.podcast_feeds:
@@ -387,10 +441,17 @@ def run(mode: str) -> int:
         return run_podcast(cfg)
     if mode == "podcast-seed":  # 把目前集數設為基準，之後只處理新集
         return run_podcast_seed(cfg)
+    if mode == "youtube":  # 抓 YouTube 頻道新片 → 字幕 → 蒸餾 → 加入 pending
+        return run_youtube(cfg)
+    if mode == "youtube-seed":  # 把目前影片設為基準，之後只處理新上片
+        return run_youtube_seed(cfg)
+    if mode == "longform":  # Podcast + YouTube 一次跑完（每日排程用）
+        return run_longform(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
-    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / podcast / podcast-seed / run）", mode)
+    logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / "
+                 "podcast / podcast-seed / youtube / youtube-seed / longform / run）", mode)
     return 2
 
 

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  每天一次（台灣時間 19:30）跑 podcast：檢查各 feed 是否有新集 → Whisper 轉錄 → 蒸餾投資要點 → 加入 pending。
+  每天一次（台灣時間 19:30）跑 longform：Podcast(RSS+Whisper) + YouTube(字幕) 是否有新集 → Whisper 轉錄 → 蒸餾投資要點 → 加入 pending。
   排在 20:00 的 daily(run) 之前，讓當天新集能一起進當晚 digest 的「🎙️ Podcast／YouTube」段。
   需求：.env 內有 GROQ_API_KEY；系統已裝 ffmpeg（PATH 含 /opt/homebrew/bin）。
   安裝：
-    cp scripts/com.alphehelix.xbot.podcast.plist ~/Library/LaunchAgents/
-    launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.podcast.plist
+    cp scripts/com.alphehelix.xbot.longform.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.alphehelix.xbot.longform.plist
 -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.alphehelix.xbot.podcast</string>
+    <string>com.alphehelix.xbot.longform</string>
 
     <key>ProgramArguments</key>
     <array>
         <string>/Users/chenyanting/Alphehelix_X_bot/.venv/bin/python</string>
         <string>-m</string>
         <string>src.main</string>
-        <string>podcast</string>
+        <string>longform</string>
     </array>
 
     <key>WorkingDirectory</key>
