@@ -220,10 +220,12 @@ def render_site(title: str, digests: list[dict], output_dir: Path) -> None:
 def render_email(title: str, digests: list[dict], site_url: str = "") -> str:
     """從待寄的每小時摘要清單（由新到舊）產生 email HTML（攤平、不折疊）。"""
     prepared = [_prepare_digest(d) for d in digests]
-    if prepared:
-        range_label = f"{prepared[-1]['generated_at']} ～ {prepared[0]['generated_at']}"
-    else:
+    if not prepared:
         range_label = ""
+    elif prepared[0]["generated_at"] == prepared[-1]["generated_at"]:
+        range_label = prepared[0]["generated_at"]  # 單一時段就不顯示頭尾相同的區間
+    else:
+        range_label = f"{prepared[-1]['generated_at']} ～ {prepared[0]['generated_at']}"
     return _env.get_template("email.html").render(
         title=title,
         digests=prepared,
