@@ -26,8 +26,8 @@ _BULLET_RE = re.compile(r"^[-*]\s+(.*)")
 _ORDERED_RE = re.compile(r"^\d+[.)]\s+(.*)")
 
 
-def _render_inline(text: str, url_by_n: dict) -> Markup:
-    """行內渲染：先整段 escape，再注入 **粗體**、[n] 引用連結、[附圖N] 預覽連結。"""
+def _render_inline(text: str, cite_by_n: dict) -> Markup:
+    """行內渲染：先整段 escape，再注入 **粗體**、[n] 引用連結（hover 顯示來源）、[附圖N] 預覽連結。"""
     out = str(escape(text))  # 先 escape，**、[n]、[附圖N] 都是純字元會保留
     out = _BOLD_RE.sub(lambda m: f"<strong>{m.group(1)}</strong>", out)
 
@@ -36,16 +36,18 @@ def _render_inline(text: str, url_by_n: dict) -> Markup:
 
     def cite(m: re.Match) -> str:
         n = int(m.group(1))
-        url = url_by_n.get(n)
-        if not url:
+        info = cite_by_n.get(n)
+        if not info:
             return m.group(0)
-        return f'<a class="cite" href="{escape(url)}" target="_blank" rel="noopener">[{n}]</a>'
+        title = f' title="{escape(info["title"])}"' if info.get("title") else ""
+        return (f'<a class="cite" href="{escape(info["url"])}"{title} '
+                f'target="_blank" rel="noopener">[{n}]</a>')
 
     out = _CITE_RE.sub(cite, out)
     return Markup(out)
 
 
-def _render_lines(lines: list[str], url_by_n: dict) -> str:
+def _render_lines(lines: list[str], cite_by_n: dict) -> str:
     """把一段 Markdown-lite 文字（粗體/條列/標題/[n] 引用）渲染成安全的 HTML 片段。"""
     parts: list[str] = []
     list_items: list[str] = []
@@ -68,13 +70,13 @@ def _render_lines(lines: list[str], url_by_n: dict) -> str:
         header = _HEADER_RE.match(line)
         if header:
             flush_list()
-            parts.append(f'<p class="maintopic">{_render_inline(header.group(1), url_by_n)}</p>')
+            parts.append(f'<p class="maintopic">{_render_inline(header.group(1), cite_by_n)}</p>')
             continue
 
         bold_line = _BOLD_LINE_RE.match(line)
         if bold_line:
             flush_list()
-            parts.append(f'<p class="subhead">{_render_inline(bold_line.group(1), url_by_n)}</p>')
+            parts.append(f'<p class="subhead">{_render_inline(bold_line.group(1), cite_by_n)}</p>')
             continue
 
         bullet = _BULLET_RE.match(line)
@@ -85,11 +87,11 @@ def _render_lines(lines: list[str], url_by_n: dict) -> str:
                 flush_list()
             list_tag = tag
             content = (bullet or ordered).group(1)
-            list_items.append(str(_render_inline(content, url_by_n)))
+            list_items.append(str(_render_inline(content, cite_by_n)))
             continue
 
         flush_list()
-        parts.append(f"<p>{_render_inline(line, url_by_n)}</p>")
+        parts.append(f"<p>{_render_inline(line, cite_by_n)}</p>")
 
     flush_list()
     return "".join(parts)
@@ -142,16 +144,25 @@ def _split_segments(summary: str) -> list[list[str]]:
     return segments
 
 
+def _cite_title(ref: dict) -> str:
+    """[n] 的 hover 提示：來源作者 + 內文摘要（舊 digest 無 text 時只顯示作者）。"""
+    author = str(ref.get("author", "")).strip()
+    disp = author if author.startswith("🎙️") else f"@{author}"
+    text = str(ref.get("text", "")).strip()
+    title = f"{disp}：{text}" if text else disp
+    return title[:220]
+
+
 def _render_summary(summary: str, references: list[dict]) -> Markup:
     """渲染摘要 HTML；只呈現內文以 [附圖N] 明確引用到的圖（模型確實有討論到內容者），
     放在該大/小主題段落（延伸推論）下方。單純被 [n] 引用、模型未提及內容的附圖不顯示，
     避免倒出與內文無關的縮圖（來源清單仍保留該推文連結）。"""
-    url_by_n = {ref["n"]: ref["url"] for ref in references}
+    cite_by_n = {ref["n"]: {"url": ref["url"], "title": _cite_title(ref)} for ref in references}
     fig_by_no = _fig_map(references)
 
     out: list[str] = []
     for seg in _split_segments(summary):
-        out.append(_render_lines(seg, url_by_n))
+        out.append(_render_lines(seg, cite_by_n))
         text = "\n".join(seg)
         figs: dict[int, dict] = {}
         for m in _FIG_RE.finditer(text):  # 只挑內文明確 [附圖N] 提到的圖

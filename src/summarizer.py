@@ -254,7 +254,8 @@ def summarize_group(
     summary = _strip_skip_notes(data["choices"][0]["message"]["content"].strip())
 
     references = [
-        {"n": idx, "url": t["url"], "author": t["author"], "media": t.get("media", [])}
+        {"n": idx, "url": t["url"], "author": t["author"],
+         "text": (t.get("text") or "").strip(), "media": t.get("media", [])}
         for idx, t in enumerate(tweets, start=1)
     ]
     return {"summary": summary, "references": references}
