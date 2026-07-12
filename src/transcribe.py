@@ -44,7 +44,7 @@ def _transcribe_chunk(path: Path, api_key: str, model: str) -> str:
             GROQ_URL,
             headers={"Authorization": f"Bearer {api_key}"},
             files={"file": (path.name, f, "audio/mpeg")},
-            data={"model": model, "response_format": "json", "language": "zh"},
+            data={"model": model, "response_format": "json"},  # 不指定語言→Whisper 自動偵測（中英皆可）
             timeout=300,
         )
     resp.raise_for_status()

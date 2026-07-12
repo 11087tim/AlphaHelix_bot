@@ -8,7 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-MAX_TRANSCRIPT_CHARS = 80000  # 上限，控成本（超長逐字稿截斷）
+MAX_TRANSCRIPT_CHARS = 300000  # 上限（Sonnet 長脈絡夠；涵蓋 Acquired 這類 3–4 小時長節目）
 
 _SYSTEM = (
     "你是投資分析助理。以下是一集科技/財經 podcast 或訪談的逐字稿（含口語、可能有贊助與閒聊）。"
