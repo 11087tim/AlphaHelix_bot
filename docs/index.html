@@ -27,6 +27,14 @@
     a { color: #1d9bf0; }
     a.cite { font-weight: 600; text-decoration: none; padding: 0 1px; }
     a.cite:hover { text-decoration: underline; }
+    /* [n] 引用來源 tooltip（JS 浮動卡片，取代原生 title） */
+    .cite-tip { position: fixed; z-index: 60; max-width: 340px; background: #fff; color: #1a1a1a;
+      border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,.16);
+      padding: 9px 12px; font-size: 0.82rem; line-height: 1.5; pointer-events: none; opacity: 0;
+      transform: translateY(4px); transition: opacity .12s ease, transform .12s ease; }
+    .cite-tip.show { opacity: 1; transform: translateY(0); }
+    .cite-tip .tip-author { font-weight: 700; color: #1d9bf0; display: block; margin-bottom: 3px; }
+    .cite-tip .tip-text { color: #333; display: block; }
     .figref { font-weight: 600; color: #0f7a5a; cursor: pointer; padding: 0 1px; }
     .figref:hover { text-decoration: underline; }
     .refmedia { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 2px; }
@@ -78,7 +86,7 @@
   </nav>
 
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-07-12 23:11｜每天彙整兩次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-07-12 23:43｜每天彙整兩次，點各時段標題可展開/收合</p>
 
   
   <div class="datebar">
@@ -2304,6 +2312,42 @@
           if (t) openLb(t.getAttribute('href'),
                         '附圖' + n + (t.getAttribute('data-type') !== 'photo' ? '（影片畫面預覽）' : ''));
         }
+      });
+    })();
+    (function () {
+      // [n] 引用來源：把原生 title 換成漂亮的浮動卡片
+      var tip = document.createElement('div');
+      tip.className = 'cite-tip';
+      tip.innerHTML = '<span class="tip-author"></span><span class="tip-text"></span>';
+      document.body.appendChild(tip);
+      var tA = tip.querySelector('.tip-author'), tT = tip.querySelector('.tip-text');
+      // 搬走原生 title，避免與自訂卡片重複跳出
+      [].forEach.call(document.querySelectorAll('a.cite[title]'), function (a) {
+        a.setAttribute('data-tip', a.getAttribute('title'));
+        a.removeAttribute('title');
+      });
+      function position(a) {
+        var r = a.getBoundingClientRect();
+        var tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = Math.max(8, Math.min(r.left + r.width / 2 - tw / 2, window.innerWidth - tw - 8));
+        var top = r.top - th - 8;
+        if (top < 8) top = r.bottom + 8;   // 上方不夠就放下方
+        tip.style.left = left + 'px';
+        tip.style.top = top + 'px';
+      }
+      function show(a) {
+        var raw = a.getAttribute('data-tip') || '';
+        var i = raw.indexOf('：');
+        tA.textContent = i >= 0 ? raw.slice(0, i) : raw;
+        tT.textContent = i >= 0 ? raw.slice(i + 1) : '';
+        tT.style.display = (i >= 0 && raw.slice(i + 1)) ? '' : 'none';
+        position(a);
+        tip.classList.add('show');
+      }
+      function hide() { tip.classList.remove('show'); }
+      [].forEach.call(document.querySelectorAll('a.cite[data-tip]'), function (a) {
+        a.addEventListener('mouseenter', function () { show(a); });
+        a.addEventListener('mouseleave', hide);
       });
     })();
     (function () {
