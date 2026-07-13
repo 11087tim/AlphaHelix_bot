@@ -76,6 +76,29 @@
     /* 收起狀態：隱藏側欄、顯示浮動開啟鈕（桌機與窄螢幕通用） */
     body.toc-closed .toc { display: none; }
     body.toc-closed #tocToggle { display: block; }
+    img { max-width: 100%; }
+
+    /* ===== 手機 RWD ===== */
+    @media (max-width: 700px) {
+      html { -webkit-text-size-adjust: 100%; }
+      body { padding: 14px 12px; }
+      /* 防止長英文/網址/handle 撐破版面、產生水平捲動 */
+      body, .summary, .refs, .toc { overflow-wrap: break-word; word-break: break-word; }
+      h1 { font-size: 1.35rem; }
+      .meta { font-size: 0.85rem; margin-bottom: 16px; }
+      .datebar select { max-width: 100%; }
+      details.hour > summary { padding: 12px 14px; font-size: 1.02rem; }
+      .hour-body { padding: 0 14px 12px; }
+      h3.cat { font-size: 0.95rem; }
+      .summary p { text-indent: 1em; }
+      .summary p.maintopic { font-size: 1.1rem; margin: 18px 0 6px; }
+      .summary p.subhead { font-size: 0.98rem; }
+      .summary ul, .summary ol { padding-left: 18px; }
+      .cite-tip { max-width: calc(100vw - 24px); }
+      /* 大綱在手機改為近全寬抽屜、開啟鈕移到右上避免蓋住標題 */
+      #tocToggle { top: 12px; right: 12px; left: auto; padding: 6px 10px; font-size: 0.85rem; }
+      .toc { top: 54px; left: 12px; right: 12px; width: auto; max-height: 68vh; box-shadow: 0 8px 28px rgba(0,0,0,.2); }
+    }
   </style>
 </head>
 <body>
@@ -86,7 +109,7 @@
   </nav>
 
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-07-13 09:00｜每天彙整兩次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-07-13 09:10｜每天彙整兩次，點各時段標題可展開/收合</p>
 
   
   <div class="datebar">
