@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import socket
 import sys
 import time
@@ -273,9 +274,10 @@ def run_synthesis(cfg: Config) -> int:
     if cfg.site_auto_push:
         publisher.publish_docs()
 
-    # 收件人：dev 每次都寄；prod 只在指定整點（預設 8、20）寄，避免正式信箱被測試信洗版
+    # 收件人：dev 每次都寄；prod 只在指定整點（預設 8、20）寄，避免正式信箱被測試信洗版。
+    # 手動補跑「正式版」可設 XBOT_FORCE_PROD=1 強制納入 prod（不限時段）。
     recipients = list(cfg.email_dev)
-    if datetime.now().hour in cfg.email_prod_hours:
+    if os.environ.get("XBOT_FORCE_PROD") == "1" or datetime.now().hour in cfg.email_prod_hours:
         recipients += [a for a in cfg.email_prod if a not in recipients]
     if recipients:
         html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url,
