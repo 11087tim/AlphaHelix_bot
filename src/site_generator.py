@@ -91,7 +91,8 @@ def _render_lines(lines: list[str], cite_by_n: dict) -> str:
             continue
 
         flush_list()
-        parts.append(f"<p>{_render_inline(line, cite_by_n)}</p>")
+        cls = ' class="robot"' if line.startswith("🤖") else ""  # 🤖 延伸推論做成 callout
+        parts.append(f"<p{cls}>{_render_inline(line, cite_by_n)}</p>")
 
     flush_list()
     return "".join(parts)
@@ -162,7 +163,7 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
 
     out: list[str] = []
     for seg in _split_segments(summary):
-        out.append(_render_lines(seg, cite_by_n))
+        block = _render_lines(seg, cite_by_n)
         text = "\n".join(seg)
         figs: dict[int, dict] = {}
         for m in _FIG_RE.finditer(text):  # 只挑內文明確 [附圖N] 提到的圖
@@ -170,7 +171,11 @@ def _render_summary(summary: str, references: list[dict]) -> Markup:
             if fn in fig_by_no:
                 figs[fn] = fig_by_no[fn]
         if figs:
-            out.append(_figs_html(sorted(figs.values(), key=lambda f: f["fig_no"] or 0)))
+            block += _figs_html(sorted(figs.values(), key=lambda f: f["fig_no"] or 0))
+        head = next((ln.strip() for ln in seg if ln.strip()), "")
+        if head.startswith("#") and "本期變化" in head:  # 📈 本期變化整段包成醒目卡片
+            block = f'<div class="whatschanged">{block}</div>'
+        out.append(block)
     return Markup("".join(out))
 
 

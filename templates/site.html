@@ -78,6 +78,43 @@
     body.toc-closed #tocToggle { display: block; }
     img { max-width: 100%; }
 
+    /* 🤖 延伸推論 callout：淡底 + 左側色條，一眼區分「推論 vs 事實」 */
+    .summary p.robot { background: #f0f7ff; border-left: 3px solid #1d9bf0; border-radius: 0 8px 8px 0;
+      padding: 8px 12px; margin: 8px 0 14px; text-indent: 0; color: #23516e; font-size: 0.95rem; }
+    /* 📈 本期變化醒目卡片 */
+    .whatschanged { background: #fffdf5; border: 1px solid #f0e6c8; border-radius: 10px;
+      padding: 4px 14px 10px; margin: 6px 0 16px; }
+    .whatschanged p.maintopic { border-bottom: none; margin-top: 10px; }
+    /* 回頂端浮動鈕 */
+    .to-top { position: fixed; right: 16px; bottom: 16px; z-index: 40; width: 44px; height: 44px;
+      border: none; border-radius: 50%; background: #1d9bf0; color: #fff; font-size: 1.3rem; cursor: pointer;
+      box-shadow: 0 3px 12px rgba(0,0,0,.22); display: none; align-items: center; justify-content: center; }
+    .to-top.show { display: flex; }
+
+    /* ===== 深色模式（跟隨系統） ===== */
+    @media (prefers-color-scheme: dark) {
+      body { background: #14171a; color: #dfe3e8; }
+      .meta, h3.cat { color: #98a2ad; }
+      h4, .summary p.subhead { color: #cbd2da; }
+      details.hour { background: #1c2024; border-color: #2b3138; }
+      .model { background: #232a31; border-color: #333c45; color: #aab3bd; }
+      .section { border-top-color: #2b3138; }
+      .summary p.maintopic { border-bottom-color: #2a3a47; }
+      .datebar select { background: #1c2024; color: #dfe3e8; border-color: #333c45; }
+      .refs, footer { color: #8b96a1; }
+      .refs { border-top-color: #2b3138; }
+      details.refs { border-top-color: #2b3138; }
+      .thumb { border-color: #333c45; }
+      .toc { background: #1c2024; border-color: #2b3138; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+      .toc a { color: #b9c2cc; }
+      .toc a.lv2 { color: #98a2ad; }
+      .toc a:hover { background: #232c34; }
+      .cite-tip { background: #1c2024; color: #dfe3e8; border-color: #333c45; box-shadow: 0 8px 28px rgba(0,0,0,.5); }
+      .cite-tip .tip-text { color: #c5ccd4; }
+      .summary p.robot { background: #172530; border-left-color: #2f7fbf; color: #a9c7dc; }
+      .whatschanged { background: #201d13; border-color: #3a3320; }
+    }
+
     /* ===== 手機 RWD ===== */
     @media (max-width: 700px) {
       html { -webkit-text-size-adjust: 100%; }
@@ -90,7 +127,7 @@
       details.hour > summary { padding: 12px 14px; font-size: 1.02rem; }
       .hour-body { padding: 0 14px 12px; }
       h3.cat { font-size: 0.95rem; }
-      .summary p { text-indent: 1em; }
+      .summary p { text-indent: 0; }   /* 窄欄取消首行縮排，更整齊 */
       .summary p.maintopic { font-size: 1.1rem; margin: 18px 0 6px; }
       .summary p.subhead { font-size: 0.98rem; }
       .summary ul, .summary ol { padding-left: 18px; }
@@ -139,7 +176,17 @@
     <div class="lb-cap" id="lbCap"></div>
   </div>
 
+  <button class="to-top" id="toTop" type="button" aria-label="回到頂端">↑</button>
+
   <script>
+    (function () {
+      // 回頂端浮動鈕：捲動一段距離才顯示
+      var btn = document.getElementById('toTop');
+      function onScroll() { btn.classList.toggle('show', window.pageYOffset > 600); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      btn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      onScroll();
+    })();
     (function () {
       // 圖片預覽（lightbox）：點縮圖或內文 [附圖N] 開啟，不連到 X
       var lb = document.getElementById('lightbox');
