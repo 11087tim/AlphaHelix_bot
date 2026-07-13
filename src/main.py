@@ -273,7 +273,11 @@ def run_synthesis(cfg: Config) -> int:
     if cfg.site_auto_push:
         publisher.publish_docs()
 
-    if cfg.email_to:
+    # 收件人：dev 每次都寄；prod 只在指定整點（預設 8、20）寄，避免正式信箱被測試信洗版
+    recipients = list(cfg.email_dev)
+    if datetime.now().hour in cfg.email_prod_hours:
+        recipients += [a for a in cfg.email_prod if a not in recipients]
+    if recipients:
         html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url,
                                            window_hours=cfg.fetch_window_hours)
         subject = f"{cfg.email_subject_prefix} {entry['generated_at']} 觀點彙整"
@@ -281,7 +285,7 @@ def run_synthesis(cfg: Config) -> int:
             emailer.send_html_email(
                 gmail_address=cfg.gmail_address,
                 gmail_app_password=cfg.gmail_app_password,
-                to=cfg.email_to,
+                to=recipients,
                 subject=subject,
                 html_body=html,
             )

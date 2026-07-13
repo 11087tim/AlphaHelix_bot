@@ -26,7 +26,9 @@ class Config:
     site_output_dir: Path
     site_url: str
     site_auto_push: bool
-    email_to: list[str]
+    email_prod: list[str]        # 正式收件：只在 email_prod_hours 這些整點寄
+    email_dev: list[str]         # 開發收件：每次執行都寄
+    email_prod_hours: list[int]  # prod 寄信的整點（預設 8、20）
     email_subject_prefix: str
     gmail_address: str
     gmail_app_password: str
@@ -94,12 +96,17 @@ def load_config(config_path: Path | None = None) -> Config:
     youtube = raw.get("youtube") or {}
     youtube_channels = [str(c).strip() for c in (youtube.get("channels") or []) if str(c).strip()]
 
-    # email.to 支援單一字串或字串清單，統一正規化成 list
-    raw_to = email.get("to", "")
-    if isinstance(raw_to, str):
-        email_to = [addr.strip() for addr in raw_to.split(",") if addr.strip()]
-    else:
-        email_to = [str(addr).strip() for addr in raw_to if str(addr).strip()]
+    # 收件人支援單一字串或清單，統一正規化成 list
+    def _norm_addrs(v) -> list[str]:
+        if isinstance(v, str):
+            return [a.strip() for a in v.split(",") if a.strip()]
+        return [str(a).strip() for a in (v or []) if str(a).strip()]
+
+    email_prod = _norm_addrs(email.get("prod"))
+    email_dev = _norm_addrs(email.get("dev"))
+    if not email_prod and not email_dev:  # 向後相容舊的 email.to（視為 prod）
+        email_prod = _norm_addrs(email.get("to"))
+    email_prod_hours = [int(h) for h in (email.get("prod_hours") or [8, 20])]
 
     return Config(
         accounts=accounts,
@@ -117,7 +124,9 @@ def load_config(config_path: Path | None = None) -> Config:
         site_output_dir=PROJECT_ROOT / site.get("output_dir", "docs"),
         site_url=site.get("url", ""),
         site_auto_push=site.get("auto_push", True),
-        email_to=email_to,
+        email_prod=email_prod,
+        email_dev=email_dev,
+        email_prod_hours=email_prod_hours,
         email_subject_prefix=email.get("subject_prefix", "[X Digest]"),
         gmail_address=gmail_address,
         gmail_app_password=gmail_app_password,

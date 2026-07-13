@@ -35,12 +35,11 @@ site:
   auto_push: true
 
 email:
-  # 收件人：可填單一 email，或用清單填多個，例如：
-  #   to:
-  #     - "you@example.com"
-  #     - "someone@example.com"
-  to:
+  # prod（正式收件）：只在 prod_hours 這些整點寄；dev（開發收件）：每次執行都寄
+  prod:
     - "you@example.com"
+  dev: []
+  prod_hours: [8, 20]
   subject_prefix: "[Daily X Digest]"
 
 # 長訪談/論壇來源（Podcast RSS → Whisper 轉錄 → 蒸餾進 digest）；需在 .env 設 GROQ_API_KEY
