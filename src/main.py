@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import logging
+import socket
 import sys
+import time
 from datetime import datetime
 
 # 支援兩種執行方式：`python -m src.main`（套件）或 `python src/main.py`（腳本）
@@ -109,8 +111,25 @@ def _analyze(label: str, tweets: list[dict], cfg: Config, describe_media: bool,
     return None
 
 
+def _wait_for_network(host: str = "api.twitter.com", attempts: int = 8, delay: int = 15) -> bool:
+    """等網路就緒（排程在 Mac 剛喚醒時觸發、Wi-Fi 可能還沒連上）。能解析 host 即視為就緒。"""
+    for i in range(attempts):
+        try:
+            socket.getaddrinfo(host, 443)
+            return True
+        except socket.gaierror:
+            if i < attempts - 1:
+                logger.warning("網路尚未就緒（無法解析 %s），%d 秒後重試（%d/%d）…",
+                               host, delay, i + 1, attempts)
+                time.sleep(delay)
+    return False
+
+
 def run_fetch(cfg: Config) -> int:
     """每小時執行：抓取各追蹤來源的新貼文，累積到待彙整區（不做 LLM、不更新網站、不寄信）。"""
+    if not _wait_for_network():
+        logger.error("網路持續無法連線，略過本次抓取（避免整批失敗；下次排程再試）。")
+        return 0
     client = x_client._build_client(cfg.x_bearer_token)
     storage = Storage()
     pending = PendingStore()
