@@ -43,6 +43,7 @@ Wants=network-online.target
 Type=oneshot
 User=$RUN_USER
 WorkingDirectory=$PROJECT_DIR
+ExecStartPre=-/usr/bin/git pull --rebase --autostash --quiet
 ExecStart=$PY -m src.main run
 UNIT
 
@@ -70,6 +71,7 @@ Wants=network-online.target
 Type=oneshot
 User=$RUN_USER
 WorkingDirectory=$PROJECT_DIR
+ExecStartPre=-/usr/bin/git pull --rebase --autostash --quiet
 ExecStart=$PY -m src.main longform
 UNIT
 
