@@ -1,14 +1,18 @@
-# 部署到 VM（Hetzner / Ubuntu）
+# 部署到 VM（Vultr 新加坡 / Ubuntu）
 
 把 digest 排程從本機 Mac 搬到一台 24/7 常開的 VM，根治「Mac 睡著漏跑」，並為未來的 RAG/chatbot 準備好一個家。
+（`deploy/setup.sh` 是通用 Ubuntu，換 DigitalOcean/Oracle/Hetzner 也只有本節「開機器」不同。）
 
 ---
 
-## 1. 開一台 Hetzner VM
-- 到 [console.hetzner.cloud](https://console.hetzner.cloud) → 建 Project → Add Server
-- 機型 **CX22**（2 vCPU / 4GB，~€4/月）、映像 **Ubuntu 24.04**
-- **SSH keys**：把你本機的公鑰貼上（`cat ~/.ssh/id_ed25519.pub`；沒有就 `ssh-keygen -t ed25519`）
-- 建立後記下 **IP**，連線：`ssh root@<IP>`
+## 1. 開一台 Vultr VM
+- 到 [my.vultr.com](https://my.vultr.com) 註冊、加付款方式 → Deploy New Server
+- 類型 **Cloud Compute — Shared CPU（Regular Performance）**
+- **Location：Singapore**（對台灣延遲低，未來 chatbot 也順）
+- **OS：Ubuntu 24.04 LTS**
+- **Plan**：2GB（~$10/月，向量庫用 Neon 託管就夠）或 4GB（~$20/月，想自架向量庫更有餘裕）——**日後可線上升級**
+- **SSH Keys**：貼你本機公鑰（`cat ~/.ssh/id_ed25519.pub`；沒有就先 `ssh-keygen -t ed25519`）
+- Deploy 後記下 **IP**，連線：`ssh root@<IP>`
 
 ## 2.（建議）建一個非 root 使用者
 ```bash
