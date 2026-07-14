@@ -112,18 +112,19 @@ def _analyze(label: str, tweets: list[dict], cfg: Config, describe_media: bool,
     return None
 
 
-def _wait_for_network(host: str = "api.twitter.com", attempts: int = 8, delay: int = 15) -> bool:
-    """等網路就緒（排程在 Mac 剛喚醒時觸發、Wi-Fi 可能還沒連上）。能解析 host 即視為就緒。"""
-    for i in range(attempts):
+def _wait_for_network(host: str = "api.twitter.com", timeout: int = 120, delay: int = 15) -> bool:
+    """等網路就緒（排程在 Mac 剛喚醒時觸發、Wi-Fi 可能還沒連上）。能解析 host 即視為就緒。
+    以「牆上時間」設總上限（會隨睡眠前進），避免 Mac 反覆入睡把重試拖成數小時。"""
+    deadline = time.time() + timeout
+    while True:
         try:
             socket.getaddrinfo(host, 443)
             return True
         except socket.gaierror:
-            if i < attempts - 1:
-                logger.warning("網路尚未就緒（無法解析 %s），%d 秒後重試（%d/%d）…",
-                               host, delay, i + 1, attempts)
-                time.sleep(delay)
-    return False
+            if time.time() + delay >= deadline:
+                return False
+            logger.warning("網路尚未就緒（無法解析 %s），%d 秒後重試…", host, delay)
+            time.sleep(delay)
 
 
 def run_fetch(cfg: Config) -> int:
