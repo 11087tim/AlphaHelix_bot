@@ -40,8 +40,9 @@ def _load_names():
 
 
 def line_chart(dates, values, w=680, h=220, color="#3b82f6", fill=True,
-               reflines=None, y_fmt=lambda v: f"{v:,.0f}"):
+               reflines=None, y_fmt=lambda v: f"{v:,.0f}", val_fmt=None):
     reflines = reflines or []
+    val_fmt = val_fmt or y_fmt
     pl, pr, pt, pb = 56, 14, 14, 26
     iw, ih = w - pl - pr, h - pt - pb
     lo, hi = min(values), max(values)
@@ -59,7 +60,12 @@ def line_chart(dates, values, w=680, h=220, color="#3b82f6", fill=True,
         return pt + ih - (v - lo) / rng * ih
 
     pts = " ".join(f"{X(i):.1f},{Y(v):.1f}" for i, v in enumerate(values))
-    parts = [f'<svg viewBox="0 0 {w} {h}" class="chart" preserveAspectRatio="xMidYMid meet">']
+    # hover 用資料點：[x, y, 日期, 格式化數值]
+    hover_pts = json.dumps(
+        [[round(X(i), 1), round(Y(v), 1), dates[i], val_fmt(v)] for i, v in enumerate(values)],
+        ensure_ascii=False, separators=(",", ":"))
+    parts = [f'<svg viewBox="0 0 {w} {h}" class="chart" preserveAspectRatio="xMidYMid meet" '
+             f"data-pts='{hover_pts}'>"]
     for frac in (0, 0.5, 1):
         yv = lo + rng * frac
         y = Y(yv)
@@ -78,6 +84,10 @@ def line_chart(dates, values, w=680, h=220, color="#3b82f6", fill=True,
     parts.append(f'<circle cx="{X(len(values)-1):.1f}" cy="{Y(values[-1]):.1f}" r="3.2" fill="{color}"/>')
     parts.append(f'<text x="{pl}" y="{h-6}" class="axis" text-anchor="start">{dates[0][5:]}</text>')
     parts.append(f'<text x="{w-pr}" y="{h-6}" class="axis" text-anchor="end">{dates[-1][5:]}</text>')
+    # hover 十字線與焦點（JS 控制）
+    parts.append(f'<line class="xh" x1="0" x2="0" y1="{pt}" y2="{pt+ih}" stroke="var(--mut)" '
+                 f'stroke-width="1" stroke-dasharray="3 3" style="display:none"/>')
+    parts.append(f'<circle class="fc" r="4" fill="{color}" stroke="var(--bg2)" stroke-width="1.5" style="display:none"/>')
     parts.append("</svg>")
     return "".join(parts)
 
@@ -118,11 +128,7 @@ def build() -> Path:
     # 個股期貨（OI 張數等值 / 近月基差% / 大戶偏空 skew）
     fp = DATA / "mkt_futoi.json"
     futoi = json.loads(fp.read_text()).get("rows", {}) if fp.exists() else {}
-    price_last = {r["id"]: r["c"] for r in _load("mkt_price") if r["d"] == table_date and r.get("c")}
-    # 追繳壓力測試：均跌 x% → 維持率×(1-x) 跌破 130 者累計（部位＝融資餘額市值）
-    CALL = 130.0
-    T5, T10 = CALL / 0.95, CALL / 0.90
-    st = {"now_c": 0, "now_v": 0.0, "d5_c": 0, "d5_v": 0.0, "d10_c": 0, "d10_v": 0.0}
+    CALL = 130.0  # 融資追繳線（供「距追繳」欄）
     stock_rows = []
     for sid, recs in mg_by.items():
         recs.sort(key=lambda r: r["d"])
@@ -136,14 +142,6 @@ def build() -> Path:
         weight = round(mv_by.get(sid, 0) / mv_total * 100, 3)
         fo = futoi.get(sid)
         M = maint_ratio.get(sid, 0)
-        posval = mbal * 1000 * price_last.get(sid, 0) / 1e8  # 融資部位市值(億)
-        if M > 0 and posval > 0:
-            if M < CALL:
-                st["now_c"] += 1; st["now_v"] += posval
-            if M < T5:
-                st["d5_c"] += 1; st["d5_v"] += posval
-            if M < T10:
-                st["d10_c"] += 1; st["d10_v"] += posval
         dist = round((M - CALL) / M * 100, 1) if M > 0 else 9999  # 距追繳%（負=已破；9999=無資料）
         stock_rows.append([
             sid, names.get(sid, sid), mbal, use,
@@ -171,30 +169,17 @@ def build() -> Path:
     <div class="card"><div class="k">不限用途擔保品</div><div class="v">{bx_vals[-1]:,.0f}<span>億股</span></div><div class="d">股票質押借款</div></div>
   </section>
 
-  <section class="panel">
-    <h2>融資追繳壓力測試（全市場，均跌情境）</h2>
-    <div class="twrap"><table class="mini">
-      <thead><tr><th>情境</th><th>累計進入追繳個股</th><th>其融資部位市值(億)</th></tr></thead>
-      <tbody>
-        <tr><td class="tk">現價（維持率 &lt; 130%）</td><td class="num">{st['now_c']:,}</td><td class="num hot">{st['now_v']:,.0f}</td></tr>
-        <tr><td class="tk">大盤再跌 <b>5%</b></td><td class="num">{st['d5_c']:,}</td><td class="num hot">{st['d5_v']:,.0f}</td></tr>
-        <tr><td class="tk">大盤再跌 <b>10%</b></td><td class="num">{st['d10_c']:,}</td><td class="num hot">{st['d10_v']:,.0f}</td></tr>
-      </tbody>
-    </table></div>
-    <p class="note">假設全市場個股均跌 x%（維持率同比例下降），累計跌破追繳線 130% 的檔數與其融資部位市值（融資餘額 × 現價）。以 TEJ 實際維持率精算。</p>
-  </section>
-
   <section class="grid2">
     <div class="panel"><h2>融資維持率 %（越低越接近追繳）</h2>
-      {line_chart(dates, maint, color="#f59e0b", reflines=[("警戒 160", 160, "#f97316"), ("斷頭 130", 130, "#ef4444")], y_fmt=lambda v: f"{v:.0f}%")}
+      {line_chart(dates, maint, color="#f59e0b", reflines=[("警戒 160", 160, "#f97316"), ("斷頭 130", 130, "#ef4444")], y_fmt=lambda v: f"{v:.0f}%", val_fmt=lambda v: f"{v:.2f}%")}
       <p class="note">離斷頭線 130% 越遠越安全。</p>
     </div>
     <div class="panel"><h2>大盤融資餘額（億元）</h2>
-      {line_chart(dates, bal_yi, color="#3b82f6", y_fmt=lambda v: f"{v:,.0f}")}
+      {line_chart(dates, bal_yi, color="#3b82f6", y_fmt=lambda v: f"{v:,.0f}", val_fmt=lambda v: f"{v:,.1f} 億")}
       <p class="note">散戶借錢做多的總額。</p>
     </div>
     <div class="panel"><h2>不限用途借款 擔保品（億股）</h2>
-      {line_chart(bx_dates, bx_vals, color="#8b5cf6", y_fmt=lambda v: f"{v:,.0f}")}
+      {line_chart(bx_dates, bx_vals, color="#8b5cf6", y_fmt=lambda v: f"{v:,.0f}", val_fmt=lambda v: f"{v:,.1f} 億股")}
       <p class="note">散戶拿股票質押借錢（融資看不到的另一條槓桿）。單位仟股彙總，尚未×股價換算元。</p>
     </div>
   </section>
@@ -266,6 +251,9 @@ td.hot{{color:#ef4444;font-weight:700}} td.warm{{color:#f59e0b;font-weight:600}}
 .tcount{{font-size:.8rem;color:var(--mut);margin-left:auto}}
 th.srt{{cursor:pointer;user-select:none;white-space:nowrap}} th.srt:hover{{color:var(--fg)}}
 .star{{color:#f59e0b;margin-right:3px}}
+.ctip{{position:fixed;z-index:99;background:var(--panel);border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:.8rem;color:var(--fg);pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.18);white-space:nowrap}}
+.ctip b{{font-variant-numeric:tabular-nums}}
+svg.chart[data-pts]{{cursor:crosshair}}
 footer{{color:var(--mut);font-size:.74rem;text-align:center;margin-top:28px}}
 @media(max-width:720px){{.cards{{grid-template-columns:repeat(2,1fr)}}.grid2{{grid-template-columns:1fr}}}}
 </style>"""
@@ -334,6 +322,35 @@ _table_script = """<script>
     th.addEventListener("click", ()=>{ const k=+th.dataset.k; if(k===sortK) dir=-dir; else { sortK=k; dir=-1; } render(); });
   });
   render();
+})();
+// 趨勢圖 hover：游標處顯示日期與數值（十字線＋焦點點＋跟隨 tooltip）
+(function(){
+  const tip=document.createElement("div"); tip.className="ctip"; tip.style.display="none";
+  document.body.appendChild(tip);
+  document.querySelectorAll("svg.chart[data-pts]").forEach(svg=>{
+    let pts; try{ pts=JSON.parse(svg.dataset.pts); }catch(e){ return; }
+    if(!pts.length) return;
+    const xh=svg.querySelector(".xh"), fc=svg.querySelector(".fc");
+    function show(e){
+      const r=svg.getBoundingClientRect();
+      const vx=(e.clientX-r.left)/r.width*680;
+      let best=0,bd=1e9;
+      for(let i=0;i<pts.length;i++){ const d=Math.abs(pts[i][0]-vx); if(d<bd){bd=d;best=i;} }
+      const p=pts[best];
+      xh.setAttribute("x1",p[0]); xh.setAttribute("x2",p[0]); xh.style.display="";
+      fc.setAttribute("cx",p[0]); fc.setAttribute("cy",p[1]); fc.style.display="";
+      tip.innerHTML=p[2]+"　<b>"+p[3]+"</b>";
+      tip.style.display="block";
+      const tw=tip.offsetWidth;
+      let lx=e.clientX+14; if(lx+tw>window.innerWidth-8) lx=e.clientX-tw-14;
+      tip.style.left=lx+"px"; tip.style.top=(e.clientY-34)+"px";
+    }
+    function hide(){ tip.style.display="none"; xh.style.display="none"; fc.style.display="none"; }
+    svg.addEventListener("mousemove",show);
+    svg.addEventListener("mouseleave",hide);
+    svg.addEventListener("touchstart",e=>{ if(e.touches[0]) show(e.touches[0]); },{passive:true});
+    svg.addEventListener("touchmove",e=>{ if(e.touches[0]) show(e.touches[0]); },{passive:true});
+  });
 })();
 </script>"""
 
