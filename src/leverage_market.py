@@ -17,6 +17,7 @@ import json
 import logging
 import time
 from datetime import date, timedelta
+from pathlib import Path
 
 from .leverage_ingest import CACHE, DATA, _day_rows, _fin, _token  # noqa: F401
 
@@ -97,3 +98,86 @@ def ingest_market(start: str, end: str):
         old = json.loads(p.read_text()) if p.exists() else {}
         old.update(names)
         p.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+
+
+# ---------- 個股期貨（OI / 基差 / 大戶偏空）----------
+# 對照表 src/futures_mapping.json 由期交所 stockLists 產生（scripts/backfill_stock_futures.py
+# 的 mapping()；新股票期貨掛牌時需 refresh 後 commit）。契約股數以表為準：
+# 股票標準 2000/小型 100、ETF 標準 10000/小型 1000。
+# mkt_fut: id,d, ol(標準口),om(小型口),os(股數等值張),bs(近月基差%可null),sk(大戶偏空可null),mo(大額市場OI)
+# mkt_futoi.json: dashboard 快照 {date, rows:{id:[os,bs,sk]}}
+
+
+def _load_fut_mapping():
+    return json.loads((Path(__file__).resolve().parent / "futures_mapping.json").read_text())
+
+
+def ingest_futures(start: str, end: str):
+    """抓 [start,end] 個股期貨日資料＋大額交易人，彙總併入 mkt_fut、輸出 dashboard 快照。"""
+    token = _token()
+    mp = _load_fut_mapping()
+    spot = {}
+    prc_path = DATA / "mkt_price.json"
+    if prc_path.exists():
+        for r in json.loads(prc_path.read_text()):
+            if r.get("c"):
+                spot[(r["d"], r["id"])] = r["c"]
+
+    rows = []
+    for d in _trading_days(start, end):
+        ds = d.isoformat()
+        fut = _fin("TaiwanFuturesDaily", ds, ds, token)
+        if not fut:
+            continue
+        acc = {}   # sid -> ol/om/shares/near_cd/near_close
+        for r in fut:
+            fid = r.get("futures_id") or ""
+            if (r.get("trading_session") != "position" or len(fid) != 3
+                    or "/" in str(r.get("contract_date", ""))):
+                continue
+            m = mp.get(fid[:2])
+            if not m:
+                continue
+            sh = m["sh"]
+            a = acc.setdefault(m["id"], {"ol": 0, "om": 0, "shares": 0,
+                                         "near_cd": "999999", "near_close": None})
+            oi = r.get("open_interest") or 0
+            a["ol" if sh >= 2000 else "om"] += oi
+            a["shares"] += oi * sh
+            cd = str(r.get("contract_date", ""))
+            if sh >= 2000 and (r.get("close") or 0) > 0 and cd < a["near_cd"]:
+                a["near_cd"], a["near_close"] = cd, r["close"]
+
+        trd = {}   # sid -> mo/wb/ws（標準+小型按市場OI加權）
+        for r in _fin("TaiwanFuturesOpenInterestLargeTraders", ds, ds, token):
+            m = mp.get(r.get("futures_id"))
+            if not m or r.get("contract_type") != "all":
+                continue
+            t = trd.setdefault(m["id"], {"mo": 0, "wb": 0.0, "ws": 0.0})
+            mo = max(r.get("market_open_interest") or 0, 1)
+            t["mo"] += mo
+            t["wb"] += (r.get("buy_top10_trader_open_interest_per") or 0) * mo
+            t["ws"] += (r.get("sell_top10_trader_open_interest_per") or 0) * mo
+
+        for sid, a in acc.items():
+            sp = spot.get((ds, sid))
+            bs = round((a["near_close"] / sp - 1) * 100, 2) if sp and a["near_close"] else None
+            t = trd.get(sid)
+            sk = round((t["ws"] - t["wb"]) / t["mo"], 1) if t else None
+            rows.append({"id": sid, "d": ds, "ol": a["ol"], "om": a["om"],
+                         "os": a["shares"] // 1000, "bs": bs, "sk": sk,
+                         "mo": t["mo"] if t else 0})
+        logger.info("個股期貨 %s：%d 檔", ds, len(acc))
+        time.sleep(0.4)
+
+    n, tot = _save_flat("mkt_fut", rows, start, end)
+    logger.info("mkt_fut +%d（庫存 %d）", n, tot)
+
+    hist = json.loads((DATA / "mkt_fut.json").read_text())
+    if hist:  # dashboard 快照（最新一日）
+        last = max(r["d"] for r in hist)
+        snap = {r["id"]: [r["os"], r["bs"], r["sk"]] for r in hist if r["d"] == last}
+        (DATA / "mkt_futoi.json").write_text(json.dumps(
+            {"date": last, "source": "TAIFEX via FinMind", "rows": snap},
+            ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        logger.info("mkt_futoi.json 快照 %s（%d 檔）", last, len(snap))

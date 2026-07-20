@@ -148,6 +148,9 @@ def build() -> Path:
     # 融資維持率（TEJ 實際）
     mp = DATA / "mkt_maintenance.json"
     maint_ratio = json.loads(mp.read_text()).get("ratio", {}) if mp.exists() else {}
+    # 個股期貨（OI 張數等值 / 近月基差% / 大戶偏空 skew）
+    fp = DATA / "mkt_futoi.json"
+    futoi = json.loads(fp.read_text()).get("rows", {}) if fp.exists() else {}
     stock_rows = []
     for sid, recs in mg_by.items():
         recs.sort(key=lambda r: r["d"])
@@ -159,11 +162,13 @@ def build() -> Path:
         chg = round(_pct(recs[0]["mbal"], mbal), 1)
         s, bxr = short_last.get(sid), bx_last.get(sid)
         weight = round(mv_by.get(sid, 0) / mv_total * 100, 3)
+        fo = futoi.get(sid)
         stock_rows.append([
             sid, names.get(sid, sid), mbal, use,
             s["fin"] if s else 0, s["sbl"] if s else 0,
             bxr["bx"] if bxr else 0, chg, 1 if sid in watch else 0,
             weight, maint_ratio.get(sid, 0),
+            fo[0] if fo else None, fo[1] if fo else None, fo[2] if fo else None,
         ])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
@@ -239,12 +244,15 @@ def build() -> Path:
         <th class="srt" data-k="10">融資維持率</th>
         <th class="srt" data-k="4">融券(張)</th>
         <th class="srt" data-k="5">借券賣出(張)</th>
+        <th class="srt" data-k="11">期貨OI(張)</th>
+        <th class="srt" data-k="12">期貨基差</th>
+        <th class="srt" data-k="13">期貨大戶偏空</th>
         <th class="srt" data-k="6">不限用途(仟股)</th>
         <th class="srt" data-k="7">融資Δ%</th>
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。點欄位標題可排序。Δ% 為回溯期間變化。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。<b>期貨OI</b>＝個股期貨未平倉股數等值（標準×2000＋小型×100 股，依期交所契約規格，÷1000 換算張；期貨保證金槓桿約 7 倍，另一條強平燃料）。<b>期貨基差</b>＝近月期貨/現貨−1（<span class="hot-t">貼水 ≤−1% 紅</span>＝空頭壓力）。<b>期貨大戶偏空</b>＝賣方前十大占比−買方前十大占比（≥50 紅、≥30 橙＝大戶淨偏空，多為法人避險）。「—」＝無個股期貨。點欄位標題可排序。Δ% 為回溯期間變化。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -318,6 +326,7 @@ _table_script = """<script>
     if(q){ const s=q.toLowerCase(); rows = rows.filter(r => r[0].toLowerCase().includes(s) || String(r[1]).toLowerCase().includes(s)); }
     rows = rows.slice().sort((a,b)=>{
       if(sortK===10){ const ax=a[10]>0, bx=b[10]>0; if(ax!==bx) return ax?-1:1; }  // 維持率缺值永遠墊底
+      if(sortK>=11){ const ax=a[sortK]!=null, bx=b[sortK]!=null; if(ax!==bx) return ax?-1:1; }  // 無期貨墊底
       return (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir;
     });
     const shown = count>0 ? rows.slice(0,count) : rows;
@@ -329,6 +338,13 @@ _table_script = """<script>
       const mr = r[10];
       const mCls = mr>0&&mr<140?"hot":(mr>0&&mr<160?"warm":"");
       const mTxt = mr>0 ? mr.toFixed(1)+"%" : "—";
+      const foTxt = r[11]!=null ? fmt(r[11]) : "—";
+      const bs = r[12];
+      const bsCls = bs!=null&&bs<=-1?"hot":(bs!=null&&bs<0?"warm":"");
+      const bsTxt = bs!=null ? (bs>=0?"+":"")+bs.toFixed(2)+"%" : "—";
+      const sk = r[13];
+      const skCls = sk!=null&&sk>=50?"hot":(sk!=null&&sk>=30?"warm":"");
+      const skTxt = sk!=null ? (sk>=0?"+":"")+sk.toFixed(1) : "—";
       return '<tr><td class="tk">'+star+'<b>'+r[0]+'</b> '+r[1]+'</td>'
         + '<td class="num">'+w+'%</td>'
         + '<td class="num">'+fmt(r[2])+'</td>'
@@ -336,6 +352,9 @@ _table_script = """<script>
         + '<td class="num '+mCls+'">'+mTxt+'</td>'
         + '<td class="num">'+fmt(r[4])+'</td>'
         + '<td class="num em">'+fmt(r[5])+'</td>'
+        + '<td class="num">'+foTxt+'</td>'
+        + '<td class="num '+bsCls+'">'+bsTxt+'</td>'
+        + '<td class="num '+skCls+'">'+skTxt+'</td>'
         + '<td class="num">'+fmt(r[6])+'</td>'
         + '<td class="num '+dCls+'">'+pctTxt(r[7])+'</td></tr>';
     }).join("");

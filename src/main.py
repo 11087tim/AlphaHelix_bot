@@ -453,6 +453,10 @@ def run_leverage(cfg: Config) -> int:
         leverage_market.ingest_market(start.isoformat(), end.isoformat())
     except Exception as exc:  # noqa: BLE001
         logger.warning("全市場資料庫更新失敗（不影響儀表板）：%s", exc)
+    try:  # 個股期貨 OI/基差/大戶偏空（每天 2 個 API call）；失敗不影響儀表板
+        leverage_market.ingest_futures(start.isoformat(), end.isoformat())
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("個股期貨更新失敗（不影響儀表板）：%s", exc)
     out = leverage_dashboard.build()
     logger.info("已重建槓桿儀表板：%s", out)
     if cfg.site_auto_push:
