@@ -22,7 +22,7 @@ from .leverage_ingest import CACHE, DATA, _day_rows, _fin, _token  # noqa: F401
 
 logger = logging.getLogger(__name__)
 
-MKT_FILES = ["mkt_margin", "mkt_short", "mkt_price", "mkt_daytrading", "mkt_buxian"]
+MKT_FILES = ["mkt_margin", "mkt_short", "mkt_price", "mkt_daytrading", "mkt_buxian", "mkt_mktval"]
 
 
 def _save_flat(name, rows, start, end):
@@ -49,7 +49,7 @@ def ingest_market(start: str, end: str):
     """抓 [start,end] 全市場槓桿資料，落地 mkt_*.json。"""
     token = _token()
     DATA.mkdir(parents=True, exist_ok=True)
-    margin, short, price, daytr, buxian = [], [], [], [], []
+    margin, short, price, daytr, buxian, mktval = [], [], [], [], [], []
     names = {}
 
     for d in _trading_days(start, end):
@@ -75,6 +75,9 @@ def ingest_market(start: str, end: str):
             if r["stock_id"] in U:
                 daytr.append({"id": r["stock_id"], "d": ds, "dv": r.get("Volume"),
                               "db": r.get("BuyAmount"), "dsl": r.get("SellAmount")})
+        for r in _fin("TaiwanStockMarketValue", ds, ds, token):  # 全市場（不濾 U，供權重分母）
+            if r.get("market_value"):
+                mktval.append({"id": r["stock_id"], "d": ds, "mv": r["market_value"]})
         bx, _ = _day_rows(d)  # 沿用/建立 TWTA1U 快取（全市場）
         if bx:
             for code, nm, mgk, bxk in bx:
@@ -85,7 +88,7 @@ def ingest_market(start: str, end: str):
         time.sleep(0.4)
 
     for name, rows in (("mkt_margin", margin), ("mkt_short", short), ("mkt_price", price),
-                       ("mkt_daytrading", daytr), ("mkt_buxian", buxian)):
+                       ("mkt_daytrading", daytr), ("mkt_buxian", buxian), ("mkt_mktval", mktval)):
         n, tot = _save_flat(name, rows, start, end)
         logger.info("%s +%d（庫存 %d）", name, n, tot)
 

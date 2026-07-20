@@ -140,6 +140,14 @@ def build() -> Path:
         mg_by[r["id"]].append(r)
     short_last = {r["id"]: r for r in _load("mkt_short") if r["d"] == table_date}
     bx_last = {r["id"]: r for r in _load("mkt_buxian") if r["d"] == table_date}
+    # 市值比重（分母＝全市場總市值）
+    mv_rows = _load("mkt_mktval") if (DATA / "mkt_mktval.json").exists() else []
+    mv_date = max((r["d"] for r in mv_rows), default=None)
+    mv_by = {r["id"]: r["mv"] for r in mv_rows if r["d"] == mv_date}
+    mv_total = sum(mv_by.values()) or 1
+    # 融資維持率（TEJ 實際）
+    mp = DATA / "mkt_maintenance.json"
+    maint_ratio = json.loads(mp.read_text()).get("ratio", {}) if mp.exists() else {}
     stock_rows = []
     for sid, recs in mg_by.items():
         recs.sort(key=lambda r: r["d"])
@@ -150,10 +158,12 @@ def build() -> Path:
         use = round(mbal / lim * 100, 1) if lim else 0.0
         chg = round(_pct(recs[0]["mbal"], mbal), 1)
         s, bxr = short_last.get(sid), bx_last.get(sid)
+        weight = round(mv_by.get(sid, 0) / mv_total * 100, 3)
         stock_rows.append([
             sid, names.get(sid, sid), mbal, use,
             s["fin"] if s else 0, s["sbl"] if s else 0,
             bxr["bx"] if bxr else 0, chg, 1 if sid in watch else 0,
+            weight, maint_ratio.get(sid, 0),
         ])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
@@ -223,8 +233,10 @@ def build() -> Path:
     <div class="twrap"><table id="levTable">
       <thead><tr>
         <th>股票</th>
+        <th class="srt" data-k="9">市值比重</th>
         <th class="srt" data-k="2">融資餘額(張)</th>
         <th class="srt" data-k="3">融資使用率</th>
+        <th class="srt" data-k="10">融資維持率</th>
         <th class="srt" data-k="4">融券(張)</th>
         <th class="srt" data-k="5">借券賣出(張)</th>
         <th class="srt" data-k="6">不限用途(仟股)</th>
@@ -232,7 +244,7 @@ def build() -> Path:
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。融資使用率＝餘額/限額（<span class="hot-t">≥40% 紅</span> 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。點欄位標題可排序，預設融資餘額由大到小。Δ% 為回溯期間變化。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。點欄位標題可排序。Δ% 為回溯期間變化。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -304,15 +316,24 @@ _table_script = """<script>
   function render(){
     let rows = D;
     if(q){ const s=q.toLowerCase(); rows = rows.filter(r => r[0].toLowerCase().includes(s) || String(r[1]).toLowerCase().includes(s)); }
-    rows = rows.slice().sort((a,b)=> (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir);
+    rows = rows.slice().sort((a,b)=>{
+      if(sortK===10){ const ax=a[10]>0, bx=b[10]>0; if(ax!==bx) return ax?-1:1; }  // 維持率缺值永遠墊底
+      return (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir;
+    });
     const shown = count>0 ? rows.slice(0,count) : rows;
     body.innerHTML = shown.map(r=>{
       const useCls = r[3]>=40?"hot":(r[3]>=20?"warm":"");
       const dCls = r[7]>=0?"up":"down";
       const star = r[8] ? '<span class="star">★</span>' : '';
+      const w = r[9]>=0.1 ? r[9].toFixed(2) : r[9].toFixed(3);
+      const mr = r[10];
+      const mCls = mr>0&&mr<140?"hot":(mr>0&&mr<160?"warm":"");
+      const mTxt = mr>0 ? mr.toFixed(1)+"%" : "—";
       return '<tr><td class="tk">'+star+'<b>'+r[0]+'</b> '+r[1]+'</td>'
+        + '<td class="num">'+w+'%</td>'
         + '<td class="num">'+fmt(r[2])+'</td>'
         + '<td class="num '+useCls+'">'+r[3]+'%</td>'
+        + '<td class="num '+mCls+'">'+mTxt+'</td>'
         + '<td class="num">'+fmt(r[4])+'</td>'
         + '<td class="num em">'+fmt(r[5])+'</td>'
         + '<td class="num">'+fmt(r[6])+'</td>'
