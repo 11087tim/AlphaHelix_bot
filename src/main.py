@@ -435,6 +435,27 @@ def run_longform(cfg: Config) -> int:
     return rc or ry
 
 
+def run_leverage(cfg: Config) -> int:
+    """每交易日晚間執行：增量抓台股融資融券/不限用途 → 重建槓桿儀表板 → push docs。
+    回抓近 7 天做視窗覆蓋（補假日/延遲更新的漏；不丟舊歷史）。資料只在 VM 上長。"""
+    from datetime import date, timedelta
+
+    from . import leverage_ingest, leverage_dashboard
+
+    end = date.today()
+    start = end - timedelta(days=7)
+    try:
+        leverage_ingest.ingest(start.isoformat(), end.isoformat())
+    except Exception as exc:  # noqa: BLE001
+        logger.error("槓桿資料抓取失敗（保留既有歷史，不更新儀表板）：%s", exc)
+        return 1
+    out = leverage_dashboard.build()
+    logger.info("已重建槓桿儀表板：%s", out)
+    if cfg.site_auto_push:
+        publisher.publish_docs()
+    return 0
+
+
 def run_podcast_seed(cfg: Config) -> int:
     """把所有 feed 目前的集數標為基準（已讀），之後 podcast 只處理新發布的集（避免回填整批舊集）。"""
     if not cfg.podcast_feeds:
@@ -474,11 +495,13 @@ def run(mode: str) -> int:
         return run_youtube_seed(cfg)
     if mode == "longform":  # Podcast + YouTube 一次跑完（每日排程用）
         return run_longform(cfg)
+    if mode == "leverage":  # 增量抓台股槓桿資料 → 重建儀表板 → push（每交易日晚間）
+        return run_leverage(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)
     logger.error("未知模式：%s（可用：fetch / synthesis / render / resynth / memory-backfill / "
-                 "podcast / podcast-seed / youtube / youtube-seed / longform / run）", mode)
+                 "podcast / podcast-seed / youtube / youtube-seed / longform / leverage / run）", mode)
     return 2
 
 

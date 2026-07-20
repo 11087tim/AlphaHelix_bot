@@ -87,8 +87,36 @@ Persistent=true
 WantedBy=timers.target
 UNIT
 
+# --- leverage：每交易日晚間 21:30（增量抓台股融資融券/不限用途 → 重建槓桿儀表板 → push）---
+# 卡在 FinMind 週一~五 21:00 更新當日融資融券之後，抓到當天剛收盤的最新資料。
+sudo tee /etc/systemd/system/xbot-leverage.service >/dev/null <<UNIT
+[Unit]
+Description=Alphehelix X bot - Taiwan leverage dashboard (margin/short/buxian)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=$RUN_USER
+WorkingDirectory=$PROJECT_DIR
+ExecStartPre=-/usr/bin/git pull --rebase --autostash --quiet
+ExecStart=$PY -m src.main leverage
+UNIT
+
+sudo tee /etc/systemd/system/xbot-leverage.timer >/dev/null <<'UNIT'
+[Unit]
+Description=Run Alphehelix leverage dashboard at 21:30 on weekdays (Asia/Taipei)
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 21:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+UNIT
+
 sudo systemctl daemon-reload
-sudo systemctl enable --now xbot-run.timer xbot-longform.timer
+sudo systemctl enable --now xbot-run.timer xbot-longform.timer xbot-leverage.timer
 
 echo
 echo "✅ 完成。已啟用排程："
