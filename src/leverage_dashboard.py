@@ -128,6 +128,9 @@ def build() -> Path:
     # 個股期貨（OI 張數等值 / 近月基差% / 大戶偏空 skew）
     fp = DATA / "mkt_futoi.json"
     futoi = json.loads(fp.read_text()).get("rows", {}) if fp.exists() else {}
+    price_last = {r["id"]: r["c"] for r in _load("mkt_price") if r["d"] == table_date and r.get("c")}
+    # 大盤相對值：融資餘額(元) / 全市場總市值
+    mkt_margin_ratio = market[-1]["margin_bal"] / mv_total * 100 if mv_total > 1 else 0
     CALL = 130.0  # 融資追繳線（供「距追繳」欄）
     stock_rows = []
     for sid, recs in mg_by.items():
@@ -143,13 +146,15 @@ def build() -> Path:
         fo = futoi.get(sid)
         M = maint_ratio.get(sid, 0)
         dist = round((M - CALL) / M * 100, 1) if M > 0 else 9999  # 距追繳%（負=已破；9999=無資料）
+        mv = mv_by.get(sid, 0)
+        mratio = round(mbal * 1000 * price_last.get(sid, 0) / mv * 100, 2) if mv else None  # 融資佔市值%
         stock_rows.append([
             sid, names.get(sid, sid), mbal, use,
             s["fin"] if s else 0, s["sbl"] if s else 0,
             bxr["bx"] if bxr else 0, chg, 1 if sid in watch else 0,
             weight, M,
             fo[0] if fo else None, fo[1] if fo else None, fo[2] if fo else None,
-            dist,
+            dist, mratio,
         ])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
@@ -163,7 +168,7 @@ def build() -> Path:
   </header>
 
   <section class="cards">
-    <div class="card"><div class="k">融資餘額</div><div class="v">{bal_yi[-1]:,.0f}<span>億</span></div><div class="d">散戶借錢做多總額</div></div>
+    <div class="card"><div class="k">融資餘額</div><div class="v">{bal_yi[-1]:,.0f}<span>億</span></div><div class="d">佔大盤市值 {mkt_margin_ratio:.2f}%</div></div>
     <div class="card"><div class="k">融資維持率</div><div class="v">{maint[-1]:.1f}<span>%</span></div><div class="d">追繳線 130%</div></div>
     <div class="card"><div class="k">融券餘額</div><div class="v">{market[-1]['short_shares']:,}<span>張</span></div><div class="d">散戶放空</div></div>
     <div class="card"><div class="k">不限用途擔保品</div><div class="v">{bx_vals[-1]:,.0f}<span>億股</span></div><div class="d">股票質押借款</div></div>
@@ -201,6 +206,7 @@ def build() -> Path:
         <th class="srt" data-k="9">市值比重</th>
         <th class="srt" data-k="2">融資餘額(張)</th>
         <th class="srt" data-k="3">融資使用率</th>
+        <th class="srt" data-k="15">融資佔市值</th>
         <th class="srt" data-k="10">融資維持率</th>
         <th class="srt" data-k="14">距追繳</th>
         <th class="srt" data-k="4">融券(張)</th>
@@ -212,7 +218,7 @@ def build() -> Path:
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。<b>距追繳</b>＝（維持率−130）/維持率，即此檔<b>還能跌多少 %</b>就觸及追繳線（<span class="hot-t">紅＝已破</span>、橙&lt;5%）；因維持率與股價 1:1 連動，此為精確值。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。<b>期貨OI</b>＝個股期貨未平倉股數等值（標準×2000＋小型×100 股，依期交所契約規格，÷1000 換算張；期貨保證金槓桿約 7 倍，另一條強平燃料）。<b>期貨基差</b>＝近月期貨/現貨−1（<span class="hot-t">貼水 ≤−1% 紅</span>＝空頭壓力）。<b>期貨大戶偏空</b>＝賣方前十大占比−買方前十大占比（≥50 紅、≥30 橙＝大戶淨偏空，多為法人避險）。「—」＝無個股期貨。點欄位標題可排序。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。<b>距追繳</b>＝（維持率−130）/維持率，即此檔<b>還能跌多少 %</b>就觸及追繳線（<span class="hot-t">紅＝已破</span>、橙&lt;5%）；因維持率與股價 1:1 連動，此為精確值。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。<b>融資佔市值</b>＝融資部位市值（餘額×現價）/個股總市值（<span class="hot-t">≥8% 紅</span>、≥4% 橙＝籌碼中融資比重高、跌時賣壓放大）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。<b>期貨OI</b>＝個股期貨未平倉股數等值（標準×2000＋小型×100 股，依期交所契約規格，÷1000 換算張；期貨保證金槓桿約 7 倍，另一條強平燃料）。<b>期貨基差</b>＝近月期貨/現貨−1（<span class="hot-t">貼水 ≤−1% 紅</span>＝空頭壓力）。<b>期貨大戶偏空</b>＝賣方前十大占比−買方前十大占比（≥50 紅、≥30 橙＝大戶淨偏空，多為法人避險）。「—」＝無個股期貨。點欄位標題可排序。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -280,6 +286,7 @@ _table_script = """<script>
     rows = rows.slice().sort((a,b)=>{
       if(sortK===10){ const ax=a[10]>0, bx=b[10]>0; if(ax!==bx) return ax?-1:1; }  // 維持率缺值永遠墊底
       if(sortK===14){ const ax=a[14]<9999, bx=b[14]<9999; if(ax!==bx) return ax?-1:1; }  // 距追繳無資料墊底
+      if(sortK===15){ const ax=a[15]!=null, bx=b[15]!=null; if(ax!==bx) return ax?-1:1; }  // 融資佔市值缺值墊底
       if(sortK>=11&&sortK<=13){ const ax=a[sortK]!=null, bx=b[sortK]!=null; if(ax!==bx) return ax?-1:1; }  // 無期貨墊底
       return (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir;
     });
@@ -288,6 +295,9 @@ _table_script = """<script>
       const useCls = r[3]>=40?"hot":(r[3]>=20?"warm":"");
       const star = r[8] ? '<span class="star">★</span>' : '';
       const w = r[9]>=0.1 ? r[9].toFixed(2) : r[9].toFixed(3);
+      const mv2 = r[15];
+      const mvCls = mv2!=null&&mv2>=8?"hot":(mv2!=null&&mv2>=4?"warm":"");
+      const mvTxt = mv2!=null ? mv2.toFixed(2)+"%" : "—";
       const mr = r[10];
       const mCls = mr>0&&mr<140?"hot":(mr>0&&mr<160?"warm":"");
       const mTxt = mr>0 ? mr.toFixed(1)+"%" : "—";
@@ -305,6 +315,7 @@ _table_script = """<script>
         + '<td class="num">'+w+'%</td>'
         + '<td class="num">'+fmt(r[2])+'</td>'
         + '<td class="num '+useCls+'">'+r[3]+'%</td>'
+        + '<td class="num '+mvCls+'">'+mvTxt+'</td>'
         + '<td class="num '+mCls+'">'+mTxt+'</td>'
         + '<td class="num '+dcCls+'">'+dcTxt+'</td>'
         + '<td class="num">'+fmt(r[4])+'</td>'
