@@ -115,47 +115,40 @@ def build() -> Path:
     mg_by = defaultdict(list)
     for r in mkt_margin:
         mg_by[r["id"]].append(r)
-    short_last = {r["id"]: r for r in _load("mkt_short") if r["d"] == table_date}
-    bx_last = {r["id"]: r for r in _load("mkt_buxian") if r["d"] == table_date}
     # 市值比重（分母＝全市場總市值）
     mv_rows = _load("mkt_mktval") if (DATA / "mkt_mktval.json").exists() else []
     mv_date = max((r["d"] for r in mv_rows), default=None)
     mv_by = {r["id"]: r["mv"] for r in mv_rows if r["d"] == mv_date}
     mv_total = sum(mv_by.values()) or 1
-    # 融資維持率（TEJ 實際）
+    # 融資維持率（TEJ 實際）→ 距追繳
     mp = DATA / "mkt_maintenance.json"
     maint_ratio = json.loads(mp.read_text()).get("ratio", {}) if mp.exists() else {}
-    # 個股期貨（OI 張數等值 / 近月基差% / 大戶偏空 skew）
-    fp = DATA / "mkt_futoi.json"
-    futoi = json.loads(fp.read_text()).get("rows", {}) if fp.exists() else {}
-    price_last = {r["id"]: r["c"] for r in _load("mkt_price") if r["d"] == table_date and r.get("c")}
+    # 股價歷史（近5日跌幅 + 融資佔市值用現價）
+    price_hist = defaultdict(list)
+    for r in _load("mkt_price"):
+        if r.get("c"):
+            price_hist[r["id"]].append((r["d"], r["c"]))
     # 大盤相對值：融資餘額(元) / 全市場總市值
     mkt_margin_ratio = market[-1]["margin_bal"] / mv_total * 100 if mv_total > 1 else 0
     CALL = 130.0  # 融資追繳線（供「距追繳」欄）
+    # 欄位精簡版（易燃×火苗）：[代號, 名稱, 融資餘額張, 市值比重, 融資佔市值, 近5日跌幅, 距追繳, ★]
     stock_rows = []
     for sid, recs in mg_by.items():
         recs.sort(key=lambda r: r["d"])
         b = recs[-1]
         if b["d"] != table_date:
             continue
-        mbal, lim = b["mbal"], b["mlim"]
-        use = round(mbal / lim * 100, 1) if lim else 0.0
-        chg = round(_pct(recs[0]["mbal"], mbal), 1)
-        s, bxr = short_last.get(sid), bx_last.get(sid)
+        mbal = b["mbal"]
         weight = round(mv_by.get(sid, 0) / mv_total * 100, 3)
-        fo = futoi.get(sid)
         M = maint_ratio.get(sid, 0)
         dist = round((M - CALL) / M * 100, 1) if M > 0 else 9999  # 距追繳%（負=已破；9999=無資料）
         mv = mv_by.get(sid, 0)
-        mratio = round(mbal * 1000 * price_last.get(sid, 0) / mv * 100, 2) if mv else None  # 融資佔市值%
-        stock_rows.append([
-            sid, names.get(sid, sid), mbal, use,
-            s["fin"] if s else 0, s["sbl"] if s else 0,
-            bxr["bx"] if bxr else 0, chg, 1 if sid in watch else 0,
-            weight, M,
-            fo[0] if fo else None, fo[1] if fo else None, fo[2] if fo else None,
-            dist, mratio,
-        ])
+        ph = sorted(price_hist.get(sid, []))
+        px = ph[-1][1] if ph else 0
+        mratio = round(mbal * 1000 * px / mv * 100, 2) if mv and px else None  # 融資佔市值%
+        chg5 = round((ph[-1][1] / ph[-6][1] - 1) * 100, 1) if len(ph) >= 6 else None  # 近5交易日漲跌%
+        stock_rows.append([sid, names.get(sid, sid), mbal, weight, mratio, chg5, dist,
+                           1 if sid in watch else 0])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
@@ -203,22 +196,15 @@ def build() -> Path:
     <div class="twrap"><table id="levTable">
       <thead><tr>
         <th>股票</th>
-        <th class="srt" data-k="9">市值比重</th>
+        <th class="srt" data-k="3">市值比重</th>
+        <th class="srt" data-k="4">融資佔市值</th>
+        <th class="srt" data-k="5">近5日跌幅</th>
+        <th class="srt" data-k="6">距追繳</th>
         <th class="srt" data-k="2">融資餘額(張)</th>
-        <th class="srt" data-k="3">融資使用率</th>
-        <th class="srt" data-k="15">融資佔市值</th>
-        <th class="srt" data-k="10">融資維持率</th>
-        <th class="srt" data-k="14">距追繳</th>
-        <th class="srt" data-k="4">融券(張)</th>
-        <th class="srt" data-k="5">借券賣出(張)</th>
-        <th class="srt" data-k="11">期貨OI(張)</th>
-        <th class="srt" data-k="12">期貨基差</th>
-        <th class="srt" data-k="13">期貨大戶偏空</th>
-        <th class="srt" data-k="6">不限用途(仟股)</th>
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。<b>距追繳</b>＝（維持率−130）/維持率，即此檔<b>還能跌多少 %</b>就觸及追繳線（<span class="hot-t">紅＝已破</span>、橙&lt;5%）；因維持率與股價 1:1 連動，此為精確值。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。<b>融資佔市值</b>＝融資部位市值（餘額×現價）/個股總市值（<span class="hot-t">≥8% 紅</span>、≥4% 橙＝籌碼中融資比重高、跌時賣壓放大）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。<b>期貨OI</b>＝個股期貨未平倉股數等值（標準×2000＋小型×100 股，依期交所契約規格，÷1000 換算張；期貨保證金槓桿約 7 倍，另一條強平燃料）。<b>期貨基差</b>＝近月期貨/現貨−1（<span class="hot-t">貼水 ≤−1% 紅</span>＝空頭壓力）。<b>期貨大戶偏空</b>＝賣方前十大占比−買方前十大占比（≥50 紅、≥30 橙＝大戶淨偏空，多為法人避險）。「—」＝無個股期貨。點欄位標題可排序。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。三者同時亮＝隔日斷頭殺盤候選。點欄位標題可排序。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -284,46 +270,29 @@ _table_script = """<script>
     let rows = D;
     if(q){ const s=q.toLowerCase(); rows = rows.filter(r => r[0].toLowerCase().includes(s) || String(r[1]).toLowerCase().includes(s)); }
     rows = rows.slice().sort((a,b)=>{
-      if(sortK===10){ const ax=a[10]>0, bx=b[10]>0; if(ax!==bx) return ax?-1:1; }  // 維持率缺值永遠墊底
-      if(sortK===14){ const ax=a[14]<9999, bx=b[14]<9999; if(ax!==bx) return ax?-1:1; }  // 距追繳無資料墊底
-      if(sortK===15){ const ax=a[15]!=null, bx=b[15]!=null; if(ax!==bx) return ax?-1:1; }  // 融資佔市值缺值墊底
-      if(sortK>=11&&sortK<=13){ const ax=a[sortK]!=null, bx=b[sortK]!=null; if(ax!==bx) return ax?-1:1; }  // 無期貨墊底
+      if(sortK===4||sortK===5){ const ax=a[sortK]!=null, bx=b[sortK]!=null; if(ax!==bx) return ax?-1:1; }  // 缺值墊底
+      if(sortK===6){ const ax=a[6]<9999, bx=b[6]<9999; if(ax!==bx) return ax?-1:1; }  // 距追繳無資料墊底
       return (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir;
     });
     const shown = count>0 ? rows.slice(0,count) : rows;
     body.innerHTML = shown.map(r=>{
-      const useCls = r[3]>=40?"hot":(r[3]>=20?"warm":"");
-      const star = r[8] ? '<span class="star">★</span>' : '';
-      const w = r[9]>=0.1 ? r[9].toFixed(2) : r[9].toFixed(3);
-      const mv2 = r[15];
+      const star = r[7] ? '<span class="star">★</span>' : '';
+      const w = r[3]>=0.1 ? r[3].toFixed(2) : r[3].toFixed(3);
+      const mv2 = r[4];  // 融資佔市值（易燃物）
       const mvCls = mv2!=null&&mv2>=8?"hot":(mv2!=null&&mv2>=4?"warm":"");
       const mvTxt = mv2!=null ? mv2.toFixed(2)+"%" : "—";
-      const mr = r[10];
-      const mCls = mr>0&&mr<140?"hot":(mr>0&&mr<160?"warm":"");
-      const mTxt = mr>0 ? mr.toFixed(1)+"%" : "—";
-      const dc = r[14];
+      const c5 = r[5];   // 近5日漲跌（火苗）
+      const c5Cls = c5!=null&&c5<=-10?"hot":(c5!=null&&c5<=-5?"warm":"");
+      const c5Txt = c5!=null ? (c5>=0?"+":"")+c5.toFixed(1)+"%" : "—";
+      const dc = r[6];   // 距追繳（引信）
       const dcCls = dc>=9999?"":(dc<0?"hot":(dc<5?"warm":""));
       const dcTxt = dc>=9999 ? "—" : (dc<0 ? "已追繳" : "跌"+dc.toFixed(1)+"%");
-      const foTxt = r[11]!=null ? fmt(r[11]) : "—";
-      const bs = r[12];
-      const bsCls = bs!=null&&bs<=-1?"hot":(bs!=null&&bs<0?"warm":"");
-      const bsTxt = bs!=null ? (bs>=0?"+":"")+bs.toFixed(2)+"%" : "—";
-      const sk = r[13];
-      const skCls = sk!=null&&sk>=50?"hot":(sk!=null&&sk>=30?"warm":"");
-      const skTxt = sk!=null ? (sk>=0?"+":"")+sk.toFixed(1) : "—";
       return '<tr><td class="tk">'+star+'<b>'+r[0]+'</b> '+r[1]+'</td>'
         + '<td class="num">'+w+'%</td>'
-        + '<td class="num">'+fmt(r[2])+'</td>'
-        + '<td class="num '+useCls+'">'+r[3]+'%</td>'
         + '<td class="num '+mvCls+'">'+mvTxt+'</td>'
-        + '<td class="num '+mCls+'">'+mTxt+'</td>'
+        + '<td class="num '+c5Cls+'">'+c5Txt+'</td>'
         + '<td class="num '+dcCls+'">'+dcTxt+'</td>'
-        + '<td class="num">'+fmt(r[4])+'</td>'
-        + '<td class="num em">'+fmt(r[5])+'</td>'
-        + '<td class="num">'+foTxt+'</td>'
-        + '<td class="num '+bsCls+'">'+bsTxt+'</td>'
-        + '<td class="num '+skCls+'">'+skTxt+'</td>'
-        + '<td class="num">'+fmt(r[6])+'</td></tr>';
+        + '<td class="num">'+fmt(r[2])+'</td></tr>';
     }).join("");
     info.textContent = "顯示 " + shown.length + " / " + rows.length + " 檔";
   }
