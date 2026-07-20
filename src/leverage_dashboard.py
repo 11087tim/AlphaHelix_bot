@@ -1,6 +1,6 @@
 """產生台股去槓桿壓力儀表板（自足式單檔 HTML → docs/leverage.html）。
 
-讀 data/leverage/ 本地庫 + DPI，畫成內嵌 SVG 圖表，無外部相依、深/淺色自適應。
+讀 data/leverage/ 本地庫，畫成內嵌 SVG 圖表，無外部相依、深/淺色自適應。
 呼叫 build() 產生檔案；供 src.main 的 leverage mode 與 CLI 共用。
 """
 from __future__ import annotations
@@ -11,12 +11,12 @@ from datetime import datetime
 from pathlib import Path
 
 if __package__:
-    from .leverage import compute_dpi, dpi_level, load_market
+    from .leverage import load_market
     from .leverage_ingest import NAMES
 else:
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from src.leverage import compute_dpi, dpi_level, load_market
+    from src.leverage import load_market
     from src.leverage_ingest import NAMES
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -82,46 +82,13 @@ def line_chart(dates, values, w=680, h=220, color="#3b82f6", fill=True,
     return "".join(parts)
 
 
-def dpi_chart(rows, w=680, h=220):
-    dates = [r["date"] for r in rows]
-    vals = [r["dpi"] for r in rows]
-    pl, pr, pt, pb = 36, 14, 14, 26
-    iw, ih = w - pl - pr, h - pt - pb
-    hi = max(60, max(vals) * 1.15)
-
-    def X(i):
-        return pl + i / (len(vals) - 1) * iw
-
-    def Y(v):
-        return pt + ih - v / hi * ih
-
-    bands = [(0, 15, "#10b98122"), (15, 30, "#f59e0b22"), (30, 50, "#f9731622"), (50, hi, "#ef444422")]
-    parts = [f'<svg viewBox="0 0 {w} {h}" class="chart" preserveAspectRatio="xMidYMid meet">']
-    for a, b, c in bands:
-        ya, yb = Y(b), Y(a)
-        parts.append(f'<rect x="{pl}" y="{ya:.1f}" width="{iw}" height="{yb-ya:.1f}" fill="{c}"/>')
-    for gl in (15, 30, 50):
-        if gl < hi:
-            parts.append(f'<text x="{pl-4}" y="{Y(gl)+3:.1f}" class="axis" text-anchor="end">{gl}</text>')
-    pts = " ".join(f"{X(i):.1f},{Y(v):.1f}" for i, v in enumerate(vals))
-    parts.append(f'<polygon points="{pl},{pt+ih} {pts} {X(len(vals)-1):.1f},{pt+ih}" fill="#6366f1" opacity="0.15"/>')
-    parts.append(f'<polyline points="{pts}" fill="none" stroke="#6366f1" stroke-width="2" stroke-linejoin="round"/>')
-    parts.append(f'<circle cx="{X(len(vals)-1):.1f}" cy="{Y(vals[-1]):.1f}" r="3.5" fill="#6366f1"/>')
-    parts.append(f'<text x="{pl}" y="{h-6}" class="axis" text-anchor="start">{dates[0][5:]}</text>')
-    parts.append(f'<text x="{w-pr}" y="{h-6}" class="axis" text-anchor="end">{dates[-1][5:]}</text>')
-    parts.append("</svg>")
-    return "".join(parts)
-
-
 def _pct(a, b):
     return (b - a) / a * 100 if a else 0.0
 
 
 def build() -> Path:
     market = load_market()
-    dpi_rows = compute_dpi(market)
-    last = dpi_rows[-1]
-    lvl, _ = dpi_level(last["dpi"])
+    last_date = market[-1]["date"]
     dates = [m["date"] for m in market]
     maint = [m["maint"] for m in market]
     bal_yi = [m["margin_bal"] / 1e8 for m in market]
@@ -130,7 +97,7 @@ def build() -> Path:
     bx_dates = [r["date"] for r in bx_market]
     bx_vals = [r["buxian_total_kshares"] / 1e5 for r in bx_market]  # 仟股→億股
 
-    # 全市場個股快照（最新交易日）：融資餘額/使用率/融券/借券賣出/不限用途 + 回溯期間 Δ%
+    # 全市場個股快照（最新交易日）
     names = _load_names()
     watch = set(NAMES)  # 觀察清單標 ★
     mkt_margin = _load("mkt_margin")
@@ -190,36 +157,18 @@ def build() -> Path:
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
 
-    bal_chg = _pct(bal_yi[0], bal_yi[-1])
-    maint_chg = maint[-1] - maint[0]
-    bx_chg = _pct(bx_vals[0], bx_vals[-1])
-    dpi_max = max(r["dpi"] for r in dpi_rows)
-    lv_idx = int(last["dpi"] // 15) if last["dpi"] < 60 else 4
 
     html = f"""<div class="wrap">
   <header>
     <h1>台股去槓桿壓力儀表板</h1>
-    <p class="sub">資料日期 <b>{last['date']}</b>｜回溯 {dates[0]} ~ {dates[-1]}（{len(dates)} 個交易日）｜資料源：FinMind、TWSE</p>
+    <p class="sub">資料日期 <b>{last_date}</b>｜回溯 {dates[0]} ~ {dates[-1]}（{len(dates)} 個交易日）｜資料源：FinMind、TWSE</p>
   </header>
 
-  <section class="hero">
-    <div class="gauge lv-{lv_idx}">
-      <div class="dpi-num">{last['dpi']:.0f}</div>
-      <div class="dpi-lvl">{lvl}</div>
-      <div class="dpi-cap">去槓桿壓力指數 DPI</div>
-    </div>
-    <div class="hero-txt">
-      <p>回溯期間維持率介於 <b>{min(maint):.0f}%–{max(maint):.0f}%</b>（斷頭線 130%），整體融資槓桿壓力
-      <b>{lvl}</b>，DPI 期間最高 <b>{dpi_max:.0f}</b>。</p>
-      <p class="warn">⚠️ 融資餘額期間 <b class="{'up' if bal_chg>=0 else 'down'}">{bal_chg:+.0f}%</b>（{bal_yi[0]:,.0f}→{bal_yi[-1]:,.0f} 億）——留意槓桿水位是否墊高、靠股價撐住維持率。</p>
-    </div>
-  </section>
-
   <section class="cards">
-    <div class="card"><div class="k">融資餘額</div><div class="v">{bal_yi[-1]:,.0f}<span>億</span></div><div class="d {'up' if bal_chg>=0 else 'down'}">{bal_chg:+.1f}% / 期間</div></div>
-    <div class="card"><div class="k">融資維持率</div><div class="v">{maint[-1]:.1f}<span>%</span></div><div class="d {'up' if maint_chg>=0 else 'down'}">{maint_chg:+.1f}pt / 期間</div></div>
+    <div class="card"><div class="k">融資餘額</div><div class="v">{bal_yi[-1]:,.0f}<span>億</span></div><div class="d">散戶借錢做多總額</div></div>
+    <div class="card"><div class="k">融資維持率</div><div class="v">{maint[-1]:.1f}<span>%</span></div><div class="d">追繳線 130%</div></div>
     <div class="card"><div class="k">融券餘額</div><div class="v">{market[-1]['short_shares']:,}<span>張</span></div><div class="d">散戶放空</div></div>
-    <div class="card"><div class="k">不限用途擔保品</div><div class="v">{bx_vals[-1]:,.0f}<span>億股</span></div><div class="d {'up' if bx_chg>=0 else 'down'}">{bx_chg:+.1f}% / 期間</div></div>
+    <div class="card"><div class="k">不限用途擔保品</div><div class="v">{bx_vals[-1]:,.0f}<span>億股</span></div><div class="d">股票質押借款</div></div>
   </section>
 
   <section class="panel">
@@ -236,9 +185,6 @@ def build() -> Path:
   </section>
 
   <section class="grid2">
-    <div class="panel"><h2>去槓桿壓力指數 DPI</h2>{dpi_chart(dpi_rows)}
-      <p class="note">綠 0–15 低｜黃 15–30 偏低｜橙 30–50 中等｜紅 50+ 偏高。0.55×維持率水位(凸) + 0.30×維持率動能 + 0.15×去槓桿進行中，動能/去槓桿再乘「脆弱度」gate（維持率越接近危險區越放大）。</p>
-    </div>
     <div class="panel"><h2>融資維持率 %（越低越接近追繳）</h2>
       {line_chart(dates, maint, color="#f59e0b", reflines=[("警戒 160", 160, "#f97316"), ("斷頭 130", 130, "#ef4444")], y_fmt=lambda v: f"{v:.0f}%")}
       <p class="note">離斷頭線 130% 越遠越安全。</p>
@@ -278,11 +224,10 @@ def build() -> Path:
         <th class="srt" data-k="12">期貨基差</th>
         <th class="srt" data-k="13">期貨大戶偏空</th>
         <th class="srt" data-k="6">不限用途(仟股)</th>
-        <th class="srt" data-k="7">融資Δ%</th>
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。<b>距追繳</b>＝（維持率−130）/維持率，即此檔<b>還能跌多少 %</b>就觸及追繳線（<span class="hot-t">紅＝已破</span>、橙&lt;5%）；因維持率與股價 1:1 連動，此為精確值。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。<b>期貨OI</b>＝個股期貨未平倉股數等值（標準×2000＋小型×100 股，依期交所契約規格，÷1000 換算張；期貨保證金槓桿約 7 倍，另一條強平燃料）。<b>期貨基差</b>＝近月期貨/現貨−1（<span class="hot-t">貼水 ≤−1% 紅</span>＝空頭壓力）。<b>期貨大戶偏空</b>＝賣方前十大占比−買方前十大占比（≥50 紅、≥30 橙＝大戶淨偏空，多為法人避險）。「—」＝無個股期貨。點欄位標題可排序。Δ% 為回溯期間變化。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。市值比重＝個股市值/全市場總市值。融資維持率為 <b>TEJ 實際值</b>（<span class="hot-t">&lt;140% 紅</span> 逼近追繳、&lt;160% 橙）。<b>距追繳</b>＝（維持率−130）/維持率，即此檔<b>還能跌多少 %</b>就觸及追繳線（<span class="hot-t">紅＝已破</span>、橙&lt;5%）；因維持率與股價 1:1 連動，此為精確值。融資使用率＝餘額/限額（≥40% 紅 散戶擁擠）。空方看「借券賣出（法人）」遠大於「融券（散戶）」。<b>期貨OI</b>＝個股期貨未平倉股數等值（標準×2000＋小型×100 股，依期交所契約規格，÷1000 換算張；期貨保證金槓桿約 7 倍，另一條強平燃料）。<b>期貨基差</b>＝近月期貨/現貨−1（<span class="hot-t">貼水 ≤−1% 紅</span>＝空頭壓力）。<b>期貨大戶偏空</b>＝賣方前十大占比−買方前十大占比（≥50 紅、≥30 橙＝大戶淨偏空，多為法人避險）。「—」＝無個股期貨。點欄位標題可排序。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -296,15 +241,6 @@ def build() -> Path:
 :root[data-theme="light"]{{--fg:#1e293b;--mut:#64748b;--bg2:#ffffff;--bd:#e2e8f0;--panel:#f8fafc}}
 header h1{{font-size:1.5rem;margin:0 0 4px}}
 .sub{{color:var(--mut);font-size:.85rem;margin:0}}
-.hero{{display:flex;gap:20px;align-items:center;margin:20px 0;flex-wrap:wrap}}
-.gauge{{flex:0 0 150px;text-align:center;border-radius:16px;padding:18px 10px;background:var(--panel);border:1px solid var(--bd)}}
-.dpi-num{{font-size:3rem;font-weight:800;line-height:1}}
-.dpi-lvl{{font-weight:700;margin-top:2px}}
-.dpi-cap{{color:var(--mut);font-size:.72rem;margin-top:4px}}
-.lv-0 .dpi-num,.lv-0 .dpi-lvl{{color:#10b981}} .lv-1 .dpi-num,.lv-1 .dpi-lvl{{color:#f59e0b}}
-.lv-2 .dpi-num,.lv-2 .dpi-lvl{{color:#f97316}} .lv-3 .dpi-num,.lv-3 .dpi-lvl{{color:#ef4444}} .lv-4 .dpi-num,.lv-4 .dpi-lvl{{color:#dc2626}}
-.hero-txt{{flex:1;min-width:260px;font-size:.92rem;line-height:1.6}}
-.hero-txt p{{margin:0 0 8px}} .warn{{color:var(--mut)}}
 .cards{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}}
 .card{{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:12px 14px}}
 .card .k{{color:var(--mut);font-size:.78rem}} .card .v{{font-size:1.5rem;font-weight:700;margin:3px 0}}
@@ -350,7 +286,6 @@ _table_script = """<script>
   let sortK = 2, dir = -1, count = 25, q = "";
   const body = document.getElementById("levBody"), info = document.getElementById("levInfo");
   const fmt = n => (n||0).toLocaleString("en-US");
-  const pctTxt = v => (v>=0?"+":"") + v + "%";
   function render(){
     let rows = D;
     if(q){ const s=q.toLowerCase(); rows = rows.filter(r => r[0].toLowerCase().includes(s) || String(r[1]).toLowerCase().includes(s)); }
@@ -363,7 +298,6 @@ _table_script = """<script>
     const shown = count>0 ? rows.slice(0,count) : rows;
     body.innerHTML = shown.map(r=>{
       const useCls = r[3]>=40?"hot":(r[3]>=20?"warm":"");
-      const dCls = r[7]>=0?"up":"down";
       const star = r[8] ? '<span class="star">★</span>' : '';
       const w = r[9]>=0.1 ? r[9].toFixed(2) : r[9].toFixed(3);
       const mr = r[10];
@@ -390,8 +324,7 @@ _table_script = """<script>
         + '<td class="num">'+foTxt+'</td>'
         + '<td class="num '+bsCls+'">'+bsTxt+'</td>'
         + '<td class="num '+skCls+'">'+skTxt+'</td>'
-        + '<td class="num">'+fmt(r[6])+'</td>'
-        + '<td class="num '+dCls+'">'+pctTxt(r[7])+'</td></tr>';
+        + '<td class="num">'+fmt(r[6])+'</td></tr>';
     }).join("");
     info.textContent = "顯示 " + shown.length + " / " + rows.length + " 檔";
   }
