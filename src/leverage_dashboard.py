@@ -147,8 +147,10 @@ def build() -> Path:
         px = ph[-1][1] if ph else 0
         mratio = round(mbal * 1000 * px / mv * 100, 2) if mv and px else None  # 融資佔市值%
         chg5 = round((ph[-1][1] / ph[-6][1] - 1) * 100, 1) if len(ph) >= 6 else None  # 近5交易日漲跌%
+        hist = [r["mbal"] for r in recs[-252:]]  # 融資餘額近52週（252交易日）
+        rank52 = round(sum(1 for v in hist if v <= mbal) / len(hist) * 100) if len(hist) >= 30 else None
         stock_rows.append([sid, names.get(sid, sid), mbal, weight, mratio, chg5, dist,
-                           1 if sid in watch else 0])
+                           1 if sid in watch else 0, rank52])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
@@ -200,11 +202,11 @@ def build() -> Path:
         <th class="srt" data-k="4">融資佔市值</th>
         <th class="srt" data-k="5">近5日跌幅</th>
         <th class="srt" data-k="6">距追繳</th>
-        <th class="srt" data-k="2">融資餘額(張)</th>
+        <th class="srt" data-k="8">融資52週分位</th>
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。三者同時亮＝隔日斷頭殺盤候選。點欄位標題可排序。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。<b>融資52週分位</b>＝目前融資餘額在近 52 週（252 交易日）的百分位（<span class="hot-t">≥90 紅</span>、≥70 橙＝融資堆在一年高檔、燃料滿；小字為絕對張數；歷史不足 30 日顯示「—」）。三者同時亮＝隔日斷頭殺盤候選。點欄位標題可排序。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -236,7 +238,7 @@ th,td{{padding:8px 10px;text-align:right;border-bottom:1px solid var(--bd);white
 th{{color:var(--mut);font-weight:600;font-size:.78rem}} th:first-child,td.tk{{text-align:left}}
 td.num{{font-variant-numeric:tabular-nums}} td.em{{font-weight:700}}
 td.hot{{color:#ef4444;font-weight:700}} td.warm{{color:#f59e0b;font-weight:600}}
-.delta{{font-size:.72rem;margin-left:6px}} .hot-t{{color:#ef4444;font-weight:600}}
+.delta{{font-size:.72rem;margin-left:6px}} .sub{{display:block;font-size:.68rem;color:var(--mut)}} .hot-t{{color:#ef4444;font-weight:600}}
 .tctl{{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}}
 .tctl input,.tctl select{{padding:5px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--fg);font-size:.85rem}}
 .tctl input{{min-width:180px}} .tctl label{{font-size:.85rem;color:var(--mut)}}
@@ -272,6 +274,7 @@ _table_script = """<script>
     rows = rows.slice().sort((a,b)=>{
       if(sortK===4||sortK===5){ const ax=a[sortK]!=null, bx=b[sortK]!=null; if(ax!==bx) return ax?-1:1; }  // 缺值墊底
       if(sortK===6){ const ax=a[6]<9999, bx=b[6]<9999; if(ax!==bx) return ax?-1:1; }  // 距追繳無資料墊底
+      if(sortK===8){ const ax=a[8]!=null, bx=b[8]!=null; if(ax!==bx) return ax?-1:1; }  // 52週分位缺值墊底
       return (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir;
     });
     const shown = count>0 ? rows.slice(0,count) : rows;
@@ -287,12 +290,15 @@ _table_script = """<script>
       const dc = r[6];   // 距追繳（引信）
       const dcCls = dc>=9999?"":(dc<0?"hot":(dc<5?"warm":""));
       const dcTxt = dc>=9999 ? "—" : (dc<0 ? "已追繳" : "跌"+dc.toFixed(1)+"%");
+      const rk = r[8];   // 融資餘額 52週分位
+      const rkCls = rk!=null&&rk>=90?"hot":(rk!=null&&rk>=70?"warm":"");
+      const rkTxt = rk!=null ? rk+"%" : "—";
       return '<tr><td class="tk">'+star+'<b>'+r[0]+'</b> '+r[1]+'</td>'
         + '<td class="num">'+w+'%</td>'
         + '<td class="num '+mvCls+'">'+mvTxt+'</td>'
         + '<td class="num '+c5Cls+'">'+c5Txt+'</td>'
         + '<td class="num '+dcCls+'">'+dcTxt+'</td>'
-        + '<td class="num">'+fmt(r[2])+'</td></tr>';
+        + '<td class="num '+rkCls+'">'+rkTxt+'<span class="sub">'+fmt(r[2])+'張</span></td></tr>';
     }).join("");
     info.textContent = "顯示 " + shown.length + " / " + rows.length + " 檔";
   }

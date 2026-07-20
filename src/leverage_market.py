@@ -46,6 +46,26 @@ def _trading_days(start, end):
         d += timedelta(days=1)
 
 
+def ingest_margin_only(start: str, end: str):
+    """只回補全市場融資融券（mkt_margin），供 52 週 rank 等長歷史指標用（1 call/天）。"""
+    token = _token()
+    DATA.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for d in _trading_days(start, end):
+        ds = d.isoformat()
+        mg = _fin("TaiwanStockMarginPurchaseShortSale", ds, ds, token)
+        for r in mg:
+            rows.append({"id": r["stock_id"], "d": ds,
+                         "mbal": r["MarginPurchaseTodayBalance"], "mbuy": r["MarginPurchaseBuy"],
+                         "mrep": r["MarginPurchaseCashRepayment"], "mlim": r.get("MarginPurchaseLimit") or 0,
+                         "sbal": r["ShortSaleTodayBalance"]})
+        if mg:
+            logger.info("融資 %s：%d 檔", ds, len(mg))
+        time.sleep(0.3)
+    n, tot = _save_flat("mkt_margin", rows, start, end)
+    logger.info("mkt_margin +%d（庫存 %d）", n, tot)
+
+
 def ingest_market(start: str, end: str):
     """抓 [start,end] 全市場槓桿資料，落地 mkt_*.json。"""
     token = _token()
