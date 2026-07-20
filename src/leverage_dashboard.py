@@ -12,15 +12,16 @@ from pathlib import Path
 
 if __package__:
     from .leverage import compute_dpi, dpi_level, load_market
+    from .leverage_ingest import NAMES
 else:
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.leverage import compute_dpi, dpi_level, load_market
+    from src.leverage_ingest import NAMES
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data" / "leverage"
 OUT = ROOT / "docs" / "leverage.html"
-NAMES = {"2330": "台積電", "6182": "合晶", "2327": "國巨", "3167": "大量", "3026": "禾伸堂"}
 
 
 def _load(name):

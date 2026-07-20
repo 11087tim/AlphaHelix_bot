@@ -29,8 +29,9 @@ DATA = Path(__file__).resolve().parent.parent / "data" / "leverage"
 FINMIND_API = "https://api.finmindtrade.com/api/v4/data"
 TWSE_TWTA1U = "https://www.twse.com.tw/rwd/zh/marginTrading/TWTA1U"
 
-STOCKS = ["2330", "6182", "2327", "3167", "3026"]
-NAMES = {"2330": "台積電", "6182": "合晶", "2327": "國巨", "3167": "大量", "3026": "禾伸堂"}
+STOCKS = ["2330", "2303", "6182", "2327", "3167", "3026"]
+NAMES = {"2330": "台積電", "2303": "聯電", "6182": "合晶",
+         "2327": "國巨", "3167": "大量", "3026": "禾伸堂"}
 
 MARKET_DATASETS = {
     "market_margin": "TaiwanStockTotalMarginPurchaseShortSale",
