@@ -98,7 +98,7 @@ def _pct(a, b):
 
 def build_hist() -> Path:
     """產出 docs/leverage_hist.json：個股歷史序列（趨勢圖用，前端按需 fetch）。
-    b=融資餘額張(近252交易日) c=收盤(近126日) m=TEJ維持率(近126日,靜態匯出) sh=估計股數。"""
+    b=融資餘額張(近252交易日) m=TEJ維持率(近126日,靜態匯出) sh=估計股數。"""
     mg = _load("mkt_margin")
     md = sorted({r["d"] for r in mg})[-252:]
     mdi = {d: i for i, d in enumerate(md)}
@@ -117,13 +117,14 @@ def build_hist() -> Path:
         i = mdi.get(r["d"])
         if i is None:
             continue
-        o = stocks.setdefault(r["id"], {"b": [None] * len(md), "c": [None] * len(pdl),
-                                        "m": [None] * len(pdl), "sh": 0})
+        o = stocks.setdefault(r["id"], {"b": [None] * len(md), "m": [None] * len(pdl), "sh": 0})
         o["b"][i] = r["mbal"]
-    for r in pr:
-        i = pdi.get(r["d"])
-        if i is not None and r.get("c") and r["id"] in stocks:
-            stocks[r["id"]]["c"][i] = r["c"]
+    last_close = {}
+    for r in pr:  # 只取最後收盤估股數（不輸出整條序列）
+        if r.get("c") and r["id"] in stocks:
+            d0 = last_close.get(r["id"], ("", 0))[0]
+            if r["d"] > d0:
+                last_close[r["id"]] = (r["d"], r["c"])
     for sid, arr in tej.get("stocks", {}).items():
         o = stocks.get(sid)
         if not o:
@@ -133,10 +134,10 @@ def build_hist() -> Path:
             if i is not None and arr[j] is not None:
                 o["m"][i] = arr[j]
     for sid, o in stocks.items():
-        last_c = next((v for v in reversed(o["c"]) if v), 0)
+        lc = last_close.get(sid, ("", 0))[1]
         mv = mv_by.get(sid, 0)
-        o["sh"] = round(mv / last_c) if last_c and mv else 0
-    out = {"pd": pdl, "md": md, "tot": mv_total, "s": stocks}
+        o["sh"] = round(mv / lc) if lc and mv else 0
+    out = {"pd": pdl, "md": md, "s": stocks}
     path = OUT.parent / "leverage_hist.json"
     path.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
     return path
@@ -263,14 +264,12 @@ def build() -> Path:
       <label>指標 <select id="trMetric">
         <option value="bal" selected>融資餘額(張)</option>
         <option value="mratio">融資佔市值</option>
-        <option value="chg5">近5日漲跌</option>
         <option value="dist">距追繳</option>
-        <option value="wt">市值比重</option>
       </select></label>
       <span class="tcount" id="trInfo"></span>
     </div>
     <div id="trChart"><p class="note">輸入股票代號後顯示趨勢。</p></div>
-    <p class="note">融資餘額為近 52 週；其餘指標近 6 個月。距追繳依 TEJ 維持率歷史（靜態匯出至最新交易日）；市值比重與融資佔市值以最新股本／全市場市值折算（近似）。歷史數據首次查詢時載入。</p>
+    <p class="note">融資餘額為近 52 週；其餘指標近 6 個月。距追繳依 TEJ 維持率歷史（靜態匯出至最新交易日）；融資佔市值以最新股本折算（近似）。歷史數據首次查詢時載入。</p>
   </section>
 
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
@@ -418,18 +417,14 @@ _table_script = """<script>
   const CFG={
     bal:{lab:"融資餘額(張)",color:"#3b82f6",fmt:v=>Math.round(v).toLocaleString("en-US")+" 張",yf:v=>Math.round(v).toLocaleString("en-US")},
     mratio:{lab:"融資佔市值",color:"#8b5cf6",fmt:v=>v.toFixed(2)+"%",yf:v=>v.toFixed(1)+"%"},
-    chg5:{lab:"近5日漲跌",color:"#f59e0b",fmt:v=>(v>=0?"+":"")+v.toFixed(1)+"%",yf:v=>v.toFixed(0)+"%",zero:1},
-    dist:{lab:"距追繳",color:"#ef4444",fmt:v=>v<0?"已追繳("+v.toFixed(1)+"%)":"跌"+v.toFixed(1)+"%",yf:v=>v.toFixed(0)+"%",zero:1},
-    wt:{lab:"市值比重",color:"#10b981",fmt:v=>v.toFixed(3)+"%",yf:v=>v.toFixed(2)+"%"}
+    dist:{lab:"距追繳",color:"#ef4444",fmt:v=>v<0?"已追繳("+v.toFixed(1)+"%)":"跌"+v.toFixed(1)+"%",yf:v=>v.toFixed(0)+"%",zero:1}
   };
   function series(sid,met){
     const o=H.s[sid]; if(!o) return null;
     const pts=[];
     if(met==="bal"){ H.md.forEach((d,i)=>{ if(o.b[i]!=null) pts.push([d,o.b[i]]); }); }
     else if(met==="mratio"){ if(!o.sh) return []; H.md.forEach((d,i)=>{ if(o.b[i]!=null) pts.push([d,o.b[i]*1000/o.sh*100]); }); }
-    else if(met==="chg5"){ for(let i=5;i<H.pd.length;i++){ if(o.c[i]!=null&&o.c[i-5]!=null) pts.push([H.pd[i],(o.c[i]/o.c[i-5]-1)*100]); } }
     else if(met==="dist"){ H.pd.forEach((d,i)=>{ if(o.m[i]!=null) pts.push([d,(o.m[i]-130)/o.m[i]*100]); }); }
-    else if(met==="wt"){ if(!o.sh) return []; H.pd.forEach((d,i)=>{ if(o.c[i]!=null) pts.push([d,o.sh*o.c[i]/H.tot*100]); }); }
     return pts;
   }
   function draw(){
