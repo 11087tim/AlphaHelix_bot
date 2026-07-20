@@ -29,3 +29,6 @@ graph.yaml
 
 # 台股分析清單含個人關注標的，不上傳；改用 reports_config.example.yaml 當範本
 reports_config.yaml
+
+# 台股槓桿歷史庫：只在 VM 上長，不進版控（量會累積、每日變動）
+data/leverage/
