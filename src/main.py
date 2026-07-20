@@ -440,7 +440,7 @@ def run_leverage(cfg: Config) -> int:
     回抓近 7 天做視窗覆蓋（補假日/延遲更新的漏；不丟舊歷史）。資料只在 VM 上長。"""
     from datetime import date, timedelta
 
-    from . import leverage_ingest, leverage_dashboard
+    from . import leverage_ingest, leverage_dashboard, leverage_market
 
     end = date.today()
     start = end - timedelta(days=7)
@@ -449,6 +449,10 @@ def run_leverage(cfg: Config) -> int:
     except Exception as exc:  # noqa: BLE001
         logger.error("槓桿資料抓取失敗（保留既有歷史，不更新儀表板）：%s", exc)
         return 1
+    try:  # 全市場資料庫（供日後 FLR 螢幕）；失敗不影響儀表板
+        leverage_market.ingest_market(start.isoformat(), end.isoformat())
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("全市場資料庫更新失敗（不影響儀表板）：%s", exc)
     out = leverage_dashboard.build()
     logger.info("已重建槓桿儀表板：%s", out)
     if cfg.site_auto_push:
