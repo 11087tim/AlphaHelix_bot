@@ -96,6 +96,52 @@ def _pct(a, b):
     return (b - a) / a * 100 if a else 0.0
 
 
+def build_hist() -> Path:
+    """產出 docs/leverage_hist.json：個股歷史序列（趨勢圖用，前端按需 fetch）。
+    b=融資餘額張(近252交易日) c=收盤(近126日) m=TEJ維持率(近126日,靜態匯出) sh=估計股數。"""
+    mg = _load("mkt_margin")
+    md = sorted({r["d"] for r in mg})[-252:]
+    mdi = {d: i for i, d in enumerate(md)}
+    pr = _load("mkt_price")
+    pdl = sorted({r["d"] for r in pr})[-126:]
+    pdi = {d: i for i, d in enumerate(pdl)}
+    mv_rows = _load("mkt_mktval") if (DATA / "mkt_mktval.json").exists() else []
+    mv_date = max((r["d"] for r in mv_rows), default=None)
+    mv_by = {r["id"]: r["mv"] for r in mv_rows if r["d"] == mv_date}
+    mv_total = sum(mv_by.values()) or 1
+    tejp = DATA / "tej_hist.json"
+    tej = json.loads(tejp.read_text()) if tejp.exists() else {"dates": [], "stocks": {}}
+
+    stocks = {}
+    for r in mg:
+        i = mdi.get(r["d"])
+        if i is None:
+            continue
+        o = stocks.setdefault(r["id"], {"b": [None] * len(md), "c": [None] * len(pdl),
+                                        "m": [None] * len(pdl), "sh": 0})
+        o["b"][i] = r["mbal"]
+    for r in pr:
+        i = pdi.get(r["d"])
+        if i is not None and r.get("c") and r["id"] in stocks:
+            stocks[r["id"]]["c"][i] = r["c"]
+    for sid, arr in tej.get("stocks", {}).items():
+        o = stocks.get(sid)
+        if not o:
+            continue
+        for j, d in enumerate(tej["dates"]):
+            i = pdi.get(d)
+            if i is not None and arr[j] is not None:
+                o["m"][i] = arr[j]
+    for sid, o in stocks.items():
+        last_c = next((v for v in reversed(o["c"]) if v), 0)
+        mv = mv_by.get(sid, 0)
+        o["sh"] = round(mv / last_c) if last_c and mv else 0
+    out = {"pd": pdl, "md": md, "tot": mv_total, "s": stocks}
+    path = OUT.parent / "leverage_hist.json"
+    path.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
+    return path
+
+
 def build() -> Path:
     market = load_market()
     last_date = market[-1]["date"]
@@ -209,6 +255,24 @@ def build() -> Path:
     <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。<b>融資52週分位</b>＝目前融資餘額在近 52 週（252 交易日）的百分位（<span class="hot-t">≥90 紅</span>、≥70 橙＝融資堆在一年高檔、燃料滿；小字為絕對張數；歷史不足 30 日顯示「—」）。三者同時亮＝隔日斷頭殺盤候選。點欄位標題可排序。</p>
   </section>
 
+  <section class="panel">
+    <h2>個股指標趨勢</h2>
+    <div class="tctl">
+      <input id="trStock" list="trList" placeholder="輸入代號或名稱…" autocomplete="off">
+      <datalist id="trList"></datalist>
+      <label>指標 <select id="trMetric">
+        <option value="bal" selected>融資餘額(張)</option>
+        <option value="mratio">融資佔市值</option>
+        <option value="chg5">近5日漲跌</option>
+        <option value="dist">距追繳</option>
+        <option value="wt">市值比重</option>
+      </select></label>
+      <span class="tcount" id="trInfo"></span>
+    </div>
+    <div id="trChart"><p class="note">輸入股票代號後顯示趨勢。</p></div>
+    <p class="note">融資餘額為近 52 週；其餘指標近 6 個月。距追繳依 TEJ 維持率歷史（靜態匯出至最新交易日）；市值比重與融資佔市值以最新股本／全市場市值折算（近似）。歷史數據首次查詢時載入。</p>
+  </section>
+
   <footer>AlphaHelix · 台股槓桿監控 · 產生於 {datetime.now():%Y-%m-%d %H:%M}｜僅供研究，非投資建議</footer>
 </div>
 
@@ -258,6 +322,7 @@ footer{{color:var(--mut);font-size:.74rem;text-align:center;margin-top:28px}}
            "<meta name='viewport' content='width=device-width,initial-scale=1'>"
            "<title>台股去槓桿壓力儀表板</title></head><body>" + html + script + "</body></html>")
     OUT.write_text(doc, encoding="utf-8")
+    build_hist()
     return OUT
 
 
@@ -265,6 +330,7 @@ footer{{color:var(--mut);font-size:.74rem;text-align:center;margin-top:28px}}
 _table_script = """<script>
 (function(){
   const D = __DATA__;
+  window._levD = D;
   let sortK = 2, dir = -1, count = 25, q = "";
   const body = document.getElementById("levBody"), info = document.getElementById("levInfo");
   const fmt = n => (n||0).toLocaleString("en-US");
@@ -313,7 +379,7 @@ _table_script = """<script>
 (function(){
   const tip=document.createElement("div"); tip.className="ctip"; tip.style.display="none";
   document.body.appendChild(tip);
-  document.querySelectorAll("svg.chart[data-pts]").forEach(svg=>{
+  function attachHover(svg){
     let pts; try{ pts=JSON.parse(svg.dataset.pts); }catch(e){ return; }
     if(!pts.length) return;
     const xh=svg.querySelector(".xh"), fc=svg.querySelector(".fc");
@@ -336,7 +402,75 @@ _table_script = """<script>
     svg.addEventListener("mouseleave",hide);
     svg.addEventListener("touchstart",e=>{ if(e.touches[0]) show(e.touches[0]); },{passive:true});
     svg.addEventListener("touchmove",e=>{ if(e.touches[0]) show(e.touches[0]); },{passive:true});
-  });
+  }
+  window._attachChartHover=attachHover;
+  document.querySelectorAll("svg.chart[data-pts]").forEach(attachHover);
+})();
+// 個股指標趨勢：選股 + 選指標 → 歷史趨勢圖（資料按需 fetch leverage_hist.json）
+(function(){
+  const dl=document.getElementById("trList");
+  if(!dl) return;
+  const D=window._levD||[];
+  dl.innerHTML=D.map(r=>'<option value="'+r[0]+' '+r[1]+'">').join("");
+  const box=document.getElementById("trChart"), info=document.getElementById("trInfo");
+  const stkIn=document.getElementById("trStock"), metSel=document.getElementById("trMetric");
+  let H=null, loading=false;
+  const CFG={
+    bal:{lab:"融資餘額(張)",color:"#3b82f6",fmt:v=>Math.round(v).toLocaleString("en-US")+" 張",yf:v=>Math.round(v).toLocaleString("en-US")},
+    mratio:{lab:"融資佔市值",color:"#8b5cf6",fmt:v=>v.toFixed(2)+"%",yf:v=>v.toFixed(1)+"%"},
+    chg5:{lab:"近5日漲跌",color:"#f59e0b",fmt:v=>(v>=0?"+":"")+v.toFixed(1)+"%",yf:v=>v.toFixed(0)+"%",zero:1},
+    dist:{lab:"距追繳",color:"#ef4444",fmt:v=>v<0?"已追繳("+v.toFixed(1)+"%)":"跌"+v.toFixed(1)+"%",yf:v=>v.toFixed(0)+"%",zero:1},
+    wt:{lab:"市值比重",color:"#10b981",fmt:v=>v.toFixed(3)+"%",yf:v=>v.toFixed(2)+"%"}
+  };
+  function series(sid,met){
+    const o=H.s[sid]; if(!o) return null;
+    const pts=[];
+    if(met==="bal"){ H.md.forEach((d,i)=>{ if(o.b[i]!=null) pts.push([d,o.b[i]]); }); }
+    else if(met==="mratio"){ if(!o.sh) return []; H.md.forEach((d,i)=>{ if(o.b[i]!=null) pts.push([d,o.b[i]*1000/o.sh*100]); }); }
+    else if(met==="chg5"){ for(let i=5;i<H.pd.length;i++){ if(o.c[i]!=null&&o.c[i-5]!=null) pts.push([H.pd[i],(o.c[i]/o.c[i-5]-1)*100]); } }
+    else if(met==="dist"){ H.pd.forEach((d,i)=>{ if(o.m[i]!=null) pts.push([d,(o.m[i]-130)/o.m[i]*100]); }); }
+    else if(met==="wt"){ if(!o.sh) return []; H.pd.forEach((d,i)=>{ if(o.c[i]!=null) pts.push([d,o.sh*o.c[i]/H.tot*100]); }); }
+    return pts;
+  }
+  function draw(){
+    const q=stkIn.value.trim(); if(!q) return;
+    const sid=q.split(/[\s\u3000]/)[0];
+    const met=metSel.value, cfg=CFG[met];
+    if(!H){ if(!loading){ loading=true; info.textContent="載入歷史數據…";
+      fetch("leverage_hist.json").then(r=>r.json()).then(j=>{ H=j; loading=false; info.textContent=""; draw(); })
+      .catch(()=>{ info.textContent="歷史數據載入失敗"; loading=false; }); } return; }
+    const pts=series(sid,met);
+    if(!pts||!pts.length){ box.innerHTML='<p class="note">查無 '+sid+' 的此項資料。</p>'; info.textContent=""; return; }
+    const row=D.find(r=>r[0]===sid);
+    info.textContent=(row?row[0]+" "+row[1]:sid)+"｜"+cfg.lab+"｜"+pts[0][0]+" ~ "+pts[pts.length-1][0];
+    const w=680,h=220,pl=56,prr=14,ptp=14,pb=26,iw=w-pl-prr,ih=h-ptp-pb;
+    let lo=Math.min.apply(null,pts.map(p=>p[1])), hi=Math.max.apply(null,pts.map(p=>p[1]));
+    if(cfg.zero){ lo=Math.min(lo,0); hi=Math.max(hi,0); }
+    let rng=(hi-lo)||1; lo-=rng*0.08; hi+=rng*0.08; rng=hi-lo;
+    const X=i=>pl+(pts.length>1?i/(pts.length-1)*iw:0), Y=v=>ptp+ih-(v-lo)/rng*ih;
+    const poly=pts.map((p,i)=>X(i).toFixed(1)+","+Y(p[1]).toFixed(1)).join(" ");
+    const dp=pts.map((p,i)=>[+X(i).toFixed(1),+Y(p[1]).toFixed(1),p[0],cfg.fmt(p[1])]);
+    let sv='<svg viewBox="0 0 '+w+' '+h+'" class="chart" preserveAspectRatio="xMidYMid meet">';
+    [0,.5,1].forEach(f=>{ const yv=lo+rng*f,y=Y(yv);
+      sv+='<line x1="'+pl+'" y1="'+y.toFixed(1)+'" x2="'+(w-prr)+'" y2="'+y.toFixed(1)+'" class="grid"/>';
+      sv+='<text x="'+(pl-6)+'" y="'+(y+3).toFixed(1)+'" class="axis" text-anchor="end">'+cfg.yf(yv)+'</text>'; });
+    if(cfg.zero&&lo<0&&hi>0){ const y=Y(0); sv+='<line x1="'+pl+'" y1="'+y.toFixed(1)+'" x2="'+(w-prr)+'" y2="'+y.toFixed(1)+'" stroke="#ef4444" stroke-width="1" stroke-dasharray="4 3" opacity="0.7"/>'; }
+    sv+='<polygon points="'+pl+','+(ptp+ih)+' '+poly+' '+X(pts.length-1).toFixed(1)+','+(ptp+ih)+'" fill="'+cfg.color+'" opacity="0.12"/>';
+    sv+='<polyline points="'+poly+'" fill="none" stroke="'+cfg.color+'" stroke-width="2" stroke-linejoin="round"/>';
+    sv+='<circle cx="'+X(pts.length-1).toFixed(1)+'" cy="'+Y(pts[pts.length-1][1]).toFixed(1)+'" r="3.2" fill="'+cfg.color+'"/>';
+    sv+='<text x="'+pl+'" y="'+(h-6)+'" class="axis" text-anchor="start">'+pts[0][0].slice(5)+'</text>';
+    sv+='<text x="'+(w-prr)+'" y="'+(h-6)+'" class="axis" text-anchor="end">'+pts[pts.length-1][0].slice(5)+'</text>';
+    sv+='<line class="xh" x1="0" x2="0" y1="'+ptp+'" y2="'+(ptp+ih)+'" stroke="var(--mut)" stroke-width="1" stroke-dasharray="3 3" style="display:none"/>';
+    sv+='<circle class="fc" r="4" fill="'+cfg.color+'" stroke="var(--bg2)" stroke-width="1.5" style="display:none"/>';
+    sv+='</svg>';
+    box.innerHTML=sv;
+    const el=box.querySelector("svg");
+    el.dataset.pts=JSON.stringify(dp);
+    if(window._attachChartHover) window._attachChartHover(el);
+  }
+  stkIn.addEventListener("change",draw);
+  metSel.addEventListener("change",draw);
+  stkIn.value="2330 台積電"; draw();
 })();
 </script>"""
 
