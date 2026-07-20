@@ -83,12 +83,25 @@ def _num(x):
         return 0
 
 
-def _fetch_buxian_day(d: date):
+CACHE = DATA / "_twse_cache"  # 每交易日 TWTA1U 精簡快取（gitignore；免未來重掃）
+
+
+def _day_rows(d: date):
+    """回傳 (當日精簡表, 是否連網)。精簡列＝[代號, 名稱, 融資擔保品仟股, 不限用途仟股]，
+    保留【全部股票】的兩欄，之後新增任何個股都能從快取解析、免再連 TWSE。
+    優先讀快取；未命中才連 TWSE，抓到即存快取。非交易日回 (None, 連網與否)。"""
+    cp = CACHE / f"{d.strftime('%Y%m%d')}.json"
+    if cp.exists():
+        return json.loads(cp.read_text()), False
     r = requests.get(TWSE_TWTA1U, params={"date": d.strftime("%Y%m%d"), "response": "json"}, timeout=30)
     j = r.json()
     if j.get("stat") != "OK" or not j.get("data"):
-        return None
-    return j["data"]
+        return None, True
+    rows = [[row[0], row[1], _num(row[COL_MARGIN_TODAY]), _num(row[COL_BUXIAN_TODAY])]
+            for row in j["data"]]
+    CACHE.mkdir(parents=True, exist_ok=True)
+    cp.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    return rows, True
 
 
 def _save_window(name, new_rows, start, end, scope_ids=None):
@@ -147,28 +160,28 @@ def ingest_buxian(start: str, end: str, stocks=None):
     d = d0
     while d <= d1:
         if d.weekday() < 5:
+            hit = False
             try:
-                data = _fetch_buxian_day(d)
+                rows, hit = _day_rows(d)
             except Exception as exc:  # noqa: BLE001
                 logger.warning("TWSE %s 讀取失敗：%s", d, exc)
-                data = None
-            if data:
+                rows, hit = None, True
+            if rows:
                 tot_bx = tot_mg = 0
-                for row in data:
-                    bx = _num(row[COL_BUXIAN_TODAY])
+                for code, name, mg, bx in rows:
                     tot_bx += bx
-                    tot_mg += _num(row[COL_MARGIN_TODAY])
-                    if row[0] in tset:
+                    tot_mg += mg
+                    if code in tset:
                         stock_rows.append({
-                            "date": d.isoformat(), "stock_id": row[0], "name": row[1],
-                            "buxian_balance_kshares": bx,
-                            "margin_collateral_kshares": _num(row[COL_MARGIN_TODAY]),
+                            "date": d.isoformat(), "stock_id": code, "name": name,
+                            "buxian_balance_kshares": bx, "margin_collateral_kshares": mg,
                         })
                 market_rows.append({
                     "date": d.isoformat(), "buxian_total_kshares": tot_bx,
-                    "margin_collateral_total_kshares": tot_mg, "n_stocks": len(data),
+                    "margin_collateral_total_kshares": tot_mg, "n_stocks": len(rows),
                 })
-            time.sleep(0.6)
+            if hit:  # 只有真的連網才禮貌節流；命中快取則全速
+                time.sleep(0.25)
         d += timedelta(days=1)
     n1, t1 = _save_window("buxian_market", market_rows, start, end)
     n2, t2 = _save_window("buxian_stock", stock_rows, start, end, scope_ids=tset)
