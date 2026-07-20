@@ -58,16 +58,15 @@
       <datalist id="trList"></datalist>
       <label>指標 <select id="trMetric">
         <option value="bal" selected>融資餘額(張)</option>
-        <option value="mratio">融資佔市值</option>
         <option value="dist">距追繳</option>
       </select></label>
       <span class="tcount" id="trInfo"></span>
     </div>
     <div id="trChart"><p class="note">輸入股票代號後顯示趨勢。</p></div>
-    <p class="note">融資餘額為近 52 週；其餘指標近 6 個月。距追繳依 TEJ 維持率歷史（靜態匯出至最新交易日）；融資佔市值以最新股本折算（近似）。歷史數據首次查詢時載入。</p>
+    <p class="note">融資餘額為近 52 週；其餘指標近 6 個月。距追繳依 TEJ 維持率歷史（靜態匯出至最新交易日）。歷史數據首次查詢時載入。</p>
   </section>
 
-  <footer>AlphaHelix · 台股槓桿監控 · 產生於 2026-07-21 01:53｜僅供研究，非投資建議</footer>
+  <footer>AlphaHelix · 台股槓桿監控 · 產生於 2026-07-21 01:54｜僅供研究，非投資建議</footer>
 </div>
 
 <style>
@@ -198,14 +197,12 @@ footer{color:var(--mut);font-size:.74rem;text-align:center;margin-top:28px}
   let H=null, loading=false;
   const CFG={
     bal:{lab:"融資餘額(張)",color:"#3b82f6",fmt:v=>Math.round(v).toLocaleString("en-US")+" 張",yf:v=>Math.round(v).toLocaleString("en-US")},
-    mratio:{lab:"融資佔市值",color:"#8b5cf6",fmt:v=>v.toFixed(2)+"%",yf:v=>v.toFixed(1)+"%"},
     dist:{lab:"距追繳",color:"#ef4444",fmt:v=>v<0?"已追繳("+v.toFixed(1)+"%)":"跌"+v.toFixed(1)+"%",yf:v=>v.toFixed(0)+"%",zero:1}
   };
   function series(sid,met){
     const o=H.s[sid]; if(!o) return null;
     const pts=[];
     if(met==="bal"){ H.md.forEach((d,i)=>{ if(o.b[i]!=null) pts.push([d,o.b[i]]); }); }
-    else if(met==="mratio"){ if(!o.sh) return []; H.md.forEach((d,i)=>{ if(o.b[i]!=null) pts.push([d,o.b[i]*1000/o.sh*100]); }); }
     else if(met==="dist"){ H.pd.forEach((d,i)=>{ if(o.m[i]!=null) pts.push([d,(o.m[i]-130)/o.m[i]*100]); }); }
     return pts;
   }
