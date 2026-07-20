@@ -453,6 +453,11 @@ def run_leverage(cfg: Config) -> int:
         leverage_market.ingest_market(start.isoformat(), end.isoformat())
     except Exception as exc:  # noqa: BLE001
         logger.warning("全市場資料庫更新失敗（不影響儀表板）：%s", exc)
+    try:  # LLM 去槓桿壓力短評（嵌在個股表上方）；失敗沿用舊評或不顯示
+        from . import leverage_comment
+        leverage_comment.generate(cfg.openrouter_api_key, cfg.memory_model)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("LLM 槓桿短評產生失敗（沿用舊評）：%s", exc)
     try:  # 個股期貨 OI/基差/大戶偏空（每天 2 個 API call）；失敗不影響儀表板
         leverage_market.ingest_futures(start.isoformat(), end.isoformat())
     except Exception as exc:  # noqa: BLE001

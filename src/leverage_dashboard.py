@@ -187,6 +187,40 @@ def build() -> Path:
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
 
+    # LLM 去槓桿壓力短評（由 leverage_comment 產生；無檔案則不顯示）
+    llm_html = ""
+    cp = DATA / "llm_comment.json"
+    if cp.exists():
+        try:
+            cm = json.loads(cp.read_text())
+            rows_h = []
+            for i, pk in enumerate(cm.get("picks", []), 1):
+                d = pk.get("dist")
+                d_txt = "—" if d is None else ("已追繳" if d < 0 else f"跌{d:.1f}%")
+                d_cls = "hot" if (d is not None and d < 0) else ("warm" if (d is not None and d < 5) else "")
+                c5 = pk.get("chg5", 0)
+                c5_cls = "hot" if c5 <= -10 else ("warm" if c5 <= -5 else "")
+                rows_h.append(
+                    f'<tr><td class="num">{i}</td>'
+                    f'<td class="tk"><b>{pk["id"]}</b> {pk["name"]}</td>'
+                    f'<td class="num">{pk.get("weight", 0):.2f}%</td>'
+                    f'<td class="num {c5_cls}">{c5:+.1f}%</td>'
+                    f'<td class="num {d_cls}">{d_txt}</td>'
+                    f'<td class="reason">{pk.get("reason", "")}</td></tr>')
+            llm_html = f"""  <section class="panel">
+    <h2>🤖 去槓桿壓力短評（LLM 依數據挑選，大市值優先）</h2>
+    <p class="llm-sum">{cm.get("summary", "")}</p>
+    <div class="twrap"><table class="mini">
+      <thead><tr><th>#</th><th>股票</th><th>市值比重</th><th>近5日</th><th>距追繳</th><th>依據</th></tr></thead>
+      <tbody>{''.join(rows_h)}</tbody>
+    </table></div>
+    <p class="note">由 {cm.get("model", "LLM")} 於 {cm.get("generated_at", "")} 依 {cm.get("date", "")} 收盤數據自動挑選（最多 20 檔、僅供研究非投資建議）；理由僅引用表列數據。</p>
+  </section>
+
+"""
+        except Exception:
+            llm_html = ""
+
 
     html = f"""<div class="wrap">
   <header>
@@ -216,7 +250,7 @@ def build() -> Path:
     </div>
   </section>
 
-  <section class="panel">
+{llm_html}  <section class="panel">
     <h2>個股槓桿結構（全市場，最新 {table_date}）</h2>
     <div class="tctl">
       <input id="levSearch" type="search" placeholder="搜尋代號或名稱…" autocomplete="off">
@@ -286,6 +320,8 @@ th{{color:var(--mut);font-weight:600;font-size:.78rem}} th:first-child,td.tk{{te
 td.num{{font-variant-numeric:tabular-nums}} td.em{{font-weight:700}}
 td.hot{{color:#ef4444;font-weight:700}} td.warm{{color:#f59e0b;font-weight:600}}
 .delta{{font-size:.72rem;margin-left:6px}} .sub{{display:block;font-size:.68rem;color:var(--mut)}} .hot-t{{color:#ef4444;font-weight:600}}
+.llm-sum{{font-size:.9rem;line-height:1.65;margin:0 0 10px}}
+td.reason{{text-align:left;white-space:normal;font-size:.8rem;color:var(--mut);min-width:220px}}
 .tctl{{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}}
 .tctl input,.tctl select{{padding:5px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--fg);font-size:.85rem}}
 .tctl input{{min-width:180px}} .tctl label{{font-size:.85rem;color:var(--mut)}}
