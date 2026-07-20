@@ -50,6 +50,7 @@ def ingest_market(start: str, end: str):
     token = _token()
     DATA.mkdir(parents=True, exist_ok=True)
     margin, short, price, daytr, buxian = [], [], [], [], []
+    names = {}
 
     for d in _trading_days(start, end):
         ds = d.isoformat()
@@ -76,9 +77,10 @@ def ingest_market(start: str, end: str):
                               "db": r.get("BuyAmount"), "dsl": r.get("SellAmount")})
         bx, _ = _day_rows(d)  # 沿用/建立 TWTA1U 快取（全市場）
         if bx:
-            for code, _name, mgk, bxk in bx:
+            for code, nm, mgk, bxk in bx:
                 if code in U:
                     buxian.append({"id": code, "d": ds, "bx": bxk, "mc": mgk})
+                    names[code] = nm
         logger.info("全市場 %s：%d 檔", ds, len(U))
         time.sleep(0.4)
 
@@ -86,3 +88,9 @@ def ingest_market(start: str, end: str):
                        ("mkt_daytrading", daytr), ("mkt_buxian", buxian)):
         n, tot = _save_flat(name, rows, start, end)
         logger.info("%s +%d（庫存 %d）", name, n, tot)
+
+    if names:  # 股名對照表（全市場表格用）
+        p = DATA / "names.json"
+        old = json.loads(p.read_text()) if p.exists() else {}
+        old.update(names)
+        p.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
