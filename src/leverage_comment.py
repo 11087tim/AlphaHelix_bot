@@ -139,7 +139,7 @@ if __name__ == "__main__":
     from src.config import load_config
 
     cfg = load_config()
-    res = generate(cfg.openrouter_api_key, cfg.memory_model)
+    res = generate(cfg.openrouter_api_key, cfg.openrouter_model)
     print(res["summary"])
     for p in res["picks"]:
         print(f"  {p['id']} {p['name']}: {p['reason']}")
