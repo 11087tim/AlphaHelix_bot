@@ -42,18 +42,10 @@ def main():
                 ratio[sid] = round(float(v), 1)
             except ValueError:
                 pass
-    # 合併：新 CSV 優先；CSV 宇宙外的個股（ETF/新上市等）沿用既有快照值，不丟資料
-    old_p = OUTDIR / "mkt_maintenance.json"
-    carried = 0
-    if old_p.exists():
-        old_ratio = json.loads(old_p.read_text()).get("ratio", {})
-        for sid, v in old_ratio.items():
-            if sid not in ratio:
-                ratio[sid] = v
-                carried += 1
+    # 宇宙以新 CSV 為準：CSV 未涵蓋者（ETF/特別股等）不帶維持率（表格顯示「—」）
     snap = {"date": dates[last_i], "source": "TEJ",
             "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M"), "ratio": ratio}
-    old_p.write_text(
+    (OUTDIR / "mkt_maintenance.json").write_text(
         json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     # 歷史：HIST_START 起
@@ -75,20 +67,11 @@ def main():
             arr.append(None)
         if any_v:
             stocks[sid] = arr
-    # 歷史同樣合併：CSV 未涵蓋的個股沿用既有序列（日期軸以新檔為準、對齊補 None）
-    hist_p = OUTDIR / "tej_hist.json"
-    if hist_p.exists():
-        old_h = json.loads(hist_p.read_text())
-        omap = {d: i for i, d in enumerate(old_h.get("dates", []))}
-        for sid, arr in old_h.get("stocks", {}).items():
-            if sid in stocks:
-                continue
-            stocks[sid] = [arr[omap[d]] if d in omap else None for d in hdates]
     hist = {"dates": hdates, "stocks": stocks}
-    hist_p.write_text(
+    (OUTDIR / "tej_hist.json").write_text(
         json.dumps(hist, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    print(f"✅ 快照 {snap['date']}（{len(ratio)} 檔，其中 {carried} 檔沿用舊值）→ mkt_maintenance.json")
+    print(f"✅ 快照 {snap['date']}（{len(ratio)} 檔）→ mkt_maintenance.json")
     print(f"✅ 歷史 {hdates[0]} ~ {hdates[-1]}（{len(hdates)} 天 × {len(stocks)} 檔）→ tej_hist.json")
 
 
