@@ -163,6 +163,31 @@ def build() -> Path:
     # 大盤相對值：融資餘額(元) / 全市場總市值
     mkt_margin_ratio = market[-1]["margin_bal"] / mv_total * 100 if mv_total > 1 else 0
     CALL = 130.0  # 融資追繳線（供「距追繳」欄）
+    # 可能斷頭日：TEJ 歷史找「連續跌破130」起點 → +3個營業日（T+2補繳、第3營業日開盤處分；反彈回130以上暫緩）
+    liq = {}
+    thp = DATA / "tej_hist.json"
+    if thp.exists():
+        from datetime import date as _date, timedelta as _td
+
+        def _add_bd(dstr, n):
+            d = _date.fromisoformat(dstr)
+            c = 0
+            while c < n:
+                d += _td(days=1)
+                if d.weekday() < 5:
+                    c += 1
+            return d.isoformat()
+
+        tejh = json.loads(thp.read_text())
+        hd = tejh["dates"]
+        li = len(hd) - 1
+        for sid, arr in tejh["stocks"].items():
+            if arr[li] is None or arr[li] >= CALL:
+                continue
+            j = li
+            while j > 0 and arr[j - 1] is not None and arr[j - 1] < CALL:
+                j -= 1
+            liq[sid] = _add_bd(hd[j], 3)
     # 欄位精簡版（易燃×火苗）：[代號, 名稱, 融資餘額張, 市值比重, 融資佔市值, 近5日跌幅, 距追繳, ★]
     stock_rows = []
     for sid, recs in mg_by.items():
@@ -182,7 +207,7 @@ def build() -> Path:
         hist = [r["mbal"] for r in recs[-252:]]  # 融資餘額近52週（252交易日）
         rank52 = round(sum(1 for v in hist if v <= mbal) / len(hist) * 100) if len(hist) >= 30 else None
         stock_rows.append([sid, names.get(sid, sid), mbal, weight, mratio, chg5, dist,
-                           1 if sid in watch else 0, rank52])
+                           1 if sid in watch else 0, rank52, liq.get(sid)])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
@@ -268,11 +293,12 @@ def build() -> Path:
         <th class="srt" data-k="4">融資佔市值</th>
         <th class="srt" data-k="5">近5日跌幅</th>
         <th class="srt" data-k="6">距追繳</th>
+        <th class="srt" data-k="9">可能斷頭日</th>
         <th class="srt" data-k="8">融資52週分位</th>
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。<b>融資52週分位</b>＝目前融資餘額在近 52 週（252 交易日）的百分位（<span class="hot-t">≥90 紅</span>、≥70 橙＝融資堆在一年高檔、燃料滿；小字為絕對張數；歷史不足 30 日顯示「—」）。三者同時亮＝隔日斷頭殺盤候選。點欄位標題可排序。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。<b>融資52週分位</b>＝目前融資餘額在近 52 週（252 交易日）的百分位（<span class="hot-t">≥90 紅</span>、≥70 橙＝融資堆在一年高檔、燃料滿；小字為絕對張數；歷史不足 30 日顯示「—」）。三者同時亮＝隔日斷頭殺盤候選。<b>可能斷頭日</b>＝維持率連續跌破130的起始日＋3個營業日（追繳後 T+2 未補繳、第3營業日開盤處分；期間若反彈回130以上則暫緩，故為估計；未計國定假日）。「處分中」＝推定處分日已到。點欄位標題可排序。</p>
   </section>
 
   <section class="panel">
@@ -335,7 +361,7 @@ footer{{color:var(--mut);font-size:.74rem;text-align:center;margin-top:28px}}
 @media(max-width:720px){{.cards{{grid-template-columns:repeat(2,1fr)}}.grid2{{grid-template-columns:1fr}}}}
 </style>"""
 
-    script = _table_script.replace("__DATA__", stock_json)
+    script = _table_script.replace("__DATA__", stock_json).replace("__TDATE__", table_date)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     doc = ("<!doctype html><html lang='zh-Hant'><head><meta charset='utf-8'>"
            "<meta name='viewport' content='width=device-width,initial-scale=1'>"
@@ -349,6 +375,7 @@ footer{{color:var(--mut);font-size:.74rem;text-align:center;margin-top:28px}}
 _table_script = """<script>
 (function(){
   const D = __DATA__;
+  const TD = "__TDATE__";
   window._levD = D;
   let sortK = 2, dir = -1, count = 25, q = "";
   const body = document.getElementById("levBody"), info = document.getElementById("levInfo");
@@ -360,6 +387,7 @@ _table_script = """<script>
       if(sortK===4||sortK===5){ const ax=a[sortK]!=null, bx=b[sortK]!=null; if(ax!==bx) return ax?-1:1; }  // 缺值墊底
       if(sortK===6){ const ax=a[6]<9999, bx=b[6]<9999; if(ax!==bx) return ax?-1:1; }  // 距追繳無資料墊底
       if(sortK===8){ const ax=a[8]!=null, bx=b[8]!=null; if(ax!==bx) return ax?-1:1; }  // 52週分位缺值墊底
+      if(sortK===9){ const ax=a[9]!=null, bx=b[9]!=null; if(ax!==bx) return ax?-1:1; }  // 無斷頭日墊底
       return (a[sortK]<b[sortK]?-1:a[sortK]>b[sortK]?1:0)*dir;
     });
     const shown = count>0 ? rows.slice(0,count) : rows;
@@ -375,6 +403,9 @@ _table_script = """<script>
       const dc = r[6];   // 距追繳（引信）
       const dcCls = dc>=9999?"":(dc<0?"hot":(dc<5?"warm":""));
       const dcTxt = dc>=9999 ? "—" : (dc<0 ? "已追繳" : "跌"+dc.toFixed(1)+"%");
+      const lq = r[9];   // 可能斷頭日
+      const lqCls = lq==null?"":(lq<=TD?"hot":"warm");
+      const lqTxt = lq==null?"—":(lq<=TD?"處分中":"≈"+lq.slice(5));
       const rk = r[8];   // 融資餘額 52週分位
       const rkCls = rk!=null&&rk>=90?"hot":(rk!=null&&rk>=70?"warm":"");
       const rkTxt = rk!=null ? rk+"%" : "—";
@@ -383,6 +414,7 @@ _table_script = """<script>
         + '<td class="num '+mvCls+'">'+mvTxt+'</td>'
         + '<td class="num '+c5Cls+'">'+c5Txt+'</td>'
         + '<td class="num '+dcCls+'">'+dcTxt+'</td>'
+        + '<td class="num '+lqCls+'">'+lqTxt+'</td>'
         + '<td class="num '+rkCls+'">'+rkTxt+'<span class="sub">'+fmt(r[2])+'張</span></td></tr>';
     }).join("");
     info.textContent = "顯示 " + shown.length + " / " + rows.length + " 檔";
