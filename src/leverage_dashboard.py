@@ -289,7 +289,8 @@ def build() -> Path:
         hist = [r["mbal"] for r in recs[-252:]]  # 融資餘額近52週（252交易日）
         rank52 = round(sum(1 for v in hist if v <= mbal) / len(hist) * 100) if len(hist) >= 30 else None
         stock_rows.append([sid, names.get(sid, sid), mbal, weight, mratio, chg5, dist,
-                           1 if sid in watch else 0, rank52, liq.get(sid)])
+                           1 if sid in watch else 0, rank52, liq.get(sid),
+                           round(M, 1) if M > 0 else None])
     stock_rows.sort(key=lambda r: -r[2])  # 預設融資餘額由大到小
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
@@ -406,7 +407,7 @@ def build() -> Path:
       </tr></thead>
       <tbody id="levBody"></tbody>
     </table></div>
-    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值。市值比重＝影響力（個股市值/全市場）。<b>融資52週分位</b>＝目前融資餘額在近 52 週（252 交易日）的百分位（<span class="hot-t">≥90 紅</span>、≥70 橙＝融資堆在一年高檔、燃料滿；小字為絕對張數；歷史不足 30 日顯示「—」）。三者同時亮＝隔日斷頭殺盤候選。<b>可能斷頭日</b>＝維持率連續跌破130的起始日＋3個營業日（追繳後 T+2 未補繳、第3營業日開盤處分；期間若反彈回130以上則暫緩，故為估計；未計國定假日）。「處分中」＝推定處分日已到。點欄位標題可排序。</p>
+    <p class="note">共 {n_stocks:,} 檔（融資可交易宇宙）。<span class="star">★</span>＝觀察清單。挑欄邏輯＝<b>易燃物×火苗</b>：<b>融資佔市值</b>（易燃物）＝融資部位市值（餘額×現價）/個股總市值，<span class="hot-t">≥8% 紅</span>、≥4% 橙——籌碼中融資越重、跌時賣壓放大越兇；<b>近5日跌幅</b>（火苗）＝近 5 個交易日漲跌，<span class="hot-t">≤−10% 紅</span>、≤−5% 橙——正在燒掉維持率；<b>距追繳</b>（引信）＝（TEJ 實際維持率−130）/維持率，即還能跌多少 % 觸及追繳線（<span class="hot-t">紅＝已追繳</span>、橙&lt;5%），與股價 1:1 連動為精確值（欄內小字為 TEJ 實際維持率）。市值比重＝影響力（個股市值/全市場）。<b>融資52週分位</b>＝目前融資餘額在近 52 週（252 交易日）的百分位（<span class="hot-t">≥90 紅</span>、≥70 橙＝融資堆在一年高檔、燃料滿；小字為絕對張數；歷史不足 30 日顯示「—」）。三者同時亮＝隔日斷頭殺盤候選。<b>可能斷頭日</b>＝維持率連續跌破130的起始日＋3個營業日（追繳後 T+2 未補繳、第3營業日開盤處分；期間若反彈回130以上則暫緩，故為估計；未計國定假日）。「處分中」＝推定處分日已到。點欄位標題可排序。</p>
   </section>
 
   <section class="panel">
@@ -522,7 +523,7 @@ _table_script = """<script>
         + '<td class="num">'+w+'%</td>'
         + '<td class="num '+mvCls+'">'+mvTxt+'</td>'
         + '<td class="num '+c5Cls+'">'+c5Txt+'</td>'
-        + '<td class="num '+dcCls+'">'+dcTxt+'</td>'
+        + '<td class="num '+dcCls+'">'+dcTxt+(r[10]!=null?'<span class="sub">維持率 '+r[10].toFixed(1)+'%</span>':'')+'</td>'
         + '<td class="num '+lqCls+'">'+lqTxt+'</td>'
         + '<td class="num '+rkCls+'">'+rkTxt+'<span class="sub">'+fmt(r[2])+'張</span></td></tr>';
     }).join("");
