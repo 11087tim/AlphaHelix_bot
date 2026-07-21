@@ -368,7 +368,7 @@ def build() -> Path:
     <div class="card"><div class="k">不限用途擔保品</div><div class="v">{bx_vals[-1]:,.0f}<span>億股</span></div><div class="d">股票質押借款</div></div>
   </section>
 
-  <section class="grid2">
+{wave_html}  <section class="grid2">
     <div class="panel"><h2>融資維持率 %（越低越接近追繳）</h2>
       {line_chart(dates, maint, color="#f59e0b", reflines=[("警戒 160", 160, "#f97316"), ("斷頭 130", 130, "#ef4444")], y_fmt=lambda v: f"{v:.0f}%", val_fmt=lambda v: f"{v:.2f}%")}
       <p class="note">離斷頭線 130% 越遠越安全。</p>
@@ -383,7 +383,7 @@ def build() -> Path:
     </div>
   </section>
 
-{llm_html}{wave_html}  <section class="panel">
+{llm_html}  <section class="panel">
     <h2>個股槓桿結構（全市場，最新 {table_date}）</h2>
     <div class="tctl">
       <input id="levSearch" type="search" placeholder="搜尋代號或名稱…" autocomplete="off">
