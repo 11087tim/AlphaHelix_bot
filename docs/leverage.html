@@ -37,6 +37,15 @@
   </section>
 
   <section class="panel">
+    <h2>斷頭潮時間表（估計）</h2>
+    <div class="twrap"><table class="mini">
+      <thead><tr><th>日期</th><th>跌破130家數(存量)</th><th>其融資部位(億)</th><th>推定處分檔數(流量)</th><th>推定處分部位(億)</th></tr></thead>
+      <tbody><tr><td class="tk">2026-07-08</td><td class="num">79</td><td class="num">238</td><td class="num">1</td><td class="num ">4</td></tr><tr><td class="tk">2026-07-09</td><td class="num">81</td><td class="num">254</td><td class="num">2</td><td class="num ">18</td></tr><tr><td class="tk">2026-07-13</td><td class="num">101</td><td class="num">428</td><td class="num">9</td><td class="num ">22</td></tr><tr><td class="tk">2026-07-14</td><td class="num">126</td><td class="num">524</td><td class="num">8</td><td class="num ">60</td></tr><tr><td class="tk">2026-07-15</td><td class="num">108</td><td class="num">442</td><td class="num">6</td><td class="num ">59</td></tr><tr><td class="tk">2026-07-16</td><td class="num">121</td><td class="num">720</td><td class="num">17</td><td class="num warm">160</td></tr><tr><td class="tk">2026-07-17</td><td class="num">230</td><td class="num">1,793</td><td class="num">11</td><td class="num ">26</td></tr><tr><td class="tk">2026-07-20</td><td class="num">285</td><td class="num">2,526</td><td class="num">2</td><td class="num ">60</td></tr><tr><td class="tk">2026-07-21（未來,估）</td><td class="num">—</td><td class="num">—</td><td class="num">20</td><td class="num warm">262</td></tr><tr class="peak"><td class="tk">2026-07-22（未來,估）</td><td class="num">—</td><td class="num">—</td><td class="num">102</td><td class="num hot">1,039</td></tr><tr><td class="tk">2026-07-23（未來,估）</td><td class="num">—</td><td class="num">—</td><td class="num">66</td><td class="num hot">922</td></tr></tbody>
+    </table></div>
+    <p class="note">存量＝當日維持率跌破130%的個股與其融資部位市值（該日餘額×收盤精算）。流量＝依「首次跌破＋3營業日開盤處分」推定當日被處分的部位；補繳期（跌破後兩個營業日）內維持率反彈回130以上者不計；未來日假設不反彈、以最新部位估計，未計國定假日。<span class="hot-t">紅框列＝推定高峰</span>。實際賣壓依各戶補繳情況而定，僅供研究。</p>
+  </section>
+
+  <section class="panel">
     <h2>個股槓桿結構（全市場，最新 2026-07-20）</h2>
     <div class="tctl">
       <input id="levSearch" type="search" placeholder="搜尋代號或名稱…" autocomplete="off">
@@ -77,7 +86,7 @@
     <p class="note">融資餘額為近 52 週；其餘指標近 6 個月。距追繳依 TEJ 維持率歷史（靜態匯出至最新交易日）。歷史數據首次查詢時載入。</p>
   </section>
 
-  <footer>AlphaHelix · 台股槓桿監控 · 產生於 2026-07-21 09:44｜僅供研究，非投資建議</footer>
+  <footer>AlphaHelix · 台股槓桿監控 · 產生於 2026-07-21 09:51｜僅供研究，非投資建議</footer>
 </div>
 
 <style>
@@ -108,6 +117,7 @@ td.num{font-variant-numeric:tabular-nums} td.em{font-weight:700}
 td.hot{color:#ef4444;font-weight:700} td.warm{color:#f59e0b;font-weight:600}
 .delta{font-size:.72rem;margin-left:6px} .sub{display:block;font-size:.68rem;color:var(--mut)} .hot-t{color:#ef4444;font-weight:600}
 .llm-sum{font-size:.9rem;line-height:1.65;margin:0 0 10px}
+tr.peak td{border-top:1.5px solid #ef4444;border-bottom:1.5px solid #ef4444;font-weight:600}
 td.reason{text-align:left;white-space:normal;font-size:.8rem;color:var(--mut);min-width:220px}
 .tctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .tctl input,.tctl select{padding:5px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--fg);font-size:.85rem}
