@@ -128,6 +128,88 @@ def build_hist() -> Path:
     return path
 
 
+def _liq_wave(call=130.0):
+    """斷頭潮時間表：每日「跌破130存量」與「推定處分流量」（首次跌破+3營業日；
+    補繳期內反彈者不計；部位以該日（或最新）融資餘額×收盤精算）。
+    回傳 (rows, peak_date)；rows=[{date, st_n, st_v, fl_n, fl_v, future}]。"""
+    from datetime import date as _date, timedelta as _td
+
+    thp = DATA / "tej_hist.json"
+    if not thp.exists():
+        return [], None
+    h = json.loads(thp.read_text())
+    hd, S = h["dates"], h["stocks"]
+    li = len(hd) - 1
+
+    mbal_hist, px_hist = defaultdict(dict), defaultdict(dict)
+    for r in _load("mkt_margin"):
+        mbal_hist[r["id"]][r["d"]] = r["mbal"]
+    for r in _load("mkt_price"):
+        if r.get("c"):
+            px_hist[r["id"]][r["d"]] = r["c"]
+
+    def _posval(sid, d):
+        mb = mbal_hist.get(sid, {})
+        px = px_hist.get(sid, {})
+        db = max((k for k in mb if k <= d), default=None)
+        dp = max((k for k in px if k <= d), default=None)
+        if not db or not dp:
+            return 0.0
+        return mb[db] * 1000 * px[dp] / 1e8
+
+    def _add_bd(dstr, n):
+        d = _date.fromisoformat(dstr)
+        c = 0
+        while c < n:
+            d += _td(days=1)
+            if d.weekday() < 5:
+                c += 1
+        return d.isoformat()
+
+    # 存量：每日跌破130家數/部位
+    stock_daily = {}
+    for i in range(max(0, li - 9), li + 1):
+        c, v = 0, 0.0
+        for sid, arr in S.items():
+            if arr[i] is not None and arr[i] < call:
+                c += 1
+                v += _posval(sid, hd[i])
+        stock_daily[hd[i]] = (c, v)
+
+    # 流量：每檔的「跌破 run」→ 若補繳期(D1,D2)未反彈 → D3 計一次處分
+    flow = defaultdict(lambda: [0, 0.0])
+    for sid, arr in S.items():
+        i = 0
+        while i <= li:
+            if arr[i] is None or arr[i] >= call:
+                i += 1
+                continue
+            j = i  # run: [i..j]
+            while j + 1 <= li and arr[j + 1] is not None and arr[j + 1] < call:
+                j += 1
+            # 補繳期內（i+1, i+2）反彈者不計；資料未及(未來)視為未反彈（估計）
+            survived = all(arr[k] is not None and arr[k] < call
+                           for k in range(i + 1, min(i + 3, li + 1)))
+            if survived:
+                d3 = hd[i + 3] if i + 3 <= li else _add_bd(hd[li], i + 3 - li)
+                e = flow[d3]
+                e[0] += 1
+                e[1] += _posval(sid, min(d3, hd[li]))
+            i = j + 1
+
+    dates_out = hd[-8:]
+    fut = [d for d in sorted(flow) if d > hd[li]][:4]
+    rows = []
+    for d in dates_out + fut:
+        st = stock_daily.get(d)
+        fl = flow.get(d, [0, 0.0])
+        rows.append({"date": d, "st_n": st[0] if st else None,
+                     "st_v": round(st[1]) if st else None,
+                     "fl_n": fl[0], "fl_v": round(fl[1]), "future": d > hd[li]})
+    peak = max(rows, key=lambda r: r["fl_v"])["date"] if rows else None
+    return rows, peak
+
+
 def build() -> Path:
     market = load_market()
     last_date = market[-1]["date"]
@@ -212,6 +294,32 @@ def build() -> Path:
     n_stocks = len(stock_rows)
     stock_json = json.dumps(stock_rows, ensure_ascii=False, separators=(",", ":"))
 
+    # 斷頭潮時間表
+    wave_rows, wave_peak = _liq_wave(CALL)
+    wave_html = ""
+    if wave_rows:
+        wr = []
+        for r in wave_rows:
+            peak_cls = ' class="peak"' if r["date"] == wave_peak and r["fl_v"] > 0 else ""
+            status = "未來(估)" if r["future"] else ("資料日" if r["date"] == wave_rows[-1]["date"] and not r["future"] else "")
+            st_n = "—" if r["st_n"] is None else f'{r["st_n"]:,}'
+            st_v = "—" if r["st_v"] is None else f'{r["st_v"]:,}'
+            fl_cls = "hot" if r["fl_v"] >= 500 else ("warm" if r["fl_v"] >= 100 else "")
+            wr.append(f'<tr{peak_cls}><td class="tk">{r["date"]}{"（未來,估）" if r["future"] else ""}</td>'
+                      f'<td class="num">{st_n}</td><td class="num">{st_v}</td>'
+                      f'<td class="num">{r["fl_n"]:,}</td>'
+                      f'<td class="num {fl_cls}">{r["fl_v"]:,}</td></tr>')
+        wave_html = f"""  <section class="panel">
+    <h2>斷頭潮時間表（估計）</h2>
+    <div class="twrap"><table class="mini">
+      <thead><tr><th>日期</th><th>跌破130家數(存量)</th><th>其融資部位(億)</th><th>推定處分檔數(流量)</th><th>推定處分部位(億)</th></tr></thead>
+      <tbody>{''.join(wr)}</tbody>
+    </table></div>
+    <p class="note">存量＝當日維持率跌破130%的個股與其融資部位市值（該日餘額×收盤精算）。流量＝依「首次跌破＋3營業日開盤處分」推定當日被處分的部位；補繳期（跌破後兩個營業日）內維持率反彈回130以上者不計；未來日假設不反彈、以最新部位估計，未計國定假日。<span class="hot-t">紅框列＝推定高峰</span>。實際賣壓依各戶補繳情況而定，僅供研究。</p>
+  </section>
+
+"""
+
     # LLM 去槓桿壓力短評（由 leverage_comment 產生；無檔案則不顯示）
     llm_html = ""
     cp = DATA / "llm_comment.json"
@@ -275,7 +383,7 @@ def build() -> Path:
     </div>
   </section>
 
-{llm_html}  <section class="panel">
+{llm_html}{wave_html}  <section class="panel">
     <h2>個股槓桿結構（全市場，最新 {table_date}）</h2>
     <div class="tctl">
       <input id="levSearch" type="search" placeholder="搜尋代號或名稱…" autocomplete="off">
@@ -347,6 +455,7 @@ td.num{{font-variant-numeric:tabular-nums}} td.em{{font-weight:700}}
 td.hot{{color:#ef4444;font-weight:700}} td.warm{{color:#f59e0b;font-weight:600}}
 .delta{{font-size:.72rem;margin-left:6px}} .sub{{display:block;font-size:.68rem;color:var(--mut)}} .hot-t{{color:#ef4444;font-weight:600}}
 .llm-sum{{font-size:.9rem;line-height:1.65;margin:0 0 10px}}
+tr.peak td{{border-top:1.5px solid #ef4444;border-bottom:1.5px solid #ef4444;font-weight:600}}
 td.reason{{text-align:left;white-space:normal;font-size:.8rem;color:var(--mut);min-width:220px}}
 .tctl{{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}}
 .tctl input,.tctl select{{padding:5px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--fg);font-size:.85rem}}
