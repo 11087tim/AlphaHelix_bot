@@ -35,7 +35,10 @@ _NO_DERIVE_RE = re.compile(
 )
 
 # 若上面清空後只剩一個空的「🤖 延伸推論：」開頭，整行移除。
-_EMPTY_ROBOT_RE = re.compile(r"^[*＊>\-\s]*🤖\s*延伸推論[:：]?[*＊\s]*$", re.M)
+# 只刪「真正空的」🤖 標記行：其後（跳過空行）直接接新子題/大標或全文結束才算空；
+# 新格式的標記單獨成行、推論在下方條列（下一行以 - 開頭），不可誤刪。
+_EMPTY_ROBOT_RE = re.compile(
+    r"^[*＊>\-\s]*🤖\s*延伸推論[:：]?[*＊\s]*$\n?(?=\s*(?:\*\*|##|\Z))", re.M)
 
 
 def _strip_skip_notes(summary: str) -> str:

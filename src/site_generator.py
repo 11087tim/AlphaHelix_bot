@@ -57,10 +57,13 @@ def _render_lines(lines: list[str], cite_by_n: dict) -> str:
         nonlocal list_tag
         if list_items:
             items = "".join(f"<li>{it}</li>" for it in list_items)
-            parts.append(f"<{list_tag}>{items}</{list_tag}>")
+            cls = ' class="robot-list"' if robot_open[0] else ""
+            parts.append(f"<{list_tag}{cls}>{items}</{list_tag}>")
             list_items.clear()
             list_tag = ""
+            robot_open[0] = False  # 列點收進 callout 後即關閉
 
+    robot_open = [False]  # 🤖 標記後、下一組列點歸入 callout
     for raw in lines:
         line = raw.strip()
         if not line:
@@ -70,12 +73,14 @@ def _render_lines(lines: list[str], cite_by_n: dict) -> str:
         header = _HEADER_RE.match(line)
         if header:
             flush_list()
+            robot_open[0] = False
             parts.append(f'<p class="maintopic">{_render_inline(header.group(1), cite_by_n)}</p>')
             continue
 
         bold_line = _BOLD_LINE_RE.match(line)
         if bold_line:
             flush_list()
+            robot_open[0] = False
             parts.append(f'<p class="subhead">{_render_inline(bold_line.group(1), cite_by_n)}</p>')
             continue
 
@@ -91,7 +96,9 @@ def _render_lines(lines: list[str], cite_by_n: dict) -> str:
             continue
 
         flush_list()
-        cls = ' class="robot"' if line.startswith("🤖") else ""  # 🤖 延伸推論做成 callout
+        is_robot = line.startswith("🤖")
+        robot_open[0] = is_robot  # 🤖 標記後接的列點要包進同一個 callout（robot-list）
+        cls = ' class="robot"' if is_robot else ""  # 🤖 延伸推論做成 callout
         parts.append(f"<p{cls}>{_render_inline(line, cite_by_n)}</p>")
 
     flush_list()

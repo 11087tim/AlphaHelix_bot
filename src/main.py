@@ -153,11 +153,20 @@ def run_fetch(cfg: Config) -> int:
     return 0
 
 
+# 長輸入下模型容易漂移格式；把關鍵格式要求重複於輸入最末端（recency）以強化遵循
+FORMAT_REMINDER = (
+    "【最終格式提醒（最重要）】輸出每個子主題固定為：**標題** → 事實條列（每點附 [n]、合計 200 字以內）→ "
+    "「🤖 延伸推論：」一行 → 推論條列（合計 200 字以內）。凡子題有提到任何公司，「🤖 延伸推論：」段【必不可少】；"
+    "事實列點不得夾帶推論。"
+)
+
+
 def _extra_context(graph_context: str | None, tweets: list[dict],
                    timeline: str | None = None) -> str | None:
-    """把產業關係圖、財報事實卡、先前觀點時間線併成一段參考文字附在 prompt 末尾。"""
+    """把產業關係圖、財報事實卡、先前觀點時間線併成參考文字附在 prompt 末尾，
+    並固定以格式提醒收尾（長輸入時置底的指令遵循度最高）。"""
     cards = reports_bridge.load_report_cards(tweets)  # 台股 X×財報跨源印證
-    return "\n\n".join(x for x in (graph_context, cards, timeline) if x) or None
+    return "\n\n".join(x for x in (graph_context, cards, timeline, FORMAT_REMINDER) if x)
 
 
 def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:

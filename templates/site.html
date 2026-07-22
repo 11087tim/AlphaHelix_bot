@@ -77,9 +77,9 @@
     .datebar select { font-size: 0.95rem; padding: 4px 8px; border: 1px solid #cdd8e2; border-radius: 8px; background: #fff; }
     html { scroll-behavior: smooth; }
     /* 側欄大綱 */
-    .toc { position: fixed; top: 24px; left: 24px; width: 230px; max-height: calc(100vh - 48px); overflow-y: auto; background: #fff; border: 1px solid #e6e6e6; border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
-    .toc-title { font-weight: 700; color: #1d9bf0; margin-bottom: 8px; font-size: 0.9rem; }
-    .toc ul { list-style: none; margin: 0; padding: 0; }
+    .toc { position: fixed; top: 24px; left: 24px; width: 230px; max-height: calc(100vh - 48px); display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid #e6e6e6; border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .toc-title { font-weight: 700; color: #1d9bf0; margin-bottom: 8px; font-size: 0.9rem; flex: 0 0 auto; }
+    .toc ul { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1 1 auto; }
     .toc li { margin: 1px 0; }
     .toc a { display: block; color: #444; text-decoration: none; padding: 3px 6px; border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .toc a:hover { background: #eef3f8; color: #1d9bf0; }
@@ -97,6 +97,11 @@
     /* 🤖 延伸推論 callout：淡底 + 左側色條，一眼區分「推論 vs 事實」 */
     .summary p.robot { background: #f0f7ff; border-left: 3px solid #1d9bf0; border-radius: 0 8px 8px 0;
       padding: 8px 12px; margin: 8px 0 14px; text-indent: 0; color: #23516e; font-size: 0.95rem; }
+    /* 🤖 標記後的推論列點：併入同一個 callout（貼合、共用底色與左色條） */
+    .summary p.robot:has(+ .robot-list) { border-radius: 0 8px 0 0; margin-bottom: 0; padding-bottom: 4px; }
+    .summary .robot-list { background: #f0f7ff; border-left: 3px solid #1d9bf0; border-radius: 0 0 8px 0;
+      margin: 0 0 14px; padding: 2px 12px 10px 32px; color: #23516e; font-size: 0.95rem; }
+    .summary .robot-list li { margin: 4px 0; }
     /* 📈 本期變化醒目卡片 */
     .whatschanged { background: #fffdf5; border: 1px solid #f0e6c8; border-radius: 10px;
       padding: 4px 14px 10px; margin: 6px 0 16px; }
@@ -131,6 +136,7 @@
     :root[data-theme="dark"] .cite-tip { background: #1c2024; color: #dfe3e8; border-color: #333c45; box-shadow: 0 8px 28px rgba(0,0,0,.5); }
     :root[data-theme="dark"] .cite-tip .tip-text { color: #c5ccd4; }
     :root[data-theme="dark"] .summary p.robot { background: #172530; border-left-color: #2f7fbf; color: #a9c7dc; }
+    :root[data-theme="dark"] .summary .robot-list { background: #172530; border-left-color: #2f7fbf; color: #a9c7dc; }
     :root[data-theme="dark"] .whatschanged { background: #201d13; border-color: #3a3320; }
     :root[data-theme="dark"] .theme-toggle { background: #1c2024; border-color: #333c45; color: #7cc0f0; }
 
