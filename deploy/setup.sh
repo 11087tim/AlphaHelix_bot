@@ -38,9 +38,13 @@ sudo tee /etc/systemd/system/xbot-run.service >/dev/null <<UNIT
 Description=Alphehelix X bot - daily run (fetch + synthesis)
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=3600
+StartLimitBurst=3
 
 [Service]
-Type=oneshot
+Type=simple
+Restart=on-failure
+RestartSec=600
 User=$RUN_USER
 WorkingDirectory=$PROJECT_DIR
 ExecStartPre=-/usr/bin/git pull --rebase --autostash --quiet
@@ -66,9 +70,13 @@ sudo tee /etc/systemd/system/xbot-longform.service >/dev/null <<UNIT
 Description=Alphehelix X bot - longform (podcast + youtube)
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=3600
+StartLimitBurst=3
 
 [Service]
-Type=oneshot
+Type=simple
+Restart=on-failure
+RestartSec=600
 User=$RUN_USER
 WorkingDirectory=$PROJECT_DIR
 ExecStartPre=-/usr/bin/git pull --rebase --autostash --quiet
@@ -94,9 +102,13 @@ sudo tee /etc/systemd/system/xbot-leverage.service >/dev/null <<UNIT
 Description=Alphehelix X bot - Taiwan leverage dashboard (margin/short/buxian)
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=3600
+StartLimitBurst=3
 
 [Service]
-Type=oneshot
+Type=simple
+Restart=on-failure
+RestartSec=600
 User=$RUN_USER
 WorkingDirectory=$PROJECT_DIR
 ExecStartPre=-/usr/bin/git pull --rebase --autostash --quiet
