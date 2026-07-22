@@ -275,12 +275,13 @@ def run_synthesis(cfg: Config) -> int:
     if cfg.site_auto_push:
         publisher.publish_docs()
 
-    # 收件人：dev 每次都寄；prod 只在指定整點（預設 8、20）寄，避免正式信箱被測試信洗版。
-    # 手動補跑「正式版」可設 XBOT_FORCE_PROD=1 強制納入 prod（不限時段）。
-    recipients = list(cfg.email_dev)
+    # 收件人：To＝自己（dev）；prod 時段（預設 8、20 整點）其餘收件人走 BCC（彼此看不到地址）。
+    # 手動補跑「正式版」可設 XBOT_FORCE_PROD=1 強制納入 prod BCC（不限時段）。
+    to_list = list(cfg.email_dev)
+    bcc_list: list[str] = []
     if os.environ.get("XBOT_FORCE_PROD") == "1" or datetime.now().hour in cfg.email_prod_hours:
-        recipients += [a for a in cfg.email_prod if a not in recipients]
-    if recipients:
+        bcc_list = [a for a in cfg.email_prod if a not in to_list]
+    if to_list:
         html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url,
                                            window_hours=cfg.fetch_window_hours)
         subject = f"{cfg.email_subject_prefix} {entry['generated_at']} 觀點彙整"
@@ -288,9 +289,10 @@ def run_synthesis(cfg: Config) -> int:
             emailer.send_html_email(
                 gmail_address=cfg.gmail_address,
                 gmail_app_password=cfg.gmail_app_password,
-                to=recipients,
+                to=to_list,
                 subject=subject,
                 html_body=html,
+                bcc=bcc_list,
             )
         except Exception as exc:  # noqa: BLE001
             logger.error("寄信失敗：%s", exc)
