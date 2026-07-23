@@ -21,6 +21,21 @@ class QuotaExhausted(Exception):
     """頁數餘額不足。"""
 
 
+def login_with_password(phone: str, password: str) -> str:
+    """帳密登入換 token。目前微信帳號無法設密碼，此函式備而不用：
+    若日後 nash-ai 幫帳號綁定手機+密碼，在 .env 設 NASH_PHONE / NASH_PASSWORD
+    即可全自動續 token，不再需要掃碼。"""
+    body = json.dumps({"phone": phone, "password": password}).encode()
+    req = urllib.request.Request(
+        f"{config.NASH_BASE}/reports/auth/login", data=body, method="POST",
+        headers={"Content-Type": "application/json", "User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        d = json.load(resp)
+    if d.get("code") != 200:
+        raise RuntimeError(f"登入失敗：{d.get('message')}")
+    return d["data"]
+
+
 class NashClient:
     def __init__(self, token: str):
         self.token = token

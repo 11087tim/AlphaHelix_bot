@@ -71,6 +71,8 @@ def _md_to_html(md: str) -> str:
 
 
 def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
+    from dotenv import load_dotenv
+    load_dotenv(config.PROJECT_ROOT / ".env")
     config.ensure_dirs()
     state = load_state()
     reports = state["reports"]
@@ -89,12 +91,23 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
     logger.info("熱榜 %d 篇（去重後），新出現 %d 篇", len(items), len(new_items))
     events.append(f"熱榜 {len(items)} 篇，新出現 {len(new_items)} 篇")
 
-    # --- 2. token 檢查 ---
+    # --- 2. token 檢查（失效時若 .env 有帳密就自動重登）---
     client = NashClient(config.read_token())
     if not client.token or not client.token_valid():
-        token_expired = True
-        events.append("⚠️ nash-ai token 失效：跳過搜尋/下載（標題已入庫，token 更新後下次自動補）")
-        logger.warning("token 失效，跳過 nash-ai 階段")
+        import os
+        phone, pw = os.environ.get("NASH_PHONE"), os.environ.get("NASH_PASSWORD")
+        if phone and pw:
+            try:
+                from .nash import login_with_password
+                client = NashClient(login_with_password(phone, pw))
+                config.TOKEN_PATH.write_text(client.token)
+                logger.info("token 已用帳密自動續期")
+            except Exception as exc:
+                logger.warning("帳密自動登入失敗：%s", exc)
+        if not client.token or not client.token_valid():
+            token_expired = True
+            events.append("⚠️ nash-ai token 失效：跳過搜尋/下載（標題已入庫，token 更新後下次自動補）")
+            logger.warning("token 失效，跳過 nash-ai 階段")
 
     # --- 3. 匹配（只處理還沒匹配過的 + 有英文標題的）---
     if not token_expired:

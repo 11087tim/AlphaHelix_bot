@@ -53,10 +53,10 @@ python -m hot_reports.main run             # 完整每日流程
 python -m hot_reports.main run --no-email  # 測試：不寄信
 python -m hot_reports.main run --no-llm    # 測試：只抓+下載
 python -m hot_reports.main status          # state 統計 + token 狀態
-bash hot_reports/push_token.sh <token>     # (Mac) 更新 VM 上的 nash-ai token
+.venv/bin/python -m hot_reports.refresh_token   # (Mac) 一鍵續 token：開視窗→手機掃碼→自動推上 VM
 ```
 - 產出：`hot_reports_data/`（gitignored）— `pdf/` 原始 PDF、`text/` 抽出文字、`digest/日期.md` 彙整、`state.json` 進度。
-- **nash-ai token 為微信掃碼登入、24h 過期**：失效時 email 會提醒；瀏覽器登入後 Console 執行 `localStorage.getItem('token')`，再跑 `push_token.sh` 推上 VM。標題照常入庫，token 補上後次日自動補下載。
+- **nash-ai token 為微信掃碼登入、24h 過期**：失效時 email 會提醒；跑 `refresh_token`（上方指令）掃一下即可。標題抓取不需 token、照常入庫，token 補上後次日自動補下載——晚幾天掃不會漏資料。備援：手動取 localStorage token 後 `bash hot_reports/push_token.sh <token>`。若日後帳號能綁手機+密碼，在 .env 設 `NASH_PHONE`/`NASH_PASSWORD` 即全自動續期、免掃碼。
 - **頁數餘額**：nash-ai 下載按頁數扣額度，餘額不足會停下並在信中提示，儲值後次日自動補。
 - VM 部署：`.venv/bin/pip install playwright && .venv/bin/python -m playwright install --with-deps chromium`，再 `bash hot_reports/deploy_timer.sh`（裝 systemd timer）。
 
