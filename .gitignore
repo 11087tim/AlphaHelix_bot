@@ -32,3 +32,7 @@ reports_config.yaml
 
 # 台股槓桿歷史庫：只在 VM 上長，不進版控（量會累積、每日變動）
 data/leverage/
+
+# 熱門研報 pipeline(PDF/狀態/token 不進版控)
+hot_reports_data/
+hot_reports.log

@@ -6,3 +6,4 @@ python-dotenv>=1.0.0
 pypdf>=4.0.0
 pycryptodome>=3.19
 youtube-transcript-api
+playwright>=1.40
