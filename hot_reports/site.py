@@ -29,7 +29,7 @@ _PAGE = """<!DOCTYPE html>
   }
   * { box-sizing:border-box; }
   body { margin:0; padding:24px 16px 60px; background:var(--bg); color:var(--fg);
-         font:18px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif; }
+         font:17px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif; }
   .wrap { max-width:860px; margin:0 auto; }
   h1 { font-size:1.9rem; margin:0 0 4px; }
   .sub { color:var(--muted); font-size:.88rem; margin:0 0 20px; }
@@ -40,8 +40,9 @@ _PAGE = """<!DOCTYPE html>
   details.day > summary { cursor:pointer; font-weight:700; font-size:1.45rem; padding:12px 0; list-style:none; }
   details.day > summary::before { content:"▸ "; color:var(--accent); }
   details.day[open] > summary::before { content:"▾ "; }
-  h2 { font-size:1.6rem; margin:26px 0 10px; color:var(--accent); }
-  h3 { font-size:1.35rem; margin:22px 0 8px; }
+  h2 { font-size:1.6rem; margin:28px 0 10px; color:var(--accent); border-top:2px solid var(--line); padding-top:22px; }
+  details.day > h2:first-of-type { border-top:none; padding-top:4px; }
+  h3 { font-size:1.35rem; margin:24px 0 8px; border-top:1px solid var(--line); padding-top:16px; }
   h4 { font-size:1.15rem; margin:16px 0 6px; }
   .report { border-top:1px solid var(--line); margin-top:18px; padding-top:6px; }
   .report h2 { font-size:1.35rem; color:var(--fg); }
