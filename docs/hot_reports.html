@@ -25,15 +25,47 @@
   details.day[open] > summary::before { content:"▾ "; }
   h2 { font-size:1.15rem; margin:20px 0 8px; color:var(--accent); }
   h3 { font-size:1rem; margin:16px 0 6px; }
+  h4 { font-size:.95rem; margin:14px 0 4px; }
   .report { border-top:1px solid var(--line); margin-top:18px; padding-top:6px; }
   .report h2 { font-size:1rem; color:var(--fg); }
   ul { margin:6px 0 12px; padding-left:22px; }
   li { margin:2px 0; }
   hr { border:none; border-top:1px solid var(--line); margin:18px 0; }
   .foot { color:var(--muted); font-size:.8rem; margin-top:30px; }
+  /* 大綱側欄（設計對齊主站 X digest）*/
+  .toc { position:fixed; top:24px; left:24px; width:230px; max-height:calc(100vh - 48px);
+    display:flex; flex-direction:column; overflow:hidden; background:var(--card);
+    border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:.85rem;
+    box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  .toc-title { font-weight:700; color:var(--accent); margin-bottom:8px; font-size:.9rem; flex:0 0 auto; }
+  .toc ul { list-style:none; margin:0; padding:0; overflow-y:auto; flex:1 1 auto; }
+  .toc li { margin:1px 0; }
+  .toc a { display:block; color:var(--fg); text-decoration:none; padding:3px 6px; border-radius:6px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .toc a:hover { background:var(--bg); color:var(--accent); }
+  .toc a.lv1 { font-weight:700; color:var(--accent); margin-top:6px; }
+  .toc a.lv2 { padding-left:16px; color:var(--muted); font-size:.82rem; }
+  .toc .empty { color:var(--muted); }
+  .toc-collapse { float:right; cursor:pointer; border:none; background:transparent;
+    color:var(--muted); font-size:.95rem; line-height:1; padding:0 2px; }
+  .toc-collapse:hover { color:var(--accent); }
+  #tocToggle { display:none; position:fixed; top:18px; left:18px; z-index:20; background:var(--accent);
+    color:#fff; border:none; border-radius:8px; padding:8px 12px; font-size:.9rem; cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.15); }
+  body.toc-closed .toc { display:none; }
+  body.toc-closed #tocToggle { display:block; }
+  @media (max-width:1140px) {
+    #tocToggle { top:12px; right:12px; left:auto; padding:6px 10px; font-size:.85rem; }
+    .toc { top:54px; left:12px; right:12px; width:auto; max-height:68vh; box-shadow:0 8px 28px rgba(0,0,0,.25); }
+  }
 </style>
 </head>
 <body>
+<button id="tocToggle" type="button">☰ 大綱</button>
+<nav class="toc" id="toc" aria-label="大綱">
+  <div class="toc-title">大綱 <button class="toc-collapse" id="tocCollapse" type="button" title="收起大綱" aria-label="收起大綱">✕</button></div>
+  <ul id="tocList"></ul>
+</nav>
 <div class="wrap">
   <h1>📑 熱門外資研報</h1>
   <p class="sub">每日自動彙整 valuelist 熱榜研報（LLM 摘要，非原文）。最新 2 天。</p>
@@ -43,56 +75,56 @@
 <h3>今日主線</h3>
 <p>今日這批報告高度聚焦於「AI 資本支出超級週期」的多層次擴散，主線已從 GPU 運算延伸至<strong>電力基礎設施、記憶體、光模組、功率半導體、儲能與人形機器人</strong>等下游供應鏈。多家機構（Morgan Stanley、Goldman Sachs、Citi、UBS、Nomura）一致認為此輪為結構性而非週期性驅動，且能源相關資本支出規模約為 AI 晶片支出的 2.5 倍。同時，資金流與情緒面出現分歧警訊：JPMorgan 指出去槓桿化正在進行、市場廣度極窄，Goldman 與 Bernstein 開始下調部分漲多股評級。中國經濟則呈「兩速」格局——科技/出口強、消費/房地產弱，政策傾向微調而非大水漫灌。</p>
 <h3>主題彙整</h3>
-<h3>AI 電力基礎設施（今日最密集主題）</h3>
+<h4>AI 電力基礎設施（今日最密集主題）</h4>
 <ul>
 <li><strong>架構共識</strong>：Citi[3] 與 JPMorgan[9] 一致看好 800V HVDC 架構取代傳統 AC，帶動 SST、BESS、BBU、SiC/GaN 需求爆發。Citi 預估 800VDC 滲透率 2030 年達 79%；JPM 預估 AI 功率半導體市場 3 年 CAGR 82%（27 億→160 億美元）。</li>
 <li><strong>供給緊張</strong>：BofA[12] 強調變壓器與燃氣輪機供給緊張延續至 2026-28 年，看好金盤、濰柴、科華等中企訂單能見度。</li>
 <li><strong>地方阻力（獨特觀點）</strong>：Morgan Stanley[6] 提出反向風險——美國資料中心面臨地方社區反彈（15 州提暫停法案、民調轉負），可能重塑建設節奏，但基準情境仍為「有條件推進」。此為今日唯一系統性討論下行風險的報告。</li>
 <li><strong>個股</strong>：Delta（多家 Buy）、Bloom Energy/Innio/Solaris（MS OW）、金盤 PO RMB110、濰柴 PO HK$48（BofA）。</li>
 </ul>
-<h3>記憶體與 AI 半導體</h3>
+<h4>記憶體與 AI 半導體</h4>
 <ul>
 <li><strong>週期定位分歧</strong>：Morgan Stanley[19] 認為記憶體「變化率」接近高峰、短期恐回檔，但中長期看多（2027 獲利成長 35-40%），偏好 DRAM/舊型記憶體，最不看好模組廠。Goldman[27] 與 MS[29] 則強調 AI 需求支撐 2027 價格續漲。</li>
 <li><strong>DRAM 漲價</strong>：MS[19] 預測 2Q26 伺服器 DRAM ASP 季增 53-58%，3Q26 收斂至 13-18%，與 Goldman[27] 專家「下半年漲幅收窄」判斷一致。</li>
 <li><strong>中國半導體設備</strong>：Goldman[27] 看好本地 SPE（Naura、AMEC、ACM），因記憶體廠擴產與本地化。</li>
 <li><strong>個股</strong>：TSMC（MS OW，TP NT$2,988，+24%）、SK海力士/三星（MS OW）。</li>
 </ul>
-<h3>光模組（樂觀共識）</h3>
+<h4>光模組（樂觀共識）</h4>
 <ul>
 <li>Goldman[5] 大幅上調 Innolight 目標價至 RMB2,581（+132%），2026-28 EPS 上修 65-119%，受矽光模組佔比提升驅動。</li>
 <li>Citi[11] 全面上調光通訊標的：東山精密（RMB350）、Eoptolink（RMB701）、天孚（RMB419），但<strong>降評 T&amp;S Communications 至 Sell</strong>（Corning 脫鉤風險），並認為 Accelink 估值偏高（Sell）。顯示 Citi 內部已對估值分化。</li>
 </ul>
-<h3>功率半導體</h3>
+<h4>功率半導體</h4>
 <ul>
 <li>BofA[14] 看好中國功率半導體上行週期，MOSFET 漲價驅動毛利率擴張，上調 NCE Power TP 至 RMB119（原 47）；但將 Silan 從 Underperform 上調至僅 Neutral，指其估值已反映利好。與 JPM[9]（IFX Overweight、STM Neutral）觀點方向一致。</li>
 </ul>
-<h3>儲能與鋰電池（需求強但供給過剩警訊）</h3>
+<h4>儲能與鋰電池（需求強但供給過剩警訊）</h4>
 <ul>
 <li><strong>需求端</strong>：Citi[8] 預估 2026 全球 ESS 電芯出貨 +70%；Bernstein[25] 指資料中心電池強度快速提升（儲能時長增至 5 小時）。</li>
 <li><strong>供給過剩隱憂</strong>：Jefferies[7] 鋰價值鏈調查顯示 Q3 動能轉弱、展望惡化、Q3 鋰價恐跌高個位數。Bernstein[25] 明確指美國電池供給過剩持續整個十年（2030 產能 721GWh vs 需求 486GWh），對韓系電池廠僅 Market-Perform，建議等更佳進場點。</li>
 <li><strong>CATL</strong>：Goldman[31] 維持 Buy（TP RMB565，+47.5%），2Q 淨利 +36% 符合預期，宣布 A 股史上最大回購（RMB200-400 億）。</li>
 </ul>
-<h3>人形機器人（估值重估共識）</h3>
+<h4>人形機器人（估值重估共識）</h4>
 <ul>
 <li>JPMorgan[20] 與 Morgan Stanley[22][26] 一致上調中國出貨預測（2030 約 175 萬台 / 44.6 萬台），並上調 Leaderdrive、Estun 目標價。共同看好零部件供應商率先受惠。</li>
 <li>MS[26] 提醒 2026 多為小規模驗證訂單、催化劇多將帶來波動；Unitree IPO 可能成為估值標竿。</li>
 </ul>
-<h3>中國宏觀（政策微調共識）</h3>
+<h4>中國宏觀（政策微調共識）</h4>
 <ul>
 <li>Morgan Stanley[2][28]、Goldman[21] 一致認為中國「兩速」格局：科技/出口強、消費/房地產弱，2026 GDP 約 4.7%。政策傾向漸進微調，MS[28] 明言「尚未到政策轉向臨界點」，9 月為觀察窗口。Goldman[21] 預期 PPI 由 -2.6% 回升至 +2.0%（反內卷+能源）。</li>
 </ul>
-<h3>資金流與情緒（重要反向訊號）</h3>
+<h4>資金流與情緒（重要反向訊號）</h4>
 <ul>
 <li><strong>JPMorgan[4]</strong>：去槓桿化持續，槓桿記憶體 ETF 萎縮 34%、保證金帳戶淨負債處歷史極端高位，短期逆風。</li>
 <li><strong>Goldman[10]</strong>：亞股上半年極度集中（8 支股票貢獻 MXAPJ 96% 漲幅），韓國散戶槓桿 ETF 由 50 億暴增至 400 億美元，建議續抱贏家但用衍生品避險。</li>
 <li><strong>UBS[13]</strong>：中國 AI 硬體升週期接近高峰但未破裂，維持超配，但預期 2027 波動加大。</li>
 <li><strong>Goldman[17][23]</strong>：開始降評漲多股——漢氏激光降至 Neutral、江海股份降至 Sell；戰術上小幅布局 H 股互聯網（軟科技輪動）。三份報告（GS/JPM/UBS）均在看多主線中加入謹慎訊號。</li>
 </ul>
-<h3>AI 模型/軟體衝擊</h3>
+<h4>AI 模型/軟體衝擊</h4>
 <ul>
 <li><strong>UBS[32]</strong> 與 <strong>Goldman[15]</strong>：中國開源模型（GLM、DeepSeek、Qwen）達關鍵拐點，定價僅美系 SOTA 的 10-25%。UBS 判斷對半導體（NVDA）中性偏正、對軟體板塊逆風（&quot;AI crowding out&quot;），對前沿實驗室成長構成風險。Goldman 看好阿里、騰訊等平台受惠。</li>
 </ul>
-<h3>貴金屬（相對邊緣）</h3>
+<h4>貴金屬（相對邊緣）</h4>
 <ul>
 <li>Morgan Stanley[1]：黃金受央行購金支撐（中國連 20 月），白銀落後但上行空間略大；關鍵前提為 Fed 避免升息。</li>
 </ul>
@@ -766,17 +798,17 @@
 <h3>今日主線</h3>
 <p>今日這批報告的共同焦點集中在 <strong>AI 產業的分化與價值再評估</strong>。從美股軟體、中國 AI 模型競爭、光模組供應鏈到 A 股科技主線，各機構一致認為 AI 資本支出與需求仍是市場主軸，但評估重心已從「概念普漲」轉向「哪一層受益、能否持續、定價力如何」。Morgan Stanley 明確主張基建與資安勝於應用軟體，Goldman 則指出中國 AI 模型正從成本效益走向定價力提升。同時，Goldman 對中國宏觀經濟給出偏空的 K 型分化判斷，與 UBS 對 A 股科技的樂觀形成宏觀 vs 產業層面的對照。</p>
 <h3>主題彙整</h3>
-<h3>AI 產業內部分化：受益層次的重新排序</h3>
+<h4>AI 產業內部分化：受益層次的重新排序</h4>
 <p><strong>Morgan Stanley（軟體）</strong>：認為市場過度看空軟體（S&amp;P 北美軟體指數兩年落後 NASDAQ100 約 40%），機會被低估，維持產業「Attractive」評級。核心觀點是<strong>基建與資安為早週期受益者、應用軟體為晚週期</strong>（過去一年指數化表現 160.5 vs 80.6 vs 60.5）。</p>
 <p><strong>UBS（A股）</strong>：同樣看好科技主線延續至 2026 下半年，但更強調<strong>AI 溢出效應</strong>（IDC、電力設備、人形機器人、商業航天）作為第二層機會，並提醒短期擁擠交易風險（科技板塊佔全 A 成交額 50.2%，歷史新高）。</p>
 <p>&gt; 兩者一致點：AI 主線未結束，但受益不均勻。差異點：MS 聚焦美股軟體層次；UBS 更看重硬體與外溢板塊，且明確警示短期波動。</p>
-<h3>中國 AI 模型競爭：從成本走向定價力</h3>
+<h4>中國 AI 模型競爭：從成本走向定價力</h4>
 <p><strong>Goldman（Kimi K3）</strong>：中國開源模型演化進入新階段——DeepSeek 主打成本效益、GLM 提升智能、Kimi K3（2.8 兆參數）在編程/智能評分創全球新高並展現<strong>定價力提升</strong>（$2.3/百萬 tokens，為中國模型新高）。但同時指出競爭格局高度動態，市場對長期贏家不確定性擔憂已反映在股價（7/17 Zhipu -28%、MiniMax -16%）。低端代理型模型定價預期持續受壓。</p>
 <p>&gt; 值得注意的內部矛盾：模型能力與定價力上升，但個股股價卻大跌，反映「技術領先 ≠ 投資勝出」的市場疑慮。</p>
-<h3>中國宏觀：增長減速下的寬鬆預期</h3>
+<h4>中國宏觀：增長減速下的寬鬆預期</h4>
 <p><strong>Goldman（Time to Ease）</strong>：Q2 實質 GDP 增速由 Q1 的 5.3% 大幅降至 3.6%，內需疲弱（上半年社零僅 +1.3% yoy）與高科技製造業強勁（工業機器人 +28%、鋰電池 +39%）形成 K 型分化。預期 7 月政治局會議釋出寬鬆信號，但實際力度可能受中央鬆懈心態與地方換屆/反腐約束。全年 GDP 預測 4.6%。</p>
 <p>&gt; 與 UBS 的宏觀對照：Goldman 強調內需疲弱，UBS 則認為一線城市房價企穩、消費風格切換「仍需時間」。兩者對房地產築底的判斷方向相近，但 UBS 相對正面。</p>
-<h3>個股觀點</h3>
+<h4>個股觀點</h4>
 <ul>
 <li><strong>中際旭創（MS）</strong>：1Q26 營收年增 192%、淨利年增 262%，大幅超預期。上調 AI 光模組 TAM（2028 年達 1020 億美元，三年逾 4 倍），2026-28 營收/獲利 CAGR 達 53%/66%。惟評級與目標價因法規未提供。</li>
 <li><strong>軟體高信念增持（MS）</strong>：MSFT（目標 $600，+52%）、PANW（$387，資安 Top Pick）、CRWD（$227）、NET、DDOG、SNOW、SHOP、NOW。</li>
@@ -868,5 +900,62 @@
 </details>
   <p class="foot">內容由 LLM 自動生成，僅供研究參考，非投資建議。</p>
 </div>
+<script>
+(function () {
+  var days = [].slice.call(document.querySelectorAll('details.day'));
+  var tocList = document.getElementById('tocList');
+  var toggle = document.getElementById('tocToggle');
+  var collapseBtn = document.getElementById('tocCollapse');
+  var body = document.body;
+  var uid = 0;
+
+  // 側欄收起/展開，並記住偏好（與主站行為一致）
+  function setClosed(closed) {
+    body.classList.toggle('toc-closed', closed);
+    try { localStorage.setItem('hrTocClosed', closed ? '1' : '0'); } catch (e) {}
+  }
+  if (collapseBtn) collapseBtn.addEventListener('click', function () { setClosed(true); });
+  if (toggle) toggle.addEventListener('click', function () { setClosed(false); });
+  var stored = null;
+  try { stored = localStorage.getItem('hrTocClosed'); } catch (e) {}
+  if (stored === null) setClosed(window.matchMedia('(max-width: 1140px)').matches);
+  else setClosed(stored === '1');
+
+  // 只列「展開中」日期：日期為 lv1、當日主題/報告標題為 lv2
+  function buildTOC() {
+    tocList.innerHTML = '';
+    var count = 0;
+    days.forEach(function (d) {
+      if (!d.open) return;
+      var dayName = d.querySelector('summary').textContent.trim();
+      addLink(d.querySelector('summary'), dayName, 'lv1', d);
+      [].forEach.call(d.querySelectorAll('h2, h3'), function (h) {
+        addLink(h, h.textContent.trim(), 'lv2', d);
+      });
+    });
+    function addLink(target, name, cls, day) {
+      if (!target.id) target.id = 'sec-' + (++uid);
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + target.id;
+      a.textContent = name;
+      a.title = name;
+      a.className = cls;
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        day.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (window.matchMedia('(max-width: 1140px)').matches) setClosed(true);
+      });
+      li.appendChild(a);
+      tocList.appendChild(li);
+      count++;
+    }
+    if (count === 0) tocList.innerHTML = '<li class="empty">（展開任一日期以顯示大綱）</li>';
+  }
+  days.forEach(function (d) { d.addEventListener('toggle', buildTOC); });
+  buildTOC();
+})();
+</script>
 </body>
 </html>
