@@ -88,6 +88,12 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
     for it in new_items:
         it.update({"first_seen": today, "status": "new"})
         reports[it["url"]] = it
+    # 已存在的文章若榜單位置變了（如後來進入今日榜），合併 sections
+    order = ["今日热门", "本周热门", "本月热门"]
+    for it in items:
+        r = reports[it["url"]]
+        secs = set((r.get("sections") or "").split("|")) | set(it["sections"].split("|"))
+        r["sections"] = "|".join(s for s in order if s in secs)
     logger.info("熱榜 %d 篇（去重後），新出現 %d 篇", len(items), len(new_items))
     events.append(f"熱榜 {len(items)} 篇，新出現 {len(new_items)} 篇")
 
@@ -132,10 +138,16 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
                 r["status"] = "no_english"
         save_state(state)
 
-    # --- 4. 下載（matched 但還沒有 pdf 的，含之前餘額不足的；小檔優先省額度）---
+    # --- 4. 下載策略：只自動下「今日热门」且 ≤ MAX_AUTO_PAGES 頁的；
+    #        其餘保持 matched（記錄+通知，可用 fetch 指令手動補）---
+    def _auto_ok(r: dict) -> bool:
+        in_daily = bool(config.AUTO_SECTIONS & set((r.get("sections") or "").split("|")))
+        return in_daily and int(r.get("nash_pages") or 0) <= config.MAX_AUTO_PAGES
+
     downloaded: list[dict] = []
     if not token_expired:
-        pending_dl = [r for r in reports.values() if r.get("status") == "matched"]
+        pending_dl = [r for r in reports.values()
+                      if r.get("status") == "matched" and _auto_ok(r)]
         pending_dl.sort(key=lambda r: int(r.get("nash_pages") or 999))
         for r in pending_dl:
             fname = safe_name(f"{r['nash_date']}_{r['nash_securities'] or ''}_{r['nash_title']}") + ".pdf"
@@ -160,7 +172,8 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
             logger.info("下載完成 %dKB %s", len(data) // 1024, fname[:60])
             save_state(state)
             time.sleep(config.DOWNLOAD_DELAY_SEC)
-        remaining = sum(1 for x in reports.values() if x.get("status") == "matched")
+        remaining = sum(1 for x in reports.values()
+                        if x.get("status") == "matched" and _auto_ok(x))
         events.append(f"下載 {len(downloaded)} 篇" +
                       (f"，餘額不足尚欠 {remaining} 篇（儲值後自動補）" if quota_exhausted else ""))
 
@@ -209,6 +222,18 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
                             f"{r.get('nash_title') or r.get('title_en')}\n\n{r['summary']}")
         (config.DIGEST_DIR / f"{today}.md").write_text("\n".join(md_parts), encoding="utf-8")
 
+    # --- 6.5 網站研報分頁（docs/hot_reports.html）+ 自動 push ---
+    if summaries_new:
+        from src.publisher import publish_docs
+        from . import site
+        if site.render_page(config.PROJECT_ROOT / "docs" / "hot_reports.html"):
+            if publish_docs():
+                events.append("網站研報頁已更新")
+
+    # --- 6.6 個人通知信（只寄 dev）：未自動抓取的清單 ---
+    if not no_email:
+        notify_personal(reports)
+
     if not no_email:
         parts = [f"<p>{' ｜ '.join(html.escape(e) for e in events)}</p>"]
         if token_expired:
@@ -233,6 +258,80 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
     return 0
 
 
+def notify_personal(reports: dict) -> None:
+    """把「未自動抓取」的報告清單寄給 dev 收件人（只有你）。
+    每篇只通知一次（notified 旗標）。分兩類：
+    - 深度報/榜外：有匹配到但不符自動下載策略（非今日榜、或 >MAX_AUTO_PAGES 頁）
+    - 今日榜沒抓到：無英文標題、或 nash-ai 搜不到"""
+    def _auto_ok(r: dict) -> bool:
+        in_daily = bool(config.AUTO_SECTIONS & set((r.get("sections") or "").split("|")))
+        return in_daily and int(r.get("nash_pages") or 0) <= config.MAX_AUTO_PAGES
+
+    skipped = [r for r in reports.values()
+               if r.get("status") == "matched" and not _auto_ok(r) and not r.get("notified")]
+    missed = [r for r in reports.values()
+              if r.get("status") in ("no_english", "no_match") and not r.get("notified")
+              and "今日热门" in (r.get("sections") or "")]
+    if not skipped and not missed:
+        return
+
+    parts: list[str] = []
+    if skipped:
+        parts.append("<h2>已匹配但未自動下載（超頁數或非今日榜）</h2><ul>")
+        for r in sorted(skipped, key=lambda x: x.get("nash_date") or "", reverse=True):
+            reason = ("超過 %d 頁" % config.MAX_AUTO_PAGES
+                      if int(r.get("nash_pages") or 0) > config.MAX_AUTO_PAGES else "非今日榜")
+            parts.append(
+                f"<li><b>{html.escape(r.get('nash_securities') or '')}</b>｜"
+                f"{html.escape((r.get('nash_title') or '')[:110])}"
+                f"（{r.get('nash_date')}，{r.get('nash_pages')} 頁，{reason}）"
+                f"<br><code>fetch {r['nash_id']}</code></li>")
+        parts.append("</ul><p>要補下載：<code>ssh alphahelix_vm \"cd ~/Alphehelix_X_bot && "
+                     ".venv/bin/python -m hot_reports.main fetch &lt;id&gt;\"</code>"
+                     "，摘要與網站會在下次排程自動補上。</p>")
+    if missed:
+        parts.append("<h2>今日榜未抓到（無英文標題或 nash-ai 沒收錄）</h2><ul>")
+        for r in missed:
+            why = "無英文標題" if r.get("status") == "no_english" else "nash-ai 搜不到"
+            parts.append(f"<li>{html.escape(r['title_raw'][:110])}（{why}）</li>")
+        parts.append("</ul>")
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    send_digest_email(f"[熱門研報] {today} 未自動抓取清單（{len(skipped) + len(missed)} 篇）",
+                      "\n".join(parts), dev_only=True)
+    for r in skipped + missed:
+        r["notified"] = True
+
+
+def fetch(ids: list[int]) -> int:
+    """手動補下載指定 nash_id（無視自動下載策略）。摘要留給下次排程。"""
+    config.ensure_dirs()
+    state = load_state()
+    by_id = {r.get("nash_id"): r for r in state["reports"].values() if r.get("nash_id")}
+    client = NashClient(config.read_token())
+    for rid in ids:
+        r = by_id.get(rid)
+        if not r:
+            print(f"{rid}: 不在 state 裡")
+            continue
+        if r.get("status") in ("downloaded", "summarized"):
+            print(f"{rid}: 已下載過（{r.get('pdf')}）")
+            continue
+        fname = safe_name(f"{r['nash_date']}_{r['nash_securities'] or ''}_{r['nash_title']}") + ".pdf"
+        try:
+            data = client.download_pdf(rid)
+        except Exception as exc:
+            print(f"{rid}: 下載失敗 {exc}")
+            continue
+        (config.PDF_DIR / fname).write_bytes(data)
+        r["pdf"] = fname
+        r["status"] = "downloaded"
+        print(f"{rid}: OK {len(data)//1024}KB {fname[:60]}（摘要於下次排程補上）")
+        save_state(state)
+        time.sleep(config.DOWNLOAD_DELAY_SEC)
+    return 0
+
+
 def status() -> int:
     state = load_state()
     from collections import Counter
@@ -251,9 +350,13 @@ def main() -> int:
     p_run.add_argument("--no-llm", action="store_true")
     p_run.add_argument("--dev-email", action="store_true", help="只寄 dev 收件人")
     sub.add_parser("status")
+    p_fetch = sub.add_parser("fetch", help="手動補下載指定 nash_id（無視自動策略）")
+    p_fetch.add_argument("ids", nargs="+", type=int)
     args = ap.parse_args()
     if args.cmd == "run":
         return run(args.no_email, args.no_llm, args.dev_email)
+    if args.cmd == "fetch":
+        return fetch(args.ids)
     return status()
 
 

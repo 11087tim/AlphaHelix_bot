@@ -24,6 +24,8 @@ SYNTH_MODEL = os.environ.get("HOT_REPORTS_SYNTH_MODEL", "anthropic/claude-opus-4
 MAX_TEXT_CHARS = 150_000          # 單篇餵給 LLM 的文字上限
 
 MATCH_THRESHOLD = 0.85            # 標題匹配高信心門檻
+AUTO_SECTIONS = {"今日热门"}       # 只有這些榜單的報告會自動下載(其餘記錄+通知,不扣額度)
+MAX_AUTO_PAGES = 70               # 超過此頁數不自動下載(通知後手動決定)
 SEARCH_DELAY_SEC = 0.8
 DOWNLOAD_DELAY_SEC = 2.0
 

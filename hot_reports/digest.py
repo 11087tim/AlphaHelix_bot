@@ -30,6 +30,22 @@ SYNTH_SYSTEM = (
 )
 
 
+_DISCLAIMER_MARKERS = [
+    "disclosure appendix", "important disclosures", "analyst certification",
+    "disclosures section", "required disclosures", "appendix 1", "免責聲明", "免责声明",
+]
+
+
+def _trim_disclaimers(text: str) -> str:
+    """研報後段的免責聲明/合規附錄常佔 2-3 成篇幅，砍掉省 LLM token。
+    只在文件後 55% 內找標記,避免誤砍正文提及。"""
+    lower = text.lower()
+    floor = int(len(text) * 0.45)
+    cut = min((i for m in _DISCLAIMER_MARKERS
+               if (i := lower.find(m, floor)) != -1), default=-1)
+    return text[:cut] if cut > 0 else text
+
+
 def extract_text(pdf_path: Path) -> str:
     from pypdf import PdfReader
     try:
@@ -38,7 +54,11 @@ def extract_text(pdf_path: Path) -> str:
     except Exception as exc:
         logger.warning("PDF 抽文字失敗 %s：%s", pdf_path.name, exc)
         return ""
-    return re.sub(r'\n{3,}', '\n\n', text).strip()
+    text = re.sub(r'\n{3,}', '\n\n', text).strip()
+    trimmed = _trim_disclaimers(text)
+    if len(trimmed) < len(text):
+        logger.info("%s 砍掉免責聲明 %d → %d 字", pdf_path.name, len(text), len(trimmed))
+    return trimmed
 
 
 def summarize_report(meta: dict, text: str, api_key: str) -> str:
