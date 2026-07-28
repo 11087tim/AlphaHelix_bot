@@ -87,7 +87,7 @@ _PAGE = """<!DOCTYPE html>
 <div class="wrap">
   <h1>📑 熱門外資研報</h1>
   <p class="sub">每日自動彙整 valuelist 熱榜研報（LLM 摘要，非原文）。最新 __N__ 天。</p>
-  <p class="navlinks"><a href="index.html">🏠 每日 X 摘要</a><a href="leverage.html">📊 台股槓桿儀表板</a></p>
+  <p class="navlinks"><a href="index.html">🏠 每日 X 摘要</a><a href="reports.html">🗂 研報庫</a><a href="leverage.html">📊 台股槓桿儀表板</a></p>
 __DAYS__
   <p class="foot">內容由 LLM 自動生成，僅供研究參考，非投資建議。</p>
 </div>

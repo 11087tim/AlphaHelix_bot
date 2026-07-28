@@ -15,6 +15,10 @@ DIGEST_DIR = DATA_DIR / "digest"
 STATE_PATH = DATA_DIR / "state.json"
 TOKEN_PATH = DATA_DIR / "token.txt"
 
+DOCS_DIR = PROJECT_ROOT / "docs"           # GitHub Pages 根目錄
+REPORTS_WEB_DIR = DOCS_DIR / "reports"     # 公開的 PDF + 每篇分頁
+REPORTS_KEEP_DAYS = 30                     # 網站上保留最近幾天的 PDF/分頁(控制 repo 大小)
+
 VALUELIST_URL = "https://www.valuelist.cn/hot-report"
 NASH_BASE = "https://www.nash-ai.cn"
 

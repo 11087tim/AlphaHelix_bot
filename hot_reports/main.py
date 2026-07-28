@@ -222,13 +222,14 @@ def run(no_email: bool, no_llm: bool, dev_email: bool) -> int:
                             f"{r.get('nash_title') or r.get('title_en')}\n\n{r['summary']}")
         (config.DIGEST_DIR / f"{today}.md").write_text("\n".join(md_parts), encoding="utf-8")
 
-    # --- 6.5 網站研報分頁（docs/hot_reports.html）+ 自動 push ---
+    # --- 6.5 網站：每日彙整頁 + 每篇獨立分頁(內嵌 PDF)+ 研報庫索引，自動 push ---
     if summaries_new:
         from src.publisher import publish_docs
-        from . import site
-        if site.render_page(config.PROJECT_ROOT / "docs" / "hot_reports.html"):
-            if publish_docs():
-                events.append("網站研報頁已更新")
+        from . import reportpages, site
+        site.render_page(config.PROJECT_ROOT / "docs" / "hot_reports.html")
+        reportpages.render_report_pages(reports)
+        if publish_docs():
+            events.append("網站研報頁已更新")
 
     # --- 6.6 個人通知信（只寄 dev）：未自動抓取的清單 ---
     if not no_email:
