@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<style>
+  :root { --bg:#f7f9fb; --card:#fff; --fg:#1c2733; --muted:#5b6b7b; --line:#e3e9f0; --accent:#2f6fab; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1620; --card:#16202b; --fg:#dbe6f1; --muted:#8fa2b5; --line:#274156; --accent:#7cc0f0; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:24px 16px 60px; background:var(--bg); color:var(--fg);
+         font:17px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; }
+  a { color:var(--accent); }
+  .navlinks a { display:inline-block; padding:6px 14px; border-radius:999px; font-size:.9rem;
+    color:var(--accent); background:var(--card); border:1px solid var(--line); text-decoration:none; margin:0 8px 8px 0; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:.9rem; margin:0 0 20px; }
+  .meta { color:var(--muted); font-size:.92rem; margin:2px 0 16px; }
+  .btnrow { margin:16px 0; }
+  .btn { display:inline-block; padding:9px 18px; border-radius:10px; text-decoration:none; font-weight:600;
+    background:var(--accent); color:#fff; margin-right:10px; }
+  .btn.ghost { background:transparent; color:var(--accent); border:1px solid var(--line); }
+  embed, iframe.pdf { width:100%; height:82vh; border:1px solid var(--line); border-radius:10px; background:#fff; }
+  h2 { font-size:1.3rem; color:var(--accent); margin:26px 0 8px; }
+  ul { padding-left:22px; } li { margin:2px 0; }
+  hr { border:none; border-top:1px solid var(--line); margin:18px 0; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+  .rcard { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; display:flex; flex-direction:column; }
+  .rcard .inst { font-weight:700; color:var(--accent); font-size:.9rem; }
+  .rcard .ttl { margin:6px 0 10px; font-size:1.02rem; line-height:1.4; flex:1 1 auto; }
+  .rcard .rmeta { color:var(--muted); font-size:.82rem; margin-bottom:12px; }
+  .rcard .acts a { font-size:.9rem; margin-right:12px; text-decoration:none; }
+  .foot { color:var(--muted); font-size:.8rem; margin-top:30px; }
+</style><title>Jefferies｜Semiconductor Back-end Process and Package Trends</title></head>
+<body><div class="wrap">
+  <p class="navlinks"><a href="../reports.html">← 全部報告</a><a href="../hot_reports.html">📑 每日彙整</a></p>
+  <h1>📄 Semiconductor Back-end Process and Package Trends</h1>
+  <p class="meta"><b>Jefferies</b>　2026-07-21｜9 頁</p>
+  <div class="btnrow">
+    <a class="btn" href="835708.pdf" download>⬇ 下載 PDF</a>
+    <a class="btn ghost" href="835708.pdf" target="_blank" rel="noopener">↗ 新分頁開啟</a>
+  </div>
+  <embed src="835708.pdf" type="application/pdf">
+  <h2>🤖 LLM 摘要</h2>
+  <p><strong>核心論點</strong></p>
+<p>本報告為Jefferies邀請橫濱國立大學井上史大教授分享半導體後段製程與封裝趨勢之研討會摘要，重點涵蓋AI系統從「運算裝置」轉向「通訊系統」、chiplet與混合鍵合（hybrid bonding）成為次世代封裝關鍵技術，以及日本企業在材料領先但在系統整合與封裝量產能力上落後的挑戰。</p>
+<ul>
+<li>AI半導體市場2025年約2,360億美元（雲端AI約1,600億美元、邊緣AI約800億美元），VLSI預估2028年將擴大至3,710億美元（雲端2,500億美元、邊緣1,200億美元）。</li>
+<li>NVIDIA以CUDA生態系＋TSMC先進製程/封裝產能形成雲端AI雙寡頭優勢，下一挑戰為互連與功耗，共封裝光學（CPO）為解方，兩者皆為CPO領導者。</li>
+<li>TSMC的COUPE技術（EIC/PIC以SoIC鍵合）於ECTC 2025公布成果：bond密度提升16倍以上、寄生電容降低85%，同功耗下速度提升170%以上，功耗可降40%，插入損耗接近0dB。</li>
+<li>CPO真正價值在於降低SerDes、I/O、re-timer等佔多數功耗元件之能耗，而非單純取代銅互連；Broadcom、Marvell、Ayar Labs受關注，日本企業技術強但系統整合與封裝量產能力薄弱。</li>
+<li>Chiplet商業化面臨標準化不足、EDA/PPA分析未成熟、缺陷責任與良率風險不明、TSMC/Intel/Samsung走垂直整合模式缺乏開放領導者、量產牆（prototype卡關）等五大課題。</li>
+<li>Qualcomm提出HBC Gen1（AI250推理晶片），不用TSMC CoWoS，改採2D有機基板多層堆疊，單卡達133TB/s頻寬，較AI200之LPDDR5高18倍，顯示邊緣AI更適用DDR 3D堆疊而非HBM。</li>
+<li>矽中介層（interposer）面臨基板RDL細線化與玻璃核心基板技術進展之替代風險，預估2030年起可能侵蝕carrier glass、TMV、電鍍等材料市場；Resonac已於矽谷成立US-JOINT（10家日美企業）及JOINT3（27家企業，面板級515x510mm有機interposer）聯盟因應。</li>
+<li>華為於ISCAS2026提出Tau Scaling Law（CMOS2.0概念），主張以縮短訊號傳輸時間取代電晶體數量微縮，藉政府主導之設計-製造-封裝-系統垂直整合尋求生態系整體最優化，被視為中國因EUV設備限制下的替代路線；混合鍵合（100nm級）被定義為重新定義BEOL邊界、支援跨晶片互連層設計的關鍵技術，而非單純「下一代鍵合」。</li>
+</ul>
+<p>（報告未提供具體投資評級、目標價或個股建議）</p>
+  <p class="foot">PDF 為原始研報；摘要由 LLM 自動生成，僅供研究參考，非投資建議。</p>
+</div></body></html>
