@@ -177,7 +177,14 @@ def _md_block(md: str) -> str:
         if m:
             close_list()
             lvl = min(len(m.group(1)) + 1, 4)   # md 的 # → h2、## → h3、### → h4(不進大綱)
-            text = html.escape(m.group(2))
+            raw_head = m.group(2)
+            # 🤖 = LLM 彙整標題;📄 = 單篇報告(格式固定為「機構｜標題」)
+            if not re.match(r'^[\U0001F300-\U0001FAFF]', raw_head):
+                if lvl == 2:
+                    raw_head = '🤖 ' + raw_head
+                elif lvl == 3:
+                    raw_head = ('📄 ' if '｜' in raw_head else '🤖 ') + raw_head
+            text = html.escape(raw_head)
             out_lines.append(f"<h{lvl}>{text}</h{lvl}>")
             continue
         text = html.escape(line)
