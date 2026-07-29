@@ -72,6 +72,21 @@ def all_market_tickers(token: str) -> list[dict]:
     return [seen[k] for k in sorted(seen)]
 
 
+_PL_TYPES = ["Revenue", "GrossProfit", "OperatingExpenses", "OperatingIncome",
+             "TotalNonoperatingIncomeAndExpense", "PreTaxIncome", "IncomeAfterTaxes", "EPS"]
+
+
+def quarterly_income(stock: str, token: str, start_date: str = "2023-01-01") -> list[dict]:
+    """季損益表（FinMind TaiwanStockFinancialStatements，單季值、元）。
+    回傳依季排序的 [{date, Revenue, GrossProfit, OperatingExpenses, ...}]，缺項為 None。"""
+    rows = _fetch("TaiwanStockFinancialStatements", stock, start_date, token)
+    by_date: dict[str, dict] = {}
+    for r in rows:
+        if r["type"] in _PL_TYPES:
+            by_date.setdefault(r["date"], {"date": r["date"]})[r["type"]] = r["value"]
+    return [by_date[d] for d in sorted(by_date)]
+
+
 def month_revenue(stock: str, token: str, start_date: str = "2024-01-01") -> list[dict]:
     """月營收（元），依月份排序。用於：(1)推導單季營收 (2)最新月份即時驗證轉換是否發生。"""
     rows = _fetch("TaiwanStockMonthRevenue", stock, start_date, token)

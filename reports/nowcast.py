@@ -175,18 +175,88 @@ def _structural_signals(data_dir: Path, stock: str) -> dict | None:
     return {"from": q_prev, "to": q_cur, "signals": sig, "votes": votes, "lean": lean}
 
 
-def _margin_range(data_dir: Path, stock: str) -> tuple[float, float] | None:
-    """cl 事實卡 JSON 近 4 季正值毛利率區間（小數）。"""
-    files = sorted((data_dir / "analysis").glob(f"{stock}_clj_*.json"))[-4:]
-    gms = []
-    for p in files:
-        try:
-            g = json.loads(p.read_text(encoding="utf-8")).get("gross_margin_pct")
-            if g and g > 0:
-                gms.append(g / 100)
-        except (json.JSONDecodeError, OSError):
+def _pl_model(stock: str, token: str) -> dict | None:
+    """完整損益結構模型（FinMind 季損益表，單季值，全程式無 LLM）：
+    毛利率＝近 4 季區間；營業費用＝對營收線性擬合(斜率截距, n≥6)否則中位費用率；
+    業外＝近 8 季中位數；稅率＝正稅前季的有效稅率中位(夾 10~30%)；
+    母公司比率＝EPS×股數÷稅後淨利 的中位(夾 0.5~1)。
+    含樣本內回測：以實際營收代入模型 vs 實際 EPS 的平均絕對誤差。"""
+    q = finmind_client.quarterly_income(stock, token)
+    q = [r for r in q if r.get("Revenue")]
+    if len(q) < 4:
+        return None
+    shares_info = finmind_client.latest_shares(stock, token)
+    if not shares_info:
+        return None
+    shares = shares_info["shares"]
+    # 單位統一為仟元
+    for r in q:
+        for k in ("Revenue", "GrossProfit", "OperatingExpenses",
+                  "TotalNonoperatingIncomeAndExpense", "PreTaxIncome", "IncomeAfterTaxes"):
+            if r.get(k) is not None:
+                r[k] = r[k] / 1000
+
+    gms = [r["GrossProfit"] / r["Revenue"] for r in q[-4:] if r.get("GrossProfit")]
+    if not gms:
+        return None
+    gm = (min(gms), max(gms))
+
+    pairs = [(r["Revenue"], r["OperatingExpenses"]) for r in q if r.get("OperatingExpenses")]
+    if len(pairs) >= 6:
+        n = len(pairs)
+        mx = sum(p[0] for p in pairs) / n
+        my = sum(p[1] for p in pairs) / n
+        var = sum((p[0] - mx) ** 2 for p in pairs)
+        b = sum((p[0] - mx) * (p[1] - my) for p in pairs) / var if var else 0
+        b = min(max(b, 0.0), 0.6)
+        a = my - b * mx
+        resid = [abs(p[1] - (a + b * p[0])) for p in pairs]
+        opex = {"a": a, "b": b, "err": sum(resid) / n, "mode": f"線性擬合 opex={a:,.0f}+{b:.2f}×rev"}
+    elif pairs:
+        ratio = sorted(p[1] / p[0] for p in pairs)[len(pairs) // 2]
+        opex = {"a": 0.0, "b": ratio, "err": 0.0, "mode": f"中位費用率 {ratio:.1%}"}
+    else:
+        return None
+
+    nonops = sorted(r["TotalNonoperatingIncomeAndExpense"] for r in q[-8:]
+                    if r.get("TotalNonoperatingIncomeAndExpense") is not None)
+    nonop = nonops[len(nonops) // 2] if nonops else 0.0
+    taxes = sorted(1 - r["IncomeAfterTaxes"] / r["PreTaxIncome"] for r in q
+                   if r.get("PreTaxIncome") and r["PreTaxIncome"] > 0 and r.get("IncomeAfterTaxes") is not None)
+    tax = min(max(taxes[len(taxes) // 2], 0.10), 0.30) if taxes else 0.20
+    ratios = sorted(r["EPS"] * shares / (r["IncomeAfterTaxes"] * 1000) for r in q
+                    if r.get("EPS") and r.get("IncomeAfterTaxes") and abs(r["IncomeAfterTaxes"]) > 1)
+    parent = min(max(ratios[len(ratios) // 2], 0.5), 1.0) if ratios else 1.0
+
+    def eps_range(rev_rng):
+        """掃營收×毛利率×費用殘差的極值組合，回傳排序後 (min, max)——
+        負毛利率時高營收端更差，不能假設營收高=EPS 高。"""
+        if not rev_rng:
+            return None
+        out = []
+        for rev in rev_rng:
+            for g in gm:
+                for adj in (opex["err"], -opex["err"]):
+                    op = rev * g - (opex["a"] + opex["b"] * rev + adj)
+                    out.append((op + nonop) * (1 - tax) * parent * 1000 / shares)
+        return (min(out), max(out))
+
+    # 樣本內回測：近 4 季用實際營收＋模型參數(毛利率取該季實際除外的中位) vs 實際 EPS
+    gm_mid = sorted(gms)[len(gms) // 2]
+    errs = []
+    for r in q[-4:]:
+        if not (r.get("EPS") is not None and r.get("Revenue")):
             continue
-    return (min(gms), max(gms)) if gms else None
+        op = r["Revenue"] * gm_mid - (opex["a"] + opex["b"] * r["Revenue"])
+        pred = (op + nonop) * (1 - tax) * parent * 1000 / shares
+        errs.append(abs(pred - r["EPS"]))
+    mae = sum(errs) / len(errs) if errs else None
+
+    return {"gm": gm, "opex": opex, "nonop": nonop, "tax": tax, "parent": parent,
+            "shares": shares, "shares_date": shares_info["date"],
+            "eps_range": eps_range, "mae": mae, "n_quarters": len(q),
+            # 近 4 季毛利率含負值（多為一次性減損污染或結構劇變）→ 線性外推必失真，EPS 拒估
+            "unstable": gm[0] < -0.1}
 
 
 def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
@@ -202,18 +272,18 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
         if not nc:
             logger.warning("%s 無足夠月營收資料", s)
             continue
-        shares_info = finmind_client.latest_shares(s, token)
-        margin = _margin_range(cfg.data_dir, s)
         cl_sig = _cl_signal(cfg.data_dir, s)
+        try:
+            pl = _pl_model(s, token)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("%s 損益模型建立失敗：%s", s, exc)
+            pl = None
 
         def _eps(rng):
-            if not (rng and shares_info and margin):
-                return None
-            return (rng[0] * margin[0] * 0.8 * 1000 / shares_info["shares"],
-                    rng[1] * margin[1] * 0.8 * 1000 / shares_info["shares"])
+            return pl["eps_range"](rng) if pl and rng and not pl["unstable"] else None
 
         eps_cur, eps_n1, eps_n2 = _eps(nc["cur"]), _eps(nc["next"]), _eps(nc["t2"])
-        nc.update({"margin": margin, "eps": eps_cur, "eps_n1": eps_n1})
+        nc.update({"eps": eps_cur, "eps_n1": eps_n1})
         rows.append(nc)
 
         yoy = f"{(nc['cur'][0] + nc['cur'][1]) / 2 / nc['yoy_base'] - 1:+.0%}" if nc["yoy_base"] else "—"
@@ -261,12 +331,20 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
                 lines.append(f"- {name} QoQ {pct:+.0%}：{note}")
             lines.append(f"- **綜合傾向：T+1 落點{struct['lean']}**（票決 {struct['votes']:+d}；"
                          "規則：預收/合約資產/備貨↑=上緣票，預收↓/製成品堆高=下緣票）")
-        if eps_cur:
-            lines.append(f"\nEPS 公式：營收 × 毛利率 [{margin[0]:.1%}, {margin[1]:.1%}]（cl 事實卡近 4 季正值）"
-                         f"× 0.8(稅) ÷ {shares_info['shares']:,} 股（FinMind {shares_info['date']} 股本）。"
-                         "未扣隨營收增加的營業費用，屬上緣估計。")
+        if pl and pl["unstable"]:
+            lines.append(f"\n**損益模型：EPS 拒估**——近 4 季毛利率 [{pl['gm'][0]:.1%}, {pl['gm'][1]:.1%}] "
+                         "含深度負值（多屬一次性減損污染或業務結構劇變），線性外推必失真。"
+                         "請看 cl 深讀報告的個案判讀。")
+        elif pl:
+            mae_s = f"，近 4 季樣本內回測 MAE {pl['mae']:.2f} 元" if pl["mae"] is not None else ""
+            lines.append(f"\n**損益模型**（FinMind 季損益表 {pl['n_quarters']} 季，全程式）：\n"
+                         f"- EPS ＝ (營收 × 毛利率 [{pl['gm'][0]:.1%}, {pl['gm'][1]:.1%}]（近4季）"
+                         f"− 營業費用（{pl['opex']['mode']}，殘差 ±{pl['opex']['err']:,.0f}）"
+                         f"＋ 業外中位 {pl['nonop']:,.0f}）× (1−稅率 {pl['tax']:.0%}) "
+                         f"× 母公司比率 {pl['parent']:.2f} ÷ {pl['shares']:,} 股"
+                         f"（{pl['shares_date']} 股本）{mae_s}。")
         else:
-            lines.append("\nEPS：無 cl 事實卡毛利率或股本資料，僅出營收。")
+            lines.append("\nEPS：FinMind 季損益資料不足（<4 季），僅出營收。")
         lines.append("\n方法：純程式計算（無 LLM）。T 用已公布月份÷近 3 年同季佔比；T+1/T+2 用季節因子；"
                      "事件層（重訊/新聞）調整待接入。")
         out = cfg.data_dir / "analysis" / f"{s}_nowcast.md"
