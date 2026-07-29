@@ -119,6 +119,62 @@ def _cl_signal(data_dir: Path, stock: str) -> dict | None:
             "rates": (min(rates[-2:]), max(rates[-2:])) if rates else None}
 
 
+def _structural_signals(data_dir: Path, stock: str) -> dict | None:
+    """財報結構訊號（合約負債以外的營收領先指標）：最新兩季 _clj JSON 的 QoQ 變化。
+    規則票決（可回溯）：合約負債↑>20%、合約資產↑>20%、原料+在製品↑>15% 各投「上緣」一票；
+    合約負債↓>20%、製成品↑>30% 各投「下緣」一票 → 綜合傾向。"""
+    files = sorted((data_dir / "analysis").glob(f"{stock}_clj_*.json"))[-2:]
+    if len(files) < 2:
+        return None
+    try:
+        prev, cur = (json.loads(p.read_text(encoding="utf-8")) for p in files)
+    except (json.JSONDecodeError, OSError):
+        return None
+    q_prev, q_cur = (p.stem.split("_clj_")[1] for p in files)
+
+    def _pct(a, b):
+        return (b - a) / a if a and b and a > 0 else None
+
+    sig, votes = [], 0
+    cl = _pct(prev.get("contract_liability"), cur.get("contract_liability"))
+    if cl is not None:
+        if cl > 0.2:
+            votes += 1
+            sig.append(("合約負債", cl, "↑ 預收堆積（上緣票）"))
+        elif cl < -0.2:
+            votes -= 1
+            sig.append(("合約負債", cl, "↓ 預收消退（下緣票）"))
+        else:
+            sig.append(("合約負債", cl, "→ 平穩"))
+    ca = _pct(prev.get("contract_assets"), cur.get("contract_assets"))
+    if ca is not None:
+        if ca > 0.2:
+            votes += 1
+            sig.append(("合約資產", ca, "↑ 已完工待請款，近端營收（上緣票）"))
+        else:
+            sig.append(("合約資產", ca, "→"))
+    wip_prev = (prev.get("inventory_raw") or 0) + (prev.get("inventory_wip") or 0)
+    wip_cur = (cur.get("inventory_raw") or 0) + (cur.get("inventory_wip") or 0)
+    rw = _pct(wip_prev, wip_cur)
+    if rw is not None:
+        if rw > 0.15:
+            votes += 1
+            sig.append(("原料+在製品", rw, "↑ 備貨趕單（上緣票）"))
+        else:
+            sig.append(("原料+在製品", rw, "→"))
+    fg = _pct(prev.get("inventory_fg"), cur.get("inventory_fg"))
+    if fg is not None:
+        if fg > 0.3:
+            votes -= 1
+            sig.append(("製成品", fg, "↑ 堆高，留意滯銷（下緣票）"))
+        else:
+            sig.append(("製成品", fg, "→"))
+    if not sig:
+        return None
+    lean = "偏上緣" if votes > 0 else "偏下緣" if votes < 0 else "中性"
+    return {"from": q_prev, "to": q_cur, "signals": sig, "votes": votes, "lean": lean}
+
+
 def _margin_range(data_dir: Path, stock: str) -> tuple[float, float] | None:
     """cl 事實卡 JSON 近 4 季正值毛利率區間（小數）。"""
     files = sorted((data_dir / "analysis").glob(f"{stock}_clj_*.json"))[-4:]
@@ -198,6 +254,13 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
             else:
                 lines.append(f"**合約負債交叉檢核**：{cl_sig['quarter']} 期末餘額 {cl_sig['cl']:,} 仟元"
                              f"（無單季口徑揭露轉換率，僅供規模參考）。")
+        struct = _structural_signals(cfg.data_dir, s)
+        if struct:
+            lines.append(f"\n**結構訊號**（{struct['from']}→{struct['to']}，合約負債以外的營收領先指標）：")
+            for name, pct, note in struct["signals"]:
+                lines.append(f"- {name} QoQ {pct:+.0%}：{note}")
+            lines.append(f"- **綜合傾向：T+1 落點{struct['lean']}**（票決 {struct['votes']:+d}；"
+                         "規則：預收/合約資產/備貨↑=上緣票，預收↓/製成品堆高=下緣票）")
         if eps_cur:
             lines.append(f"\nEPS 公式：營收 × 毛利率 [{margin[0]:.1%}, {margin[1]:.1%}]（cl 事實卡近 4 季正值）"
                          f"× 0.8(稅) ÷ {shares_info['shares']:,} 股（FinMind {shares_info['date']} 股本）。"

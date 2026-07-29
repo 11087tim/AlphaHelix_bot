@@ -74,7 +74,11 @@ TO_JSON_SYSTEM = (
     '"gross_margin_pct": 毛利率百分比數值或null, '
     '"gross_margin_period": "single"或"cumulative"或null, '
     '"net_income": 本期淨利仟元或null(淨損為負), '
-    '"eps": 基本每股盈餘元或null}。'
+    '"eps": 基本每股盈餘元或null, '
+    '"contract_assets": 期末合約資產(扣備抵後淨額)仟元或null, '
+    '"inventory_raw": 期末存貨-原料仟元或null, '
+    '"inventory_wip": 期末存貨-在製品(含半成品)仟元或null, '
+    '"inventory_fg": 期末存貨-製成品(或商品)仟元或null}。'
     "規則：卡片寫「未揭露」或沒提到就填 null；金額一律仟元；不要編造。"
 )
 
