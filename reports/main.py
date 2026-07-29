@@ -69,6 +69,10 @@ def main(argv: list[str]) -> int:
         stock = argv[1] if len(argv) > 1 else cfg.stocks[0]
         n = int(argv[2]) if len(argv) > 2 else 8
         return run_contract_liability(cfg, stock, n)
+    if mode == "nowcast":
+        # nowcast [股號 ...]：月營收估當季/次季營收與 EPS 基線，未給股號跑全清單
+        from reports.nowcast import run_nowcast
+        return run_nowcast(cfg, argv[1:] or None)
     logger.error("未知模式：%s\n%s", mode, USAGE)
     return 2
 
