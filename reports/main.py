@@ -73,6 +73,10 @@ def main(argv: list[str]) -> int:
         # nowcast [股號 ...]：月營收估當季/次季營收與 EPS 基線，未給股號跑全清單
         from reports.nowcast import run_nowcast
         return run_nowcast(cfg, argv[1:] or None)
+    if mode == "events":
+        # events [天數]：追蹤股重訊 LLM 判讀（material/影響/方向/季度），預設近 7 天
+        from reports.events import run_events
+        return run_events(cfg, int(argv[1]) if len(argv) > 1 else 7)
     logger.error("未知模式：%s\n%s", mode, USAGE)
     return 2
 
