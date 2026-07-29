@@ -48,9 +48,10 @@ def safe_name(s: str, limit: int = 120) -> str:
 
 
 def send_digest_email(subject: str, html_body: str, dev_only: bool) -> None:
+    """熱門研報信一律只寄 dev（使用者本人）——2026-07-29 決定，prod 名單僅供 X digest 用。"""
     from src.emailer import send_html_email
     cfg = config.load_email_cfg()
-    to = cfg["dev"] if dev_only else (cfg["prod"] or cfg["dev"])
+    to = cfg["dev"]  # dev_only 參數保留介面相容，實際固定寄 dev
     if not (cfg["gmail_address"] and to):
         logger.warning("email 設定不完整，略過寄信")
         return
