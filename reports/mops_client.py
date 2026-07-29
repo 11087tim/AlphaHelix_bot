@@ -14,11 +14,14 @@ BASE_URL = "https://doc.twse.com.tw/server-java/t57sb01"
 FILE_HOST = "https://doc.twse.com.tw"
 
 # (財報類型, 語言) → MOPS 檔名代碼
-#   AI1=中文合併, AI3=中文個體, AIA=英文合併, AIC=英文個體
+#   AI1=中文合併, AI2=中文個別, AI3=中文個體, AIA=英文合併, AIB=英文個別, AIC=英文個體
+#   個別(standalone)：無子公司的公司只出這種（如 8227），無合併報表
 TYPE_CODE = {
     ("consolidated", "zh"): "AI1",
+    ("standalone", "zh"): "AI2",
     ("individual", "zh"): "AI3",
     ("consolidated", "en"): "AIA",
+    ("standalone", "en"): "AIB",
     ("individual", "en"): "AIC",
 }
 
@@ -76,16 +79,23 @@ class MopsClient:
         raise MopsError(f"請求失敗（重試 {self.max_retries} 次）：{url}：{last_exc}")
 
     def list_year(self, co_id: str, ad_year: int) -> list[str]:
-        """列出某公司某年度（西元）所有財報檔名（含四季）。一次查詢涵蓋整年。"""
+        """列出某公司某年度（西元）所有財報檔名（含四季）。一次查詢涵蓋整年。
+        MOPS 被連續查詢時會回一頁 ~458 bytes 的空過場頁（HTTP 200、無標題），
+        不能當成「該年無檔案」，需退避重試；真正的結果頁含「電子資料查詢作業」。"""
         roc_year = ad_year - 1911
-        resp = self._request(
-            "POST",
-            BASE_URL,
-            data={"step": "1", "colorchg": "", "seamon": "", "mtype": "A",
-                  "co_id": co_id, "year": str(roc_year)},
-        )
-        resp.encoding = "big5"
-        return re.findall(rf'readfile2\("[A-Z]","{re.escape(co_id)}","([^"]+\.pdf)"\)', resp.text)
+        for attempt in range(self.max_retries):
+            resp = self._request(
+                "POST",
+                BASE_URL,
+                data={"step": "1", "colorchg": "", "seamon": "", "mtype": "A",
+                      "co_id": co_id, "year": str(roc_year)},
+            )
+            resp.encoding = "big5"
+            files = re.findall(rf'readfile2\("[A-Z]","{re.escape(co_id)}","([^"]+\.pdf)"\)', resp.text)
+            if files or "電子資料查詢作業" in resp.text:
+                return files
+            time.sleep((2 ** attempt) * 1.5 + random.uniform(0, 1))
+        raise MopsError(f"list_year 連續拿到空過場頁：{co_id} {ad_year}")
 
     def download(self, co_id: str, filename: str) -> bytes:
         """對指定檔名做 step9 取得暫時連結，再下載 PDF bytes。

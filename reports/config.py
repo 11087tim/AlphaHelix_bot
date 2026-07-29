@@ -43,10 +43,10 @@ def load_config(path: Path | None = None) -> ReportsConfig:
     if not stocks:
         raise ConfigError("reports_config.yaml 的 stocks 是空的，至少要指定一檔股票。")
 
-    valid_types = {"consolidated", "individual"}
+    valid_types = {"consolidated", "standalone", "individual"}
     report_types = [t for t in (raw.get("report_types") or ["consolidated"]) if t in valid_types]
     if not report_types:
-        raise ConfigError("report_types 必須至少包含 consolidated 或 individual。")
+        raise ConfigError("report_types 必須至少包含 consolidated、standalone 或 individual。")
 
     language = str(raw.get("language", "zh")).lower()
     if language not in {"zh", "en"}:

@@ -25,6 +25,7 @@ python -m src.main longform      # Podcast + YouTube 一次跑完（每日 19:30
 先編 `reports_config.yaml`（股號、年、季、語言、模型）。
 ```bash
 python -m reports.main fetch                # 平行下載 MOPS 財報 PDF（去重、可續跑）
+python -m reports.main fetch all            # 全市場模式：FinMind 拉上市+上櫃普通股清單（~2,100 檔，單季約 4-6 小時/4GB）
 python -m reports.main extract              # PDF → 純文字
 python -m reports.main analyze 2330 2024 4  # 單季自適應分析 → 投資 brief
 python -m reports.main aggregate 4927 8     # 近 8 季跨季趨勢彙集（平行分析、已分析的季跳過）
