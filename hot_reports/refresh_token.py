@@ -29,7 +29,11 @@ def grab_token() -> str:
         deadline = time.time() + WAIT_SEC
         token = ""
         while time.time() < deadline:
-            token = page.evaluate("localStorage.getItem('token') || ''")
+            try:
+                token = page.evaluate("localStorage.getItem('token') || ''")
+            except Exception:
+                # 掃碼成功後頁面會跳轉，evaluate 可能撞上 navigation——等一拍重試即可
+                token = ""
             if token:
                 break
             time.sleep(2)
