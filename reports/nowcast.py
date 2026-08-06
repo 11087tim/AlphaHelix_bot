@@ -74,14 +74,16 @@ def nowcast_stock(stock: str, token: str, years_back: int = 3) -> dict | None:
                 fs.append(min(3.0, max(0.3, b / a)))
         return fs
 
-    # T+1：歷史 QoQ 季節因子
+    # T+1：歷史 QoQ 季節因子；T+2/T+3：因子鏈（每多一段區間更寬 → 信心遞減）
     ny, nq = _next_q(cy, cq)
     f1 = _qoq_factors(cq)
     nxt = (cur_lo * min(f1), cur_hi * max(f1)) if f1 else None
-    # T+2：季節因子鏈（在 T+1 區間上再乘一段，區間更寬 → 低信心、方向參考）
     n2y, n2q = _next_q(ny, nq)
     f2 = _qoq_factors(nq)
     nxt2 = (nxt[0] * min(f2), nxt[1] * max(f2)) if nxt and f2 else None
+    n3y, n3q = _next_q(n2y, n2q)
+    f3 = _qoq_factors(n2q)
+    nxt3 = (nxt2[0] * min(f3), nxt2[1] * max(f3)) if nxt2 and f3 else None
 
     # 同期比較基準
     yoy_base = _q_sum(rev, cy - 1, cq)
@@ -89,6 +91,7 @@ def nowcast_stock(stock: str, token: str, years_back: int = 3) -> dict | None:
             "known_sum": known_sum, "cur": (cur_lo, cur_hi), "yoy_base": yoy_base,
             "next_quarter": f"{ny}Q{nq}", "next": nxt,
             "t2_quarter": f"{n2y}Q{n2q}", "t2": nxt2,
+            "t3_quarter": f"{n3y}Q{n3q}", "t3": nxt3,
             "latest_month": f"{last_y}/{last_m:02d}"}
 
 
@@ -287,7 +290,8 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
         def _eps(rng):
             return pl["eps_range"](rng) if pl and rng else None
 
-        eps_cur, eps_n1, eps_n2 = _eps(nc["cur"]), _eps(nc["next"]), _eps(nc["t2"])
+        eps_cur, eps_n1, eps_n2, eps_n3 = (_eps(nc["cur"]), _eps(nc["next"]),
+                                           _eps(nc["t2"]), _eps(nc["t3"]))
         nc.update({"eps": eps_cur, "eps_n1": eps_n1})
         rows.append(nc)
 
@@ -306,7 +310,8 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
                       "近 3 年 QoQ 季節因子外推，未含事件調整"),
                  _row(f"{nc['t2_quarter']} (T+2)", nc["t2"], eps_n2, "低（方向參考）",
                       "季節因子鏈外推，僅供方向"),
-                 "| T+3 | 不出數 | — | — | 無結構性依據（RPO/擴產時程）不預估 |", ""]
+                 _row(f"{nc['t3_quarter']} (T+3)", nc["t3"], eps_n3, "極低（方向參考）",
+                      "因子鏈三段外推，區間最寬、僅供方向"), ""]
         if cl_sig:
             # 合約負債是「該季期末」餘額 → 轉換隱含的是「其次一季」的營收（cl 落後財報一季，
             # 通常對應本表的 T 而非 T+1）；若該季已有實績，直接對照驗證轉換有無兌現。

@@ -218,7 +218,8 @@ def _fc_rev_cols(nc, hist_labels: list[str]) -> list[tuple[str, float]]:
     """預估季欄位（最遠的放最前=最左）：(季度標籤, 營收中值仟元)。排除已有歷史的季。"""
     if not nc:
         return []
-    cand = [(nc["t2_quarter"], nc["t2"]), (nc["next_quarter"], nc["next"]), (nc["quarter"], nc["cur"])]
+    cand = [(nc["t3_quarter"], nc["t3"]), (nc["t2_quarter"], nc["t2"]),
+            (nc["next_quarter"], nc["next"]), (nc["quarter"], nc["cur"])]
     return [(lbl, _mid(rng)) for lbl, rng in cand if rng and lbl not in hist_labels]
 
 
@@ -339,7 +340,8 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
     if nc:
         for label, rng, conf, cls in ((f"{nc['quarter']} (T)", nc["cur"], "高", "hi"),
                                       (f"{nc['next_quarter']} (T+1)", nc["next"], "中", "mid"),
-                                      (f"{nc['t2_quarter']} (T+2)", nc["t2"], "低", "lo")):
+                                      (f"{nc['t2_quarter']} (T+2)", nc["t2"], "低", "lo"),
+                                      (f"{nc['t3_quarter']} (T+3)", nc["t3"], "極低", "lo")):
             e = eps(rng)
             fc_rows += (f"<tr><td>{label}<span class='tag {cls}'>{conf}</span></td>"
                         f"<td>{_rng((rng[0] / 1000, rng[1] / 1000), 0) if rng else '—'}</td>"
@@ -384,7 +386,8 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
         "四季展望": [{"季度": lbl, "營收區間仟元": rng, "EPS區間": eps(rng), "信心": conf}
                   for lbl, rng, conf in (((nc["quarter"], nc["cur"], "高(月營收)"),
                                           (nc["next_quarter"], nc["next"], "中(季節因子)"),
-                                          (nc["t2_quarter"], nc["t2"], "低(因子鏈)")) if nc else [])],
+                                          (nc["t2_quarter"], nc["t2"], "低(因子鏈)"),
+                                          (nc["t3_quarter"], nc["t3"], "極低(因子鏈三段)")) if nc else [])],
         "損益模型": ({"毛利率區間": pl["gm"], "毛利率中位": pl["gm_mid"], "費用": pl["opex"]["mode"],
                    "業外中位仟元": pl["nonop"], "稅率": pl["tax"], "母公司比率": pl["parent"],
                    "回測MAE元": pl["mae"], "volatile低可信": pl["volatile"]} if pl else None),
