@@ -125,39 +125,123 @@ th{background:#efede6;font-weight:500} td:first-child,th:first-child{text-align:
 .hi{background:#e1f5ee;color:#085041}.mid{background:#faeeda;color:#633806}.lo{background:#f1efe8;color:#444}
 .mat{background:#fcebeb;color:#791f1f}.rout{background:#f1efe8;color:#666}
 .scroll{overflow-x:auto}
+th.est{background:#EEEDFE;color:#3C3489} td.est{background:#f7f6fd;color:#3C3489}
 @media(max-width:820px){.grid{grid-template-columns:1fr}}
 """
 
 
-def _income_section(inc: list[dict]) -> tuple[str, dict]:
-    q = inc[-8:]
-    labels = [r["date"][:7].replace("-0", "Q").replace("-1", "Q1") for r in q]
-    labels = [f"{r['date'][:4]}Q{(int(r['date'][5:7]) - 1) // 3 + 1}" for r in q]
-    rev = [round(r.get("Revenue", 0) / 1e6) if r.get("Revenue") else None for r in q]
-    gm = [round(r["GrossProfit"] / r["Revenue"] * 100, 1) if r.get("GrossProfit") and r.get("Revenue") else None for r in q]
-    rows = ""
-    items = [("營業收入", "Revenue"), ("營業毛利", "GrossProfit"), ("營業費用", "OperatingExpenses"),
-             ("營業利益", "OperatingIncome"), ("業外損益", "TotalNonoperatingIncomeAndExpense"),
-             ("稅前淨利", "PreTaxIncome"), ("稅後淨利", "IncomeAfterTaxes")]
-    for name, key in items:
-        rows += f"<tr><td>{name}</td>" + "".join(f"<td>{_fmt(r.get(key))}</td>" for r in q) + "</tr>"
-    rows += "<tr><td>毛利率</td>" + "".join(f"<td>{g if g is not None else '—'}%</td>" for g in gm) + "</tr>"
-    rows += "<tr><td>EPS(元)</td>" + "".join(f"<td>{r.get('EPS', '—')}</td>" for r in q) + "</tr>"
-    html = (f"<div class='scroll'><table><tr><th>百萬元</th>" +
-            "".join(f"<th>{l}</th>" for l in labels) + f"</tr>{rows}</table></div>")
-    return html, {"labels": labels, "rev": rev, "gm": gm}
+def _q_label(date_str: str) -> str:
+    return f"{date_str[:4]}Q{(int(date_str[5:7]) - 1) // 3 + 1}"
 
 
-def _kv_table(series: list[dict], mapping: dict[str, str]) -> str:
-    q = series[-8:]
-    labels = [f"{r['date'][:4]}Q{(int(r['date'][5:7]) - 1) // 3 + 1}" for r in q]
-    rows = ""
-    for key, name in mapping.items():
-        if not any(r.get(key) is not None for r in q):
+def _mid(rng):
+    return (rng[0] + rng[1]) / 2 if rng else None
+
+
+def _fc_rev_cols(nc, hist_labels: list[str]) -> list[tuple[str, float]]:
+    """預估季欄位（最遠的放最前=最左）：(季度標籤, 營收中值仟元)。排除已有歷史的季。"""
+    if not nc:
+        return []
+    cand = [(nc["t2_quarter"], nc["t2"]), (nc["next_quarter"], nc["next"]), (nc["quarter"], nc["cur"])]
+    return [(lbl, _mid(rng)) for lbl, rng in cand if rng and lbl not in hist_labels]
+
+
+def _render_table(cols: list[dict], rows_def: list[tuple[str, str]], extra_rows: str = "") -> str:
+    """cols＝由左至右的欄（含 est 標記），rows_def＝[(顯示名, key)]；值為 None 顯示 —。"""
+    head = "<tr><th>百萬元</th>" + "".join(
+        f"<th class='{'est' if c.get('est') else ''}'>{c['label']}{'<br>預估' if c.get('est') else ''}</th>"
+        for c in cols) + "</tr>"
+    body = ""
+    for name, key in rows_def:
+        if not any(c.get(key) is not None for c in cols):
             continue  # 該公司未單列的科目整列隱藏
-        rows += f"<tr><td>{name}</td>" + "".join(f"<td>{_fmt(r.get(key))}</td>" for r in q) + "</tr>"
-    return (f"<div class='scroll'><table><tr><th>百萬元</th>" +
-            "".join(f"<th>{l}</th>" for l in labels) + f"</tr>{rows}</table></div>")
+        body += f"<tr><td>{name}</td>" + "".join(
+            f"<td class='{'est' if c.get('est') else ''}'>{_fmt(c.get(key))}</td>" for c in cols) + "</tr>"
+    return f"<div class='scroll'><table>{head}{body}{extra_rows}</table></div>"
+
+
+_INCOME_ROWS = [("營業收入", "Revenue"), ("營業毛利", "GrossProfit"), ("營業費用", "OperatingExpenses"),
+                ("營業利益", "OperatingIncome"), ("業外損益", "TotalNonoperatingIncomeAndExpense"),
+                ("稅前淨利", "PreTaxIncome"), ("稅後淨利", "IncomeAfterTaxes")]
+
+
+def _income_table(inc: list[dict], pl, nc) -> str:
+    hist = [dict(r, label=_q_label(r["date"])) for r in inc[-8:]][::-1]
+    fc_cols = []
+    for lbl, rev_k in _fc_rev_cols(nc, [h["label"] for h in hist]):
+        col = {"label": lbl, "est": True, "Revenue": rev_k * 1000}
+        if pl and not pl.get("unstable"):
+            gm_mid = (pl["gm"][0] + pl["gm"][1]) / 2
+            gp = rev_k * gm_mid
+            opex = pl["opex"]["a"] + pl["opex"]["b"] * rev_k
+            op = gp - opex
+            pre = op + pl["nonop"]
+            net = pre * (1 - pl["tax"])
+            col.update({"GrossProfit": gp * 1000, "OperatingExpenses": opex * 1000,
+                        "OperatingIncome": op * 1000, "TotalNonoperatingIncomeAndExpense": pl["nonop"] * 1000,
+                        "PreTaxIncome": pre * 1000, "IncomeAfterTaxes": net * 1000,
+                        "_gm": round(gm_mid * 100, 1),
+                        "EPS": round(net * pl["parent"] * 1000 / pl["shares"], 2)})
+        fc_cols.append(col)
+    for h in hist:
+        if h.get("GrossProfit") and h.get("Revenue"):
+            h["_gm"] = round(h["GrossProfit"] / h["Revenue"] * 100, 1)
+    cols = fc_cols + hist
+    gm_row = "<tr><td>毛利率</td>" + "".join(
+        f"<td class='{'est' if c.get('est') else ''}'>{str(c['_gm']) + '%' if c.get('_gm') is not None else '—'}</td>"
+        for c in cols) + "</tr>"
+    eps_row = "<tr><td>EPS(元)</td>" + "".join(
+        f"<td class='{'est' if c.get('est') else ''}'>{c.get('EPS', '—') if c.get('EPS') is not None else '—'}</td>"
+        for c in cols) + "</tr>"
+    return _render_table(cols, _INCOME_ROWS, gm_row + eps_row)
+
+
+def _income_chart(inc: list[dict]) -> dict:
+    q = inc[-8:]
+    return {"labels": [_q_label(r["date"]) for r in q],
+            "rev": [round(r["Revenue"] / 1e6) if r.get("Revenue") else None for r in q],
+            "gm": [round(r["GrossProfit"] / r["Revenue"] * 100, 1)
+                   if r.get("GrossProfit") and r.get("Revenue") else None for r in q]}
+
+
+_BS_ROWS = [("現金及約當現金", "CashAndCashEquivalents"), ("應收帳款", "AccountsReceivableNet"),
+            ("存貨", "Inventories"), ("合約負債(流動)", "CurrentContractLiabilities"),
+            ("資產總額", "TotalAssets"), ("權益總額", "Equity")]
+
+
+def _bs_table(bs: list[dict], inc: list[dict], nc) -> str:
+    hist = [dict(r, label=_q_label(r["date"])) for r in bs[-8:]][::-1]
+    rev_by_date = {r["date"]: r.get("Revenue") for r in inc}
+    ratios = {}
+    for key in ("AccountsReceivableNet", "Inventories"):
+        rs = sorted(r[key] / rev_by_date[r["date"]] for r in bs[-4:]
+                    if r.get(key) and rev_by_date.get(r["date"]))
+        ratios[key] = rs[len(rs) // 2] if rs else None
+    fc_cols = []
+    for lbl, rev_k in _fc_rev_cols(nc, [h["label"] for h in hist]):
+        col = {"label": lbl, "est": True}
+        for key, ratio in ratios.items():
+            if ratio:
+                col[key] = ratio * rev_k * 1000
+        fc_cols.append(col)
+    return _render_table(fc_cols + hist, _BS_ROWS)
+
+
+_CF_ROWS = [("營運現金流", "NetCashInflowFromOperatingActivities"),
+            ("投資現金流", "CashProvidedByInvestingActivities"),
+            ("籌資現金流", "CashFlowsProvidedFromFinancingActivities"),
+            ("取得不動產廠房設備", "PropertyAndPlantAndEquipment"), ("折舊", "Depreciation")]
+
+
+def _cf_table(cf: list[dict], nc) -> str:
+    hist = [dict(r, label=_q_label(r["date"])) for r in cf[-8:]][::-1]
+    med = {}
+    for _, key in _CF_ROWS:
+        vals = sorted(r[key] for r in cf[-8:] if r.get(key) is not None)
+        med[key] = vals[len(vals) // 2] if vals else None
+    fc_cols = [dict({"label": lbl, "est": True}, **med)
+               for lbl, _ in _fc_rev_cols(nc, [h["label"] for h in hist])]
+    return _render_table(fc_cols + hist, _CF_ROWS)
 
 
 def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -> dict:
@@ -193,15 +277,10 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
                       f"母公司比率 {pl['parent']:.2f}、股數 {pl['shares']:,}"
                       + (f"、回測 MAE {pl['mae']:.2f} 元" if pl.get("mae") is not None else ""))
 
-    inc_html, chart = _income_section(inc) if inc else ("<p class='note'>無季損益資料</p>", {})
-    bs_html = _kv_table(bs, {"CashAndCashEquivalents": "現金及約當現金", "AccountsReceivableNet": "應收帳款",
-                             "Inventories": "存貨", "CurrentContractLiabilities": "合約負債(流動)",
-                             "TotalAssets": "資產總額", "Equity": "權益總額"}) if bs else "<p class='note'>無資料</p>"
-    cf_html = _kv_table(cf, {"NetCashInflowFromOperatingActivities": "營運現金流",
-                             "CashProvidedByInvestingActivities": "投資現金流",
-                             "CashFlowsProvidedFromFinancingActivities": "籌資現金流",
-                             "PropertyAndPlantAndEquipment": "取得不動產廠房設備",
-                             "Depreciation": "折舊"}) if cf else "<p class='note'>無資料</p>"
+    inc_html = _income_table(inc, pl, nc) if inc else "<p class='note'>無季損益資料</p>"
+    chart = _income_chart(inc) if inc else {}
+    bs_html = _bs_table(bs, inc, nc) if bs else "<p class='note'>無資料</p>"
+    cf_html = _cf_table(cf, nc) if cf else "<p class='note'>無資料</p>"
 
     sig_html = ""
     if struct:
@@ -265,9 +344,12 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 {"" if seg_pct else f"<p class='note'>財報附註無產品/服務別拆分{('（' + seg['note'] + '）') if seg and seg.get('note') else ''}。</p>"}</div></div>
 </div>
 
-<h2>損益表（單季）</h2>{inc_html}
-<h2>資產負債關鍵科目（期末）</h2>{bs_html}
-<h2>現金流量（單季，年內差分還原）</h2>{cf_html}
+<h2>損益表（單季，左起為預估季）</h2>{inc_html}
+<p class="note">預估欄＝模型中值：營收取 nowcast 區間中點、毛利率取近 4 季中值、費用用擬合線、業外/稅率用中位；區間見上方四季展望。</p>
+<h2>資產負債關鍵科目（期末，左起為預估季）</h2>{bs_html}
+<p class="note">預估欄＝營收比率法：應收/存貨按近 4 季「佔營收比」中位 × 預估營收；其餘科目不預估。</p>
+<h2>現金流量（單季，年內差分還原，左起為預估季）</h2>{cf_html}
+<p class="note">預估欄＝近 8 季中位數粗估，僅供量級參考。</p>
 <div class="card" style="margin-top:14px"><canvas id="cfChart" height="120"></canvas></div>
 
 <h2>重訊時間軸（近 120 天）</h2>{ann_html}
