@@ -9,6 +9,7 @@ nowcast 四季展望＋損益模型、營收組成（財報附註 Haiku 萃取�
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import re
@@ -67,6 +68,74 @@ def _segments(cfg: ReportsConfig, stock: str, api_key: str) -> dict | None:
         data = {"items": []}
     cache.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     return data
+
+
+COMMENT_SYSTEM = (
+    "你是資深投資分析師。以下是一檔台股的程式化 EPS 預估數據包（四季展望、損益模型參數、"
+    "結構訊號、合約負債檢核、營收組成、近期重訊、過往深讀結論）。"
+    "請寫一段「預估解讀」，讓讀者看懂**為什麼未來幾季是這樣估**。格式（繁體中文、精簡有判斷）：\n"
+    "## 為什麼這樣估\n- 2~4 條：拆解 T 與 T+1 區間的來源——營收基礎是什麼（月營收實績/季節因子/合約負債轉換）、"
+    "毛利率假設為何、上下緣差距大的原因。\n"
+    "## 支撐與壓力\n- 上緣靠什麼訊號、下緣的風險是什麼（引用數據包裡的訊號與重訊）。\n"
+    "## 驗證點\n- 接下來哪個時點看什麼數據可以確認或推翻這個估計（月營收 10 日、財報日、特定重訊）。\n"
+    "最後一行「一句話：」總結。\n"
+    "鐵律：只根據數據包內容，數字要與數據包一致並標來源（如「模型」「月營收」「重訊 07-31」）；"
+    "不引入外部知識、不杜撰；低可信(volatile)的檔要明講模型侷限。"
+)
+
+
+def _md2html(md: str) -> str:
+    """極簡 markdown → HTML（小標/條列/粗體），配合 X bot 評論格式。"""
+    out, in_ul = [], False
+    for ln in md.splitlines():
+        ln = ln.strip()
+        ln = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", ln)
+        if ln.startswith("## "):
+            if in_ul:
+                out.append("</ul>")
+                in_ul = False
+            out.append(f"<h3>{ln[3:]}</h3>")
+        elif ln.startswith("- "):
+            if not in_ul:
+                out.append("<ul>")
+                in_ul = True
+            out.append(f"<li>{ln[2:]}</li>")
+        elif ln:
+            if in_ul:
+                out.append("</ul>")
+                in_ul = False
+            out.append(f"<p>{ln}</p>")
+    if in_ul:
+        out.append("</ul>")
+    return "\n".join(out)
+
+
+def _cl_oneliner(cfg: ReportsConfig, stock: str) -> str:
+    """cl 深讀報告的「一句話」結論（若有）。"""
+    files = sorted((cfg.data_dir / "analysis").glob(f"{stock}_contract_liability_*.md"))
+    if not files:
+        return ""
+    m = re.findall(r"一句話[：:]\**\s*(.+)", files[-1].read_text(encoding="utf-8"))
+    return m[-1].strip()[:300] if m else ""
+
+
+def _comment(cfg: ReportsConfig, stock: str, payload: dict, api_key: str) -> str:
+    """Opus 預估解讀，數據指紋快取：payload 沒變就不重新生成。"""
+    cache = cfg.data_dir / "analysis" / f"{stock}_comment.json"
+    blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
+    fp = hashlib.sha1(blob.encode()).hexdigest()[:16]
+    if cache.exists():
+        try:
+            old = json.loads(cache.read_text(encoding="utf-8"))
+            if old.get("fp") == fp:
+                return old["text"]
+        except json.JSONDecodeError:
+            pass
+    res = llm.chat(cfg.comment_model, COMMENT_SYSTEM, f"股票：{stock}\n\n數據包：\n{blob}", api_key)
+    cache.write_text(json.dumps({"fp": fp, "date": date.today().isoformat(), "text": res["text"]},
+                                ensure_ascii=False), encoding="utf-8")
+    logger.info("  %s AI 判讀（%s）✓ $%.4f", stock, cfg.comment_model, res.get("cost") or 0)
+    return res["text"]
 
 
 def _announcements_for(stock: str, days: int = 120) -> list[dict]:
@@ -304,6 +373,25 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
         ann_html += f"<li>{a['date']}　{a['subject'][:60]}{tag}</li>"
     ann_html = f"<ul style='font-size:13.5px'>{ann_html}</ul>" if ann_html else "<p class='note'>近 120 天無重訊（本地庫）。</p>"
 
+    payload = {
+        "四季展望": [{"季度": lbl, "營收區間仟元": rng, "EPS區間": eps(rng), "信心": conf}
+                  for lbl, rng, conf in (((nc["quarter"], nc["cur"], "高(月營收)"),
+                                          (nc["next_quarter"], nc["next"], "中(季節因子)"),
+                                          (nc["t2_quarter"], nc["t2"], "低(因子鏈)")) if nc else [])],
+        "損益模型": ({"毛利率區間": pl["gm"], "毛利率中位": pl["gm_mid"], "費用": pl["opex"]["mode"],
+                   "業外中位仟元": pl["nonop"], "稅率": pl["tax"], "母公司比率": pl["parent"],
+                   "回測MAE元": pl["mae"], "volatile低可信": pl["volatile"]} if pl else None),
+        "結構訊號": struct, "合約負債檢核": cl_sig, "營收組成": seg,
+        "近期重訊": [{"日期": a["date"], "主旨": a["subject"][:60],
+                  "判讀": (a["interp"] or {}).get("summary")} for a in anns[:8]],
+        "cl深讀一句話": _cl_oneliner(cfg, stock),
+    }
+    try:
+        comment_html = _md2html(_comment(cfg, stock, payload, api_key))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("  %s AI 判讀失敗：%s", stock, exc)
+        comment_html = "<p class='note'>本次未產生（LLM 呼叫失敗），重跑 dashboard 可補。</p>"
+
     seg_pct = None
     if seg and seg.get("items"):
         total = sum(i["value"] for i in seg["items"] if i.get("value"))
@@ -351,6 +439,9 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 <h2>現金流量（單季，年內差分還原，左起為預估季）</h2>{cf_html}
 <p class="note">預估欄＝近 8 季中位數粗估，僅供量級參考。</p>
 <div class="card" style="margin-top:14px"><canvas id="cfChart" height="120"></canvas></div>
+
+<h2>AI 判讀（為什麼這樣估）</h2>
+<div class="card">{comment_html}</div>
 
 <h2>重訊時間軸（近 120 天）</h2>{ann_html}
 

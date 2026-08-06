@@ -22,6 +22,7 @@ class ReportsConfig:
     cheap_model: str
     strong_model: str
     vision_model: str
+    comment_model: str
     chunk_chars: int
     eval_sample_chunks: int
     analysis_topics: list[dict]
@@ -67,6 +68,7 @@ def load_config(path: Path | None = None) -> ReportsConfig:
         cheap_model=llm.get("cheap_model", "anthropic/claude-haiku-4.5"),
         strong_model=llm.get("strong_model", "anthropic/claude-opus-4.8"),
         vision_model=llm.get("vision_model", "google/gemini-2.5-flash"),
+        comment_model=llm.get("comment_model", "openai/gpt-5.6-luna"),
         chunk_chars=int(llm.get("chunk_chars", 6000)),
         eval_sample_chunks=int(llm.get("eval_sample_chunks", 6)),
         analysis_topics=(raw.get("analysis") or {}).get("topics") or _DEFAULT_TOPICS,
