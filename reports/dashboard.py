@@ -381,8 +381,25 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 
     sig_html = ""
     if struct:
-        sig_html += "<ul>" + "".join(f"<li>{n} QoQ {p:+.0%}：{note}</li>" for n, p, note in struct["signals"])
-        sig_html += f"<li><b>綜合傾向：T+1 落點{struct['lean']}</b>（票決 {struct['votes']:+d}）</li></ul>"
+        rows = ""
+        n_up = n_down = 0
+        for sig_name, pct, note in struct["signals"]:
+            if "上緣票" in note:
+                n_up += 1
+                tag, cls = "營收上緣訊號", "hi"
+            elif "下緣票" in note:
+                n_down += 1
+                tag, cls = "營收下緣訊號", "mat"
+            else:
+                tag, cls = "未達門檻", "rout"
+            desc = note.lstrip("↑↓→ ").split("（")[0].strip() or "變化平穩"
+            rows += (f"<tr><td>{sig_name}</td><td>{pct:+.0%}</td>"
+                     f"<td style='text-align:left'>{desc}<span class='tag {cls}'>{tag}</span></td></tr>")
+        lean_s = {"偏上緣": "偏向區間上緣", "偏下緣": "偏向區間下緣", "中性": "無明確方向"}.get(struct["lean"], struct["lean"])
+        sig_html += (f"<p style='margin-top:0'>財報結構變化 {struct['from']} → {struct['to']}（季報數據，落後月營收一季）：</p>"
+                     f"<table><tr><th>指標</th><th>季變化</th><th style='text-align:left'>解讀</th></tr>{rows}</table>"
+                     f"<p><b>綜合判讀：{n_up} 個上緣訊號、{n_down} 個下緣訊號 → T+1 營收落點{lean_s}</b></p>"
+                     "<p class='note'>門檻：合約負債/合約資產 ±20%、原料+在製品 +15%、製成品 +30%；未達門檻不構成訊號。</p>")
     if cl_sig and cl_sig.get("rates"):
         r_lo, r_hi = cl_sig["rates"]
         sig_html += (f"<p>合約負債交叉檢核：{cl_sig['quarter']} 期末 {_fmt(cl_sig['cl'] * 1000)} 百萬 × "
