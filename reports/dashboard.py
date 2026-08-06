@@ -152,6 +152,48 @@ def _comment(cfg: ReportsConfig, stock: str, payload: dict, api_key: str) -> str
     return res["text"]
 
 
+INTRO_SYSTEM = (
+    "你是財經編輯。根據以下資料（財報附註的公司沿革/業務範圍節錄、營收組成、深讀結論、"
+    "訊號解讀、營收預估），為這檔台股寫一份簡介，格式固定兩段：\n"
+    "## 主要業務\n2~3 句：這家公司靠什麼賺錢（產品/服務、商業模式、主要市場），用營收組成佐證比重。\n"
+    "## 潛在漲幅在哪\n2~3 句：上檔空間的驅動是什麼（訂單/轉換/毛利回升/一次性事件），"
+    "以及要成立需要什麼條件或觸發點。講驅動與條件，不喊目標價、不給報酬率數字。\n"
+    "鐵律：只根據提供資料，不引入外部知識、不杜撰；資料不足就少寫，不要湊。繁體中文。"
+)
+
+
+def _intro(cfg: ReportsConfig, stock: str, payload: dict, api_key: str) -> str:
+    """公司簡介（Luna），數據指紋快取。"""
+    cache = cfg.data_dir / "analysis" / f"{stock}_intro.json"
+    blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
+    fp = hashlib.sha1((INTRO_SYSTEM + blob).encode()).hexdigest()[:16]
+    if cache.exists():
+        try:
+            old = json.loads(cache.read_text(encoding="utf-8"))
+            if old.get("fp") == fp:
+                return old["text"]
+        except json.JSONDecodeError:
+            pass
+    res = llm.chat(cfg.comment_model, INTRO_SYSTEM, f"股票：{stock}\n\n{blob}", api_key)
+    cache.write_text(json.dumps({"fp": fp, "date": date.today().isoformat(), "text": res["text"]},
+                                ensure_ascii=False), encoding="utf-8")
+    return res["text"]
+
+
+def _business_excerpt(cfg: ReportsConfig, stock: str) -> str:
+    """最新一季財報「公司沿革及業務範圍」附近節錄（附註一，通常在文件前段）。"""
+    txts = sorted((cfg.data_dir / "text" / stock).glob("*.txt")) if (cfg.data_dir / "text" / stock).exists() else []
+    if not txts:
+        return ""
+    lines = txts[-1].read_text(encoding="utf-8").splitlines()
+    hits = [i for i, ln in enumerate(lines[:400])
+            if any(k in ln.replace(" ", "") for k in ("沿革", "業務範圍", "所營業務", "主要營業項目"))]
+    if not hits:
+        return "\n".join(lines[:60])[:4000]
+    lo = max(0, hits[0] - 5)
+    return "\n".join(lines[lo:lo + 80])[:6000]
+
+
 SIG_SYSTEM = (
     "你是資深投資分析師。以下是一檔台股「財報結構訊號」數據：最新兩季的合約負債/合約資產/存貨組成"
     "季變化、合約負債轉換檢核、近期營收預估區間、過往深讀結論。"
@@ -409,6 +451,7 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
     cf_html, cf_med = _cf_table(cf, nc) if cf else ("<p class='note'>無資料</p>", {})
 
     sig_html = ""
+    sig_text = ""
     if struct:
         rows = ""
         for sig_name, pct, note in struct["signals"]:
@@ -424,7 +467,8 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
                        "營收預估區間(仟元)": ({"T": nc["cur"], "T+1": nc["next"]} if nc else None),
                        "cl深讀結論": _cl_oneliner(cfg, stock)}
         try:
-            sig_html += f"<div style='margin-top:10px'>{_md2html(_sig_comment(cfg, stock, sig_payload, api_key))}</div>"
+            sig_text = _sig_comment(cfg, stock, sig_payload, api_key)
+            sig_html += f"<div style='margin-top:10px'>{_md2html(sig_text)}</div>"
         except Exception as exc:  # noqa: BLE001
             logger.warning("  %s 訊號解讀失敗：%s", stock, exc)
     if cl_sig and cl_sig.get("rates"):
@@ -434,6 +478,20 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
                      f"{_fmt(cl_sig['cl'] * r_lo * 1000)}~{_fmt(cl_sig['cl'] * r_hi * 1000)} 百萬</p>")
     if not sig_html:
         sig_html = "<p class='note'>尚無 cl 事實卡（未跑過 cl 深讀），無結構訊號。</p>"
+
+    # 公司簡介：業務（附註一節錄）＋潛在漲幅（既有分析組裝）＋股本（FinMind）
+    intro_payload = {"公司沿革與業務範圍節錄": _business_excerpt(cfg, stock),
+                     "營收組成": seg, "cl深讀結論": _cl_oneliner(cfg, stock),
+                     "訊號解讀": sig_text,
+                     "營收預估區間(仟元)": ({"T": nc["cur"], "T+1": nc["next"]} if nc else None)}
+    try:
+        intro_html = _md2html(_intro(cfg, stock, intro_payload, api_key))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("  %s 簡介生成失敗：%s", stock, exc)
+        intro_html = ""
+    if pl:
+        intro_html += (f"<p class='note'>股本 {pl['shares'] * 10 / 1e8:,.1f} 億元"
+                       f"（{pl['shares']:,} 股，面額 10 元，{pl['shares_date']}）</p>")
 
     ann_html = ""
     for a in anns[:15]:
@@ -506,6 +564,9 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 <p class="sub"><a href="index.html">← 總覽</a></p>
 <h1>{stock} {name}</h1>
 <p class="sub">產生於 {date.today().isoformat()}・資料源：FinMind／MOPS 財報附註／重訊庫</p>
+
+<h2>公司簡介</h2>
+<div class="card">{intro_html or "<p class='note'>資料不足，未生成簡介。</p>"}</div>
 
 <h2>四季展望（EPS 預估）</h2>
 <table><tr><th>季度</th><th>營收區間(百萬)</th><th>EPS 區間(元)</th></tr>{fc_rows or "<tr><td colspan=3>無月營收資料</td></tr>"}</table>
