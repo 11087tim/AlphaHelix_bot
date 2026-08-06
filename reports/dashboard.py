@@ -152,6 +152,35 @@ def _comment(cfg: ReportsConfig, stock: str, payload: dict, api_key: str) -> str
     return res["text"]
 
 
+SIG_SYSTEM = (
+    "你是資深投資分析師。以下是一檔台股「財報結構訊號」數據：最新兩季的合約負債/合約資產/存貨組成"
+    "季變化、合約負債轉換檢核、近期營收預估區間、過往深讀結論。"
+    "請寫 2~4 條條列解讀（每條一句、繁體中文）：這些結構變化組合起來透露什麼——"
+    "訂單/備貨/出貨節奏的因果、對未來一兩季營收落點的含義、以及哪個變化最值得盯。"
+    "口吻像分析師的旁註：直接說事，不用標題、不用結論標籤、不寫「綜合判讀」之類的總結詞。"
+    "鐵律：只根據提供數據，數字要一致；不杜撰、不引入外部知識。"
+)
+
+
+def _sig_comment(cfg: ReportsConfig, stock: str, payload: dict, api_key: str) -> str:
+    """訊號欄的 Opus 解讀，數據指紋快取。"""
+    cache = cfg.data_dir / "analysis" / f"{stock}_sig_comment.json"
+    blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
+    fp = hashlib.sha1((SIG_SYSTEM + blob).encode()).hexdigest()[:16]
+    if cache.exists():
+        try:
+            old = json.loads(cache.read_text(encoding="utf-8"))
+            if old.get("fp") == fp:
+                return old["text"]
+        except json.JSONDecodeError:
+            pass
+    res = llm.chat(cfg.strong_model, SIG_SYSTEM, f"股票：{stock}\n\n{blob}", api_key)
+    cache.write_text(json.dumps({"fp": fp, "date": date.today().isoformat(), "text": res["text"]},
+                                ensure_ascii=False), encoding="utf-8")
+    logger.info("  %s 訊號解讀（%s）✓ $%.4f", stock, cfg.strong_model, res.get("cost") or 0)
+    return res["text"]
+
+
 def _announcements_for(stock: str, days: int = 120) -> list[dict]:
     cutoff = (date.today() - timedelta(days=days)).isoformat()
     interp = {}
@@ -382,24 +411,22 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
     sig_html = ""
     if struct:
         rows = ""
-        n_up = n_down = 0
         for sig_name, pct, note in struct["signals"]:
-            if "上緣票" in note:
-                n_up += 1
-                tag, cls = "營收上緣訊號", "hi"
-            elif "下緣票" in note:
-                n_down += 1
-                tag, cls = "營收下緣訊號", "mat"
-            else:
-                tag, cls = "未達門檻", "rout"
             desc = note.lstrip("↑↓→ ").split("（")[0].strip() or "變化平穩"
             rows += (f"<tr><td>{sig_name}</td><td>{pct:+.0%}</td>"
-                     f"<td style='text-align:left'>{desc}<span class='tag {cls}'>{tag}</span></td></tr>")
-        lean_s = {"偏上緣": "偏向區間上緣", "偏下緣": "偏向區間下緣", "中性": "無明確方向"}.get(struct["lean"], struct["lean"])
+                     f"<td style='text-align:left'>{desc}</td></tr>")
         sig_html += (f"<p style='margin-top:0'>財報結構變化 {struct['from']} → {struct['to']}（季報數據，落後月營收一季）：</p>"
-                     f"<table><tr><th>指標</th><th>季變化</th><th style='text-align:left'>解讀</th></tr>{rows}</table>"
-                     f"<p><b>綜合判讀：{n_up} 個上緣訊號、{n_down} 個下緣訊號 → T+1 營收落點{lean_s}</b></p>"
-                     "<p class='note'>門檻：合約負債/合約資產 ±20%、原料+在製品 +15%、製成品 +30%；未達門檻不構成訊號。</p>")
+                     f"<table><tr><th>指標</th><th>季變化</th><th style='text-align:left'>解讀</th></tr>{rows}</table>")
+        sig_payload = {"結構變化": {"期間": f"{struct['from']}→{struct['to']}",
+                                "指標": [{"名稱": n, "季變化": f"{p:+.0%}", "註": note}
+                                       for n, p, note in struct["signals"]]},
+                       "合約負債檢核(金額為仟元)": cl_sig,
+                       "營收預估區間(仟元)": ({"T": nc["cur"], "T+1": nc["next"]} if nc else None),
+                       "cl深讀結論": _cl_oneliner(cfg, stock)}
+        try:
+            sig_html += f"<div style='margin-top:10px'>{_md2html(_sig_comment(cfg, stock, sig_payload, api_key))}</div>"
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("  %s 訊號解讀失敗：%s", stock, exc)
     if cl_sig and cl_sig.get("rates"):
         r_lo, r_hi = cl_sig["rates"]
         sig_html += (f"<p>合約負債交叉檢核：{cl_sig['quarter']} 期末 {_fmt(cl_sig['cl'] * 1000)} 百萬 × "
