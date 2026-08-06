@@ -65,12 +65,13 @@ def nowcast_stock(stock: str, token: str, years_back: int = 3) -> dict | None:
         return None
 
     def _qoq_factors(q: int) -> list[float]:
-        """歷史「第 q 季 → 次季」營收比值（近 years_back 年）。"""
+        """歷史「第 q 季 → 次季」營收比值（近 years_back 年）。
+        截幅 [0.3, 3.0]：微量營收/結構劇變公司的極端比值會把外推區間炸開，截掉。"""
         fs = []
         for y in range(cy - years_back, cy + 1):
             a, b = _q_sum(rev, y, q), _q_sum(rev, *_next_q(y, q))
             if a and b:
-                fs.append(b / a)
+                fs.append(min(3.0, max(0.3, b / a)))
         return fs
 
     # T+1：歷史 QoQ 季節因子
@@ -196,10 +197,16 @@ def _pl_model(stock: str, token: str) -> dict | None:
             if r.get(k) is not None:
                 r[k] = r[k] / 1000
 
-    gms = [r["GrossProfit"] / r["Revenue"] for r in q[-4:] if r.get("GrossProfit")]
-    if not gms:
+    # 毛利率穩健估計：近 8 季、截尾 [-60%, 85%]、取 P25–P75 四分位距——
+    # 單季減損造成的極端負毛利不再污染區間，但持續虧損的公司會誠實得到負值
+    gms_raw = [r["GrossProfit"] / r["Revenue"] for r in q[-8:] if r.get("GrossProfit") and r.get("Revenue")]
+    if not gms_raw:
         return None
-    gm = (min(gms), max(gms))
+    gs = sorted(max(-0.6, min(0.85, g)) for g in gms_raw)
+    n_g = len(gs)
+    gm = (gs[n_g // 4], gs[(3 * n_g) // 4]) if n_g >= 4 else (gs[0], gs[-1])
+    gm_mid = gs[n_g // 2]
+    volatile = min(gms_raw) < -0.1  # 曾有深度負毛利季 → 低可信標記（仍出數）
 
     pairs = [(r["Revenue"], r["OperatingExpenses"]) for r in q if r.get("OperatingExpenses")]
     if len(pairs) >= 6:
@@ -241,8 +248,7 @@ def _pl_model(stock: str, token: str) -> dict | None:
                     out.append((op + nonop) * (1 - tax) * parent * 1000 / shares)
         return (min(out), max(out))
 
-    # 樣本內回測：近 4 季用實際營收＋模型參數(毛利率取該季實際除外的中位) vs 實際 EPS
-    gm_mid = sorted(gms)[len(gms) // 2]
+    # 樣本內回測：近 4 季用實際營收＋模型參數 vs 實際 EPS
     errs = []
     for r in q[-4:]:
         if not (r.get("EPS") is not None and r.get("Revenue")):
@@ -252,11 +258,10 @@ def _pl_model(stock: str, token: str) -> dict | None:
         errs.append(abs(pred - r["EPS"]))
     mae = sum(errs) / len(errs) if errs else None
 
-    return {"gm": gm, "opex": opex, "nonop": nonop, "tax": tax, "parent": parent,
+    return {"gm": gm, "gm_mid": gm_mid, "opex": opex, "nonop": nonop, "tax": tax, "parent": parent,
             "shares": shares, "shares_date": shares_info["date"],
             "eps_range": eps_range, "mae": mae, "n_quarters": len(q),
-            # 近 4 季毛利率含負值（多為一次性減損污染或結構劇變）→ 線性外推必失真，EPS 拒估
-            "unstable": gm[0] < -0.1}
+            "volatile": volatile}
 
 
 def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
@@ -280,7 +285,7 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
             pl = None
 
         def _eps(rng):
-            return pl["eps_range"](rng) if pl and rng and not pl["unstable"] else None
+            return pl["eps_range"](rng) if pl and rng else None
 
         eps_cur, eps_n1, eps_n2 = _eps(nc["cur"]), _eps(nc["next"]), _eps(nc["t2"])
         nc.update({"eps": eps_cur, "eps_n1": eps_n1})
@@ -331,18 +336,16 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
                 lines.append(f"- {name} QoQ {pct:+.0%}：{note}")
             lines.append(f"- **綜合傾向：T+1 落點{struct['lean']}**（票決 {struct['votes']:+d}；"
                          "規則：預收/合約資產/備貨↑=上緣票，預收↓/製成品堆高=下緣票）")
-        if pl and pl["unstable"]:
-            lines.append(f"\n**損益模型：EPS 拒估**——近 4 季毛利率 [{pl['gm'][0]:.1%}, {pl['gm'][1]:.1%}] "
-                         "含深度負值（多屬一次性減損污染或業務結構劇變），線性外推必失真。"
-                         "請看 cl 深讀報告的個案判讀。")
-        elif pl:
+        if pl:
+            vol_s = ("；⚠ 近 8 季含深度負毛利季（減損/結構變動），毛利率已改用截尾四分位穩健區間，"
+                     "EPS 屬**低可信**，個案判讀見 cl 深讀") if pl["volatile"] else ""
             mae_s = f"，近 4 季樣本內回測 MAE {pl['mae']:.2f} 元" if pl["mae"] is not None else ""
             lines.append(f"\n**損益模型**（FinMind 季損益表 {pl['n_quarters']} 季，全程式）：\n"
-                         f"- EPS ＝ (營收 × 毛利率 [{pl['gm'][0]:.1%}, {pl['gm'][1]:.1%}]（近4季）"
+                         f"- EPS ＝ (營收 × 毛利率 [{pl['gm'][0]:.1%}, {pl['gm'][1]:.1%}]（近8季P25–P75截尾）"
                          f"− 營業費用（{pl['opex']['mode']}，殘差 ±{pl['opex']['err']:,.0f}）"
                          f"＋ 業外中位 {pl['nonop']:,.0f}）× (1−稅率 {pl['tax']:.0%}) "
                          f"× 母公司比率 {pl['parent']:.2f} ÷ {pl['shares']:,} 股"
-                         f"（{pl['shares_date']} 股本）{mae_s}。")
+                         f"（{pl['shares_date']} 股本）{mae_s}{vol_s}。")
         else:
             lines.append("\nEPS：FinMind 季損益資料不足（<4 季），僅出營收。")
         lines.append("\n方法：純程式計算（無 LLM）。T 用已公布月份÷近 3 年同季佔比；T+1/T+2 用季節因子；"

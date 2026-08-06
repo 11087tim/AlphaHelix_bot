@@ -170,8 +170,8 @@ def _income_table(inc: list[dict], pl, nc) -> str:
     fc_cols = []
     for lbl, rev_k in _fc_rev_cols(nc, [h["label"] for h in hist]):
         col = {"label": lbl, "est": True, "Revenue": rev_k * 1000}
-        if pl and not pl.get("unstable"):
-            gm_mid = (pl["gm"][0] + pl["gm"][1]) / 2
+        if pl:
+            gm_mid = pl["gm_mid"]
             gp = rev_k * gm_mid
             opex = pl["opex"]["a"] + pl["opex"]["b"] * rev_k
             op = gp - opex
@@ -257,7 +257,7 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
     anns = _announcements_for(stock)
 
     def eps(rng):
-        return pl["eps_range"](rng) if pl and rng and not pl.get("unstable") else None
+        return pl["eps_range"](rng) if pl and rng else None
 
     fc_rows = ""
     if nc:
@@ -267,15 +267,15 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
             e = eps(rng)
             fc_rows += (f"<tr><td>{label}<span class='tag {cls}'>{conf}</span></td>"
                         f"<td>{_rng((rng[0] / 1000, rng[1] / 1000), 0) if rng else '—'}</td>"
-                        f"<td>{_rng(e) if e else ('拒估' if pl and pl.get('unstable') else '—')}</td></tr>")
+                        f"<td>{_rng(e) if e else '—'}</td></tr>")
     model_note = ""
-    if pl and pl.get("unstable"):
-        model_note = f"損益模型拒估：近 4 季毛利率 {_rng(pl['gm'], 3)} 含深度負值（減損污染），線性外推必失真。"
-    elif pl:
-        model_note = (f"模型：毛利率 {_rng((pl['gm'][0] * 100, pl['gm'][1] * 100), 1)}%、"
+    if pl:
+        model_note = (f"模型：毛利率 {_rng((pl['gm'][0] * 100, pl['gm'][1] * 100), 1)}%（近8季P25–P75截尾）、"
                       f"{pl['opex']['mode']}、業外中位 {_fmt(pl['nonop'] * 1000)} 百萬、稅率 {pl['tax']:.0%}、"
                       f"母公司比率 {pl['parent']:.2f}、股數 {pl['shares']:,}"
-                      + (f"、回測 MAE {pl['mae']:.2f} 元" if pl.get("mae") is not None else ""))
+                      + (f"、回測 MAE {pl['mae']:.2f} 元" if pl.get("mae") is not None else "")
+                      + ("。⚠ 近 8 季含深度負毛利季，毛利率採穩健區間，EPS 低可信"
+                         if pl.get("volatile") else ""))
 
     inc_html = _income_table(inc, pl, nc) if inc else "<p class='note'>無季損益資料</p>"
     chart = _income_chart(inc) if inc else {}
@@ -377,7 +377,7 @@ if (CF) new Chart(cfChart, {{type:'bar', data:{{labels:CF.labels, datasets:[
     e_n1 = eps(nc["next"]) if nc else None
     return {"stock": stock, "name": name, "quarter": nc["quarter"] if nc else "—",
             "rev": nc["known_sum"] if nc else None, "eps": e_cur, "eps_n1": e_n1,
-            "mae": pl.get("mae") if pl else None, "unstable": bool(pl and pl.get("unstable"))}
+            "mae": pl.get("mae") if pl else None, "volatile": bool(pl and pl.get("volatile"))}
 
 
 def run_dashboard(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
@@ -392,7 +392,7 @@ def run_dashboard(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
             logger.warning("  %s 頁面產生失敗：%s", s, exc)
     trs = ""
     for r in rows:
-        eps_s = "拒估" if r["unstable"] else (_rng(r["eps"]) if r["eps"] else "—")
+        eps_s = (_rng(r["eps"]) if r["eps"] else "—") + (" ⚠" if r["volatile"] else "")
         mae_s = f"{r['mae']:.2f}" if r["mae"] is not None else "—"
         trs += (f"<tr><td><a href='{r['stock']}.html'>{r['stock']} {r['name']}</a></td>"
                 f"<td>{r['quarter']}</td><td>{_fmt(r['rev'], 1e3)}</td><td>{eps_s}</td>"
