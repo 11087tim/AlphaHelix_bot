@@ -71,16 +71,23 @@ def _segments(cfg: ReportsConfig, stock: str, api_key: str) -> dict | None:
 
 
 COMMENT_SYSTEM = (
-    "你是資深投資分析師。以下是一檔台股的程式化 EPS 預估數據包（四季展望、損益模型參數、"
-    "結構訊號、合約負債檢核、營收組成、近期重訊、過往深讀結論）。"
-    "請寫一段「預估解讀」，讓讀者看懂**為什麼未來幾季是這樣估**。格式（繁體中文、精簡有判斷）：\n"
-    "## 為什麼這樣估\n- 2~4 條：拆解 T 與 T+1 區間的來源——營收基礎是什麼（月營收實績/季節因子/合約負債轉換）、"
-    "毛利率假設為何、上下緣差距大的原因。\n"
-    "## 支撐與壓力\n- 上緣靠什麼訊號、下緣的風險是什麼（引用數據包裡的訊號與重訊）。\n"
-    "## 驗證點\n- 接下來哪個時點看什麼數據可以確認或推翻這個估計（月營收 10 日、財報日、特定重訊）。\n"
-    "最後一行「一句話：」總結。\n"
+    "你是資深投資分析師。以下是一檔台股的程式化預估數據包（四季展望、損益模型參數、"
+    "資產負債/現金流量預估法與近期數值、結構訊號、合約負債檢核、營收組成、近期重訊、過往深讀結論）。"
+    "請寫三段「報表預估解讀」，分別對應三張報表，各段以獨立一行的分隔符開頭（一字不差）：\n"
+    "===損益表===\n"
+    "## 這張表怎麼估\n- 說明預估欄數字的來源：營收基礎（月營收實績/季節因子/合約負債轉換）、"
+    "毛利率假設、費用擬合、業外與稅——為什麼中值是這個數。\n"
+    "## 支撐與壓力\n- 上緣靠什麼訊號、下緣的風險（引用結構訊號/檢核/重訊）。\n"
+    "## 驗證點\n- 哪個時點看什麼數據可確認或推翻（月營收 10 日、財報日、特定重訊）。\n"
+    "一句話：總結。\n"
+    "===資產負債===\n"
+    "- 說明預估法（應收/存貨＝佔營收比中位×預估營收）與哪些科目不估、為何。\n"
+    "- 判讀近期科目變化的訊號意義（如應收暴增、存貨結構、合約負債方向），連結到營收預估的可信度。\n"
+    "===現金流量===\n"
+    "- 說明預估法（近 8 季中位粗估）與侷限。\n"
+    "- 判讀營運現金流 vs 帳面獲利的落差、資本支出節奏透露的訊息。\n"
     "鐵律：只根據數據包內容，數字要與數據包一致並標來源（如「模型」「月營收」「重訊 07-31」）；"
-    "不引入外部知識、不杜撰；低可信(volatile)的檔要明講模型侷限。"
+    "不引入外部知識、不杜撰；低可信(volatile)的檔要明講模型侷限。繁體中文、精簡有判斷。"
 )
 
 
@@ -278,7 +285,7 @@ _BS_ROWS = [("現金及約當現金", "CashAndCashEquivalents"), ("應收帳款"
             ("資產總額", "TotalAssets"), ("權益總額", "Equity")]
 
 
-def _bs_table(bs: list[dict], inc: list[dict], nc) -> str:
+def _bs_table(bs: list[dict], inc: list[dict], nc) -> tuple[str, dict]:
     hist = [dict(r, label=_q_label(r["date"])) for r in bs[-8:]][::-1]
     rev_by_date = {r["date"]: r.get("Revenue") for r in inc}
     ratios = {}
@@ -293,7 +300,7 @@ def _bs_table(bs: list[dict], inc: list[dict], nc) -> str:
             if ratio:
                 col[key] = ratio * rev_k * 1000
         fc_cols.append(col)
-    return _render_table(fc_cols + hist, _BS_ROWS)
+    return _render_table(fc_cols + hist, _BS_ROWS), ratios
 
 
 _CF_ROWS = [("營運現金流", "NetCashInflowFromOperatingActivities"),
@@ -310,7 +317,7 @@ def _cf_table(cf: list[dict], nc) -> str:
         med[key] = vals[len(vals) // 2] if vals else None
     fc_cols = [dict({"label": lbl, "est": True}, **med)
                for lbl, _ in _fc_rev_cols(nc, [h["label"] for h in hist])]
-    return _render_table(fc_cols + hist, _CF_ROWS)
+    return _render_table(fc_cols + hist, _CF_ROWS), med
 
 
 def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -> dict:
@@ -348,8 +355,8 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 
     inc_html = _income_table(inc, pl, nc) if inc else "<p class='note'>無季損益資料</p>"
     chart = _income_chart(inc) if inc else {}
-    bs_html = _bs_table(bs, inc, nc) if bs else "<p class='note'>無資料</p>"
-    cf_html = _cf_table(cf, nc) if cf else "<p class='note'>無資料</p>"
+    bs_html, bs_ratios = _bs_table(bs, inc, nc) if bs else ("<p class='note'>無資料</p>", {})
+    cf_html, cf_med = _cf_table(cf, nc) if cf else ("<p class='note'>無資料</p>", {})
 
     sig_html = ""
     if struct:
@@ -382,15 +389,30 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
                    "業外中位仟元": pl["nonop"], "稅率": pl["tax"], "母公司比率": pl["parent"],
                    "回測MAE元": pl["mae"], "volatile低可信": pl["volatile"]} if pl else None),
         "結構訊號": struct, "合約負債檢核": cl_sig, "營收組成": seg,
+        "資產負債預估法": {"方法": "應收/存貨＝佔營收比近4季中位×預估營收，其餘科目不預估",
+                     "比率": bs_ratios,
+                     "近2季科目(元)": [{k: r.get(k) for k in
+                                   ("date", "CashAndCashEquivalents", "AccountsReceivableNet",
+                                    "Inventories", "CurrentContractLiabilities")} for r in bs[-2:]]},
+        "現金流量預估法": {"方法": "各科目近8季中位數粗估", "中位數(元)": cf_med,
+                     "近4季(元)": cf[-4:]},
         "近期重訊": [{"日期": a["date"], "主旨": a["subject"][:60],
                   "判讀": (a["interp"] or {}).get("summary")} for a in anns[:8]],
         "cl深讀一句話": _cl_oneliner(cfg, stock),
     }
+    c_inc = c_bs = c_cf = "<p class='note'>本次未產生（LLM 呼叫失敗），重跑 dashboard 可補。</p>"
     try:
-        comment_html = _md2html(_comment(cfg, stock, payload, api_key))
+        raw = _comment(cfg, stock, payload, api_key)
+        parts = re.split(r"===\s*(損益表|資產負債|現金流量)\s*===", raw)
+        blocks = {parts[i]: parts[i + 1].strip() for i in range(1, len(parts) - 1, 2)}
+        if blocks:
+            c_inc = _md2html(blocks.get("損益表", ""))
+            c_bs = _md2html(blocks.get("資產負債", ""))
+            c_cf = _md2html(blocks.get("現金流量", ""))
+        else:  # 模型沒照分隔符輸出時整段放損益表下
+            c_inc, c_bs, c_cf = _md2html(raw), "", ""
     except Exception as exc:  # noqa: BLE001
         logger.warning("  %s AI 判讀失敗：%s", stock, exc)
-        comment_html = "<p class='note'>本次未產生（LLM 呼叫失敗），重跑 dashboard 可補。</p>"
 
     seg_pct = None
     if seg and seg.get("items"):
@@ -433,15 +455,17 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 </div>
 
 <h2>損益表（單季，左起為預估季）</h2>{inc_html}
-<p class="note">預估欄＝模型中值：營收取 nowcast 區間中點、毛利率取近 4 季中值、費用用擬合線、業外/稅率用中位；區間見上方四季展望。</p>
+<p class="note">預估欄＝模型中值：營收取 nowcast 區間中點、毛利率取近 8 季截尾中值、費用用擬合線、業外/稅率用中位；區間見上方四季展望。</p>
+<div class="card">{c_inc}</div>
+
 <h2>資產負債關鍵科目（期末，左起為預估季）</h2>{bs_html}
 <p class="note">預估欄＝營收比率法：應收/存貨按近 4 季「佔營收比」中位 × 預估營收；其餘科目不預估。</p>
+<div class="card">{c_bs}</div>
+
 <h2>現金流量（單季，年內差分還原，左起為預估季）</h2>{cf_html}
 <p class="note">預估欄＝近 8 季中位數粗估，僅供量級參考。</p>
-<div class="card" style="margin-top:14px"><canvas id="cfChart" height="120"></canvas></div>
-
-<h2>AI 判讀（為什麼這樣估）</h2>
-<div class="card">{comment_html}</div>
+<div class="card" style="margin-bottom:14px"><canvas id="cfChart" height="120"></canvas></div>
+<div class="card">{c_cf}</div>
 
 <h2>重訊時間軸（近 120 天）</h2>{ann_html}
 
