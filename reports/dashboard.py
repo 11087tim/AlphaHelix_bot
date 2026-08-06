@@ -428,12 +428,12 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 
     fc_rows = ""
     if nc:
-        for label, rng, conf, cls in ((f"{nc['quarter']} (T)", nc["cur"], "高", "hi"),
-                                      (f"{nc['next_quarter']} (T+1)", nc["next"], "中", "mid"),
-                                      (f"{nc['t2_quarter']} (T+2)", nc["t2"], "低", "lo"),
-                                      (f"{nc['t3_quarter']} (T+3)", nc["t3"], "極低", "lo")):
+        for label, rng in ((f"{nc['quarter']} (T)", nc["cur"]),
+                           (f"{nc['next_quarter']} (T+1)", nc["next"]),
+                           (f"{nc['t2_quarter']} (T+2)", nc["t2"]),
+                           (f"{nc['t3_quarter']} (T+3)", nc["t3"])):
             e = eps(rng)
-            fc_rows += (f"<tr><td>{label}<span class='tag {cls}'>{conf}</span></td>"
+            fc_rows += (f"<tr><td>{label}</td>"
                         f"<td>{_mid_rng(rng, 1000, 0)}</td>"
                         f"<td>{_mid_rng(e, 1, 2)}</td></tr>")
     model_note = ""
