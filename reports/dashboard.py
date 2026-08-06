@@ -24,12 +24,15 @@ logger = logging.getLogger(__name__)
 
 SEGMENT_SYSTEM = (
     "你是資料萃取器。以下是台股公司最新一季財報中與收入細分/部門資訊相關的節錄。"
-    "請找出「最新一季（節錄開頭標示的季度）」揭露最完整的一個營收拆分維度"
-    "（優先順序：產品/部門別 > 地區別），只輸出一個 JSON 物件：\n"
-    '{"dimension": "維度名稱(如 部門別/地區別)", "period": "如 2026Q1", '
-    '"items": [{"label": "類別名", "value": 金額仟元}, ...]}\n'
+    "請找出「最新一季（節錄開頭標示的季度）」的營收拆分，維度必須是"
+    "**產品別/服務別/業務部門別**（公司靠什麼工作/服務賺錢），"
+    "【絕對不要用地區別/國家別】。只輸出一個 JSON 物件：\n"
+    '{"dimension": "維度名稱(如 部門別/產品別/服務別)", "period": "如 2026Q1", '
+    '"items": [{"label": "類別名", "value": 金額仟元}, ...], "note": "備註或空字串"}\n'
     "規則：金額用仟元；只放同一維度、同一期間的項目；合計/小計不要放；"
-    "找不到可用拆分就輸出 {\"items\": []}。不要杜撰。"
+    "若有多個可用維度（如產品別、技術平台別、部門別），**選類別數最多、資訊量最大的那個**"
+    "（例如「晶圓/其他」兩類 vs 平台別六類 → 選平台別；百分比拆分也可以，value 填百分比數值並在 note 註明「百分比」）；"
+    "若財報只揭露地區別、沒有產品/服務拆分，輸出 {\"items\": [], \"note\": \"僅揭露地區別\"}。不要杜撰。"
 )
 
 _KW = ["收入之細分", "收入細分", "部門資訊", "營運部門", "客戶合約", "地區"]
@@ -222,7 +225,14 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
         ann_html += f"<li>{a['date']}　{a['subject'][:60]}{tag}</li>"
     ann_html = f"<ul style='font-size:13.5px'>{ann_html}</ul>" if ann_html else "<p class='note'>近 120 天無重訊（本地庫）。</p>"
 
-    seg_json = json.dumps(seg, ensure_ascii=False) if seg and seg.get("items") else "null"
+    seg_pct = None
+    if seg and seg.get("items"):
+        total = sum(i["value"] for i in seg["items"] if i.get("value"))
+        if total > 0:
+            seg_pct = {"dimension": seg.get("dimension", ""), "period": seg.get("period", ""),
+                       "items": [{"label": i["label"], "pct": round(i["value"] / total * 100, 1)}
+                                 for i in seg["items"] if i.get("value")]}
+    seg_json = json.dumps(seg_pct, ensure_ascii=False) if seg_pct else "null"
     chart_json = json.dumps(chart, ensure_ascii=False)
     cf_chart = json.dumps({"labels": [f"{r['date'][:4]}Q{(int(r['date'][5:7]) - 1) // 3 + 1}" for r in cf[-8:]],
                            "op": [round(r["NetCashInflowFromOperatingActivities"] / 1e6)
@@ -240,7 +250,7 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 <body><div class="wrap">
 <p class="sub"><a href="index.html">← 總覽</a></p>
 <h1>{stock} {name}</h1>
-<p class="sub">產生於 {date.today().isoformat()}・資料源：FinMind／MOPS 財報附註／重訊庫・所有推估為模型值非投資建議</p>
+<p class="sub">產生於 {date.today().isoformat()}・資料源：FinMind／MOPS 財報附註／重訊庫</p>
 
 <h2>四季展望（EPS 預估）</h2>
 <table><tr><th>季度</th><th>營收區間(百萬)</th><th>EPS 區間(元)</th></tr>{fc_rows or "<tr><td colspan=3>無月營收資料</td></tr>"}</table>
@@ -252,7 +262,7 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
 <div><h2>營收與毛利率（8 季）</h2><div class="card"><canvas id="revChart" height="210"></canvas></div></div>
 <div><h2>營收組成{f"（{seg.get('dimension','')}，{seg.get('period','')}）" if seg and seg.get('items') else ""}</h2>
 <div class="card"><canvas id="pieChart" height="210"></canvas>
-{"" if seg and seg.get('items') else "<p class='note'>財報附註無可用拆分或尚未萃取。</p>"}</div></div>
+{"" if seg_pct else f"<p class='note'>財報附註無產品/服務別拆分{('（' + seg['note'] + '）') if seg and seg.get('note') else ''}。</p>"}</div></div>
 </div>
 
 <h2>損益表（單季）</h2>{inc_html}
@@ -268,9 +278,9 @@ if (C.labels) new Chart(revChart, {{type:'bar', data:{{labels:C.labels, datasets
  {{label:'營收(百萬)', data:C.rev, backgroundColor:'#AFA9EC', yAxisID:'y'}},
  {{label:'毛利率%', data:C.gm, type:'line', borderColor:'#D85A30', yAxisID:'y2', tension:.2}}]}},
  options:{{scales:{{y:{{position:'left'}}, y2:{{position:'right', grid:{{display:false}}}}}}}}}});
-if (SEG) new Chart(pieChart, {{type:'doughnut', data:{{labels:SEG.items.map(i=>i.label),
- datasets:[{{data:SEG.items.map(i=>i.value), backgroundColor:['#534AB7','#1D9E75','#D85A30','#D4537E','#378ADD','#BA7517','#888780','#97C459']}}]}},
- options:{{plugins:{{legend:{{position:'right'}}}}}}}});
+if (SEG) new Chart(pieChart, {{type:'doughnut', data:{{labels:SEG.items.map(i=>`${{i.label}} ${{i.pct}}%`),
+ datasets:[{{data:SEG.items.map(i=>i.pct), backgroundColor:['#534AB7','#1D9E75','#D85A30','#D4537E','#378ADD','#BA7517','#888780','#97C459']}}]}},
+ options:{{plugins:{{legend:{{position:'right'}}, tooltip:{{callbacks:{{label:(c)=>c.label}}}}}}}}}});
 if (CF) new Chart(cfChart, {{type:'bar', data:{{labels:CF.labels, datasets:[
  {{label:'營運', data:CF.op, backgroundColor:'#1D9E75'}},
  {{label:'投資', data:CF.inv, backgroundColor:'#D85A30'}},
@@ -309,7 +319,7 @@ def run_dashboard(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
     html = f"""<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>公司檔案總覽</title><style>{_CSS}</style></head><body><div class="wrap">
-<h1>公司檔案總覽</h1><p class="sub">產生於 {date.today().isoformat()}・模型值非投資建議</p>
+<h1>公司檔案總覽</h1><p class="sub">產生於 {date.today().isoformat()}</p>
 <table><tr><th>公司</th><th>T 季度</th><th>T 營收(百萬)</th><th>T EPS 區間</th><th>T+1 EPS 區間</th><th>回測 MAE</th></tr>{trs}</table>
 </div></body></html>"""
     (cfg.data_dir / "dashboard" / "index.html").write_text(html, encoding="utf-8")
