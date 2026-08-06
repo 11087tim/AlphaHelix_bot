@@ -87,6 +87,46 @@ def quarterly_income(stock: str, token: str, start_date: str = "2023-01-01") -> 
     return [by_date[d] for d in sorted(by_date)]
 
 
+def balance_sheet_series(stock: str, token: str, start_date: str = "2023-06-01") -> list[dict]:
+    """資產負債表關鍵科目逐季（元，時點值）。缺項為 None。"""
+    wanted = {"CashAndCashEquivalents": "現金及約當現金", "AccountsReceivableNet": "應收帳款淨額",
+              "Inventories": "存貨", "CurrentContractLiabilities": "合約負債-流動",
+              "TotalAssets": "資產總額", "Equity": "權益總額"}
+    rows = _fetch("TaiwanStockBalanceSheet", stock, start_date, token)
+    by_date: dict[str, dict] = {}
+    for r in rows:
+        if r["type"] in wanted:
+            by_date.setdefault(r["date"], {"date": r["date"]})[r["type"]] = r["value"]
+    return [by_date[d] for d in sorted(by_date)]
+
+
+_CF_TYPES = {"NetCashInflowFromOperatingActivities": "營運現金流",
+             "CashProvidedByInvestingActivities": "投資現金流",
+             "CashFlowsProvidedFromFinancingActivities": "籌資現金流",
+             "PropertyAndPlantAndEquipment": "取得不動產廠房設備",
+             "Depreciation": "折舊"}
+
+
+def cash_flow_series(stock: str, token: str, start_date: str = "2023-06-01") -> list[dict]:
+    """現金流量表關鍵科目逐季（元）。FinMind 給的是年內累計，這裡差分還原單季：
+    Q1 照用；Qn ＝ 累計n − 累計n-1（跨年重置）。"""
+    rows = _fetch("TaiwanStockCashFlowsStatement", stock, start_date, token)
+    by_date: dict[str, dict] = {}
+    for r in rows:
+        if r["type"] in _CF_TYPES:
+            by_date.setdefault(r["date"], {"date": r["date"]})[r["type"]] = r["value"]
+    dates = sorted(by_date)
+    out = []
+    for i, d in enumerate(dates):
+        rec = {"date": d}
+        prev = by_date[dates[i - 1]] if i and dates[i - 1][:4] == d[:4] else {}
+        for t in _CF_TYPES:
+            cur = by_date[d].get(t)
+            rec[t] = cur - prev.get(t, 0) if cur is not None else None
+        out.append(rec)
+    return out
+
+
 def month_revenue(stock: str, token: str, start_date: str = "2024-01-01") -> list[dict]:
     """月營收（元），依月份排序。用於：(1)推導單季營收 (2)最新月份即時驗證轉換是否發生。"""
     rows = _fetch("TaiwanStockMonthRevenue", stock, start_date, token)

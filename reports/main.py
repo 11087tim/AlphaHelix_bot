@@ -73,6 +73,10 @@ def main(argv: list[str]) -> int:
         # nowcast [股號 ...]：月營收估當季/次季營收與 EPS 基線，未給股號跑全清單
         from reports.nowcast import run_nowcast
         return run_nowcast(cfg, argv[1:] or None)
+    if mode == "dashboard":
+        # dashboard [股號 ...]：產生每檔公司頁+總覽（reports_data/dashboard/）
+        from reports.dashboard import run_dashboard
+        return run_dashboard(cfg, argv[1:] or None)
     if mode == "events":
         # events [天數]：追蹤股重訊 LLM 判讀（material/影響/方向/季度），預設近 7 天
         from reports.events import run_events
