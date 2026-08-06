@@ -297,10 +297,17 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
 
         yoy = f"{(nc['cur'][0] + nc['cur'][1]) / 2 / nc['yoy_base'] - 1:+.0%}" if nc["yoy_base"] else "—"
 
+        def _mr(rng, nd=0):
+            """中值（lo~hi）；單點只印值。"""
+            if not rng:
+                return "—"
+            lo, hi = rng
+            if abs(hi - lo) < 10 ** -nd / 2:
+                return f"{lo:,.{nd}f}"
+            return f"**{(lo + hi) / 2:,.{nd}f}**（{lo:,.{nd}f}~{hi:,.{nd}f}）"
+
         def _row(label, rng, eps_rng, conf, basis):
-            rev = f"[{rng[0]:,.0f}, {rng[1]:,.0f}]" if rng else "—"
-            eps_s = f"[{eps_rng[0]:.2f}, {eps_rng[1]:.2f}]" if eps_rng else "—"
-            return f"| {label} | {rev} | {eps_s} | {conf} | {basis} |"
+            return f"| {label} | {_mr(rng)} | {_mr(eps_rng, 2)} | {conf} | {basis} |"
 
         lines = [f"# {s} 四季展望（Nowcast，至 {nc['latest_month']}）", "",
                  "| 季度 | 營收區間(仟元) | EPS 區間(元) | 信心 | 主要依據 |", "|---|---|---|---|---|",
@@ -322,8 +329,8 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
                 r_lo, r_hi = cl_sig["rates"]
                 imp = (cl_sig["cl"] * r_lo, cl_sig["cl"] * r_hi)
                 msg = (f"**合約負債交叉檢核**：{cl_sig['quarter']} 期末餘額 {cl_sig['cl']:,} 仟元 × "
-                       f"揭露轉換率 [{r_lo:.0%}, {r_hi:.0%}] → **{tgt}** 存量轉出隱含 "
-                       f"[{imp[0]:,.0f}, {imp[1]:,.0f}] 仟元。")
+                       f"揭露轉換率 {r_lo:.0%}~{r_hi:.0%} → **{tgt}** 存量轉出隱含 "
+                       f"{imp[0]:,.0f}~{imp[1]:,.0f} 仟元。")
                 if tgt == nc["quarter"] and len(nc["known_months"]) == 3:
                     ratio = nc["known_sum"] / ((imp[0] + imp[1]) / 2)
                     verdict = ("轉換大致兌現" if 0.85 <= ratio <= 1.15 else
@@ -346,7 +353,7 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
                      "EPS 屬**低可信**，個案判讀見 cl 深讀") if pl["volatile"] else ""
             mae_s = f"，近 4 季樣本內回測 MAE {pl['mae']:.2f} 元" if pl["mae"] is not None else ""
             lines.append(f"\n**損益模型**（FinMind 季損益表 {pl['n_quarters']} 季，全程式）：\n"
-                         f"- EPS ＝ (營收 × 毛利率 [{pl['gm'][0]:.1%}, {pl['gm'][1]:.1%}]（近8季P25–P75截尾）"
+                         f"- EPS ＝ (營收 × 毛利率 {pl['gm'][0]:.1%}~{pl['gm'][1]:.1%}（近8季P25–P75截尾）"
                          f"− 營業費用（{pl['opex']['mode']}，殘差 ±{pl['opex']['err']:,.0f}）"
                          f"＋ 業外中位 {pl['nonop']:,.0f}）× (1−稅率 {pl['tax']:.0%}) "
                          f"× 母公司比率 {pl['parent']:.2f} ÷ {pl['shares']:,} 股"
@@ -366,8 +373,8 @@ def run_nowcast(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
     for nc in rows:
         lo, hi = nc["cur"]
         yoy = f"{(lo + hi) / 2 / nc['yoy_base'] - 1:+.0%}" if nc["yoy_base"] else "—"
-        e = f"[{nc['eps'][0]:.2f}, {nc['eps'][1]:.2f}]" if nc["eps"] else "—"
-        e1 = f"[{nc['eps_n1'][0]:.2f}, {nc['eps_n1'][1]:.2f}]" if nc.get("eps_n1") else "—"
-        print(f"{nc['stock']:<6}{nc['quarter']:<8}[{lo / 1000:>7,.0f},{hi / 1000:>8,.0f}]  {yoy:<8}{e:<14}{e1:<14}")
+        e = f"{nc['eps'][0]:.2f}~{nc['eps'][1]:.2f}" if nc["eps"] else "—"
+        e1 = f"{nc['eps_n1'][0]:.2f}~{nc['eps_n1'][1]:.2f}" if nc.get("eps_n1") else "—"
+        print(f"{nc['stock']:<6}{nc['quarter']:<8}{lo / 1000:>7,.0f}~{hi / 1000:<8,.0f}  {yoy:<8}{e:<14}{e1:<14}")
     logger.info("nowcast 完成 %d 檔，詳情見 analysis/<股號>_nowcast.md", len(rows))
     return 0

@@ -79,7 +79,8 @@ COMMENT_SYSTEM = (
     "毛利率假設、費用擬合、業外與稅——為什麼中值是這個數。\n"
     "## 支撐與壓力\n- 上緣靠什麼訊號、下緣的風險（引用結構訊號/檢核/重訊）。\n"
     "## 驗證點\n- 哪個時點看什麼數據可確認或推翻（月營收 10 日、財報日、特定重訊）。\n"
-    "一句話：總結。\n"
+    "最後一行以「#! 」開頭寫結論大標：一個有明確立場的判斷句（≤28 字），"
+    "直接下判斷，禁止「一句話」「總結」「結論」等前綴詞。\n"
     "===資產負債===\n"
     "- 說明預估法（應收/存貨＝佔營收比中位×預估營收）與哪些科目不估、為何。\n"
     "- 判讀近期科目變化的訊號意義（如應收暴增、存貨結構、合約負債方向），連結到營收預估的可信度。\n"
@@ -97,7 +98,12 @@ def _md2html(md: str) -> str:
     for ln in md.splitlines():
         ln = ln.strip()
         ln = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", ln)
-        if ln.startswith("## "):
+        if ln.startswith("#! "):
+            if in_ul:
+                out.append("</ul>")
+                in_ul = False
+            out.append(f"<h3 class='concl'>{ln[3:]}</h3>")
+        elif ln.startswith("## "):
             if in_ul:
                 out.append("</ul>")
                 in_ul = False
@@ -130,7 +136,8 @@ def _comment(cfg: ReportsConfig, stock: str, payload: dict, api_key: str) -> str
     """Opus 預估解讀，數據指紋快取：payload 沒變就不重新生成。"""
     cache = cfg.data_dir / "analysis" / f"{stock}_comment.json"
     blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
-    fp = hashlib.sha1(blob.encode()).hexdigest()[:16]
+    # 指紋含 prompt：改提示詞時全部重生成，不然舊格式評論會殘留
+    fp = hashlib.sha1((COMMENT_SYSTEM + blob).encode()).hexdigest()[:16]
     if cache.exists():
         try:
             old = json.loads(cache.read_text(encoding="utf-8"))
@@ -183,7 +190,17 @@ def _fmt(v, div=1e6, nd=0):
 
 
 def _rng(t, nd=2):
-    return f"[{t[0]:,.{nd}f}, {t[1]:,.{nd}f}]" if t else "—"
+    return f"{t[0]:,.{nd}f}~{t[1]:,.{nd}f}" if t else "—"
+
+
+def _mid_rng(rng, div=1.0, nd=0):
+    """區間呈現：粗體中值＋淡色範圍（lo~hi）；單點只印值。"""
+    if not rng:
+        return "—"
+    lo, hi = rng[0] / div, rng[1] / div
+    if abs(hi - lo) < 10 ** -nd / 2:
+        return f"{lo:,.{nd}f}"
+    return f"<b>{(lo + hi) / 2:,.{nd}f}</b> <span class='rng'>{lo:,.{nd}f}~{hi:,.{nd}f}</span>"
 
 
 _CSS = """
@@ -202,6 +219,8 @@ th{background:#efede6;font-weight:500} td:first-child,th:first-child{text-align:
 .mat{background:#fcebeb;color:#791f1f}.rout{background:#f1efe8;color:#666}
 .scroll{overflow-x:auto}
 th.est{background:#EEEDFE;color:#3C3489} td.est{background:#f7f6fd;color:#3C3489}
+.rng{color:#999;font-size:12px;white-space:nowrap}
+h3.concl{border-top:1px solid #eee;padding-top:10px;margin:14px 0 2px;font-size:15.5px}
 @media(max-width:820px){.grid{grid-template-columns:1fr}}
 """
 
@@ -344,8 +363,8 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
                                       (f"{nc['t3_quarter']} (T+3)", nc["t3"], "極低", "lo")):
             e = eps(rng)
             fc_rows += (f"<tr><td>{label}<span class='tag {cls}'>{conf}</span></td>"
-                        f"<td>{_rng((rng[0] / 1000, rng[1] / 1000), 0) if rng else '—'}</td>"
-                        f"<td>{_rng(e) if e else '—'}</td></tr>")
+                        f"<td>{_mid_rng(rng, 1000, 0)}</td>"
+                        f"<td>{_mid_rng(e, 1, 2)}</td></tr>")
     model_note = ""
     if pl:
         model_note = (f"模型：毛利率 {_rng((pl['gm'][0] * 100, pl['gm'][1] * 100), 1)}%（近8季P25–P75截尾）、"
@@ -367,8 +386,8 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
     if cl_sig and cl_sig.get("rates"):
         r_lo, r_hi = cl_sig["rates"]
         sig_html += (f"<p>合約負債交叉檢核：{cl_sig['quarter']} 期末 {_fmt(cl_sig['cl'] * 1000)} 百萬 × "
-                     f"轉換率 [{r_lo:.0%}, {r_hi:.0%}] → 次季隱含 "
-                     f"{_fmt(cl_sig['cl'] * r_lo * 1000)}–{_fmt(cl_sig['cl'] * r_hi * 1000)} 百萬</p>")
+                     f"轉換率 {r_lo:.0%}~{r_hi:.0%} → 次季隱含 "
+                     f"{_fmt(cl_sig['cl'] * r_lo * 1000)}~{_fmt(cl_sig['cl'] * r_hi * 1000)} 百萬</p>")
     if not sig_html:
         sig_html = "<p class='note'>尚無 cl 事實卡（未跑過 cl 深讀），無結構訊號。</p>"
 
@@ -401,7 +420,7 @@ def build_stock_page(cfg: ReportsConfig, stock: str, token: str, api_key: str) -
                      "近4季(元)": cf[-4:]},
         "近期重訊": [{"日期": a["date"], "主旨": a["subject"][:60],
                   "判讀": (a["interp"] or {}).get("summary")} for a in anns[:8]],
-        "cl深讀一句話": _cl_oneliner(cfg, stock),
+        "cl深讀結論": _cl_oneliner(cfg, stock),
     }
     c_inc = c_bs = c_cf = "<p class='note'>本次未產生（LLM 呼叫失敗），重跑 dashboard 可補。</p>"
     try:
@@ -510,11 +529,11 @@ def run_dashboard(cfg: ReportsConfig, stocks: list[str] | None = None) -> int:
             logger.warning("  %s 頁面產生失敗：%s", s, exc)
     trs = ""
     for r in rows:
-        eps_s = (_rng(r["eps"]) if r["eps"] else "—") + (" ⚠" if r["volatile"] else "")
+        eps_s = _mid_rng(r["eps"], 1, 2) + (" ⚠" if r["volatile"] else "")
         mae_s = f"{r['mae']:.2f}" if r["mae"] is not None else "—"
         trs += (f"<tr><td><a href='{r['stock']}.html'>{r['stock']} {r['name']}</a></td>"
                 f"<td>{r['quarter']}</td><td>{_fmt(r['rev'], 1e3)}</td><td>{eps_s}</td>"
-                f"<td>{_rng(r['eps_n1']) if r['eps_n1'] else '—'}</td>"
+                f"<td>{_mid_rng(r['eps_n1'], 1, 2)}</td>"
                 f"<td>{mae_s}</td></tr>")
     html = f"""<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
