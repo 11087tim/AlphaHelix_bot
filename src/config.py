@@ -43,6 +43,10 @@ class Config:
     youtube_channels: list[str]
     youtube_window_hours: float
     youtube_max_videos: int
+    articles_enabled: bool
+    articles_sources: list[dict]     # [{name, url}]（RSS 文章來源，如 LessWrong 精選）
+    articles_window_hours: float
+    articles_max: int                # 每來源單次最多處理幾篇
 
 
 class ConfigError(RuntimeError):
@@ -108,6 +112,13 @@ def load_config(config_path: Path | None = None) -> Config:
         email_prod = _norm_addrs(email.get("to"))
     email_prod_hours = [int(h) for h in (email.get("prod_hours") or [8, 20])]
 
+    articles_cfg = raw.get("articles", {}) or {}
+    articles_sources = [
+        {"name": str(x.get("name", "")).strip() or str(x.get("url", "")), "url": str(x.get("url", "")).strip()}
+        for x in (articles_cfg.get("sources") or [])
+        if isinstance(x, dict) and str(x.get("url", "")).strip()
+    ]
+
     return Config(
         accounts=accounts,
         keywords=keywords,
@@ -141,4 +152,8 @@ def load_config(config_path: Path | None = None) -> Config:
         youtube_channels=youtube_channels,
         youtube_window_hours=float(youtube.get("window_hours", 336)),
         youtube_max_videos=int(youtube.get("max_videos", 2)),
+        articles_enabled=bool(articles_cfg.get("enabled", False)) and bool(articles_sources),
+        articles_sources=articles_sources,
+        articles_window_hours=float(articles_cfg.get("window_hours", 336)),
+        articles_max=int(articles_cfg.get("max_articles", 3)),
     )

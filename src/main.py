@@ -12,7 +12,7 @@ if __package__:
     from .config import Config, ConfigError, load_config
     from . import (x_client, summarizer, site_generator, emailer, publisher,
                    graph_link, reports_bridge, memory_link, memory_extract,
-                   podcast_client, transcribe, podcast_distill, youtube_client)
+                   podcast_client, transcribe, podcast_distill, youtube_client, article_client)
     from .storage import Storage
     from .digest_store import DigestStore
     from .pending_store import PendingStore, SNAPSHOT_PATH
@@ -24,7 +24,7 @@ else:
     from src.config import Config, ConfigError, load_config
     from src import (x_client, summarizer, site_generator, emailer, publisher,
                      graph_link, reports_bridge, memory_link, memory_extract,
-                     podcast_client, transcribe, podcast_distill, youtube_client)
+                     podcast_client, transcribe, podcast_distill, youtube_client, article_client)
     from src.storage import Storage
     from src.digest_store import DigestStore
     from src.pending_store import PendingStore, SNAPSHOT_PATH
@@ -202,7 +202,7 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
 
     # 長訪談/論壇（Podcast + YouTube 蒸餾要點）自成頂層分類，享有同樣的 graph/財報 延伸
     podcast_items = [t for t in tweets
-                     if str(t.get("source", "")).startswith(("podcast:", "youtube:"))]
+                     if str(t.get("source", "")).startswith(("podcast:", "youtube:", "article:"))]
     podcast_sections = []
     if podcast_items:
         sec = _analyze("", podcast_items, cfg, describe_media,
@@ -439,11 +439,42 @@ def run_youtube_seed(cfg: Config) -> int:
     return 0
 
 
+def run_articles(cfg: Config) -> int:
+    """抓 RSS 文章新篇 → LLM 蒸餾成要點 → 加入 pending（下次 synthesis 納入）。"""
+    if not cfg.articles_enabled:
+        logger.info("articles.enabled 未開或無 sources，略過。")
+        return 0
+    seen = podcast_client.SeenStore(article_client.SEEN_PATH)  # 文章獨立 seen 檔
+    articles = article_client.fetch_new_articles(
+        cfg.articles_sources, cfg.articles_window_hours, cfg.articles_max, seen)
+    if not articles:
+        logger.info("沒有需要處理的新文章。")
+        return 0
+
+    pending = PendingStore()
+    total = 0
+    for art in articles:
+        logger.info("處理文章：%s — %s", art.get("name"), art.get("title"))
+        items = article_client.distill(art, cfg.memory_model, cfg.openrouter_api_key)
+        if not items:
+            seen.mark(art["id"])  # 無全文/無要點也標已讀，避免每天重試同一篇
+            continue
+        pending.add(items)
+        seen.mark(art["id"])
+        total += len(items)
+
+    pending.save()
+    seen.save()
+    logger.info("文章處理完成：新增 %d 條要點（來自 %d 篇）。", total, len(articles))
+    return 0
+
+
 def run_longform(cfg: Config) -> int:
-    """長內容一次跑完：Podcast + YouTube（供每日排程用）。"""
+    """長內容一次跑完：Podcast + YouTube + 文章（供每日排程用）。"""
     rc = run_podcast(cfg)
     ry = run_youtube(cfg)
-    return rc or ry
+    ra = run_articles(cfg)
+    return rc or ry or ra
 
 
 def run_leverage(cfg: Config) -> int:
@@ -517,6 +548,8 @@ def run(mode: str) -> int:
         return run_youtube(cfg)
     if mode == "youtube-seed":  # 把目前影片設為基準，之後只處理新上片
         return run_youtube_seed(cfg)
+    if mode == "articles":  # 抓 RSS 文章 → 蒸餾 → 加入 pending
+        return run_articles(cfg)
     if mode == "longform":  # Podcast + YouTube 一次跑完（每日排程用）
         return run_longform(cfg)
     if mode == "leverage":  # 增量抓台股槓桿資料 → 重建儀表板 → push（每交易日晚間）
