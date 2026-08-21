@@ -25,7 +25,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro hour_body(d, collapsible_refs=false) %}
+{% macro hour_body(d, collapsible_refs=false, show_deepdive=true) %}
   {% if d.account_sections %}
   <h3 class="cat">📌 追蹤作者觀點彙整</h3>
   {% for sec in d.account_sections %}
@@ -53,7 +53,7 @@
   </div>
   {% endfor %}
   {% endif %}
-  {% if d.deepdive_candidates %}
+  {% if show_deepdive and d.deepdive_candidates %}
   <h3 class="cat">🔬 待深查議題</h3>
   <div class="section">
     <ul>

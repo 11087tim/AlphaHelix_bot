@@ -33,6 +33,10 @@ else:
 # 網站首頁最多顯示最近幾份彙整的可折疊區塊
 SITE_HOURS = 60
 
+# 深查挑題觀察期開關：False = 「🔬 待深查議題」只出現在 dev 信（公開網站與 prod 信隱藏），
+# 挑題品質校準完成後改 True 全面開放。
+DEEPDIVE_PUBLIC = False
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
@@ -288,7 +292,8 @@ def run_synthesis(cfg: Config) -> int:
 
     digest_store = DigestStore()
     digest_store.append(entry)
-    site_generator.render_site(cfg.site_title, digest_store.recent(SITE_HOURS), cfg.site_output_dir)
+    site_generator.render_site(cfg.site_title, digest_store.recent(SITE_HOURS), cfg.site_output_dir,
+                               show_deepdive=DEEPDIVE_PUBLIC)
     digest_store.save()
 
     _update_memory(cfg, entry)  # 萃取立場寫入記憶帳本（供下次「本期變化」；失敗不影響主流程）
@@ -303,18 +308,29 @@ def run_synthesis(cfg: Config) -> int:
     if os.environ.get("XBOT_FORCE_PROD") == "1" or datetime.now().hour in cfg.email_prod_hours:
         bcc_list = [a for a in cfg.email_prod if a not in to_list]
     if to_list:
-        html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url,
-                                           window_hours=cfg.fetch_window_hours)
         subject = f"{cfg.email_subject_prefix} {entry['generated_at']} 觀點彙整"
-        try:
+
+        def _send(recipients: list[str], bcc: list[str], show_deepdive: bool) -> None:
+            html = site_generator.render_email(cfg.site_title, [entry], cfg.site_url,
+                                               window_hours=cfg.fetch_window_hours,
+                                               show_deepdive=show_deepdive)
             emailer.send_html_email(
                 gmail_address=cfg.gmail_address,
                 gmail_app_password=cfg.gmail_app_password,
-                to=to_list,
+                to=recipients,
                 subject=subject,
                 html_body=html,
-                bcc=bcc_list,
+                bcc=bcc,
             )
+
+        try:
+            if DEEPDIVE_PUBLIC or not bcc_list or not entry.get("deepdive_candidates"):
+                # 內容一致（已開放、無 prod 收件人、或本期無挑題）：維持單信 To=dev、BCC=prod
+                _send(to_list, bcc_list, show_deepdive=True)
+            else:
+                # 觀察期且有挑題：dev 信含「🔬 待深查議題」，prod 信隱藏（To 掛寄件帳號自身）
+                _send(to_list, [], show_deepdive=True)
+                _send([cfg.gmail_address], bcc_list, show_deepdive=False)
         except Exception as exc:  # noqa: BLE001
             logger.error("寄信失敗：%s", exc)
 
@@ -361,7 +377,8 @@ def run_render(cfg: Config) -> int:
     if not digests:
         logger.info("沒有既有 digest 可重新渲染。")
         return 0
-    site_generator.render_site(cfg.site_title, digests, cfg.site_output_dir)
+    site_generator.render_site(cfg.site_title, digests, cfg.site_output_dir,
+                               show_deepdive=DEEPDIVE_PUBLIC)
     if cfg.site_auto_push:
         publisher.publish_docs()
     logger.info("已重新渲染網站（%d 個時段）。", len(digests))

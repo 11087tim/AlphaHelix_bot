@@ -243,7 +243,8 @@ def _prepare_digest(d: dict) -> dict:
     }
 
 
-def render_site(title: str, digests: list[dict], output_dir: Path) -> None:
+def render_site(title: str, digests: list[dict], output_dir: Path,
+                show_deepdive: bool = True) -> None:
     """從每小時摘要清單（由新到舊）產生網站 index.html，每個時段為可折疊區塊。"""
     output_dir.mkdir(parents=True, exist_ok=True)
     prepared = [_prepare_digest(d) for d in digests]
@@ -259,13 +260,14 @@ def render_site(title: str, digests: list[dict], output_dir: Path) -> None:
         updated_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
         digests=prepared,
         dates=dates,
+        show_deepdive=show_deepdive,
     )
     (output_dir / "index.html").write_text(html, encoding="utf-8")
     logger.info("已更新網站：%s（%d 個時段）", output_dir / "index.html", len(prepared))
 
 
 def render_email(title: str, digests: list[dict], site_url: str = "",
-                 window_hours: float = 0) -> str:
+                 window_hours: float = 0, show_deepdive: bool = True) -> str:
     """產生 email HTML（攤平、不折疊）。涵蓋時段以「起（最早涵蓋起點）～ 迄（最新產生時間）」呈現。"""
     prepared = [_prepare_digest(d) for d in digests]
     prepared.sort(key=lambda d: d["generated_at"])  # 由舊到新
@@ -285,4 +287,5 @@ def render_email(title: str, digests: list[dict], site_url: str = "",
         digests=list(reversed(prepared)),  # 顯示由新到舊
         range_label=range_label,
         site_url=site_url,
+        show_deepdive=show_deepdive,
     )

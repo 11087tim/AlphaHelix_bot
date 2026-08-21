@@ -190,7 +190,7 @@
   {% for d in digests %}
   <details class="hour" data-date="{{ d.date }}"{% if loop.first %} open{% endif %}>
     <summary>🕐 {{ d.generated_at }}{% if d.model %} <span class="model">{{ d.model }}</span>{% endif %}</summary>
-    <div class="hour-body">{{ hour_body(d, true) }}</div>
+    <div class="hour-body">{{ hour_body(d, true, show_deepdive) }}</div>
   </details>
   {% else %}
   <p class="empty">目前還沒有任何摘要。</p>
