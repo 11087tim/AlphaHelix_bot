@@ -188,7 +188,7 @@
   {% endif %}
 
   {% for d in digests %}
-  <details class="hour" data-date="{{ d.date }}"{% if loop.first %} open{% endif %}>
+  <details class="hour" id="d-{{ d.id }}" data-date="{{ d.date }}"{% if loop.first %} open{% endif %}>
     <summary>🕐 {{ d.generated_at }}{% if d.model %} <span class="model">{{ d.model }}</span>{% endif %}</summary>
     <div class="hour-body">{{ hour_body(d, true, show_deepdive) }}</div>
   </details>
@@ -380,6 +380,22 @@
       } else {
         buildTOC();
       }
+
+      // 深查頁「挑題來源」連結：#d-<digestId> 進來時，切到該日期、展開該時段並捲過去
+      (function () {
+        var m = location.hash.match(/^#d-(.+)$/);
+        if (!m) return;
+        var target = document.getElementById('d-' + m[1]);
+        if (!target) return;
+        var date = target.getAttribute('data-date');
+        if (sel && date) {
+          sel.value = date;
+          apply(date);
+        }
+        blocks.forEach(function (b) { b.open = false; });
+        target.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      })();
     })();
   </script>
 </body>

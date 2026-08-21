@@ -271,7 +271,7 @@ def render_deepdive(title: str, days: list[dict], output_dir: Path) -> None:
     """渲染 /deepdive/ 深查報告頁：以天分層、每題折疊（summary=裁定行，body=全文）。"""
     import markdown as md
 
-    from .deepdive import VERDICT_EMOJI
+    from .deepdive import VERDICT_EMOJI, clean_report
 
     out = output_dir / "deepdive"
     out.mkdir(parents=True, exist_ok=True)
@@ -282,7 +282,9 @@ def render_deepdive(title: str, days: list[dict], output_dir: Path) -> None:
             topics.append({
                 **r,
                 "emoji": VERDICT_EMOJI.get(r.get("verdict", ""), "❓"),
-                "report_html": Markup(md.markdown(r.get("report", ""), extensions=["extra"])),
+                # clean_report：防禦舊紀錄殘留的搜尋過場旁白
+                "report_html": Markup(md.markdown(clean_report(r.get("report", "")),
+                                                  extensions=["extra"])),
             })
         prepared.append({"date": day["date"], "topics": topics})
     html = _env.get_template("deepdive.html").render(

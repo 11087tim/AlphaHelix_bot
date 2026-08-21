@@ -39,6 +39,7 @@
     .report ul, .report ol { margin: 6px 0; padding-left: 22px; }
     .report li { margin: 4px 0; }
     .report strong { color: #14547e; }
+    .report .srclink { margin: 8px 0 2px; font-size: 0.85rem; color: #667; }
     a { color: #1d9bf0; }
     footer { margin-top: 40px; color: #999; font-size: 0.8rem; text-align: center; }
     .empty { color: #999; }
@@ -76,7 +77,10 @@
         <summary>{{ r.emoji }} {{ r.topic }}
           <span class="takeaway">{{ r.verdict }}｜{{ r.takeaway }}</span>
         </summary>
-        <div class="report">{{ r.report_html }}</div>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-{{ r.digest_id }}">{{ r.generated_at }} 觀點彙整</a></p>
+          {{ r.report_html }}
+        </div>
       </details>
       {% endfor %}
     </div>

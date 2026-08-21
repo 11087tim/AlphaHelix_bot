@@ -85,6 +85,12 @@ def _strip_md(s: str) -> str:
     return re.sub(r"\*+|【|】", "", s).strip()
 
 
+def clean_report(content: str) -> str:
+    """去掉伺服器端搜尋輪之間殘留在正文開頭的過場旁白，只留報告本體。"""
+    idx = content.find("## 深查")
+    return content[idx:] if idx > 0 else content
+
+
 def parse_verdict(report: str) -> tuple[str, str]:
     """從報告抽出（裁定等級, 一句話 takeaway）。抽不出時回（"證據不足", 空字串）保守呈現。"""
     m = _VERDICT_NEW.search(report)
@@ -108,11 +114,14 @@ def parse_verdict(report: str) -> tuple[str, str]:
         else:
             verdict = "證據不足"
     takeaway = _strip_md(rest.split("\n", 1)[0])
-    # 取到第一個句號為止，過長截斷
+    # 取到第一個句號為止；沒有句號就在 90 字內找最後一個分句符號收尾，避免截在半句
     period = takeaway.find("。")
     if period > 0:
         takeaway = takeaway[:period]
-    return verdict, takeaway[:90]
+    if len(takeaway) > 90:
+        cut = max(takeaway.rfind(p, 0, 90) for p in "；）」，")
+        takeaway = takeaway[:cut + 1] if cut > 30 else takeaway[:90]
+    return verdict, takeaway
 
 
 def _sources_from_annotations(message: dict) -> str:
@@ -156,11 +165,7 @@ def investigate(topic: dict, api_key: str, graph_context: str | None = None,
             if attempt == MAX_RETRIES:
                 raise
     message = data["choices"][0]["message"]
-    content = (message.get("content") or "").strip()
-    # 伺服器端搜尋輪之間的過場旁白會殘留在正文開頭，只保留報告本體
-    idx = content.find("## 深查")
-    if idx > 0:
-        content = content[idx:]
+    content = clean_report((message.get("content") or "").strip())
     report = content + _sources_from_annotations(message)
     verdict, takeaway = parse_verdict(report)
     return {"topic": topic, "report": report, "verdict": verdict, "takeaway": takeaway,
