@@ -78,7 +78,7 @@
           <span class="takeaway">{{ r.verdict }}｜{{ r.takeaway }}</span>
         </summary>
         <div class="report">
-          <p class="srclink">📄 挑題來源：<a href="../index.html#d-{{ r.digest_id }}">{{ r.generated_at }} 觀點彙整</a></p>
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-{{ r.digest_id }}@{{ r.topic|urlencode }}">{{ r.generated_at }} 觀點彙整</a></p>
           {{ r.report_html }}
         </div>
       </details>
