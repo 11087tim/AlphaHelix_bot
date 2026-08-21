@@ -39,6 +39,7 @@
     .report ul, .report ol { margin: 6px 0; padding-left: 22px; }
     .report li { margin: 4px 0; }
     .report strong { color: #14547e; }
+    .report .srclink { margin: 8px 0 2px; font-size: 0.85rem; color: #667; }
     a { color: #1d9bf0; }
     footer { margin-top: 40px; color: #999; font-size: 0.8rem; text-align: center; }
     .empty { color: #999; }
@@ -64,7 +65,7 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-08-21 11:06｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-08-21 12:33｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
@@ -74,9 +75,11 @@
       
       <details class="topic">
         <summary>⚠️ Marvell-Google認股權證與TPU份額爭議
-          <span class="takeaway">部分證實｜宣稱的「方向」有一手文件與多家獨立券商支撐（MRVL 拿的是 attach 產品、非 TPU 主晶片，AVGO 龍頭地位未被撼動）；但宣稱中的具體數字「MRVL 10-20%」與「</span>
+          <span class="takeaway">部分證實｜宣稱的「方向」有一手文件與多家獨立券商支撐（MRVL 拿的是 attach 產品、非 TPU 主晶片，AVGO 龍頭地位未被撼動）；但宣稱中的具體數字「MRVL 10-20%」</span>
         </summary>
-        <div class="report"><p>I'll investigate this claim systematically, starting with the primary sources.Let me dig into the specific share-split estimates and MediaTek's role.Let me pin down the specific share-percentage estimates being circulated.## 深查：Marvell-Google 認股權證與 TPU 份額爭議</p>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260820-0802">2026-08-20 08:02 觀點彙整</a></p>
+          <h2>深查：Marvell-Google 認股權證與 TPU 份額爭議</h2>
 <p><strong>裁定</strong>：<strong>部分證實</strong>。宣稱的「方向」有一手文件與多家獨立券商支撐（MRVL 拿的是 attach 產品、非 TPU 主晶片，AVGO 龍頭地位未被撼動）；但宣稱中的<strong>具體數字「MRVL 10-20%」與「AVGO 55-60% TAM」查無可歸屬的原始出處</strong>，尤其「BofA 55-60%」在公開資料中找不到對應依據——該部分屬<strong>證據不足</strong>，不宜當作定錨數字使用。</p>
 <h3>查證過程與證據</h3>
 <p><strong>溯源：一手文件已取得（關鍵）</strong></p>
@@ -141,14 +144,17 @@
 - <a href="https://finance.biggo.com/news/2321b566-ceec-46d5-896a-e9f05c23f8e5">SemiAnalysis Cuts Google TPU Shipment Forecast; MediaTek Shares Plunge 4% Intraday — BigGo Finance</a>
 - <a href="https://247wallst.com/investing/2026/08/20/broadcom-holds-steady-as-ark-buys-the-dip-intel-slips-amd-eases-after-googles-marvell-chip-deal/">Broadcom Holds Steady as ARK Buys the Dip, Intel Slips, AMD Eases After Google's Marvell Chip Deal - 24/7 Wall St.</a>
 - <a href="https://www.digitimes.com/news/a20260819PD202/amd-google-tpu-broadcom-mediatek.html">Google's v10 TPU opens door to AMD without sidelining Broadcom, MediaTek</a>
-- <a href="https://finance.yahoo.com/markets/stocks/articles/broadcom-shareholders-paying-attention-just-181019360.html">Broadcom Shareholders Should Be Paying Attention to What Just Happened With Marvell and Google</a></p></div>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/broadcom-shareholders-paying-attention-just-181019360.html">Broadcom Shareholders Should Be Paying Attention to What Just Happened With Marvell and Google</a></p>
+        </div>
       </details>
       
       <details class="topic">
         <summary>⚠️ AMD程式碼併入NVIDIA主導NIXL函式庫
           <span class="takeaway">部分證實｜「2026 年 6 月合併」與「RIXL 已棄用」皆有一手證據支持事實；但「全面棄用自家 fork」屬過度延伸——併入範圍僅為 ROCm/HIP 建置支援（且藏在預設關閉的旗標後）</span>
         </summary>
-        <div class="report"><h2>深查：AMD 程式碼併入 NVIDIA 主導 NIXL 函式庫</h2>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260820-0802">2026-08-20 08:02 觀點彙整</a></p>
+          <h2>深查：AMD 程式碼併入 NVIDIA 主導 NIXL 函式庫</h2>
 <p><strong>裁定</strong>：<strong>核心證實，細節須修正</strong>。「2026 年 6 月合併」與「RIXL 已棄用」皆有一手證據支持【事實】；但「全面棄用自家 fork」屬過度延伸——併入範圍僅為 ROCm/HIP <strong>建置支援</strong>（且藏在預設關閉的旗標後），AMD 自有的 MoRI 通訊庫仍在獨立發展。</p>
 <h3>查證過程與證據</h3>
 <p><strong>溯源結果</strong>：宣稱可追到三層來源——(a) 一手程式碼庫（GitHub <code>ROCm/RIXL</code>、<code>ai-dynamo/nixl</code>）、(b) AMD 官方 ROCm 技術部落格、(c) SemiAnalysis 分析報導。台媒/科技媒體（如 TechTimes）為 (c) 的轉述，<strong>不構成獨立來源</strong>。</p>
@@ -192,14 +198,17 @@
 - <a href="https://aws.amazon.com/about-aws/whats-new/2026/03/aws-support-nixl-with-efa/">AWS adds support for NIXL with EFA to accelerate LLM inference at scale - AWS</a>
 - <a href="https://developer.nvidia.com/blog/enhancing-distributed-inference-performance-with-the-nvidia-inference-transfer-library/">Enhancing Distributed Inference Performance with the NVIDIA Inference Transfer Library | NVIDIA Technical Blog</a>
 - <a href="https://www.techtimes.com/articles/322255/20260730/amds-rocmai-bets-agents-can-beat-cuda-internal-cluster-shortage-its-biggest-risk.htm">AMD’s ROCm.AI Bets Agents Can Beat CUDA: Internal Cluster Shortage Is Its Biggest Risk</a>
-- <a href="https://github.com/vllm-project/vllm/issues/33702">[Roadmap]: PD Disaggregation with <code>NixlConnector</code> Roadmap · Issue #33702 · vllm-project/vllm</a></p></div>
+- <a href="https://github.com/vllm-project/vllm/issues/33702">[Roadmap]: PD Disaggregation with <code>NixlConnector</code> Roadmap · Issue #33702 · vllm-project/vllm</a></p>
+        </div>
       </details>
       
       <details class="topic">
         <summary>⚠️ Google TPU9t 6D Torus架構傳言
-          <span class="takeaway">部分證實｜「6D Torus + 2027-2028」確實有兩個可辨識來源在談，但兩者皆自稱「rumor」，且時序上高度可能同源；「單顆光學內容 +4 倍」則是研究機構的推導模型，非供應鏈訂</span>
+          <span class="takeaway">部分證實｜「6D Torus + 2027-2028」確實有兩個可辨識來源在談，但兩者皆自稱「rumor」，且時序上高度可能同源；「單顆光學內容 +4 倍」則是研究機構的推導模型，</span>
         </summary>
-        <div class="report"><h2>深查：Google TPU9t 6D Torus 架構傳言</h2>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260820-0802">2026-08-20 08:02 觀點彙整</a></p>
+          <h2>深查：Google TPU9t 6D Torus 架構傳言</h2>
 <p><strong>裁定</strong>：<strong>部分證實（僅證實「傳言存在」，不證實傳言內容）</strong>。「6D Torus + 2027-2028」確實有兩個可辨識來源在談，但兩者皆自稱「rumor」，且時序上高度可能同源；「單顆光學內容 +4 倍」則是研究機構的<strong>推導模型</strong>，非供應鏈訂單事實。Google 端零官方揭露、零專利/論文佐證。等級：【傳聞】＋【機構估計】。</p>
 <h3>查證過程與證據</h3>
 <p><strong>1. 溯源：兩個來源、一條線</strong>
@@ -248,14 +257,17 @@
 - <a href="https://finance.yahoo.com/markets/stocks/articles/corning-q2-earnings-call-highlights-180434729.html">Corning Q2 Earnings Call Highlights</a>
 - <a href="https://www.lightwaveonline.com/home/news/55396062/cornings-ceo-says-data-center-scale-up-scale-out-represents-a-10b-revenue-stream">Corning’s CEO says data center scale-up, scale-out represents a $10B revenue stream | Lightwave Online</a>
 - <a href="https://x.com/TheValueist/status/1998245033686806850">TheValueist on X: "$GOOGL $AVGO $2454 $NVDA The SemiAnalysis post is broadly directionally consistent with current public reporting on Google’s TPU roadmap, its relationships with Broadcom and MediaTek, and Nvidia’s Blackwell/Rubin roadmap, but several claims rest almost entirely on SemiAnalysis’s own modeling and confidential sourcing and should be treated as informed but unvalidated estimates rather than facts. The description of the evolving supplier structure around Google’s TPUs is well support</a>
-- <a href="https://www.moneyweekly.com.tw/ArticleData/Info/Article/240798">Google狂砸2000億美元建軍 TPU v9驚傳2028年爆量1500萬顆！四巨頭吃補全解析 - 理財周刊</a></p></div>
+- <a href="https://www.moneyweekly.com.tw/ArticleData/Info/Article/240798">Google狂砸2000億美元建軍 TPU v9驚傳2028年爆量1500萬顆！四巨頭吃補全解析 - 理財周刊</a></p>
+        </div>
       </details>
       
       <details class="topic">
         <summary>✅ 記憶體三巨頭同列光互連公司股東名冊
-          <span class="takeaway">證實｜該公司為 Sunnyvale 的 AvicenaTech Corp.，三家記憶體廠確實分兩輪進入股東名冊，且來源是公司官方新聞稿（BusinessWire）而非個人追查；但「CPO</span>
+          <span class="takeaway">證實｜該公司為 Sunnyvale 的 AvicenaTech Corp.，三家記憶體廠確實分兩輪進入股東名冊，且來源是公司官方新聞稿（BusinessWire）而非個人追查；</span>
         </summary>
-        <div class="report"><h2>深查：記憶體三巨頭同列光互連公司股東名冊</h2>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260820-2004">2026-08-20 20:04 觀點彙整</a></p>
+          <h2>深查：記憶體三巨頭同列光互連公司股東名冊</h2>
 <p><strong>裁定</strong>：<strong>證實（實體確認、但市場解讀需修正）</strong>。該公司為 Sunnyvale 的 <strong>AvicenaTech Corp.</strong>，三家記憶體廠確實分兩輪進入股東名冊，且來源是<strong>公司官方新聞稿（BusinessWire）</strong>而非個人追查；但「CPO 資本卡位」的框架有偏差——這是 <strong>microLED 光互連</strong>押注，與矽光子 CPO 是<strong>競爭路線</strong>，且營收時點在 2028 年後。</p>
 <h3>查證過程與證據</h3>
 <p><strong>溯源結果</strong>：宣稱的傳播源頭是一篇個人 Substack 分析文（2026/6/4），文中稱Avicena 這家 Sunnyvale 光互連新創的股東名冊上同時有三星電子、SK hynix 與 Micron，三家爭奪 HBM 份額的公司並肩投資同一家私人公司。但往上追，<strong>底層股權事實有一手官方文件支撐</strong>，並非只有個人說法：</p>
@@ -307,14 +319,17 @@
 - <a href="https://www.businesswire.com/news/home/20250514637615/en/Avicena-Announces-Series-B-Funding-Round-Led-by-Tiger-Global-with-Participation-from-SK-hynix">Avicena Announces Series B Funding Round Led by Tiger Global with Participation from SK hynix</a>
 - <a href="https://www.insightmedia.info/microleds-for-data-center-optical-interconnect-the-big-pivot/">MicroLEDs for Data Center Optical Interconnect: The Big Pivot? - Insight Media</a>
 - <a href="https://abit.ee/en/hard/mediatek-microled-optical-interconnect-cpo-data-centre-computex-2026-microsoft-research-mosaic-400-g-en">MediaTek Showcases MicroLED Optical Interconnect: 400 Gbit/s and Half the Power Draw</a>
-- <a href="https://videos.marvell.com/watch/Yt7An44rAxt1hvC1tjsg6G">Co-Packaged Optics (CPO) Demo Led by Chris McCormick at ECOC - Marvell Essential Technology Videos</a></p></div>
+- <a href="https://videos.marvell.com/watch/Yt7An44rAxt1hvC1tjsg6G">Co-Packaged Optics (CPO) Demo Led by Chris McCormick at ECOC - Marvell Essential Technology Videos</a></p>
+        </div>
       </details>
       
       <details class="topic">
         <summary>⚠️ 賓州資料中心行政令對Amazon既有投資案衝擊
           <span class="takeaway">部分證實｜行政命令的存在與具體條款屬事實（有 pa.gov 一手命令原文 PDF 與官方新聞稿）；「自帶電力」與「禁 NDA」條款確實成立，Amazon 兩座園區也確實被移出快速許可通道</span>
         </summary>
-        <div class="report"><h2>深查：賓州資料中心行政令對 Amazon 既有投資案衝擊</h2>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260820-2004">2026-08-20 20:04 觀點彙整</a></p>
+          <h2>深查：賓州資料中心行政令對 Amazon 既有投資案衝擊</h2>
 <p><strong>裁定</strong>：<strong>部分證實</strong>。行政命令的存在與具體條款屬【事實】（有 pa.gov 一手命令原文 PDF 與官方新聞稿）；「自帶電力」與「禁 NDA」條款確實成立，Amazon 兩座園區也確實被移出快速許可通道。但「已實質影響 200 億美元投資時程或條件」目前僅有<strong>機制上的合理推論與一個具體待決許可</strong>，尚無任何延宕、重談或撤資的證據，此部分屬【證據不足】。</p>
 <h3>查證過程與證據</h3>
 <p><strong>溯源</strong>：一手文件為賓州官網公布的 <strong>Executive Order 2026-05「Protecting Pennsylvania Consumers from Data Center Impacts」</strong>（pa.gov 有完整 8 頁 PDF 與州長演說全文），非分析師轉述。多數媒體報導同源於此，須視為單一原始出處。</p>
@@ -364,14 +379,17 @@
 - <a href="https://itif.org/publications/2026/08/18/pennsylvania-should-welcome-responsible-data-center-investment/">Pennsylvania Should Welcome Responsible Data Center Investment, Not Treat It as the Enemy, Says ITIF | Press Releases | Aug 18, 2026 | ITIF</a>
 - <a href="https://www.foley.com/insights/publications/2026/07/new-yorks-ai-data-center-moratorium-a-potential-turning-point-for-u-s-data-center-development/">New York’s AI Data Center Moratorium: A Potential Turning Point for U.S. Data Center Development | Foley &amp; Lardner</a>
 - <a href="https://lowerbuckstimes.com/2026/07/29/falls-township-zoning-code-data-center-vote/">Falls Township Reopens Zoning Code for Data Center Rewrite</a>
-- <a href="https://politicspa.com/shapiro-signs-executive-order-restricting-data-center-development/150204/">Shapiro Signs Executive Order Restricting Data Center Development, Giving More Authority to Local Communities - PoliticsPA</a></p></div>
+- <a href="https://politicspa.com/shapiro-signs-executive-order-restricting-data-center-development/150204/">Shapiro Signs Executive Order Restricting Data Center Development, Giving More Authority to Local Communities - PoliticsPA</a></p>
+        </div>
       </details>
       
       <details class="topic">
         <summary>✅ YMTC 2Q26躍居全球NAND第三大供應商
           <span class="takeaway">證實｜但關鍵限定條件被市場敘事忽略：這是單一研究機構（Counterpoint）的四捨五入數據，且 YMTC 營收排名仍為第五</span>
         </summary>
-        <div class="report"><h2>深查：YMTC 2Q26 躍居全球 NAND 第三大供應商</h2>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260820-2004">2026-08-20 20:04 觀點彙整</a></p>
+          <h2>深查：YMTC 2Q26 躍居全球 NAND 第三大供應商</h2>
 <p><strong>裁定</strong>：<strong>證實（位元出貨部分）＋ 部分證實（A股上市）</strong>。但關鍵限定條件被市場敘事忽略：這是<strong>單一研究機構（Counterpoint）的四捨五入數據</strong>，且 YMTC 營收排名仍為<strong>第五</strong>。宣稱中的「將超越」實為已發生事實，證據等級為【機構估計】而非【事實】。</p>
 <h3>查證過程與證據</h3>
 <p><strong>溯源結果</strong>：所有中英文報導（CNBC、財新、Electronics Weekly、invezz、TradingKey、xenospectrum）皆回溯至<strong>同一原始出處</strong>——Counterpoint Research 於 2026/8/12（美東）發布的 2Q26 記憶體市場報告，官方標題為 "Server-Led eSSDs Hit 48% of NAND Shipments; YMTC Enters Global Top Three"。<strong>這是單一來源的多次轉述，不是多個獨立來源。</strong> 建議查證方向提到的 TrendForce，本次搜尋<strong>未找到其 2Q26 對應排名</strong>可供交叉比對；TrendForce 最近可見數據為 4Q25（Samsung 28%、SK 集團約22%、Kioxia 14%、Micron 12.8%、SanDisk 12.8%），排序與 Counterpoint 不同，<strong>方法論與統計基準無法直接對照</strong>。</p>
@@ -420,7 +438,8 @@
 - <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262101853-ymtc-overtakes-micron-kioxia-nand-shipments-global-third-tradingkey">YMTC NAND Shipments Jump to Third Globally, Surpassing Micron and Kioxia as Micron's eSSD Pricing Power Faces Pressure</a>
 - <a href="https://www.techpowerup.com/348231/ymtc-reportedly-expands-with-new-fabs-amid-trade-tensions">YMTC Reportedly Expands with New Fabs Amid Trade Tensions | TechPowerUp</a>
 - <a href="https://www.electronicsweekly.com/news/business/ymtc-in-big-3-for-nand-units-2026-08/">YMTC in Big 3 for NAND units ⋆ Electronics Weekly</a>
-- <a href="https://www.forbes.com/sites/investor-hub/article/sandisk-stock-over-574-where-its-heading-2026/">SanDisk Stock Is Still Up 574%. Here’s Where It’s Heading Next In 2026, According To Experts</a></p></div>
+- <a href="https://www.forbes.com/sites/investor-hub/article/sandisk-stock-over-574-where-its-heading-2026/">SanDisk Stock Is Still Up 574%. Here’s Where It’s Heading Next In 2026, According To Experts</a></p>
+        </div>
       </details>
       
     </div>
