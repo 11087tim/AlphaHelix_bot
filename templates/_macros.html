@@ -53,4 +53,20 @@
   </div>
   {% endfor %}
   {% endif %}
+  {% if d.deepdive_candidates %}
+  <h3 class="cat">🔬 待深查議題</h3>
+  <div class="section">
+    <ul>
+      {% for c in d.deepdive_candidates %}
+      <li style="margin-bottom:0.7em">
+        <strong>{{ c.topic }}</strong>
+        <small>（{{ c.entities|join('、') }}｜評分 {{ c.total }}/25）</small><br>
+        待驗證宣稱：{{ c.claim }}<br>
+        {% if c.why %}<small>為何重要：{{ c.why }}</small><br>{% endif %}
+        {% if c.directions %}<small>查證方向：{{ c.directions }}</small>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
 {% endmacro %}

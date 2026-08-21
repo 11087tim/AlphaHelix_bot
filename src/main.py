@@ -11,7 +11,7 @@ from datetime import datetime
 if __package__:
     from .config import Config, ConfigError, load_config
     from . import (x_client, summarizer, site_generator, emailer, publisher,
-                   graph_link, reports_bridge, memory_link, memory_extract,
+                   graph_link, reports_bridge, memory_link, memory_extract, topic_picker,
                    podcast_client, transcribe, podcast_distill, youtube_client, article_client)
     from .storage import Storage
     from .digest_store import DigestStore
@@ -23,7 +23,7 @@ else:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.config import Config, ConfigError, load_config
     from src import (x_client, summarizer, site_generator, emailer, publisher,
-                     graph_link, reports_bridge, memory_link, memory_extract,
+                     graph_link, reports_bridge, memory_link, memory_extract, topic_picker,
                      podcast_client, transcribe, podcast_distill, youtube_client, article_client)
     from src.storage import Storage
     from src.digest_store import DigestStore
@@ -214,7 +214,7 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         return None
 
     now = datetime.now()
-    return {
+    entry = {
         "id": now.strftime("%Y%m%d-%H%M"),
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
         "model": cfg.openrouter_model,
@@ -222,6 +222,18 @@ def _synthesize(cfg: Config, tweets: list[dict]) -> dict | None:
         "keyword_sections": keyword_sections,
         "podcast_sections": podcast_sections,
     }
+
+    # 深查議題挑選（跨源印證 v2 上游）：深查引擎接上前先展示於 digest 觀察挑題品質。
+    # 放在 _synthesize 內讓 resynth 也能免費預覽挑題效果；失敗不得影響主流程。
+    try:
+        candidates = topic_picker.pick_topics(
+            entry, DigestStore().recent(topic_picker.DEDUP_DIGESTS),
+            cfg.memory_model, cfg.openrouter_api_key)
+        if candidates:
+            entry["deepdive_candidates"] = candidates
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("深查挑題失敗（不影響主流程）：%s", exc)
+    return entry
 
 
 def _update_memory(cfg: Config, entry: dict) -> None:
