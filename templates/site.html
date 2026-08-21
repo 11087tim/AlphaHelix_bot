@@ -430,7 +430,10 @@
             }
           }
         }
-        dest.scrollIntoView({ behavior: 'smooth', block: dest === target ? 'start' : 'center' });
+        // 延遲捲動：等 details 展開與日期切換造成的版面重排結束，定位才會準
+        setTimeout(function () {
+          dest.scrollIntoView({ behavior: 'smooth', block: dest === target ? 'start' : 'center' });
+        }, 300);
       })();
     })();
   </script>
