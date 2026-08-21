@@ -25,7 +25,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro hour_body(d, collapsible_refs=false, show_deepdive=true) %}
+{% macro hour_body(d, collapsible_refs=false, show_deepdive=true, deepdive_url='deepdive/') %}
   {% if d.account_sections %}
   <h3 class="cat">📌 追蹤作者觀點彙整</h3>
   {% for sec in d.account_sections %}
@@ -53,7 +53,16 @@
   </div>
   {% endfor %}
   {% endif %}
-  {% if show_deepdive and d.deepdive_candidates %}
+  {% if show_deepdive and d.deepdive_results %}
+  <h3 class="cat">🔬 深查裁定</h3>
+  <div class="section">
+    {% for r in d.deepdive_results %}
+    <p style="margin:8px 0">{{ r.emoji }} <strong>{{ r.topic }}</strong><br>
+      <small>{{ r.verdict }}｜{{ r.takeaway }}</small></p>
+    {% endfor %}
+    <p style="margin:8px 0"><a href="{{ deepdive_url }}">→ 完整深查報告</a></p>
+  </div>
+  {% elif show_deepdive and d.deepdive_candidates %}
   <h3 class="cat">🔬 待深查議題</h3>
   <div class="section">
     <ul>

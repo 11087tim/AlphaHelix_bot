@@ -240,6 +240,7 @@ def _prepare_digest(d: dict) -> dict:
         "keyword_sections": prepare_sections(d.get("keyword_sections", [])),
         "podcast_sections": prepare_sections(d.get("podcast_sections", [])),
         "deepdive_candidates": d.get("deepdive_candidates", []),
+        "deepdive_results": d.get("deepdive_results", []),
     }
 
 
@@ -266,6 +267,51 @@ def render_site(title: str, digests: list[dict], output_dir: Path,
     logger.info("已更新網站：%s（%d 個時段）", output_dir / "index.html", len(prepared))
 
 
+def render_deepdive(title: str, days: list[dict], output_dir: Path) -> None:
+    """渲染 /deepdive/ 深查報告頁：以天分層、每題折疊（summary=裁定行，body=全文）。"""
+    import markdown as md
+
+    from .deepdive import VERDICT_EMOJI
+
+    out = output_dir / "deepdive"
+    out.mkdir(parents=True, exist_ok=True)
+    prepared = []
+    for day in days:
+        topics = []
+        for r in day["topics"]:
+            topics.append({
+                **r,
+                "emoji": VERDICT_EMOJI.get(r.get("verdict", ""), "❓"),
+                "report_html": Markup(md.markdown(r.get("report", ""), extensions=["extra"])),
+            })
+        prepared.append({"date": day["date"], "topics": topics})
+    html = _env.get_template("deepdive.html").render(
+        title=title,
+        updated_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
+        days=prepared,
+    )
+    (out / "index.html").write_text(html, encoding="utf-8")
+    logger.info("已更新深查頁：%s（%d 天）", out / "index.html", len(prepared))
+
+
+def render_deepdive_email(results: list[dict], deepdive_url: str) -> str:
+    """深查完成通知信（裁定行 + 全文連結）。results 需含 verdict/topic/takeaway。"""
+    from .deepdive import VERDICT_EMOJI
+
+    rows = "".join(
+        f'<p style="margin:10px 0">{VERDICT_EMOJI.get(r.get("verdict",""), "❓")} '
+        f'<strong>{escape(r.get("topic",""))}</strong><br>'
+        f'<span style="color:#556;font-size:0.92em">{escape(r.get("verdict",""))}'
+        f'｜{escape(r.get("takeaway",""))}</span></p>'
+        for r in results
+    )
+    link = (f'<p style="margin-top:16px"><a href="{escape(deepdive_url)}">→ 完整深查報告</a></p>'
+            if deepdive_url else "")
+    return (f'<div style="font-family:-apple-system,\'Noto Sans TC\',sans-serif;'
+            f'max-width:680px;margin:0 auto;line-height:1.7">'
+            f'<h2 style="color:#1d9bf0">🔬 深查報告</h2>{rows}{link}</div>')
+
+
 def render_email(title: str, digests: list[dict], site_url: str = "",
                  window_hours: float = 0, show_deepdive: bool = True) -> str:
     """產生 email HTML（攤平、不折疊）。涵蓋時段以「起（最早涵蓋起點）～ 迄（最新產生時間）」呈現。"""
@@ -288,4 +334,5 @@ def render_email(title: str, digests: list[dict], site_url: str = "",
         range_label=range_label,
         site_url=site_url,
         show_deepdive=show_deepdive,
+        deepdive_url=(site_url.rstrip("/") + "/deepdive/") if site_url else "",
     )

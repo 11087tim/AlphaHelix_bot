@@ -385,6 +385,86 @@ def run_render(cfg: Config) -> int:
     return 0
 
 
+def run_deepdive(cfg: Config) -> int:
+    """對最新 digest 的待深查候選題跑深查引擎（Opus 5 + web search）→ 存報告庫 →
+    渲染 /deepdive/ 頁 → digest 補上裁定行 → push → 通知信（觀察期只寄 dev/測試信箱）。
+    排程掛在 synthesis 之後（如 8:35/20:35）；重跑冪等（已深查過的 digest 會跳過）。"""
+    from .deepdive import investigate
+    from .deepdive_store import DeepdiveStore
+
+    digest_store = DigestStore()
+    if not digest_store.digests:
+        logger.info("沒有任何 digest，跳過深查。")
+        return 0
+    entry = digest_store.digests[-1]
+    candidates = entry.get("deepdive_candidates") or []
+    dd_store = DeepdiveStore()
+    if not candidates:
+        logger.info("最新 digest（%s）沒有待深查候選題，跳過。", entry.get("id"))
+        return 0
+    if dd_store.has_digest(entry.get("id", "")):
+        logger.info("digest %s 已深查過，跳過（冪等）。", entry.get("id"))
+        return 0
+
+    graph_context = graph_link.load_graph_context()
+    date = str(entry.get("generated_at", ""))[:10]
+    records, verdict_lines = [], []
+    for i, topic in enumerate(candidates, 1):
+        logger.info("[%d/%d] 深查：%s", i, len(candidates), topic.get("topic", ""))
+        try:
+            result = investigate(topic, cfg.openrouter_api_key, graph_context)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("深查失敗，跳過本題：%s", exc)
+            continue
+        from .deepdive import VERDICT_EMOJI
+        rec = {
+            "date": date,
+            "generated_at": entry.get("generated_at", ""),
+            "digest_id": entry.get("id", ""),
+            "topic": topic.get("topic", ""),
+            "entities": topic.get("entities", []),
+            "verdict": result["verdict"],
+            "takeaway": result["takeaway"],
+            "report": result["report"],
+        }
+        records.append(rec)
+        verdict_lines.append({"topic": rec["topic"], "verdict": rec["verdict"],
+                              "takeaway": rec["takeaway"],
+                              "emoji": VERDICT_EMOJI.get(rec["verdict"], "❓")})
+        logger.info("裁定：%s｜%s", rec["verdict"], rec["takeaway"])
+    if not records:
+        logger.warning("深查全數失敗，本次不落地。")
+        return 1
+
+    dd_store.add_records(records)
+    dd_store.save()
+    entry["deepdive_results"] = verdict_lines  # digest 只放裁定行，全文在 /deepdive/
+    digest_store.save()
+
+    site_generator.render_site(cfg.site_title, digest_store.recent(SITE_HOURS), cfg.site_output_dir,
+                               show_deepdive=DEEPDIVE_PUBLIC)
+    site_generator.render_deepdive(cfg.site_title, dd_store.days(), cfg.site_output_dir)
+    if cfg.site_auto_push:
+        publisher.publish_docs()
+
+    # 觀察期：通知信只寄 dev/測試信箱（DEEPDIVE_PUBLIC 開啟後再納入 prod）
+    if cfg.email_dev:
+        deepdive_url = (cfg.site_url.rstrip("/") + "/deepdive/") if cfg.site_url else ""
+        html = site_generator.render_deepdive_email(verdict_lines, deepdive_url)
+        try:
+            emailer.send_html_email(
+                gmail_address=cfg.gmail_address,
+                gmail_app_password=cfg.gmail_app_password,
+                to=list(cfg.email_dev),
+                subject=f"{cfg.email_subject_prefix} {entry['generated_at']} 深查報告",
+                html_body=html,
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.error("深查通知信寄送失敗：%s", exc)
+    logger.info("深查完成：%d 題（digest %s）。", len(records), entry.get("id"))
+    return 0
+
+
 def run_podcast(cfg: Config) -> int:
     """抓長訪談新集 → Whisper 轉錄 → 蒸餾成投資要點 → 加入 pending（下次 synthesis 會納入）。"""
     if not cfg.podcast_enabled:
@@ -583,6 +663,8 @@ def run(mode: str) -> int:
         return run_longform(cfg)
     if mode == "leverage":  # 增量抓台股槓桿資料 → 重建儀表板 → push（每交易日晚間）
         return run_leverage(cfg)
+    if mode == "deepdive":  # 深查最新 digest 的候選題 → /deepdive/ 頁 + 裁定行 + 通知信
+        return run_deepdive(cfg)
     if mode == "run":  # 一次跑完：收集 → 彙整（適合每天固定幾次觸發）
         run_fetch(cfg)
         return run_synthesis(cfg)

@@ -7,3 +7,4 @@ pypdf>=4.0.0
 pycryptodome>=3.19
 youtube-transcript-api
 playwright>=1.40
+markdown>=3.5

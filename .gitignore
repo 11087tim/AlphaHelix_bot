@@ -5,6 +5,7 @@ __pycache__/
 venv/
 state.json
 digests.json
+deepdives.json
 pending.json
 snapshot.json
 memory.json
