@@ -178,7 +178,7 @@
   </nav>
 
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-08-21 12:40｜每天彙整兩次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-08-21 12:42｜每天彙整兩次，點各時段標題可展開/收合</p>
   <p class="navlinks"><a href="leverage.html">📊 台股槓桿儀表板</a> <a href="hot_reports.html">📑 熱門外資研報</a> <a href="reports.html">🗂 研報庫</a> <a href="deepdive/">🔬 深查報告</a></p>
 
   
@@ -23924,7 +23924,10 @@ Movement Labs raised about 41 million dollars in real money from top " target="_
             }
           }
         }
-        dest.scrollIntoView({ behavior: 'smooth', block: dest === target ? 'start' : 'center' });
+        // 延遲捲動：等 details 展開與日期切換造成的版面重排結束，定位才會準
+        setTimeout(function () {
+          dest.scrollIntoView({ behavior: 'smooth', block: dest === target ? 'start' : 'center' });
+        }, 300);
       })();
     })();
   </script>
