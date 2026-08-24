@@ -447,17 +447,23 @@ def run_deepdive(cfg: Config) -> int:
     if cfg.site_auto_push:
         publisher.publish_docs()
 
-    # 觀察期：通知信只寄 dev/測試信箱（DEEPDIVE_PUBLIC 開啟後再納入 prod）
+    # 通知信：To=dev；DEEPDIVE_PUBLIC 開啟且在 prod 時段（或 XBOT_FORCE_PROD=1）時，prod 名單走 BCC
     if cfg.email_dev:
         deepdive_url = (cfg.site_url.rstrip("/") + "/deepdive/") if cfg.site_url else ""
         html = site_generator.render_deepdive_email(verdict_lines, deepdive_url)
+        to_list = list(cfg.email_dev)
+        bcc_list: list[str] = []
+        if DEEPDIVE_PUBLIC and (os.environ.get("XBOT_FORCE_PROD") == "1"
+                                or datetime.now().hour in cfg.email_prod_hours):
+            bcc_list = [a for a in cfg.email_prod if a not in to_list]
         try:
             emailer.send_html_email(
                 gmail_address=cfg.gmail_address,
                 gmail_app_password=cfg.gmail_app_password,
-                to=list(cfg.email_dev),
+                to=to_list,
                 subject=f"{cfg.email_subject_prefix} {entry['generated_at']} 深查報告",
                 html_body=html,
+                bcc=bcc_list,
             )
         except Exception as exc:  # noqa: BLE001
             logger.error("深查通知信寄送失敗：%s", exc)
