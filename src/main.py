@@ -35,7 +35,7 @@ SITE_HOURS = 60
 
 # 深查挑題觀察期開關：False = 「🔬 待深查議題」只出現在 dev 信（公開網站與 prod 信隱藏），
 # 挑題品質校準完成後改 True 全面開放。
-DEEPDIVE_PUBLIC = False
+DEEPDIVE_PUBLIC = True
 
 logging.basicConfig(
     level=logging.INFO,
