@@ -65,11 +65,137 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-08-26 20:40｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-08-27 08:38｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-08-27（2 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ GLM-5.3-Flash百T tokens全跑中國晶片效率宣稱
+          <span class="takeaway">部分證實｜「全數在中國晶片推理」有官方一手背書，但「每日 100T tokens」是容量宣稱非實際跑量，且「效率對標 Nvidia」的 3 倍改善是自家硬體前後對比，非跨平台實測</span>
+        </summary>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260827-0803@GLM-5.3-Flash%E7%99%BET%20tokens%E5%85%A8%E8%B7%91%E4%B8%AD%E5%9C%8B%E6%99%B6%E7%89%87%E6%95%88%E7%8E%87%E5%AE%A3%E7%A8%B1">2026-08-27 08:03 觀點彙整</a></p>
+          <h2>深查：GLM-5.3-Flash 百 T tokens 全跑中國晶片效率宣稱</h2>
+<p><strong>裁定</strong>：【部分證實】
+「全數在中國晶片推理」有官方一手背書，但「每日 100T tokens」是容量宣稱非實際跑量，且「效率對標 Nvidia」的 3 倍改善是自家硬體前後對比，非跨平台實測。</p>
+<p>一手來源存在且明確，但市場敘事把三個獨立命題（規模、國產晶片、效率對標）壓縮成一句話，其中兩個被稀釋。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：宣稱有真正的一手出處。Z.ai 官方帳號 2026-08-26 發布 GLM-5.3-Flash，明列 320B-A18B、MIT 授權、1M context，並直接寫「previously previewed as Ox Alpha, running entirely on Chinese AI chips」【事實】2026-08-26。SemiAnalysis 的病毒式推文屬二手轉述，非獨立來源。</p>
+<ul>
+<li><strong>模型身分已確認</strong>【事實】2026-08-26：社群指紋辨識（error code 1214、30/30 tokenizer 比對）獲證實，Bloomberg 當日上午指認智譜，Z.ai 當晚確認 SKU 與架構。此環節無爭議。</li>
+<li><strong>「每日 100T tokens」是容量而非實績</strong>【事實】2026-08-27：廣泛流傳的每日 100T tokens 指的是預覽期服務「容量」，非已消耗 tokens；44T 才是實際用量紀錄。100 兆的數字源於 OpenCode 標示的服務容量——<strong>原宣稱「每日 100T tokens 全數運行」查證不支持</strong>，實際是一週累計 44T。</li>
+<li><strong>晶片供應商身分未揭露</strong>【證據不足】：官方僅稱「國產晶片」。Z.ai 表示建置了拆分 encoding/prefill/decoding 的 SGLang 堆疊，在「數萬顆國產加速器」上取得 3 倍端到端服務效能提升，但公司未公布晶片型號、功耗、確切吞吐量、利用率，也未提供正規化的 Nvidia 對照。<strong>「華為」是市場推論，非官方宣稱</strong>。旁證：GLM-5 已完成與華為昇騰、摩爾線程、寒武紀、昆侖芯、沐曦、燧原、海光等國產算力平台的深度推理適配【機構估計】，故實際可能是多廠混合叢集。</li>
+<li><strong>3 倍效率是自我對比，不是對比 Nvidia</strong>【事實】：智譜報告的是在國產晶片上相對自身 baseline 的 3 倍端到端服務效能提升，並稱每 token 成本「可比」主流 NVIDIA GPU；這些全為廠商自述，尚無任何獨立複現。這是敘事最大失真點——3x 與「可比 Nvidia」是兩個不同命題被連寫。</li>
+<li><strong>訓練與推理必須分開</strong>【事實】2026-08-27：Z.ai 稱 Ox Alpha 預覽及後續流量全在中國加速器上以自訂 SGLang 堆疊服務，但並未說 GLM-5.3-Flash 是完全在這些晶片上「訓練」的。</li>
+<li><strong>歷史前例警訊</strong>【事實】2026-02：GLM-5 的類似宣稱曾被媒體放大失真。分析師 Kyle Chan 指出端到端在華為晶片訓練的是 GLM-Image 而非 GLM-5；GLM-5 官方部落格寫的是「我們也支援在非 NVIDIA 晶片上部署」，並稱透過 kernel 優化與量化可達到「合理的」吞吐量。多家媒體仍寫成「GLM-5 完全用華為晶片訓練」。同一敘事機制正在重演。</li>
+<li><strong>獨立第三方數據存在但不驗證晶片宣稱</strong>【事實】：Artificial Analysis 獨立測得 Intelligence Index 57、輸出 48.7 tokens/秒、TTFT 1.52 秒，評為單位成本智能強但速度慢且冗長。48.7 tok/s 偏慢，反而是硬體或服務端有所妥協的間接跡象。</li>
+<li><strong>反方數量級質疑</strong>【傳聞】2026-08-21：分析者 Teortaxes 估算，以 DeepSeek-V4 級速率推算，100T/日約需 58 萬顆 GPU 等效，結論是「要嘛他們指的不是輸出 tokens，要嘛就是不太可能的事」。</li>
+</ul>
+<h3>供應鏈與持股意涵（NVDA）</h3>
+<p><strong>成本優勢的歸因是關鍵</strong>。GLM-5.3-Flash 採混合 KDA linear + NoPE sparse MLA 注意力，attention 計算量約降 3 倍、KV cache 縮小 4.4 倍。也就是說，低成本相當程度來自<strong>模型架構稀疏化（僅 18B active）</strong>，而非晶片本身變強。把「18B active 的 MoE 能在國產晶片上高效推理」外推成「CUDA 護城河崩塌」是過度推論——這是最容易被市場誤讀的一層。</p>
+<p><strong>護城河的正確分層</strong>：此案例證實的是<strong>推理側</strong>、<strong>特定稀疏架構</strong>、<strong>單一廠商自營叢集</strong>。訓練側仍未被觸及；即使是先前流出的 DeepSeek 相關說法也承認華為約需 4 顆晶片才能匹敵 1 張 NVIDIA 卡，效能落後約兩年【傳聞，未經證實】。</p>
+<p><strong>反方觀點</strong>：連積極解讀者也把重點放在「MoE Flash 模型能在無 H100 叢集下以 OpenRouter 級規模服務，對推理成本通縮預測有意義」，而非國族主義——即真正的影響是全球推理單價下行，這對 NVDA 的間接衝擊（ASP/毛利壓力）反而比中國市場流失更值得追蹤。另需注意 NVDA 的中國曝險早已被自身財測剔除：公司對 8/26 財報給出 91 億美元的 Q2 營收指引，且已排除中國資料中心運算銷售，故此新聞對 NVDA 近期損益的邊際影響有限，主要是估值倍數的敘事風險。</p>
+<p><strong>受益端推導</strong>：若宣稱長期成立，受益者是國產加速器供應鏈與 Zhipu（2513.HK）自身毛利；先前 GLM-Image 宣稱時，智譜股價單日漲逾 17% 並帶動相關中國晶片股，顯示這類宣稱的股價反射弧極短、易過度。TSM 為中性至受損（國產晶片非台積代工），MU/HBM 需求則因中國推理擴張而中性偏正。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>Z.ai 是否補發技術報告揭露晶片型號、功耗、utilization 與正規化 Nvidia 對照</strong> → 若持續不揭露，效率對標宣稱應維持在【廠商自述】等級，不可升級。</li>
+<li><strong>免費週結束後定價是否守住 $0.15/$0.50</strong>：現行標價為輸入 $0.15/M、快取輸入 $0.03/M、輸出 $0.50/M。若數月內調漲或限額，反證單位經濟不成立。</li>
+<li><strong>Zhipu（2513.HK）下次財報</strong>：作為2026 年 1 月 8 日在港交所上市、首家公開上市的中國 AI 實驗室，其算力成本、毛利率與資本支出屬強制揭露——這是最硬、最難造假的驗證節點。</li>
+<li><strong>第三方跨平台基準</strong>：SemiAnalysis 的 InferenceX 為開源代理式推理基準，目前比較 NVIDIA、AMD 及其他加速器。若其納入國產加速器並公布 perf/$，可直接證實或推翻。</li>
+<li><strong>MIT 權重自驗</strong>：MIT 授權加上 vLLM 與 SGLang 支援，意味服務效率宣稱可被直接檢驗——但驗證者需自備國產晶片，短期內外部複現困難。</li>
+<li><strong>NVDA 8/26 財報中的中國評論</strong>（本報告未取得該場會議結果，需另行查證）。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li><strong>獨立性警訊</strong>：officechai、testingcatalog、marktechpost、orcarouter、explainx 等多家報導均改寫同一份 Z.ai 官方部落格，<strong>N 家媒體 ≠ N 個獨立來源</strong>。真正獨立的只有 Artificial Analysis 的性能測量，而它不測晶片。</li>
+<li><strong>無法取得原文</strong>：Z.ai 官方 blog（z.ai/blog/glm-5.3-flash）僅透過二手轉述取得，本報告對其內容之引述<strong>僅據轉述/摘錄，無法取得原文</strong>。The Information 關於 Zhipu 自研 ASIC 之報導亦僅見付費牆外轉述。</li>
+<li><strong>數據分歧</strong>：100T（容量）vs 44T（實際用量）並存流傳；GLM-5 參數量在來源間有 743B/744B/745B 之差，反映二手改寫誤差普遍存在。</li>
+<li><strong>44T 用量數字目前為單一來源</strong>（StableLearn，2026-08-27），尚未見 OpenRouter 官方原始用量數據佐證。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://x.com/Zai_org/status/2092616204787626030">Z.ai on X: "Introducing GLM-5.3-Flash - Leading capabilities at a highly competitive price - Natively multimodal with a 1M-token context window - A 320B-A18B model released under the MIT License - Previously previewed as Ox Alpha, running entirely on Chinese AI chips Blog:" / X</a>
+- <a href="https://www.explainx.ai/blog/glm-5-3-flash-ox-alpha-official-launch-august-2026">GLM-5.3-Flash Launch — Ox Alpha Was Zhipu (MIT) | explainx.ai Blog | explainx.ai</a>
+- <a href="https://stable-learn.com/en/ox-alpha-glm-5-3-flash-zai-reveal-usage/">Ox Alpha Unmasked: Z.ai's GLM-5.3-Flash Clocks 44T Tokens • StableLearn | Make AI Your Superpower</a>
+- <a href="https://tosea.ai/blog/glm-5-3-flash-complete-guide">How to Use GLM-5.3-Flash: Complete Guide to the Ox Alpha Model Zhipu Just Revealed | Tosea.ai</a>
+- <a href="https://www.testingcatalog.com/z-ai-launches-glm-5-3-flash-under-mit-license/">Z.ai launches GLM-5.3-Flash under MIT license</a>
+- <a href="https://kingy.ai/blog/glm-5-3-flash-review-tests-pricing/">GLM‑5.3‑Flash Review: Five Real Tests and the Price Catch</a>
+- <a href="https://baike.baidu.com/en/item/GLM%20Coding%20Plan/1453378">GLM Coding Plan（A model launched by Beijing Zhipu Huazhang Technology Co., Ltd.）_Baiduwiki</a>
+- <a href="https://www.orcarouter.ai/blog/glm-5-3-flash-release">GLM-5.3-Flash Released: Open 'Ox Alpha' Multimodal Model</a>
+- <a href="https://x.com/kyleichan/status/2021943638163399163">Kyle Chan on X: "I think there's some confusion about the hardware that GLM-5 was trained on. It was GLM-Image (Zhipu's multimodal model), not GLM-5, that was trained end-to-end on Huawei chips. I don't think Zhipu said anything directly about the hardware used to train GLM-5. If anything, it" / X</a>
+- <a href="https://www.marktechpost.com/2026/08/26/z-ai-releases-glm-5-3-flash-a-320b-a18b-natively-multimodal-moe-with-a-1m-token-context/">Z.ai Releases GLM-5.3-Flash: A 320B-A18B Natively Multimodal MoE With a 1M-Token Context - MarkTechPost</a>
+- <a href="https://wccftech.com/a-mysterious-ai-lab-is-offering-100-trillion-free-tokens-day-for-its-ox-alpha-model-as-evidence-points-to-zhipus-unreleased-glm/">A Mysterious AI Lab Is Offering 100 Trillion Free Tokens/Day For Its Ox Alpha Model, As Evidence Points To Zhipu's Unreleased GLM</a>
+- <a href="https://247wallst.com/investing/2026/07/23/a-chinese-ceo-just-outlined-the-bear-case-for-nvidia-it-should-terrify-owners-of-the-stock/">A Chinese CEO Just Outlined the Bear Case for NVIDIA. It Should Terrify Owners of the Stock. - 24/7 Wall St.</a>
+- <a href="https://mlq.ai/news/zhipu-ai-launches-glm-image-model-trained-solely-on-huawei-chips/">Zhipu AI Launches GLM-Image Model Trained Solely on Huawei Chips | MLQ News</a>
+- <a href="https://presenc.ai/research/zhipu-glm-model-lineage-2026">Zhipu / Z.ai GLM Model Lineage 2026: GLM-4 to GLM-5.1 | Presenc AI</a>
+- <a href="https://inferencex.semianalysis.com/blog">InferenceX by SemiAnalysis — Agentic Inference Benchmark</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ OpenAI Jalapeño自研晶片效能超越GB300
+          <span class="takeaway">部分證實｜宣稱數字為真且已公開發表，但「超越」限定在推論、對比對象是上一代 GB300（HBM3e／1.4kW），非同世代 Rubin；市場把「工程樣品贏基準測試」</span>
+        </summary>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260827-0803@OpenAI%20Jalape%C3%B1o%E8%87%AA%E7%A0%94%E6%99%B6%E7%89%87%E6%95%88%E8%83%BD%E8%B6%85%E8%B6%8AGB300">2026-08-27 08:03 觀點彙整</a></p>
+          <h2>深查：OpenAI Jalapeño 自研晶片效能超越 GB300</h2>
+<p><strong>裁定</strong>：【部分證實】</p>
+<p>宣稱數字為真且已公開發表，但「超越」限定在推論、對比對象是上一代 GB300（HBM3e／1.4kW），非同世代 Rubin；市場把「工程樣品贏基準測試」誤讀為「NVDA 議價力立即下滑」。</p>
+<p>原宣稱說「單一來源、缺第三方 benchmark」這點查證不成立——資料已由 OpenAI 官方公開發表並在 Hot Chips 2026 公開簡報，且有 SemiAnalysis 參與量測；但測試在 OpenAI 實驗室、由 OpenAI 工程師共同執行，屬「半獨立」而非中立第三方複現。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：一手來源為 OpenAI 官方文章與 Hot Chips 2026 演講（2026/8/25），非內部人士放話。OpenAI 8 月 25 日公布 Jalapeño 首批實測數字，於 Hot Chips 發表，使用研究機構 SemiAnalysis 的公開基準 InferenceX。簡報由 Richard Ho、Ravi Narayanaswami、Chris Leary 主講，內容涵蓋約九個月的 RTL 到 tapeout 歷程、對 NVIDIA GB200／GB300 的效能定位，以及圍繞 HBM4 的架構。</p>
+<ul>
+<li>【事實 2026/8/25】Jalapeño 在 InferenceX 上較 GB200／GB300 機櫃系統提供 1.5–1.9 倍的每千瓦吞吐、1.7–3.6 倍更低的端到端延遲，且是 700W 部件對上 1,200W 與 1,400W 加速器。測試模型為 GPT-OSS 120B、DeepSeek R1 670B、Kimi K2.5 1T，互動型負載達 2.1–4.1 倍。</li>
+<li>【機構估計 2026/8/25】第三方參與但非獨立環境：SemiAnalysis 表示曾造訪 OpenAI 實驗室量測，認定該晶片在幾乎所有測試情境的每瓦效能勝過 Blackwell，但同時指出此比較「有些不完整且不公平」，因 Jalapeño 用較新的 HBM4，Nvidia 的 Rubin 才是同級對照。</li>
+<li>【事實】比較基準的不對稱：數據以封裝 TDP 正規化（Jalapeño 700W、GB200 1.2kW、GB300／MI355X 1.4kW），且 Jalapeño 用單 token 預測，對照的 NVIDIA 基線使用多 token 預測。若改用「全廠用電／每加速器」（Jalapeño 1.18kW 對 GB300 2.55kW），差距縮小；若對手 GB300 開啟 MTP，峰值效率領先幅度收窄至約 1.5 倍。</li>
+<li>【事實】Jalapeño 未與 Vera Rubin 對比，也不做訓練；Nvidia 稱 Vera Rubin NVL72 正進入全面量產。【機構估計】與 Vera Rubin 相比效率優勢縮小，每 token 總成本基本打平。</li>
+<li>【事實 2026/8/25】部署節奏遠慢於敘事：Richard Ho 表示 2026 年底僅小量初期部署，2027 才較大規模鋪開，第二、三代已在開發；全面量產延伸至 2028。與 Broadcom 官方時程一致：Jalapeño 是為 2026 年底初期部署設計的多世代平台第一步。</li>
+<li>【事實】製程與規格：採 TSMC N3P 單一光罩尺寸運算晶粒，搭 N3E I/O chiplet 與六顆 HBM4（216 GiB／15.4 TB/s）；GB300 為 288GB HBM3e／1,400W，以額定功耗換算 Jalapeño 記憶體容量約多 50%。但 AMD 與 Nvidia 最新機櫃仍提供 1.46–2 倍運算量、最多多 12% 記憶體，僅記憶體頻寬約為 OpenAI 機櫃的 85%。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>AVGO 是最直接受益者</strong>（原宣稱未提的重點）：Broadcom 負責矽實作、網路與連接，且<cite name="" index="12-7">機櫃包含其 Ethernet、PCIe 與光學連接完整組合</cite>；此案基礎為2025/10/13 宣布的 10GW 客製加速器合作，2026 下半年開始部署、2029 年底完成。<strong>TSM 兩面受益</strong>：Jalapeño（N3P+N3E）與 Rubin 同吃 3nm 產能——自研晶片的勝出不減 TSM 需求，只換客戶名稱。<strong>MU／HBM 是被忽略的瓶頸</strong>：【傳聞】有報導認為 Samsung 供應 Jalapeño 的 HBM4（僅據轉述，OpenAI 未確認）；Samsung、SK hynix、Micron 的 HBM 產能已售罄至 2027，SK hynix 執行長警告 2027 是缺貨最嚴重一年——這意味 Jalapeño 放量的真正限制是記憶體而非設計。<strong>GLW／CPO</strong>：全域網域以銅＋光學混合連接 16 機櫃共 2,048 顆晶片，光互連含量高，對光學供應鏈屬結構性利多。</p>
+<p><strong>反方觀點必須並陳</strong>：【機構估計】TrendForce 分析師認為此舉長期可降低 OpenAI 在推論上對 Nvidia 的依賴，但在大規模訓練與前沿負載，Nvidia GPU 因可程式性、生態與泛用性仍將關鍵。【機構估計 2025/10】多數分析師當時即不認為此合作能挑戰 Nvidia 在加速器市場的掌控，因自研晶片的設計、擴產與量產門檻極高。基本面亦未見裂縫：【事實 2026/8/26】Nvidia FY27 Q2 EPS 2.22 美元，營收 96.2 億…（原文為 962 億美元）年增 106%，黃仁勳稱「我們有支撐 70% 成長的供應」。真正受威脅的是 Nvidia 的<strong>推論毛利率</strong>，而非總量：Yole 分析師指 Nvidia 仍擁絕大多數 AI 運算與 CUDA 生態鎖定，但此晶片是對其推論毛利的威脅。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>未來數月</strong>：OpenAI 稱將提出詳細技術效能報告。若披露系統級（全廠用電）與開啟 MTP／推測解碼後的對比仍領先，結論可升級。</li>
+<li><strong>AVGO 下次財報（約 2026/9）</strong>：客製 AI 加速器營收與 backlog 是否上調、是否明示 OpenAI 專案貢獻——這是把「宣稱」轉為現金流的唯一硬證據。</li>
+<li><strong>2026 年底</strong>：是否出現 Jalapeño 實際上線服務 ChatGPT 的證據（非實驗室）。無法證實則本案降級為紙上規格。</li>
+<li><strong>Vera Rubin NVL72 的 InferenceX 數據出現時</strong>：若 Rubin 每 token 成本反超，「超越」敘事失效。</li>
+<li><strong>2027 HBM4 分配公告</strong>：若 OpenAI 拿不到足量 HBM4，量產時程（2027 放量／2028 全面）必須下修。</li>
+<li><strong>NVDA 法說對 custom ASIC 的措辭變化</strong>：從「不構成威脅」轉為承認推論價格壓力，是議價力真正鬆動的訊號。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ol>
+<li>SemiAnalysis 全文為付費電子報，僅據公開摘錄與轉述，<strong>無法取得原文</strong>，其反方限定條件可能比引用更多。</li>
+<li>所有效能數字<strong>單一量測來源</strong>：OpenAI 提供環境、SemiAnalysis 執行，無獨立實驗室複現。</li>
+<li>數據分歧：一家媒體稱OpenAI 未揭露系統級功耗，因此衡量的是吞吐而非每瓦效能，與 Tom's Hardware 引述的 all-in 用電附錄說法相左；另有中文轉述將 tapeout 週期寫成 16 個月，與官方九個月不符，引用中文財經內容時須留意。</li>
+<li>HBM4 供應商（Samsung）為傳聞層級，勿據此建倉。</li>
+</ol>
+<p><strong>引用來源</strong>
+- <a href="https://www.tun.com/home/openais-jalapeno-chip-delivers-faster-cheaper-ai-inference/">OpenAI’s Jalapeño Chip Delivers Faster, Cheaper AI Inference - TUN</a>
+- <a href="https://www.servethehome.com/openai-jalapeno-asic-at-hot-chips-2026/">OpenAI Jalapeno Custom AI ASIC at Hot Chips 2026 - ServeTheHome</a>
+- <a href="https://www.tomshardware.com/tech-industry/semiconductors/openai-says-its-jalapeno-chip-beats-nvidias-gb300-in-first-published-benchmarks">OpenAI’s 700W Jalapeño ASIC outpaces 1,400W Nvidia flagship GPU — claims up to 1.9x throughput per kilowatt and 3.6x lower latency, co-developed with Broadcom | Tom's Hardware</a>
+- <a href="https://www.qwe.edu.pl/tutorial/openai-jalapeno-better-nvidia-blackwell-guide/">OpenAI Jalapeño vs Nvidia Blackwell: What ChatGPT and API Users Should Do Now | QWE AI Academy</a>
+- <a href="https://www.cnbc.com/2026/08/26/openai-jalapeno-ai-chip-nvidia.html">OpenAI’s Jalapeño AI chip brings new 'threat' to Nvidia margins as custom silicon gains ground</a>
+- <a href="https://kingy.ai/blog/openai-jalapeno-vs-nvidia-gb300-benchmark/">OpenAI Jalapeño vs Nvidia GB300: The 104× Claim Audited</a>
+- <a href="https://www.techtimes.com/articles/325577/20260826/jalapeno-beats-nvidia-gb300-efficiency-semianalysis-confirms-19x-lead.htm">Jalapeño Beats Nvidia GB300 on Efficiency: SemiAnalysis Confirms 1.9x Lead</a>
+- <a href="https://investors.broadcom.com/news-releases/news-release-details/openai-and-broadcom-unveil-llm-optimized-intelligence-processor">OpenAI and Broadcom Unveil LLM-Optimized Intelligence Processor | Broadcom Inc.</a>
+- <a href="https://247wallst.com/investing/2026/08/26/openai-says-its-new-chip-outperforms-nvidias-blackwell-as-nvidia-prepares-earnings-release/">OpenAI Says Its New Chip Outperforms Nvidia's Blackwell As Nvidia Prepares Earnings Release - 24/7 Wall St.</a>
+- <a href="https://investors.broadcom.com/news-releases/news-release-details/openai-and-broadcom-announce-strategic-collaboration-deploy-10">OpenAI and Broadcom announce strategic collaboration to deploy 10 gigawatts of OpenAI-designed AI accelerators | Broadcom Inc.</a>
+- <a href="https://www.trendforce.com/news/2026/08/26/news-openai-debuts-jalapeno-ai-inference-chip-with-samsung-reportedly-supplying-hbm4/">[News] OpenAI Debuts Jalapeño AI Inference Chip, with Samsung Reportedly Supplying HBM4</a>
+- <a href="https://de.tradingview.com/news/reuters.com,2025:newsml_L3N3VU0UT:0-openai-taps-broadcom-to-build-its-first-ai-processor-in-latest-chip-deal">reuters.com,2025:newsml L3N3VU0UT:0 openai taps broadcom to build its first ai processor in latest chip deal</a>
+- <a href="https://www.kiplinger.com/investing/live/nvidia-earnings-live-updates-and-commentary-august-2026">Nvidia Earnings: Live Updates and Commentary August 2026 | Kiplinger</a>
+- <a href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip/">OpenAI and Broadcom unveil LLM-optimized inference chip | OpenAI</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-08-26（6 題）</summary>
     <div class="day-body">
       
