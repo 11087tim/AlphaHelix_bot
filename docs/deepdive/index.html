@@ -65,11 +65,195 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-08-31 20:41｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-01 08:41｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-01（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ NVIDIA Rubin CPX 復活規格與時程
+          <span class="takeaway">部分證實｜郭明錤確實發文且宣稱規格被媒體如實轉述，但「復活＋2027Q1量產」目前是單一分析師供應鏈推測，NVIDIA 官方最新公開說法反而指向 Feynman 世代，</span>
+        </summary>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260901-0802@NVIDIA%20Rubin%20CPX%20%E5%BE%A9%E6%B4%BB%E8%A6%8F%E6%A0%BC%E8%88%87%E6%99%82%E7%A8%8B">2026-09-01 08:02 觀點彙整</a></p>
+          <h2>深查：NVIDIA Rubin CPX 復活規格與時程</h2>
+<p><strong>裁定</strong>：【部分證實】</p>
+<p>郭明錤確實發文且宣稱規格被媒體如實轉述，但「復活＋2027Q1量產」目前是<strong>單一分析師供應鏈推測</strong>，NVIDIA 官方最新公開說法反而指向 Feynman 世代，市場把「未經證實的預測」直接當成結構性利多。</p>
+<p>補充：宣稱中「NVLink 降至 1.5TB/s」略有失真——原文是每顆 CPX 具 1～1.5TB/s 區間，對比 Rubin 的 3.6TB/s。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li><strong>原始出處＝郭明錤 X 貼文，非官方文件</strong>。【傳聞／單一來源】2026-09-01：Investing.com 引述天風國際郭明錤的產業調查稱 NVIDIA 已重啟市場原以為取消的 Rubin CPX，預計 2027 年第一季開始量產，郭在 X 貼文中表示「市場普遍認為 CPX 已從路線圖消失之際，我最新的產業調查顯示計畫已恢復」。該文由 Investing.com 各語言版本同步刊出，且文章註明由 AI 協助生成、經編輯審閱——中、英、越、義文版本皆同源，<strong>不構成多來源交叉驗證</strong>。無法取得郭明錤原始貼文全文，僅據轉述。</li>
+<li><strong>規格轉述一致</strong>。【傳聞】2026-09-01：每顆 CPX 運算效能接近 Rubin GPU、最大功耗 2,300W，記憶體為 168GB HBM4（Rubin 為 288GB、初代 CPX 為 128GB GDDR7）；NVLink 提供托盤內八顆 CPX 的 scale-up，每顆 1～1.5TB/s；托盤間走 Spectrum-6 銅纜、模組間走 OSFP 光連結；NVIDIA 要求 CPX 與 Vera Rubin NVL72 以 1:1 搭配，CPX 負責 prefill 並將 KV cache 經 Ethernet RDMA 交給 Rubin 解碼。</li>
+<li><strong>「取消」是既成事實，非市場誤解</strong>。【事實】2026-03：NVIDIA 在 3 月 GTC 2026 將 Rubin CPX 從路線圖移除，距首度公布僅約半年，且未說明原因，轉而以授權自 Groq 的「Groq 3 LPX」成為 Vera Rubin 平台核心推論產品。【事實】Groq 3 LPU 為 NVIDIA 200 億美元授權／人才交易的首顆晶片，採三星 4nm，計畫 2026Q3 出貨。</li>
+<li><strong>官方口徑與 1Q27 不一致（反方關鍵證據）</strong>。【機構估計／二手轉述】2026-03：NVIDIA VP Ian Buck 表示 CPX 概念未被放棄，但類似方案可能改於 Feynman 世代登場，因工作負載重心已從長上下文轉向 TTFT。同期已有報導指 NVIDIA 正修改 CPX 設計、擬以 HBM 取代 GDDR7——這點<strong>部分獨立佐證了「改用 HBM4」的方向</strong>，但時程指向 2028 而非 2027Q1。</li>
+<li><strong>供應鏈尚未見實質下單（截至 5 月）</strong>。【傳聞／多位業界人士】2026-05-27：供應鏈未出現 CPX 的記憶體與基板採購或開發訂單，GDDR7 討論幾乎消失，HBM 方案亦無實質進展，基板業者將其視為「實質取消」。目前查無 6 月後任何獨立來源證實 168GB HBM4 訂單落地。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>敘事失真點一：CPX 已不是「便宜晶片」。</strong> 初代 CPX 的賣點是單一晶片、128GB 廉價 GDDR7、不需 CoWoS 也不需 HBM，SemiAnalysis 當時估其功耗僅約 800W。新版若真為 2,300W＋168GB HBM4，等同一顆「削減記憶體的 Rubin」，成本、CoWoS 與 HBM 佔用大幅上升，原本的 TCO 論述不再成立——這對 NVDA 是<strong>中性偏成本壓力</strong>，而非單純利多。</p>
+<p><strong>失真點二：HBM 增量與 2027 缺料相衝突。</strong> 【機構估計】TrendForce 指出DRAM 供不應求將延續至 2027、HBM4e 驗證有變數，NVIDIA 自 2026Q3 起已把 Rubin Ultra 的 HBM 配置從 HBM4e 12hi 改為並行評估 8hi／HBM4 12hi 等設計，部分 CSP 也在考慮下調自研 ASIC 的 HBM 容量。在此背景下新增一條吃 HBM4 的產品線，可行性須打折。</p>
+<p><strong>MU 的曝險方向正確但鏈條長。</strong> 【機構估計】2026-02：SemiAnalysis 報告指 VR200 NVL72 的 HBM4 由 SK 海力士（約 70%）與三星（約 30%）瓜分，美光缺席，而業界預期美光可能改供 Rubin CPX 等中階推論加速器的 HBM4。因此「CPX 復活」對 MU 是<strong>題材面正向</strong>；但另有資料稱2026 年 6 月 NVIDIA 確認三大廠全數通過 Vera Rubin HBM4 認證，供應格局說法存在分歧，不宜據單一版本定價。反方觀點成立：CPX 始終只是特化機櫃變體，主流仍是標準 Vera Rubin NVL72，即使復活，對 NVDA 營收貢獻屬增量而非轉折。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026Q4：韓國記憶體／ABF 基板下單訊號</strong>。若 1Q27 量產為真，HBM4 與基板採購必須在 Q4 前發出（The Elec、Korean 供應鏈稽核）；持續零訂單＝推翻。</li>
+<li><strong>2026 年 10 月 GTC DC ／ 2027 年 3 月 GTC</strong>：CPX 是否重回官方投影片與機櫃圖。官方復列＝升級至【事實】。</li>
+<li><strong>NVDA 下一次法說（FQ3 FY2027, 約 2026-11）</strong>：管理層是否在產品組合中提及 CPX／LPX 分工；沉默＝維持【傳聞】。</li>
+<li><strong>MU 財報（下一季）</strong>：是否揭露新增 HBM4 客戶專案或 2027 HBM 產能已售罄的配置變化。</li>
+<li><strong>TSMC CoWoS 配額</strong>：168GB HBM4 需先進封裝，若 2027 CoWoS 分配未見新 SKU，時程須後延。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ol>
+<li><strong>單一來源警語</strong>：復活與 1Q27 時程僅郭明錤一家，多語版新聞同源；且該報導由 AI 生成後編輯審閱，細節誤差風險存在。</li>
+<li><strong>無法取得原文</strong>：未能讀到郭明錤 X 原貼與天風完整報告，規格皆為轉述。</li>
+<li><strong>規格算術待確認</strong>：Rubin 288GB 對應每堆疊 36GB（另有報導稱單顆加速器搭 16 顆 HBM4、總容量 576GB），168GB 無法由 36GB 堆疊整除，暗示不同堆疊數／層數，屬待驗證細節（本點為推導，非來源明示）。</li>
+<li><strong>敘事起點未能核實</strong>：無法取得 8/31 當日「OpenAI 自研 ASIC 逼近」的具體觸發報導；已知背景為OpenAI 與 Broadcom 合作自研晶片 Jalapeño，預計 2026 年底前開始部署，此結構性競爭不因 CPX 是否復活而改變。</li>
+</ol>
+<p><strong>引用來源</strong>
+- <a href="https://in.investing.com/news/stock-market-news/nvidia-revives-rubin-cpx-chip-program-with-2027-launch-planned-analyst-says-93CH-5577306">Nvidia revives Rubin CPX chip program with 2027 launch planned, analyst says By Investing.com</a>
+- <a href="https://www.investing.com/news/stock-market-news/nvidia-revives-rubin-cpx-chip-program-with-2027-launch-planned-analyst-says-93CH-4882972">Nvidia revives Rubin CPX chip program with 2027 launch planned, analyst says By Investing.com</a>
+- <a href="https://www.thelec.net/news/articleView.html?idxno=10763">Nvidia's 'Rubin CPX' Launch Becomes Uncertain as Memory, Substrate Orders Fail to Materialize &lt; Semiconductor &lt; 기사본문 - The Elec Inc.</a>
+- <a href="https://www.tomshardware.com/tech-industry/semiconductors/nvidias-20-billion-groq-deal-produces-its-first-chip">How Nvidia's $20 billion Groq 3 LPU deal reshapes the Nvidia Vera Rubin Platform — Samsung 4nm process serves as bedrock for SRAM-based AI accelerator chip | Tom's Hardware</a>
+- <a href="https://wccftech.com/nvidia-rubin-cpx-is-off-the-roadmap-but-may-return-with-feynman-in-2028/">NVIDIA's Rubin CPX Is Off the Roadmap, Replaced by Groq LPUs for Inference, But May Return With Feynman in 2028</a>
+- <a href="https://technews.tw/2026/05/28/nvidias-rubin-cpx-launch-becomes-uncertain-as-memory-substrate-orders-fail-to-materialize/">亮相僅半年就從藍圖消失！輝達 Rubin CPX 進展停擺，業界疑「已實質取消」 | TechNews 科技新報</a>
+- <a href="https://www.techpowerup.com/350947/nvidia-details-the-rubin-architecture-die-annotation-vera-cpu-hbm4-and-disaggregated-inference">NVIDIA Details the "Rubin" Architecture: Die Annotation, Vera CPU, HBM4, and Disaggregated Inference | TechPowerUp</a>
+- <a href="https://www.threads.com/@yuan_qian1030/post/DOfgoG5kWxl/%E7%B0%A1%E5%96%AE%E8%A8%98%E9%8C%84%E4%B8%80%E4%B8%8B-cpx-%E6%98%AF%E4%BB%80%E9%BA%BCrubin-cpx-%E5%8F%AF%E4%BB%A5%E7%90%86%E8%A7%A3%E7%82%BA-nvidia-%E7%82%BA-ai-%E6%8E%A8%E7%90%86%E8%80%8C%E6%89%93%E9%80%A0%E7%9A%84%E4%B8%80%E7%A8%AE%E5%88%86%E5%B7%A5%E5%9E%8B-gpu%E5%8A%A0%E9%80%9F%E5%8D%A1%E6%9E%B6%E6%A7%8B%E5%AE%83%E4%B8%8D%E6%98%AF%E5%96%AE%E7%B4%94%E7%9A%84-gpu%E8%80%8C%E6%98%AF%E9%87%9D%E5%B0%8D-%E6%8E%A8%E7%90%86%E7%9A%84?hl=zh-tw">簡單記錄一下 🔹 CPX 是什麼？ Rubin CPX 可以理解為 NVIDIA 為 AI 推理而打造的一種「分工型 GPU/加速卡」架構： • 它不是單純的 GPU，而是針對 推理的兩個階段（前置 pre-fill / 生成 decode），在硬體層面分拆、分工。 • CPX 卡搭配 GDDR7 → 負責 pre-fill 階段（算力密集、記憶體利用率低）。 • Rubin 主卡搭配 HBM4 → 負責 decode 階段（大量 KV-cache、需要超高頻寬）。 🔹 為什麼需要 CPX？ 1. 降低</a>
+- <a href="https://finance.technews.tw/2026/02/09/nvidias-vera-rubin-vl72-rack-mount-solution-hbm4-is-shared-between-sk-hynix-and-samsung/">輝達 Vera Rubin VL72 機架式解決方案 HBM4 由 SK 海力士與三星瓜分，美光遭排除 | TechNews 科技新報</a>
+- <a href="https://www.ithome.com/0/927/061.htm">美光出局？消息称英伟达 Vera Rubin 芯片仅采用三星和 SK 海力士 HBM4 技术 - IT之家</a>
+- <a href="https://vocus.cc/article/6a35fdf4fd897800019f1765">HBM(高頻寬記憶體)產業總覽報告:最新技術發展與供應商格局</a>
+- <a href="https://vrlatech.com/nvidia-vera-rubin-architecture-explained/">NVIDIA Vera Rubin Architecture: GPU, CPU, NVLink 6, HBM4 - VRLA Tech</a>
+- <a href="https://technews.tw/2026/03/09/vera-rubin-hbm4/">傳美光出局？輝達 Vera Rubin HBM4 供應鏈，三星、SK 海力士先發 | TechNews 科技新報</a>
+- <a href="https://www.forecastock.tw/article/cmoneyairesearcher-3ceb55ac-6fd5-11f1-88ff-e6502b57a59d">AI 晶片戰火升溫！OpenAI 自製『Jalapeño』逼緊 NVDA、AVGO，CPU 聯軍 AMD、ARM 搶攻新一波 AI 架構 | 美股放大鏡</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ MediaTek TPUv8t Zebrafish 出貨與ASIC營收上修
+          <span class="takeaway">部分證實｜「2026 資料中心營收 $2B+」與「ASIC 營收預估被上修」為真，但那是公司自訂指引而非 JPM 獨家發現；</span>
+        </summary>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260901-0802@MediaTek%20TPUv8t%20Zebrafish%20%E5%87%BA%E8%B2%A8%E8%88%87ASIC%E7%87%9F%E6%94%B6%E4%B8%8A%E4%BF%AE">2026-09-01 08:02 觀點彙整</a></p>
+          <h2>深查：MediaTek TPUv8t Zebrafish 出貨與 ASIC 營收上修</h2>
+<p><strong>裁定</strong>：【部分證實】</p>
+<p>「2026 資料中心營收 $2B+」與「ASIC 營收預估被上修」為真，但那是公司自訂指引而非 JPM 獨家發現；「2027 Zebrafish 出貨超越 Broadcom Sunfish」查無原始出處，且多家機構數據反向。</p>
+<p>補充：宣稱中「TPUv8t Zebrafish」本身是命名錯置，這個錯誤在賣方與台媒間被大量複製，是本案最大的解讀汙染源。</p>
+<h3>查證過程與證據</h3>
+<p><strong>1.【事實】$2B+ 出自公司法說，非 JPM 推估（2026-07-31）</strong>聯發科副董暨執行長蔡力行在法說會宣布，與美國大型雲端服務商合作的首款 AI 加速器 ASIC 預計 2026 年第四季量產，推升 2026 年資料中心營收突破 20 億美元，並將 2027 年資料中心市占目標由 10~15% 上修至 15~20%。法說紀要另載：2027 年 TAM 上調至 800 億美元，第二顆 ASIC 目標 2028 年大量量產。此指引本身是從 2 月版「突破 10 億美元」半年內翻倍而來，屬公司自訂目標，非已到手訂單。</p>
+<p><strong>2.【機構估計】JPM 數字與公司指引幾乎重疊（2026-07-23）</strong>JPM 維持 Overweight、目標價 5,300 元，理由是 v8t「Zebrafish」需求強、v9「Humufish」量產樂觀；並因 CoWoS 與載板瓶頸緩解，將 2027 年 ASIC 營收預估上調 20%，2026 年 ASIC 營收估 22 億美元。同期高盛亦將 2026 年估值微調至 22 億美元、2027 年估 203 億美元，目標價 7,000 元。→ 上修屬實，但$2B 並非「上看」而是「跟上公司指引」。</p>
+<p><strong>3.【查證不支持】「2027 Zebrafish 出貨超越 Sunfish」找不到 JPM 原文，且證據反向</strong>
+- JPM 自家 AVGO 報告口徑相反：JPM 稱博通已於 2025 年中完成 v8i 3nm 認證、本季開始拉貨，Google 內部團隊與聯發科的 Zebrafish v8t 3nm 專案仍在優化，博通領先約 18 個月。
+- 廣發證券（2026-08-25）：博通 v8AX（Sunfish）2026/2027 出貨遭下修、2026 年底出貨、2027 Q1 放量；聯發科 v8x（Zebrafish）2026/2027 出貨預估維持 2.5 萬與 18 萬顆不變——Zebrafish 單一機種量體極小，真正動能是 Humufish（v9t，N2）。
+- Counterpoint：聯發科在 Zebrafish 與後續產品帶動下，2028 年約占 AI ASIC 伺服器運算出貨 26%、近 500 萬顆，「僅次於博通」。
+→ 主流研究是「聯發科坐二望一」，不是超越。</p>
+<p><strong>4.【事實】命名與製程節點多重矛盾</strong>Google Cloud Next 官方拆分為 TPU 8t（Sunfish，博通，訓練）與 TPU 8i（Zebrafish，聯發科，推論，單一 compute die + 六顆 HBM3e，推論成本低 20~30%），兩者皆台積電 2nm、目標 2027 年底。但大摩供應鏈查核稱Zebrafish 為 3nm、2026 下半年如期量產，2026 年出貨 40 萬顆（約 16 億美元）。連鉅亨引述的報告也承認不同報告對命名與客戶責任的口徑存在差異。宣稱把 Zebrafish 標成「v8t」，等於把博通的訓練機種名掛在聯發科身上。</p>
+<p><strong>5.【事實】供給端有動作但未被官方量化</strong>聯發科財務高層表示已同步檢視晶圓代工、基板、記憶體與客戶需求，對 2026、2027 年供應鏈產能掌握有信心；董事會另通過 50 億美元彈性融資預算以支援供應商擴產與產能綁定。反向風險：大摩認為 AI 晶片真正瓶頸是 ABF 載板與 HBM，而非功耗；大摩並點名聯發科 2nm TPU 封裝策略的執行風險，EMIB 在 Google 所需規模上仍未經驗證。</p>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>2454</strong>：故事已從「手機 SoC」重估為「雲端 ASIC」，但兩條腿方向相反——Q2 手機營收季減 14%、年減 20%，公司仍預期 2026 全球手機出貨量下滑約 15%，JPM 更估 2026 手機晶片出貨年減 28%。因此「小米自研侵蝕、手機走弱」與「ASIC 上修」並不互斥，本案<strong>不構成對先前偏空立場的打臉</strong>，只是不同區隔。</li>
+<li><strong>AVGO</strong>：受害程度被市場誇大。Q2 FY26 AI 半導體營收 108 億美元、年增 143%，並指引 Q3 成長逾 200% 至 160 億美元；FY26 全年 AI 目標 560 億美元於 Q2 後重申。Zebrafish 是推論價位帶（ASP 約 5,500 美元 vs Humufish 1.3 萬、Triggerfish 1.8 萬，據廣發），對 AVGO 訓練營收的直接替代有限。</li>
+<li><strong>TSM / MU / GLW</strong>：無論 Sunfish 或 Zebrafish 勝出皆受益，此即大摩「GPU 或 ASIC 誰贏，台積電都受益」的框架；HBM 用量（v8i 六顆 HBM3e）利多 MU。</li>
+<li><strong>反方觀點</strong>：估值已提前反映。市場對聯發科 2027 ASIC 營收的預估區間從 70 億到 203 億美元、目標價 5,300~10,000 元，離散度本身即警訊；AVGO 上季即因未上調 2027 年 AI 目標而在財報「beat」後仍下跌 12.6%——同一敘事在兩檔股票上都已是高門檻定價。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-09-02（今晚）AVGO FQ3 財報</strong>：AI 半導體是否達 160 億美元指引，以及是否上調 2027 年「逾 1,000 億美元」目標。若上調且提及 Sunfish 出貨時程提前 → 直接推翻「聯發科超越」敘事。</li>
+<li><strong>2026 年 10 月下旬 2454 Q3 法說</strong>：Q4 是否確認如期量產、$2B 資料中心營收是否維持；Q4 單月營收（11、12 月）應出現階梯式跳升，否則量產遞延。</li>
+<li><strong>2026 年 11 月前後 Humufish 工程流片</strong>（廣發預估）：成功 → 2027H2 才是真正放量點；失敗/遞延 → 2027 上修全數需下修。</li>
+<li><strong>TSMC 法說之 N3/N2 與先進封裝配置、ABF 載板廠擴產進度</strong>：驗證 250 萬顆級出貨的物理可行性。</li>
+<li><strong>2027 年底 v8 世代量產（2nm）</strong>：屆時方能驗證 Sunfish 與 Zebrafish 的實際 mix。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>JPM 原始報告無法取得，僅據 investing.com、invezz 與 BigGo 之轉述／摘錄；三者高度重疊，<strong>不構成三個獨立來源</strong>。</li>
+<li>Digitimes 8/20 關於「Sunfish 留在博通、Zebrafish 留在聯發科」的分析文為付費牆，僅見前段，無法取得完整論證。</li>
+<li>出貨量數據嚴重分歧：廣發（Zebrafish 2027 僅 18 萬顆）vs 大摩（聯發科 2027 250 萬顆／約 100 億美元）vs 本土法人（2026 逾 60 萬顆、2027 逾 300 萬顆），差異可能源於「單一機種 vs 全部 TPU 專案」與「晶片 vs 模組」定義不同，比較時不可混用。</li>
+<li>「$2B」是<strong>資料中心／ASIC 總營收</strong>，非 Zebrafish 單一機種營收；原宣稱在此處偷換了口徑。</li>
+<li>廣發、Counterpoint、天風（郭明錤）數字皆為二手轉述之機構估計，未見原始報告全文。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.storm.mg/article/11153223">聯發科首款AI ASIC第四季量產！2026資料中心營收破20億美元、2027市占目標升至15%至20% | 魏鑫陽 | 財經 - 風傳媒</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/mediatek-inc-tpe-2454-q2-010316865.html">MediaTek Inc (TPE:2454) (Q2 2026) Earnings Call Highlights: AI ASIC Momentum Drives Record ...</a>
+- <a href="https://masonailab.com/insights/mediatek-ai-asic-q4-production-2026/">聯發科首顆 AI ASIC 第四季量產、2027 市占目標上調到兩成：台廠在「去輝達化」賽道終於有時間表 | Mason AI Lab</a>
+- <a href="https://finance.biggo.com/news/e9f5e827-8dbd-4e08-b1a3-25675b059597">J.P. Morgan Sees MediaTek Hitting NT$5,300 as Google Ramps Up AI Infrastructure, ASIC Revenue Revised Higher — BigGo Finance</a>
+- <a href="https://money.udn.com/money/story/5607/9668715">聯發科目標價 高盛喊7,000 | 市場焦點 | 證券 | 經濟日報</a>
+- <a href="https://invezz.com/news/2026/08/19/broadcom-stock-falls-on-marvells-google-ai-chip-deal-whats-worrying-investors/">Broadcom stock falls on Marvell's Google AI chip deal: what's worrying investors?</a>
+- <a href="https://finance.technews.tw/2026/08/25/analysts-expect-the-semiconductor-asic-market-to-reach-a-certain-level-in-2026/">法人預期 2026 年半導體 ASIC 市場，聯發科、Marvell 與英特爾前景看俏 | TechNews 科技新報</a>
+- <a href="https://tw.news.yahoo.com/google-tpu%E5%B8%B6%E6%97%BA%E8%81%AF%E7%99%BC%E7%A7%91-%E7%A0%94%E8%AA%BF%E4%BC%B02028%E5%B9%B4ai-asic%E4%BC%BA%E6%9C%8D%E5%99%A8%E9%81%8B%E7%AE%97%E5%87%BA%E8%B2%A8%E5%83%85%E6%AC%A1%E6%96%BC%E5%8D%9A%E9%80%9A-023200968.html">Google TPU帶旺聯發科 研調估2028年AI ASIC伺服器運算出貨僅次於博通</a>
+- <a href="https://thenextweb.com/news/google-ironwood-tpu-inference-cloud-next">Google launches Ironwood TPU and previews eighth-gen split into training and inference chips at TSMC 2nm</a>
+- <a href="https://finance.biggo.com/news/kmUbeJ0Bh5an-7GhgJ7Z">Morgan Stanley Reveals Key to AI Chip Supply Chain: TSMC's CoWoS Capacity Secure, MediaTek's TPU Nears Mass Production — BigGo Finance</a>
+- <a href="https://hao.cnyes.com/post/251817">博通、聯發科與HBM重估：GoogleTPU出貨上修至3500萬顆 | 科技 | 鉅亨號 | Anue鉅亨</a>
+- <a href="https://vocus.cc/article/6a7224bbfd89780001380176">2026/07/31 聯發科 (2454.TW) 法說會：Q2 營收超越財測，上修 AI ASIC 市佔目標與全年展望</a>
+- <a href="https://au.finance.yahoo.com/news/chipmaker-remains-core-ai-winner-135009331.html">This chipmaker "remains a core AI winner and a close #2 behind NVDA": MS</a>
+- <a href="https://m.investing.com/news/transcripts/earnings-call-transcript-mediatek-q2-2026-revenue-beats-guidance-as-ai-push-grows-93CH-4826949?ampMode=1">Earnings call transcript: MediaTek Q2 2026 revenue beats guidance as AI push grows By Investing.com</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001730168/000173016826000051/avgo-05032026x8kxex99.htm">Broadcom Inc. - Form 8-K - FY2026</a>
+- <a href="https://cryptobriefing.com/broadcom-earnings-16b-ai-revenue/">Broadcom earnings on September 2 expected to reveal $16B AI semiconductor quarter</a>
+- <a href="https://finance.biggo.com/news/92fef067-00b6-4906-9906-33fab6e6992f">Broadcom's $60 Billion AI Backlog Sets Stage for Critical September Earnings Test — BigGo Finance</a>
+- <a href="https://www.digitimes.com/news/a20260820VL209/marvell-google-broadcom-mediatek-tpu.html">Analysis: Google keeps Sunfish at Broadcom, Zebrafish at MediaTek — Marvell's US$12.2bn warrant buys a category nobody was defending</a>
+- <a href="https://cmnews.com.tw/article/forumnews-6905dcc0-74ba-11f1-adeb-5864cb681ff5">聯發科ASIC發威！外資調升目標價上看萬元-財經焦點情報站 | CMoney投資網誌</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ CXMT LPDDR6量產時程是否領先國際大廠
+          <span class="takeaway">部分證實｜「CXMT 已量產 LPDDR6 並由小米首發」是官方確認的事實，但「PAM3／43.2Gbps」的規格與「LPDDR5 後不到一年」的加速敘事均被錯誤嫁接</span>
+        </summary>
+        <div class="report">
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260901-0802@CXMT%20LPDDR6%E9%87%8F%E7%94%A2%E6%99%82%E7%A8%8B%E6%98%AF%E5%90%A6%E9%A0%98%E5%85%88%E5%9C%8B%E9%9A%9B%E5%A4%A7%E5%BB%A0">2026-09-01 08:02 觀點彙整</a></p>
+          <h2>深查：CXMT LPDDR6 量產時程是否領先國際大廠</h2>
+<p><strong>裁定</strong>：【部分證實】</p>
+<p>「CXMT 已量產 LPDDR6 並由小米首發」是官方確認的事實，但「PAM3／43.2Gbps」的規格與「LPDDR5 後不到一年」的加速敘事均被錯誤嫁接。</p>
+<p>具體而言：CXMT 是<strong>第一家公開宣布 LPDDR6 量產並指名首發機種</strong>的廠商，此點成立；但「時程領先」只成立於「宣布」層面，海力士/三星的量產時間窗實質重疊，而 CXMT 的速度等級與良率仍低於或未知。</p>
+<h3>查證過程與證據</h3>
+<p><strong>1. 原始出處明確，是一手官方聲明（非爆料）</strong>【事實・2026-08-29】CXMT 於 8 月 29 日在當天新開的官方微博宣布 LPDDR6 正式進入量產，小米 18 Fold 為首發產品；中國《澎湃新聞》於當日 12:57 首報。小米 CEO 雷軍亦確認 8 月 24 日發表的自研 SoC XRING O3 為首個支援 CXMT LPDDR6 的晶片。路透隨後報導——<strong>注意：Tom's Hardware、VideoCardz、HotHardware、TechNode 等英文報導均轉引路透＋同一則微博，屬同一來源鏈，不構成多個獨立來源。</strong></p>
+<p><strong>2. 規格宣稱查證不支持</strong>【事實】CXMT 官方揭露的是 最高 12.8 Gbps、高於 JEDEC 的 10.7 Gbps 基準線，16Gb die、1295-ball PoP 封裝。「43.2 GT/s、PAM3」出自 Tom's Hardware 對 LPDDR6 標準的描述（稱其採 PAM3 訊號、傳輸率提升至 43.2 GT/s）——這是<strong>對標準上限的描述，非 CXMT 產品規格</strong>，且該文讀者已指出其 PAM3 描述有技術錯誤。JEDEC 於 2025 年 7 月發布的 JESD209-6 定義每 pin 10.667～14.4 Gbps，官方新聞稿未以 PAM3 為主要賣點。更關鍵的是，小米自己為 XRING O3 標示的 LPDDR6 傳輸率是 10,667 Mbps，配 96-bit 匯流排得到約 113.8 GB/s——<strong>實機介面速率低於 CXMT 的 12.8Gbps 峰值宣稱</strong>。</p>
+<p><strong>3. 國際大廠時程比對：重疊，非落後</strong>【事實／機構估計】
+- SK 海力士：2026 年 3 月正式發表 16Gb LPDDR6，採第六代 10nm 級（1c）製程，10.7Gbps 以上，計畫 2026 下半年開始供貨；量產準備於上半年完成，下半年出貨，小米被廣泛報導為首個手機客戶。目標速度 14.4 Gbps，高於 CXMT。
+- 三星：於 CES 2026 展示 1b 製程 LPDDR6 實矽，目標 10.7 Gbps，量產時點官方未明確。
+- 美光：正向主要 OEM 送樣 1γ 製程 16Gb LPDDR6，但未公布量產時程，並已將大量晶圓產能轉向 AI 伺服器 HBM。</p>
+<p><strong>4.「距 LPDDR5 不到一年」數據分歧</strong>【傳聞／數據衝突】路透系報導稱此事發生在 CXMT 開始量產前代 LPDDR5 後不到一年，但另有報導指 CXMT 於 2025 年 5 月將 LPDDR5X 產品導入量產，此次 LPDDR6 量產約在 15 個月後，且 另一說為 2023 年 LPDDR5 量產、2025 年 LPDDR5X 送樣。基準世代（LPDDR5 vs LPDDR5X）未統一，「不到一年」屬最激進的算法。</p>
+<p><strong>5. 反證：CXMT 自家財報與微博不一致</strong>【事實】CXMT 中期報告仍將 LPDDR6 描述為「客戶驗證中」，8 月 29 日微博才更新為量產；狀態由送樣升級為量產，但未揭露出貨量或良率。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受害方（有限）</strong>：MU 的直接曝險最低。美光<strong>主動選擇不打這一仗</strong>——把產能導向 HBM/AI 記憶體，<cite name="mu-def14a" index="29-1">FY2025 HBM＋高容量 DIMM＋LP server DRAM 合計營收已達 100 億美元，較前一年成長逾五倍</cite>。CXMT 在中國手機 LPDDR 的推進，侵蝕的是美光相對低毛利的行動記憶體尾端，而非 AI 主軸。真正被搶的是<strong>海力士/三星原本鎖定的中國旗艦設計案</strong>——海力士一直在積極搶攻中國手機品牌（小米、之後是 OPPO、vivo），意在 CXMT 能提供合格替代品之前先卡位；小米這次同時給了 CXMT 首發位，等於卡位失敗一局。</p>
+<p><strong>SNDK 幾乎無關聯</strong>：CXMT 是 DRAM 廠，LPDDR6 事件與 NAND 供需無直接傳導路徑。若市場以此消息連動 SNDK，屬情緒性擴散而非基本面。</p>
+<p><strong>反方觀點（必須並陳）</strong>：開發出有競爭力的 LPDDR6 是一回事，以高良率、足夠產量供應大客戶是另一回事；目前談的是一款小眾折疊機、性能數字未公開。量產與具競爭力的良率、產量不是同一件事，而 CXMT 兩者都未公布；單一折疊機的設計案是有意義的驗證點，不代表能供應全球，且該公司在大量國內政策支持下運作，經濟性難以外部定價。另一方面，CXMT 大致與 DRAM 龍頭同期達到 LPDDR6 量產，相較過去世代中國 DRAM 明顯落後，確實是實質變化——但達到量產不必然代表技術或製造已完全對等。</p>
+<p><strong>中期真實威脅在規模，不在時程</strong>：依 Omdia 與 Counterpoint 估計，CXMT 全球 DRAM 營收市佔已約 7～10%，高於 2025 上半年的約 3%；同期公布 2026 上半年營收 1,503 億人民幣（約 223 億美元）、年增 874%。研發人員 7,491 人佔總員工 33%，上半年研發支出 68.59 億人民幣、年增 87%。這組數字比「早一週宣布量產」重要得多。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 年 9 月（數週內）</strong>：小米 18 Fold 上市後的<strong>拆解報告</strong>。若實機記憶體標示為 CXMT 且速度等級落在 10,667Mbps（而非 12.8Gbps），證實「量產速度等級低於宣稱峰值」→ 降級為「達標但非領先」。若拆機發現混用海力士料號，則量產宣稱大幅弱化。</li>
+<li><strong>2026 Q4</strong>：SK 海力士財報／法說。若確認 LPDDR6 已對客戶量產出貨（原計畫下半年），則「CXMT 領先」僅剩「宣布時序」意義 → 推翻領先結論。</li>
+<li><strong>2026 Q4～2027 Q1</strong>：美光財報（MU）行動事業展望與 LPDDR6 量產時程首次表態。若美光宣布不急於 LPDDR6 量產、繼續傾產 HBM，反向證實「美光讓位」而非「被超車」。</li>
+<li><strong>2027 上半年</strong>：CXMT 是否拿下第二、第三個 LPDDR6 客戶（OPPO/vivo/榮耀）與 PC/車用案。單一客戶 → 多客戶，是「量產」與「產能」的分水嶺。</li>
+<li><strong>CXMT 下一份財報</strong>：LPDDR6 是否從「客戶驗證中」改列為量產產品並揭露營收貢獻／良率指標。</li>
+<li><strong>法律／地緣變數</strong>：CXMT 已就其「中國軍方企業」認定對五角大廈提起聯邦訴訟，判決結果將影響其取得海外設備／客戶的能力，是產能擴張的外生上限。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ol>
+<li><strong>來源獨立性不足</strong>：全部英文報導可追溯至同一則 CXMT 微博＋路透稿。真正獨立的第二方確認只有小米/雷軍微博（利益相關方）。無第三方拆機、無 JEDEC 認證文件、無 CXMT 產品規格書（datasheet）可驗證。</li>
+<li><strong>原宣稱三處失真</strong>：「PAM3、43.2Gbps」誤把標準上限／有疑義的技術描述當成 CXMT 產品規格；「時程略早」僅限公開宣布，非產能；「不到一年」基準世代不一致。</li>
+<li><strong>付費牆／原文限制</strong>：CXMT 微博原文與中期報告原文本次僅能透過各媒體轉述取得，<strong>僅據轉述／摘錄，無法取得原文</strong>；JEDEC JESD209-6 規格書需付費，PAM3 是否為 LPDDR6 正式規範內容<strong>無法從一手文件確認</strong>，本報告不對此下結論。</li>
+<li><strong>良率與產量完全缺失</strong>：CXMT 未公布任何良率、月產能或 LPDDR6 出貨量數據，這是判斷「是否真正領先」的核心缺口。</li>
+<li>市佔數字為 Omdia／Counterpoint 等機構估計，非審計數據，各家口徑（7%～10%）有差異。</li>
+</ol>
+<p><strong>引用來源</strong>
+- <a href="https://medium.com/@tai-semicon/cxmt-starts-lpddr6-mass-production-xiaomi-18-fold-first-to-ship-it-semiconductor-news-august-a1fff4072c6a">CXMT Starts LPDDR6 Mass Production, Xiaomi 18 Fold First to Ship It — Semiconductor News, August 30, 2026 | by Tai | Aug, 2026 | Medium</a>
+- <a href="https://www.tomshardware.com/pc-components/dram/chinas-cxmt-beats-western-chipmakers-to-announcement-of-lpddr6-mass-production-xiaomi-smartphones-to-debut-industrys-first-lpddr6-chips">China's CXMT beats Western chipmakers to announcement of LPDDR6 mass production — Xiaomi smartphones to debut industry’s first LPDDR6 chips | Tom's Hardware</a>
+- <a href="https://hwbusters.com/news/cxmt-lpddr6-enters-mass-production-and-xiaomi-gets-the-first-chips/">CXMT LPDDR6 Enters Mass Production, and Xiaomi Gets the First Chips - Hardware Busters</a>
+- <a href="https://videocardz.com/newz/cxmt-starts-lpddr6-mass-production">CXMT starts LPDDR6 mass production - VideoCardz.com</a>
+- <a href="https://hothardware.com/news/china-cxmt-starts-lpddr6-mass-production-xiaomi">China's CXMT Starts LPDDR6 Mass Production Ahead Of Samsung &amp; SK Hynix</a>
+- <a href="https://www.duckittech.com/news/cxmt-lpddr6-reaches-128-gbps-as-mass-production-moves-closer">CXMT LPDDR6 Reaches 12.8 Gbps as Production Nears — Duck-IT Tech News</a>
+- <a href="https://www.techtimes.com/articles/322700/20260802/cxmt-nears-lpddr6-production-duv-ceiling-shows-128-gbps-vs-144-gbps-gap.htm">CXMT Nears LPDDR6 Production: DUV Ceiling Shows Up in 12.8 Gbps vs. 14.4 Gbps Gap</a>
+- <a href="https://www.tweaktown.com/news/112910/sk-hynix-will-start-lpddr6-mass-production-in-2026-for-xiaomi-smartphones/index.html">SK hynix will start LPDDR6 mass production in 2026 for Xiaomi smartphones</a>
+- <a href="https://technode.com/2026/08/31/cxmt-starts-lpddr6-mass-production-for-xiaomis-upcoming-18-fold/">CXMT starts LPDDR6 mass production for Xiaomi’s upcoming 18 Fold · TechNode</a>
+- <a href="https://www.techtimes.com/articles/326055/20260831/cxmt-ships-lpddr6-first-xiaomi-18-fold-arrives-chinese-memory-inside.htm">CXMT Ships LPDDR6 First: Xiaomi 18 Fold Arrives With Chinese Memory Inside</a>
+- <a href="https://xenospectrum.com/en/cxmt-lpddr-mass-production/">CXMT Starts Mass Production of LPDDR6 Memory, Xiaomi 18 Fold First to Use It | XenoSpectrum</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-08-31（6 題）</summary>
     <div class="day-body">
       
