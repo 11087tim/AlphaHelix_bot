@@ -389,38 +389,42 @@ def run_deepdive(cfg: Config) -> int:
     """對最新 digest 的待深查候選題跑深查引擎（Opus 5 + web search）→ 存報告庫 →
     渲染 /deepdive/ 頁 → digest 補上裁定行 → push → 通知信（觀察期只寄 dev/測試信箱）。
     排程掛在 synthesis 之後（如 8:35/20:35）；重跑冪等（已深查過的 digest 會跳過）。"""
-    from .deepdive import investigate
+    from .deepdive import VERDICT_EMOJI, investigate
     from .deepdive_store import DeepdiveStore
+    from . import inbox
 
     digest_store = DigestStore()
-    if not digest_store.digests:
-        logger.info("沒有任何 digest，跳過深查。")
-        return 0
-    entry = digest_store.digests[-1]
-    candidates = entry.get("deepdive_candidates") or []
     dd_store = DeepdiveStore()
+
+    # 題目來源一：最新 digest 的挑題結果（已深查過則跳過，冪等）
+    entry = digest_store.digests[-1] if digest_store.digests else None
+    digest_cands = []
+    if entry and not dd_store.has_digest(entry.get("id", "")):
+        digest_cands = entry.get("deepdive_candidates") or []
+    # 題目來源二：使用者手動投題（轉寄到 bot Gmail、主旨含「深查」）
+    manual_cands = inbox.fetch_manual_topics(cfg.gmail_address, cfg.gmail_app_password,
+                                             list(cfg.email_dev),
+                                             exclude_subject=cfg.email_subject_prefix)
+    candidates = [(t, True) for t in manual_cands] + [(t, False) for t in digest_cands]
     if not candidates:
-        logger.info("最新 digest（%s）沒有待深查候選題，跳過。", entry.get("id"))
-        return 0
-    if dd_store.has_digest(entry.get("id", "")):
-        logger.info("digest %s 已深查過，跳過（冪等）。", entry.get("id"))
+        logger.info("沒有待深查題目（digest 無候選或已查過、也無手動投題），跳過。")
         return 0
 
     graph_context = graph_link.load_graph_context()
-    date = str(entry.get("generated_at", ""))[:10]
+    now = datetime.now()
     records, verdict_lines = [], []
-    for i, topic in enumerate(candidates, 1):
-        logger.info("[%d/%d] 深查：%s", i, len(candidates), topic.get("topic", ""))
+    for i, (topic, is_manual) in enumerate(candidates, 1):
+        logger.info("[%d/%d] 深查%s：%s", i, len(candidates),
+                    "（手動投題）" if is_manual else "", topic.get("topic", ""))
         try:
             result = investigate(topic, cfg.openrouter_api_key, graph_context)
         except Exception as exc:  # noqa: BLE001
             logger.error("深查失敗，跳過本題：%s", exc)
             continue
-        from .deepdive import VERDICT_EMOJI
         rec = {
-            "date": date,
-            "generated_at": entry.get("generated_at", ""),
-            "digest_id": entry.get("id", ""),
+            "date": now.strftime("%Y-%m-%d") if is_manual else str(entry.get("generated_at", ""))[:10],
+            "generated_at": now.strftime("%Y-%m-%d %H:%M") if is_manual else entry.get("generated_at", ""),
+            "digest_id": "" if is_manual else entry.get("id", ""),  # 空值＝手動投題（頁面不掛來源連結）
             "topic": topic.get("topic", ""),
             "entities": topic.get("entities", []),
             "verdict": result["verdict"],
@@ -430,7 +434,8 @@ def run_deepdive(cfg: Config) -> int:
         records.append(rec)
         verdict_lines.append({"topic": rec["topic"], "verdict": rec["verdict"],
                               "takeaway": rec["takeaway"],
-                              "emoji": VERDICT_EMOJI.get(rec["verdict"], "❓")})
+                              "emoji": VERDICT_EMOJI.get(rec["verdict"], "❓"),
+                              "manual": is_manual})
         logger.info("裁定：%s｜%s", rec["verdict"], rec["takeaway"])
     if not records:
         logger.warning("深查全數失敗，本次不落地。")
@@ -438,8 +443,10 @@ def run_deepdive(cfg: Config) -> int:
 
     dd_store.add_records(records)
     dd_store.save()
-    entry["deepdive_results"] = verdict_lines  # digest 只放裁定行，全文在 /deepdive/
-    digest_store.save()
+    digest_lines = [v for v in verdict_lines if not v.get("manual")]
+    if entry and digest_lines:
+        entry["deepdive_results"] = digest_lines  # digest 只放裁定行，全文在 /deepdive/
+        digest_store.save()
 
     site_generator.render_site(cfg.site_title, digest_store.recent(SITE_HOURS), cfg.site_output_dir,
                                show_deepdive=DEEPDIVE_PUBLIC)

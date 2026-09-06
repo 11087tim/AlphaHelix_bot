@@ -78,7 +78,11 @@
           <span class="takeaway">{{ r.verdict }}｜{{ r.takeaway }}</span>
         </summary>
         <div class="report">
+          {% if r.digest_id %}
           <p class="srclink">📄 挑題來源：<a href="../index.html#d-{{ r.digest_id }}@{{ r.topic|urlencode }}">{{ r.generated_at }} 觀點彙整</a></p>
+          {% else %}
+          <p class="srclink">✍️ 手動投題（{{ r.generated_at }}）</p>
+          {% endif %}
           {{ r.report_html }}
         </div>
       </details>
