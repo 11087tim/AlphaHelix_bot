@@ -126,10 +126,10 @@ def load_config(config_path: Path | None = None) -> Config:
         fetch_window_hours=raw.get("fetch_window_hours", 1),
         media_enabled=(raw.get("media") or {}).get("enabled", True),
         media_describe=(raw.get("media") or {}).get("describe", False),
-        openrouter_model=openrouter.get("model", "anthropic/claude-3.5-haiku"),
+        openrouter_model=openrouter.get("model", "gpt-5.6-sol"),
         openrouter_system_prompt=(openrouter.get("system_prompt") or "").strip(),
         # 跨時間記憶的立場萃取模型：需判斷/校準但量小，用 Sonnet 較穩、成本可忽略
-        memory_model=openrouter.get("memory_model", "anthropic/claude-sonnet-5"),
+        memory_model=openrouter.get("memory_model", "gpt-5.6-terra"),
         openrouter_api_key=openrouter_api_key,
         site_title=site.get("title", "我的 X 摘要"),
         site_output_dir=PROJECT_ROOT / site.get("output_dir", "docs"),

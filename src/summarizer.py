@@ -92,7 +92,11 @@ _vision_cache: dict[str, bool] = {}
 
 
 def model_supports_vision(model: str, api_key: str) -> bool:
-    """查詢 OpenRouter 該模型是否支援圖片輸入（結果快取於記憶體）。"""
+    """查詢該模型是否支援圖片輸入（結果快取於記憶體）。
+    codex 後端（GPT-5.6 全系列多模態）直接回 True；openrouter 回退路徑才查 API。"""
+    from . import gpt_cli
+    if gpt_cli.backend() == "codex":
+        return True
     if model in _vision_cache:
         return _vision_cache[model]
     supports = False
@@ -185,8 +189,13 @@ def _consume_stream(resp: requests.Response) -> str:
 
 
 def _post_chat(api_key: str, payload: dict) -> dict:
-    """以串流方式呼叫 OpenRouter chat completions，回傳與非串流相容的 dict。
-    對逾時／連線中斷／429／5xx 自動重試（指數退避）；串流下 timeout 只在 chunk 間閒置過久才觸發。"""
+    """LLM 呼叫漏斗（digest／挑題／記憶萃取／podcast・文章蒸餾／槓桿評論都走這）。
+    預設走 codex 後端（ChatGPT 訂閱，見 gpt_cli）；設 XBOT_LLM_BACKEND=openrouter 回退舊路徑
+    （以串流呼叫 OpenRouter，逾時/429/5xx 指數退避重試）。"""
+    from . import gpt_cli
+    if gpt_cli.backend() == "codex":
+        return gpt_cli.chat_payload(payload)
+    payload = {**payload, "model": gpt_cli.openrouter_slug(payload["model"])}
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
     payload = {**payload, "stream": True}
     last_exc: Exception | None = None

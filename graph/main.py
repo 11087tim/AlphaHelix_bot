@@ -63,7 +63,7 @@ def main(argv: list[str]) -> int:
         tk = argv[1].upper()
         c = g.company(tk) or {}
         draft, cost = suggest(tk, g, get_api_key())
-        print(f"# {tk} 供應鏈關係草稿（Opus 5，請審核）　成本 ${cost:.4f}\n")
+        print(f"# {tk} 供應鏈關係草稿（AI 產生，請審核）　成本 ${cost:.4f}\n")
         print("角色：", draft.get("role", ""))
         print("上游（供應商）：", "、".join(map(str, draft.get("upstream") or [])))
         print("下游（客戶）：", "、".join(map(str, draft.get("downstream") or [])))

@@ -13,15 +13,23 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 _RETRYABLE = {429, 500, 502, 503, 529}
 
 
+def _backend() -> str:
+    """codex（預設，ChatGPT 訂閱，見 src/gpt_cli.py）或 openrouter（設 XBOT_LLM_BACKEND 回退）。"""
+    load_dotenv(PROJECT_ROOT / ".env")
+    return os.environ.get("XBOT_LLM_BACKEND", "codex").strip().lower()
+
+
 def get_api_key() -> str:
     load_dotenv(PROJECT_ROOT / ".env")
     key = os.environ.get("OPENROUTER_API_KEY", "")
-    if not key:
+    if not key and _backend() != "codex":
         raise RuntimeError("缺少 OPENROUTER_API_KEY（請在 .env 設定）。")
     return key
 
 
 def _post(model: str, messages: list, api_key: str, timeout: int, retries: int = 4) -> dict:
+    from src.gpt_cli import openrouter_slug
+    model = openrouter_slug(model)  # 回退 OpenRouter 時裸 GPT 代號補 openai/ 前綴
     last = None
     for attempt in range(retries):
         try:
@@ -51,6 +59,9 @@ def _post(model: str, messages: list, api_key: str, timeout: int, retries: int =
 
 def chat(model: str, system: str, user: str, api_key: str, timeout: int = 180) -> dict:
     """純文字呼叫。回傳 {text, prompt_tokens, completion_tokens, cost}。"""
+    if _backend() == "codex":
+        from src import gpt_cli
+        return gpt_cli.chat(model, system, user, timeout=max(timeout, 600))
     return _post(model, [
         {"role": "system", "content": system},
         {"role": "user", "content": user},
@@ -60,6 +71,9 @@ def chat(model: str, system: str, user: str, api_key: str, timeout: int = 180) -
 def vision_chat(model: str, system: str, user: str, images_b64: list[str],
                 api_key: str, timeout: int = 240) -> dict:
     """多模態呼叫：把數張頁面圖片（base64 PNG）連同指示送出。"""
+    if _backend() == "codex":
+        from src import gpt_cli
+        return gpt_cli.vision_chat(model, system, user, images_b64, timeout=max(timeout, 900))
     content = [{"type": "text", "text": user}]
     for b64 in images_b64:
         content.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}})

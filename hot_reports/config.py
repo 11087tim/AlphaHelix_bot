@@ -22,9 +22,9 @@ REPORTS_KEEP_DAYS = 30                     # 網站上保留最近幾天的 PDF/
 VALUELIST_URL = "https://www.valuelist.cn/hot-report"
 NASH_BASE = "https://www.nash-ai.cn"
 
-# LLM（走 OpenRouter，key 沿用 .env 的 OPENROUTER_API_KEY）
-SUMMARY_MODEL = os.environ.get("HOT_REPORTS_SUMMARY_MODEL", "anthropic/claude-sonnet-5")
-SYNTH_MODEL = os.environ.get("HOT_REPORTS_SYNTH_MODEL", "anthropic/claude-opus-5")
+# LLM（預設走 codex／ChatGPT 訂閱，見 src/gpt_cli.py；XBOT_LLM_BACKEND=openrouter 可回退）
+SUMMARY_MODEL = os.environ.get("HOT_REPORTS_SUMMARY_MODEL", "gpt-5.6-terra")
+SYNTH_MODEL = os.environ.get("HOT_REPORTS_SYNTH_MODEL", "gpt-5.6-sol")
 MAX_TEXT_CHARS = 150_000          # 單篇餵給 LLM 的文字上限
 
 MATCH_THRESHOLD = 0.85            # 標題匹配高信心門檻
