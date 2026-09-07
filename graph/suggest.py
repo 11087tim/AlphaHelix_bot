@@ -6,7 +6,7 @@ import re
 from reports import llm  # 重用既有的 OpenRouter 客戶端與金鑰載入
 from .model import Graph
 
-STRONG_MODEL = "anthropic/claude-opus-4.8"  # 判斷用強模型
+STRONG_MODEL = "anthropic/claude-opus-5"  # 判斷用強模型
 
 SUGGEST_SYSTEM = (
     "你是資深產業供應鏈分析師。我會給你一家公司，請草擬它在供應鏈的關係，供人工審核（不是最終定論）。\n"

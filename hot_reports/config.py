@@ -24,7 +24,7 @@ NASH_BASE = "https://www.nash-ai.cn"
 
 # LLM（走 OpenRouter，key 沿用 .env 的 OPENROUTER_API_KEY）
 SUMMARY_MODEL = os.environ.get("HOT_REPORTS_SUMMARY_MODEL", "anthropic/claude-sonnet-5")
-SYNTH_MODEL = os.environ.get("HOT_REPORTS_SYNTH_MODEL", "anthropic/claude-opus-4.8")
+SYNTH_MODEL = os.environ.get("HOT_REPORTS_SYNTH_MODEL", "anthropic/claude-opus-5")
 MAX_TEXT_CHARS = 150_000          # 單篇餵給 LLM 的文字上限
 
 MATCH_THRESHOLD = 0.85            # 標題匹配高信心門檻
