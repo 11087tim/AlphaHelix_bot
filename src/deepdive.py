@@ -1,9 +1,10 @@
 """深查引擎（跨源印證 v2）：對挑題模組選出的議題做深入查證。
 
-走 OpenRouter + web plugin（engine=native）：Anthropic 模型會使用原生 server-side
-web search（搜尋迴圈在提供商端自動執行，計價直通），citations 以 annotations 回傳。
-限制：OpenRouter 無 web_fetch（讀取網頁全文），溯源靠搜尋結果摘錄；方法論已要求
-無法取得原文時誠實標注。
+走 Claude Code CLI headless 模式（claude -p）＋ Claude 訂閱 OAuth：用量計入訂閱額度，
+不走 OpenRouter API 計費。認證來源（擇一）：本機 claude 登入，或環境變數
+CLAUDE_CODE_OAUTH_TOKEN（在有訂閱登入的機器跑 `claude setup-token` 產生後貼到 .env）。
+工具開放 WebSearch＋WebFetch：比舊 OpenRouter 路徑（只有 search）多了讀取網頁原文
+的能力，溯源可直接取回一手文件；引用來源改由模型依方法論在文末自列。
 
 用法（ad-hoc）：python3 -m src.deepdive topics.json [out_dir]
   topics.json = 挑題模組輸出的候選題陣列（含 topic/claim/entities/why/directions）。
@@ -12,12 +13,13 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
+import shutil
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-
-import requests
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +28,8 @@ VERDICT_EMOJI = {"證實": "✅", "部分證實": "⚠️", "查證不支持": "
 _VERDICT_NEW = re.compile(r"裁定[^【\n]*【(證實|部分證實|查證不支持|證據不足)】\s*[：:，,。]?\s*(.*)")
 _VERDICT_OLD = re.compile(r"裁定\*{0,2}[：:]\s*\*\*([^*\n]+)\*\*[。．]?\s*(.*)")
 
-OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-MODEL = "anthropic/claude-opus-5"
-TIMEOUT = 600          # 深查含多輪伺服器端搜尋，單題可能跑數分鐘
+MODEL = os.environ.get("DEEPDIVE_CLAUDE_MODEL", "claude-opus-5")
+TIMEOUT = 600          # 深查含多輪搜尋/讀原文，單題可能跑數分鐘
 MAX_RETRIES = 2
 
 # 查證方法論：把人工深查流程固化成步驟。付費牆誠實原則寫死於此。
@@ -47,6 +48,9 @@ _METHODOLOGY = """你是投資情報系統的「深查員」。系統的挑題�
    市場解讀哪裡失真。有反方觀點（如機構認為過度反應）必須並陳。
 5. 可驗證節點：列出未來哪個時點、哪個訊號能升級或推翻本結論（財報會、法說、官方文件、產能數據）。
 
+工具使用：用 WebSearch 找來源、WebFetch 讀取網頁原文；溯源時盡量 fetch 一手文件全文，
+而非只靠搜尋結果摘錄。除了網路搜尋/讀網頁外不要使用其他工具。
+
 誠實原則：
 - 付費牆內容或只有摘錄、無法讀到原文的，標注「僅據轉述/摘錄，無法取得原文」，
   寧可降級結論也不腦補。
@@ -64,7 +68,10 @@ _METHODOLOGY = """你是投資情報系統的「深查員」。系統的挑題�
 ### 可驗證節點
 （列點：時點 × 訊號 × 會如何改變結論）
 ### 資料品質備註
-（單一來源警語、付費牆限制、數據分歧等）"""
+（單一來源警語、付費牆限制、數據分歧等）
+
+**引用來源**
+（列點：- [來源標題](URL)，只列實際引用過的網頁，勿捏造連結）"""
 
 
 def _topic_prompt(topic: dict, graph_context: str | None) -> str:
@@ -124,62 +131,67 @@ def parse_verdict(report: str) -> tuple[str, str]:
     return verdict, takeaway
 
 
-def _sources_from_annotations(message: dict) -> str:
-    """把 OpenRouter 回傳的 url_citation annotations 整理成文末來源清單。"""
-    seen: dict[str, str] = {}
-    for a in message.get("annotations") or []:
-        c = a.get("url_citation") or {}
-        url = c.get("url", "")
-        if url and url not in seen:
-            seen[url] = c.get("title", "") or url
-    if not seen:
-        return ""
-    return "\n\n**引用來源**\n" + "\n".join(f"- [{t}]({u})" for u, t in seen.items())
+def find_claude_bin() -> str:
+    """找 claude CLI 執行檔：CLAUDE_BIN 環境變數優先，其次 PATH。找不到即報錯。"""
+    bin_path = os.environ.get("CLAUDE_BIN") or shutil.which("claude")
+    if not bin_path:
+        raise RuntimeError(
+            "找不到 claude CLI。請先安裝（npm install -g @anthropic-ai/claude-code），"
+            "並以訂閱帳號認證：本機 `claude` 登入，或在 .env 設 CLAUDE_CODE_OAUTH_TOKEN"
+            "（在已登入的機器跑 `claude setup-token` 產生）；"
+            "CLI 不在 PATH 時以 CLAUDE_BIN 指定路徑。")
+    return bin_path
 
 
-def investigate(topic: dict, api_key: str, graph_context: str | None = None,
+def investigate(topic: dict, graph_context: str | None = None,
                 model: str = MODEL) -> dict:
-    """深查一個議題，回傳 {topic, report, usage}。由呼叫端決定失敗處理。"""
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": _METHODOLOGY},
-            {"role": "user", "content": _topic_prompt(topic, graph_context)},
-        ],
-        # engine=native：Anthropic 模型走原生 server-side web search（計價直通提供商）
-        "plugins": [{"id": "web", "engine": "native"}],
-    }
-    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    """深查一個議題，回傳 {topic, report, usage}。由呼叫端決定失敗處理。
+
+    走 claude -p headless（訂閱 OAuth）：只開放 WebSearch/WebFetch，
+    輸出取 --output-format json 的 result 欄位。
+    """
+    cmd = [
+        find_claude_bin(), "-p", _topic_prompt(topic, graph_context),
+        "--model", model,
+        "--append-system-prompt", _METHODOLOGY,
+        "--allowedTools", "WebSearch,WebFetch",
+        "--output-format", "json",
+    ]
     last_exc: Exception | None = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=TIMEOUT)
-            resp.raise_for_status()
-            data = resp.json()
-            if data.get("error"):
-                raise RuntimeError(str(data["error"]))
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=TIMEOUT)
+            if proc.returncode != 0:
+                raise RuntimeError(f"claude CLI 退出碼 {proc.returncode}："
+                                   f"{(proc.stderr or proc.stdout).strip()[:500]}")
+            data = json.loads(proc.stdout)
+            if data.get("is_error"):
+                raise RuntimeError(f"claude CLI 回報錯誤（{data.get('subtype')}）："
+                                   f"{str(data.get('result', ''))[:500]}")
             break
-        except (requests.exceptions.RequestException, RuntimeError) as exc:
+        except (subprocess.SubprocessError, OSError, RuntimeError,
+                json.JSONDecodeError) as exc:
             last_exc = exc
             logger.warning("深查呼叫失敗（第 %d/%d 次）：%s", attempt, MAX_RETRIES, exc)
             if attempt == MAX_RETRIES:
                 raise
-    message = data["choices"][0]["message"]
-    content = clean_report((message.get("content") or "").strip())
-    report = content + _sources_from_annotations(message)
+    report = clean_report((data.get("result") or "").strip())
     verdict, takeaway = parse_verdict(report)
+    usage = dict(data.get("usage") or {})
+    if data.get("total_cost_usd") is not None:
+        usage["total_cost_usd"] = data["total_cost_usd"]
     return {"topic": topic, "report": report, "verdict": verdict, "takeaway": takeaway,
-            "usage": data.get("usage", {})}
+            "usage": usage}
 
 
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    import os
     from dotenv import load_dotenv
-    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
-    api_key = os.environ.get("OPENROUTER_API_KEY", "")
-    if not api_key:
-        print("缺少 OPENROUTER_API_KEY", file=sys.stderr)
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")  # 載入 CLAUDE_CODE_OAUTH_TOKEN 等
+    try:
+        find_claude_bin()
+    except RuntimeError as exc:
+        print(exc, file=sys.stderr)
         return 1
     if len(sys.argv) < 2:
         print(__doc__, file=sys.stderr)
@@ -200,7 +212,7 @@ def main() -> int:
     for i, topic in enumerate(topics, 1):
         logger.info("[%d/%d] 深查：%s", i, len(topics), topic.get("topic", ""))
         try:
-            result = investigate(topic, api_key, graph_context)
+            result = investigate(topic, graph_context)
         except Exception as exc:  # noqa: BLE001
             logger.error("深查失敗，跳過：%s", exc)
             continue

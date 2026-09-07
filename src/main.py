@@ -417,7 +417,7 @@ def run_deepdive(cfg: Config) -> int:
         logger.info("[%d/%d] 深查%s：%s", i, len(candidates),
                     "（手動投題）" if is_manual else "", topic.get("topic", ""))
         try:
-            result = investigate(topic, cfg.openrouter_api_key, graph_context)
+            result = investigate(topic, graph_context)  # 走 claude CLI 訂閱 OAuth，不吃 OpenRouter key
         except Exception as exc:  # noqa: BLE001
             logger.error("深查失敗，跳過本題：%s", exc)
             continue
