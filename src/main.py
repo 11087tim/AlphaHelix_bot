@@ -421,6 +421,7 @@ def run_deepdive(cfg: Config) -> int:
         except Exception as exc:  # noqa: BLE001
             logger.error("深查失敗，跳過本題：%s", exc)
             continue
+        logger.info("本題 usage：%s", result.get("usage"))  # 觀察訂閱額度消耗（journalctl 可查）
         rec = {
             "date": now.strftime("%Y-%m-%d") if is_manual else str(entry.get("generated_at", ""))[:10],
             "generated_at": now.strftime("%Y-%m-%d %H:%M") if is_manual else entry.get("generated_at", ""),
