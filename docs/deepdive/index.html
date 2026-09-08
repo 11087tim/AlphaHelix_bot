@@ -65,11 +65,217 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-07 20:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-08 08:50｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-08（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ Google TPU推理成本優勢
+          <span class="takeaway">部分證實｜數字確有出處，但它是 SemiAnalysis 的 TCO 模型推估而非實測或牌價，且僅限 FP8 與聚合式服務；市場把「機構估計」讀成「事實」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260908-0805@Google%20TPU%E6%8E%A8%E7%90%86%E6%88%90%E6%9C%AC%E5%84%AA%E5%8B%A2">2026-09-08 08:05 觀點彙整</a></p>
+          
+          <h2>深查：Google TPU 推理成本優勢</h2>
+<p><strong>裁定</strong>：【部分證實】
+數字確有出處，但它是 SemiAnalysis 的 TCO 模型推估而非實測或牌價，且僅限 FP8 與聚合式服務；市場把「機構估計」讀成「事實」。</p>
+<p>裁定細節：0.181 / 0.222 / 0.276 美元這組數字真實存在，出自 SemiAnalysis InferenceX 於 2026-09-07 發布的報告。但 Google 至今未公布 Ironwood 公開牌價，也沒有任何第三方實測 Ironwood 推理吞吐，因此「成本若成立且可外部取得」這個前提只對 Anthropic 這類大額直購客戶成立，對一般客戶尚未成立。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：所有引用此數字的媒體（Spheron、TECHi、中文轉載）都指向同一原始出處，屬單一來源的多次轉述，不構成獨立交叉驗證。</p>
+<ul>
+<li>【機構估計｜2026-09-07】SemiAnalysis InferenceX：以 Qwen3.5 397B、FP8、每用戶 100 tok/s 互動速度為條件，Ironwood 每百萬 token 0.181 美元，B200 0.222，B300 0.276。比較基準是「外部客戶購買 TPU 的 TCO」對「超大規模實驗室購買 GPU 的 TCO」，不是雲端租用價。TCO 細項在付費牆內，無法取得原文核對。</li>
+<li>【機構估計｜同上】同報告承認三項 NVIDIA 仍領先之處：TPUv7 無原生 FP4，FP4 場景 NVIDIA 保持領先；GB300 NVL72 分離式服務在中等延遲區間優於 TPUv7 聚合式服務；「在原始性能曲線的大部分區間，TPU 並未勝過 NVIDIA GPU」。高並發（256）下 TPU 成本優勢擴大到 77%，但首 token 延遲 5.41 秒對 B200 的 3.75 秒。</li>
+<li>【事實｜2026-09-07】Google 官方 TPU7x 文件列出規格（192GB HBM、7.38TB/s、FP8 4,614 TFLOPS、9,216 晶片 pod），只提 BF16 與 FP8，未列 FP4；框架支援 JAX 與 PyTorch，未提 vLLM。文件內無定價。</li>
+<li>【事實｜2026-07-24 至 09-07】TECHi 與 pump.co 兩篇獨立文章皆稱 Ironwood 於 2026-04-22 GA 後至今無公開晶片小時牌價。搜尋摘要另出現「us-central1 每晶片小時 12 美元」的說法，但我無法從官方定價頁讀到原文確認，暫列為未驗證。</li>
+<li>【機構估計｜2025-11-28】SemiAnalysis 早先報告估 Anthropic 談判價約每晶片小時 1.6 美元，並估 Anthropic 直購 40 萬顆 Ironwood、約 100 億美元整機由 Broadcom 直接出貨。</li>
+<li>【事實｜2025-10-23、2026-04-06】Anthropic 與 Google 官方新聞稿：2026 年取得約 100 萬顆 TPU、逾 1GW；2027 年起再經 Broadcom 取得數 GW 次世代 TPU。官方稿未點名 Ironwood 型號，也未揭露金額。</li>
+<li>【事實｜2026-07-22】Alphabet Q2 2026 法說逐字稿摘錄：其他營業成本上升的原因之一是「向客戶銷售 TPU 系統的存貨成本」，並稱 TPU 系統銷售計入 5,140 億美元雲端 backlog。這是 Google 已在外部「賣」而非只「租」TPU 的官方佐證。</li>
+<li>【傳聞｜2026-02-26】The Information 報導 Meta 簽下 TPU 雲端使用協議，並洽談直購數百萬顆 TPU。Google 與 Meta 皆未證實。</li>
+<li>【機構估計｜2025-11 末】Artificial Analysis 基準顯示以租用價計，NVIDIA H100/B200 的每美元 token 數約為 TPU v6e 的 5 倍。此為舊世代 v6e、且使用 vLLM-TPU 而非 Google 內部服務堆疊；原貼文被付費牆擋住，僅據轉述。</li>
+<li>【事實｜2026-04-15】NVIDIA 官方部落格主張「每 token 成本是唯一該看的指標」，引用同一個 InferenceX v2 基準，但只比 Blackwell 對 Hopper（0.12 對 4.20 美元），且倚賴 NVFP4 精度。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>市場敘事哪裡失真</strong>：兩派都在用同一個 SemiAnalysis 基準講對自己有利的話。NVIDIA 的「35 倍」靠 FP4，SemiAnalysis 的「TPU 便宜 19%」刻意鎖定 FP8 以排除 FP4 優勢。真實客戶會在兩者間依模型品質容忍度選擇，因此「TPU 全面便宜」與「CUDA 護城河無敵」都是過度簡化。</p>
+<p><strong>GOOG</strong>：受益方向明確。Q2 法說已證實 TPU 系統銷售進入營收與 backlog，Anthropic 的合約是一手事實。但 Ironwood 已被 TPU 8t/8i 接棒，本題數字的商業時效約一年。
+<strong>AVGO</strong>：最直接的受益者。Anthropic 2027 年起的數 GW 容量經 Broadcom 出貨，官方稿明載；SemiAnalysis 估其在矽片上賺高毛利。
+<strong>NVDA</strong>：受害程度被高估。就算數字成立，差距是 19% 到 34%，而且限於 FP8 聚合式服務；NVIDIA 在 FP4、分離式服務與軟體成熟度三處仍領先，SemiAnalysis 自己也承認。真正的風險不是現在的成本差，而是 vLLM/SGLang 原生 TorchTPU 後端預計 10 月開源後，轉換摩擦下降。
+<strong>TSM</strong>：中性偏正。TPU 與 Blackwell 都在台積電投片，只是客戶名字互換。</p>
+<p><strong>反方觀點</strong>：Spheron 與 Labo LLM 兩篇獨立文章皆指出，截至 2026 年中沒有任何第三方 Ironwood 推理實測，Ironwood 也未提交 MLPerf。Artificial Analysis 以租用價衡量的舊世代結果對 NVIDIA 有利 5 倍，說明「用什麼價格、什麼軟體堆疊」決定結論方向。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 年 10 月前後</strong>：TorchTPU 後端開源。若外部使用者能複現接近 SemiAnalysis 的吞吐，結論升級為【證實】；若差距明顯，降為【查證不支持】。</li>
+<li><strong>Google Cloud 定價頁</strong>：Ironwood 公開牌價出現之日。用牌價套入 InferenceX 公式即可獨立核算；若牌價遠高於推估的 1.6 美元，一般客戶的成本優勢不成立。</li>
+<li><strong>MLPerf Inference 下一輪提交</strong>：Ironwood 若出現並附成本數據，即為第一個獨立實測。</li>
+<li><strong>2026-10 月底 Alphabet Q3 法說</strong>：留意 TPU 系統銷售對其他營業成本與 backlog 的貢獻是否加速，以及是否點名 Anthropic 以外的直購客戶。</li>
+<li><strong>Meta 直購 TPU 是否官宣</strong>：官宣則「可外部取得」升級為多客戶事實；否則仍是單一客戶。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心數字為單一來源（SemiAnalysis），TCO 假設在付費牆內，無法核對折舊、電力與利用率設定。</li>
+<li>Artificial Analysis 原貼文遭付費牆阻擋，僅據轉述。</li>
+<li>「每晶片小時 12 美元」官方牌價的說法無法從原始頁面確認，與兩篇 7 月至 9 月的「無牌價」報導矛盾，本報告不採用。</li>
+<li>Meta 合約為匿名消息來源，官方未證實。</li>
+<li>台媒與中文轉載多為同一 SemiAnalysis 報告的改寫，不應視為額外來源。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://newsletter.semianalysis.com/p/tpu-inferencex-full-steam">TPU Inference Externalization Full Steam Ahead - InferenceX (SemiAnalysis)</a>
+- <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the">Google TPUv7: The 900lb Gorilla In the Room (SemiAnalysis)</a>
+- <a href="https://inferencex.semianalysis.com/zh/glossary/cost-per-million-tokens">InferenceX 每百萬 token 成本定義</a>
+- <a href="https://docs.cloud.google.com/tpu/docs/tpu7x">TPU7x (Ironwood) | Google Cloud Documentation</a>
+- <a href="https://www.techi.com/google-ironwood-tpu-no-public-price/">Google's Ironwood TPU Still Has No Public Price (TECHi)</a>
+- <a href="https://www.pump.co/blog/google-cloud-tpu/">Google Cloud TPU: Pricing, Performance &amp; Use Cases (pump.co)</a>
+- <a href="https://www.spheron.network/blog/google-tpu-v7-ironwood-vs-nvidia-b200-inference-cost/">Google TPU v7 Ironwood vs NVIDIA B200: Inference Cost (Spheron)</a>
+- <a href="https://www.labo-llm.fr/en/infrastructure/tpu-vs-gpu-2026/">TPU vs GPU in 2026 (Labo LLM)</a>
+- <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute">Anthropic expands partnership with Google and Broadcom (Anthropic 官方)</a>
+- <a href="https://www.googlecloudpresscorner.com/2026-04-06-Anthropic-Expands-Use-of-Google-Cloud-and-TPUs">Anthropic Expands Use of Google Cloud and TPUs (Google Cloud 新聞稿)</a>
+- <a href="https://www.prnewswire.com/news-releases/anthropic-to-expand-use-of-google-cloud-tpus-and-services-302593275.html">Anthropic to Expand Use of Google Cloud TPUs and Services (PR Newswire)</a>
+- <a href="https://siliconangle.com/2026/02/26/google-meta-reportedly-strike-new-multibillion-dollar-ai-chip-deal/">Google and Meta reportedly strike new AI chip deal (SiliconANGLE)</a>
+- <a href="https://finance.yahoo.com/quote/GOOGL/earnings/GOOGL-Q2-2026-earnings_call-657320.html">Alphabet Q2 FY2026 earnings call transcript (Yahoo Finance)</a>
+- <a href="https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/">Alphabet earnings call Q2 2026: Sundar Pichai remarks</a>
+- <a href="https://blogs.nvidia.com/blog/lowest-token-cost-ai-factories/">Rethinking AI TCO: Why Cost per Token Is the Only Metric That Matters (NVIDIA)</a>
+- <a href="https://x.com/ArtificialAnlys/status/1993878037226557519">Artificial Analysis on X: TPU v6e vs MI300X vs H100/B200</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>❓ AMD MI355X軟體效能躍升
+          <span class="takeaway">證據不足｜找不到「19天內vLLM Agentic效能提升11倍」的原始出處；可查證的數量級躍升多屬非agentic或非vLLM情境，且B300在AgentX上仍領先</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260908-0805@AMD%20MI355X%E8%BB%9F%E9%AB%94%E6%95%88%E8%83%BD%E8%BA%8D%E5%8D%87">2026-09-08 08:05 觀點彙整</a></p>
+          
+          <h2>深查：AMD MI355X軟體效能躍升</h2>
+<p><strong>裁定</strong>：【證據不足】
+找不到「19天內vLLM Agentic效能提升11倍」的原始出處；可查證的數量級躍升多屬非agentic或非vLLM情境，且B300在AgentX上仍領先。</p>
+<p>補充：這則宣稱最接近的一手來源是SemiAnalysis的InferenceX平台（前身InferenceMAX）。該平台確有記錄MI355X在數週內出現軟體驅動的數量級進步，但沒有任何公開文字寫出「11倍」「19天」這組數字。宣稱可能來自儀表板時間序列圖或社群轉述，無法以原文核實。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【傳聞】「11x / 19天 / vLLM Agentic」：逐字比對SemiAnalysis AgentX主文（2026-08-24）、InferenceX首頁、MI355X晶片頁、GitHub README、8月25日全部子文章、AMD新聞稿，均無此組數字。單一來源且找不到原文。</li>
+<li>【機構估計】InferenceX MI355X晶片頁稱MI355X有「最快的公開軟體進步曲線，含模型發布後數週內的數量級增益」，但未給定具體倍數。</li>
+<li>【機構估計，2026-04-22】最接近的vLLM案例：Kimi K2.5在vLLM上，單一PR（#35850，修AITER MLA分派）讓MI355X尖峰吞吐提升7.7倍、互動性最高15倍，歷時25天。工作負載是固定序列8k/1k，不是agentic。</li>
+<li>【機構估計，2026-05-26】DeepSeek V4 Pro在SGLang上26天內每GPU吞吐提升110.5倍，31個PR。是SGLang不是vLLM，也非agentic。</li>
+<li>【機構估計，2026-08-24】AgentX主文明言Kimi K3在MI355X的vLLM「短上下文day 0可用，長上下文多輪在第一週完全不可用」，之後由70餘個上游PR修復。這是目前唯一可對應「vLLM＋agentic＋數週內大幅改善」的敘事，但沒有量化倍數。</li>
+<li>【機構估計，2026-08-25】AgentX B300 vs MI355X現況：Kimi K3在36 tok/s/user時MI355X每token便宜46%，但在92 tok/s/user時B300反而便宜51%、吞吐高127%。DeepSeek V4 Pro全區間B300領先，最高每token便宜62%。</li>
+<li>【機構估計，2026-08-25】「8月21日翻轉」：Inferact與NVIDIA對vLLM的優化讓B200每美元效能反超MI355X（DeepSeek V4 Pro）。</li>
+<li>【事實，2026-08-01】vLLM官方issue #50682追蹤Kimi K3在ROCm的缺口，仍列FP8 KV cache、分散式推論、投機解碼等未完成項，並註明FP8 KV cache缺失「會導致AgentX效能退化」。</li>
+<li>【機構估計，2026-07-25】SemiAnalysis Advancing AI評論：AMD原訂的vLLM gating parity目標因叢集不穩定而未達成，延至2026年10月。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>AMD</strong>：正面的部分是真的，軟體團隊確能在數週內把新模型從「不可用」拉到「可競爭」，且在低互動性區段有每美元效能優勢。但市場敘事失真處有三：一，最誇張的倍數來自SGLang或固定序列，不是vLLM agentic；二，AMD最佳成績多靠自家ATOM引擎，而SemiAnalysis直言「多數AI實驗室不願在生產環境用ATOM」；三，NVIDIA的軟體也在動，8月21日翻轉顯示領先可以在數天內被抹平。反方觀點是SemiAnalysis自己的結論：CUDA護城河在agentic推論仍成立，某些模型即使AMD硬體免費仍輸。</p>
+<p><strong>NVDA</strong>：AgentX在B300、GB300 NVL72上的高互動性區段優勢穩固，短期採用率預期不需下修。</p>
+<p><strong>TSM／MU</strong>：兩者同時供應AMD與NVIDIA，本議題屬客戶間份額移轉，對總量影響有限。MI355X的288GB HBM3E在長上下文快取有結構優勢，對MU的HBM需求是正向但非增量。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>InferenceX儀表板（持續更新）：若MI355X vLLM在Kimi K3／DeepSeek V4 AgentX的每美元效能曲線在高互動性區段追上B300，升級為【部分證實】。</li>
+<li>vLLM issue #50682：FP8 KV cache與分散式推論合併時點，決定upstream vLLM能否脫離ATOM依賴。</li>
+<li>2026年10月AMD vLLM gating parity目標：達成則軟體落後敘事可大幅修正；再延則維持折價。</li>
+<li>AMD Q3財報法說（約2026年10月底）：Instinct營收與MI355X／MI455X客戶承諾是否反映採用率改善。</li>
+<li>其他工作負載交叉：MiniMax M3上AMD被形容為「慘不忍睹」，若後續修復幅度也達數量級，才能支持「可複現」。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「11倍／19天」為單一來源、無法取得原文。所有數量級數據皆出自SemiAnalysis同一機構，不構成獨立交叉驗證。</li>
+<li>SemiAnalysis自陳其E2E Normalized Interactivity指標「實驗性、不完美」，且AMD提供了測試用GPU，存在利益關係。</li>
+<li>AMD官方Kimi K3技術文章兩次抓取逾時，未能讀取原文。Forbes報導遭403阻擋，僅據搜尋摘錄。</li>
+<li>InferenceX對比頁未標示測試日期與軟體版本，數字會隨每日重跑變動。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://inferencex.semianalysis.com/chips/mi355x">AMD Instinct MI355X Specs, Pricing &amp; AI Inference Benchmarks | InferenceX</a>
+- <a href="https://newsletter.semianalysis.com/p/agentx-inferencexv3-does-cuda-moat">AgentX - InferenceXv3: Does CUDA Moat Hold up in Agentic Inferencing?</a>
+- <a href="https://inferencex.semianalysis.com/blog">InferenceX Blog 文章列表</a>
+- <a href="https://inferencex.semianalysis.com/blog/mi355x-kimi-k2-5-vllm-aiter-7x-speedup">AMD MI355X Kimi K2.5 Inference: 7.7x Throughput, Up To 15x Interactivity in 25 Days on vLLM</a>
+- <a href="https://inferencex.semianalysis.com/blog/deepseekv4-16t-day-0-to-day-43-performance">DeepSeekV4 1.6T Day 0 to Day 43 Performance Over Time</a>
+- <a href="https://inferencex.semianalysis.com/blog/deepseek-v4-pro-agentx-mi355x-vs-b200-august">DeepSeek V4 Pro on AgentX: MI355X vs B200, and the August 21 Flip</a>
+- <a href="https://inferencex.semianalysis.com/blog/kimi-k3-agentx-mi355x-atom-vs-gb300-nvl72">Kimi K3 on AgentX: MI355X ATOM Beats GB300 NVL72 on Part of the Curve</a>
+- <a href="https://inferencex.semianalysis.com/blog/glm-5-3-agentx-mi355x-atom-vs-gb300-nvl72">GLM 5.3 on AgentX: MI355X ATOM vs GB300 NVL72</a>
+- <a href="https://inferencex.semianalysis.com/compare/kimi-k3-b300-vs-mi355x/agentic">Kimi K3 B300 vs MI355X AgentX 對比頁</a>
+- <a href="https://inferencex.semianalysis.com/compare/deepseek-v4-b300-vs-mi355x/agentic">DeepSeek V4 B300 vs MI355X AgentX 對比頁</a>
+- <a href="https://newsletter.semianalysis.com/p/can-amd-break-the-cuda-moat-amd-advancing">Can AMD break the CUDA Moat? AMD Advancing AI 2026</a>
+- <a href="https://github.com/vllm-project/vllm/issues/50682">vLLM Issue #50682: [ROCm][AMD] Kimi-K3 Gap and Roadmap Tracking</a>
+- <a href="https://github.com/vllm-project/vllm/issues/44091">vLLM Issue #44091: AMD Development Roadmap (2026 Q3)</a>
+- <a href="https://github.com/SemiAnalysisAI/InferenceX">SemiAnalysisAI/InferenceX GitHub</a>
+- <a href="https://newsroom.amd.com/news/aai-2026-full-stack-compute-agentic-ai/">AAI 2026: AMD Delivers Full-Stack Compute for the Agentic AI Era</a>
+- <a href="https://www.wafer.ai/blog/kimi-k3-mi355x">Wafer: Is memory the moat? Kimi K3 on MI355X</a>
+- <a href="https://aiweekly.co/alerts/semianalysis-agentx-benchmark-says-cuda-moat-holds-in-agents">SemiAnalysis AgentX benchmark says CUDA moat holds in agents | AI Weekly</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 台積電秋季產能分配
+          <span class="takeaway">部分證實｜產能吃緊與 Google 加速 TPU 外供皆有官方佐證，但「秋季分配將動搖 NVDA 領先」找不到具體配額或出貨證據，仍屬分析師推估</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260908-0805@%E5%8F%B0%E7%A9%8D%E9%9B%BB%E7%A7%8B%E5%AD%A3%E7%94%A2%E8%83%BD%E5%88%86%E9%85%8D">2026-09-08 08:05 觀點彙整</a></p>
+          
+          <h2>深查：台積電秋季產能分配</h2>
+<p><strong>裁定</strong>：【部分證實】
+產能吃緊與 Google 加速 TPU 外供皆有官方佐證，但「秋季分配將動搖 NVDA 領先」找不到具體配額或出貨證據，仍屬分析師推估。</p>
+<p>裁定細節：可查證的事實鏈是「台積電 CoWoS 供不應求 → Google 已對外交付 TPU、並向英特爾找第二封裝來源」。但沒有任何一手文件顯示台積電在秋季調整了對輝達或 Google 的配額，所謂「六成給輝達」全是券商模型。輝達自己承認只能滿足七成需求，這是供給天花板，不是份額流失。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：挑題所指的 The Information 報導，能確認的有兩篇：6 月 8 日「Google、Nvidia 考慮以英特爾作備援代工」，以及 7 月中「Google 向 Nvidia 系 neocloud 推銷 TPU」。9 月並無新的 The Information 台積電產能報導。The Information 原文為付費牆，本報告僅據 Reuters、TVBS、TechTimes 等轉述。台媒「先顧輝達、Google 被擠掉」一類標題多為 AI 生成或改寫，無獨立資訊。</p>
+<ul>
+<li>【事實】台積電 7/16 法說：魏哲家稱「封裝產能緊到正在限制客戶成長」、「缺口很大」，並稱正與客戶協調晶圓分配以平衡 CPU/GPU/XPU 比例。2026 資本支出上修至 600 至 640 億美元，主力為 2/3 奈米與 CoWoS。（2026-07-16）</li>
+<li>【事實】輝達 8/26 法說：黃仁勳稱「供給只能滿足約 70% 需求」，Kress 稱供給瓶頸至少延續到 FY2028 年底，Vera Rubin 已於 8 月初開始量產出貨，Q3 指引 1,080 億美元。逐字稿未提 CoWoS 或 Google TPU。（2026-08-26）</li>
+<li>【事實】Alphabet 7/22 法說：Q2 首度將 TPU 系統交付至客戶自有資料中心，2026 認列少量、2027 認列大部分，並自稱「供應受限」，Q3 將擴大使用第三方算力過渡。2026 capex 上修至 1,950 至 2,050 億美元。（2026-07-22）</li>
+<li>【事實】博通 9/2 財報：Q3 AI 半導體營收 167 億美元、年增 221%，已大量出貨 TPU v7 並開始生產 v8i；Anthropic 2027 部署 5 GW、2028 再加 10 GW；列出「先進晶圓、載板、HBM」為部署速度限制。（2026-09-02）</li>
+<li>【事實】Anthropic 4/6 官方公告：與 Google、博通簽下多 GW 次世代 TPU，2027 起上線。（2026-04-06）</li>
+<li>【機構估計】Morgan Stanley：2026 CoWoS 約 115 萬片，輝達約 60% 或 66 萬片，博通約 20 萬片，AMD 約 9 萬片；8/26 另稱 2027 AMD 份額上升、輝達份額下降。原始報告僅據 Digitimes 摘要與 X 轉述，付費牆內。（2026-07 至 08）</li>
+<li>【傳聞】Google 2026 TPU 目標由 400 萬顆下修至 300 萬顆，主因 CoWoS 被輝達優先鎖定。此說法源自 SemiAnalysis 與台媒轉述，無官方確認。（2026-07-09）</li>
+<li>【傳聞/單一來源】Google 向英特爾下單逾 300 萬顆 TPU 封裝、2028 年交付；輝達僅在測試 18A 與 EMIB，未下單。僅 The Information 一家原始來源。（2026-06-08）</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>市場敘事哪裡失真</strong>：「產能分配反轉 NVDA 需求」把供給約束誤讀為份額流失。三家公司同時說「供應受限」，代表台積電是唯一的分配者，缺口的受益方是 TSM 本身，不是任何一個下游客戶。輝達 Rubin 已按時出貨、指引仍加速，秋季配額並無被削減的證據。</p>
+<p><strong>誰受益</strong>：TSM 定價權與資本支出護城河最直接。AVGO 受益於 TPU 出貨與 Anthropic 多 GW 合約，AI 營收指引已上修至 580 億美元。GOOG 的 TPU 外供已從「談判」變成「交付」，但 2026 營收貢獻小，真正兌現在 2027。</p>
+<p><strong>誰受害</strong>：短期無明確受害者。中期若 Google 2028 三百萬顆封裝真的移往英特爾，台積電封裝業務會分流，但晶圓本體仍在台積電，J.P. Morgan 稱此為「茶壺裡的風暴」。</p>
+<p><strong>反方觀點</strong>：Morgan Stanley 認為 2027 份額變動的主因是 AMD 而非 Google。TPU 依賴較舊的 CoWoS-S，與輝達的 CoWoS-L 並非完全同一條線，「互搶」程度被高估。輝達的份額下滑若成真，是整體大餅擴大的比例效果，絕對量仍在增加。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>10 月中台積電 Q3 法說：若魏哲家給出 CoWoS 2027 月產能數字或首度提及客戶分配變動，可將「秋季分配」升級為事實。</li>
+<li>10 月底 Alphabet Q3 財報：TPU 系統銷售認列金額與 Q3 第三方算力使用規模，驗證「加速外供」是否有營收。</li>
+<li>11 月中輝達 Q3 FY27 財報：若 Q3 營收未達 1,080 億美元指引且歸因供給，「產能限制輝達」成立；若達標，配額削減說法削弱。</li>
+<li>博通 12 月 Q4 財報：AI 營收是否達 217 億美元指引，驗證 TPU 出貨未被排擠。</li>
+<li>英特爾 2027 年任何 Google 封裝量產公告：可將「300 萬顆」由傳聞升級為事實。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>The Information 兩篇原文均在付費牆，本報告僅據多家轉述，無法取得原文。</li>
+<li>Morgan Stanley CoWoS 分配數字為單一券商模型，各轉述版本數字有出入，例如輝達 59.5 萬片與 66 萬片並存。</li>
+<li>CoWoS 月產能估計分歧極大，從 9.5 萬到 14 萬片，取決於機構口徑。</li>
+<li>Google TPU 目標由 400 萬下修至 300 萬為單一來源傳聞，Alphabet 官方未證實。</li>
+<li>台積電、輝達逐字稿取自第三方轉錄網站，非公司 IR 原檔。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theglobeandmail.com/investing/markets/stocks/TSM/pressreleases/3328221/tsm-tsm-q2-2026-earnings-call-transcript/">TSM Q2 2026 Earnings Call Transcript - The Globe and Mail</a>
+- <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027">NVIDIA Announces Financial Results for Second Quarter Fiscal 2027</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/08/31/nvidia-nvda-q2-2027-earnings-call-transcript/">Nvidia Q2 2027 Earnings Call Transcript - The Motley Fool</a>
+- <a href="https://abc.xyz/investor/events/event-details/2026/2026-Q2-Earnings-Call-2026-GgTAq7Is0z/default.aspx">Alphabet Investor Relations - 2026 Q2 Earnings Call</a>
+- <a href="https://www.prnewswire.com/news-releases/broadcom-inc-announces-third-quarter-fiscal-year-2026-financial-results-and-quarterly-dividend-302868129.html">Broadcom Q3 FY2026 Financial Results - PR Newswire</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/broadcom-q3-earnings-call-highlights-230318650.html">Broadcom Q3 Earnings Call Highlights - Yahoo Finance</a>
+- <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute">Anthropic expands partnership with Google and Broadcom</a>
+- <a href="https://news.tvbs.com.tw/tech/3226217">台積電產能吃緊 Google與NVIDIA傳同步評估攜手英特爾 - TVBS</a>
+- <a href="https://www.theinformation.com/articles/google-nvidia-consider-intel-backup-chip-manufacturer">Google and Nvidia Consider Intel as Backup Chip Manufacturer - The Information</a>
+- <a href="https://winbuzzer.com/2026/07/15/google-reportedly-courts-nvidia-focused-clouds-with-tpus-xcxwbn/">Google Courts Nvidia-Focused Neoclouds to Use its AI Chips - WinBuzzer</a>
+- <a href="https://www.digitimes.com/news/a20260826PD243/amd-cowos-tsmc-nvidia-demand.html">TSMC packaging shift could boost AMD CoWoS share - Digitimes</a>
+- <a href="https://finance.biggo.com/news/B4HCopsBZ4N-kGRr7STX">TSMC's CoWoS Capacity Emerges as Key Battleground - BigGo Finance</a>
+- <a href="https://signals.tw/articles/google-tpu-emib-tsmc-cowos/">台積電丟了 Google？丟的其實只是封裝這一段 - signals.tw</a>
+- <a href="https://technews.tw/2026/07/31/google-ai-chip-production-surpass-nvidia/">Google 2028 年 TPU 產量恐超車輝達 - TechNews</a>
+- <a href="https://www.trendforce.com/news/2026/06/01/news-vera-rubin-buildout-nvidia-reportedly-pushes-tsmc-above-20-revenue-share-power-and-cooling-suppliers-benefit/">Vera Rubin Buildout: NVIDIA Pushes TSMC Above 20% Revenue Share - TrendForce</a>
+- <a href="https://money.udn.com/money/story/5612/9301139">黃仁勳：輝達晶圓需求巨大 期盼台積電產能翻倍 - 經濟日報</a>
+- <a href="https://readmo.cmoney.tw/article/71945c8e-ce0d-4cfb-bb7e-c0871514f305">台積電(TSM) 先顧輝達，Google 會被擠掉？ - CMoney Readmo</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-07（4 題）</summary>
     <div class="day-body">
       
