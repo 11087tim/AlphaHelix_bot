@@ -65,11 +65,216 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-11 20:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-12 08:49｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-12（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ AMD ROCm未支援DeepSeek V4.1
+          <span class="takeaway">部分證實｜vLLM 的 ROCm 映像確實遲到約 40 小時，但 SGLang 的 AMD MI35x 映像在發布後約 4 小時即公開、比 vLLM 的 NVIDIA 映像還早，</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260912-0804@AMD%20ROCm%E6%9C%AA%E6%94%AF%E6%8F%B4DeepSeek%20V4.1">2026-09-12 08:04 觀點彙整</a></p>
+          
+          <h2>深查：AMD ROCm 未支援 DeepSeek V4.1</h2>
+<p><strong>裁定</strong>：【部分證實】
+vLLM 的 ROCm 映像確實遲到約 40 小時，但 SGLang 的 AMD MI35x 映像在發布後約 4 小時即公開、比 vLLM 的 NVIDIA 映像還早，「Day 0 缺席」敘事不成立。</p>
+<p>宣稱的字面內容（發布 23 小時後 vLLM 指定的 ROCm 映像尚未在 Docker Hub 公開）與時間戳吻合，但把它解讀為「AMD 在 V4.1 上 Day 0 缺席、軟體差距收斂敘事反轉」屬於過度延伸。兩家 GPU 廠在 V4.1 上都仰賴開發預覽版映像，正式 release 都尚未涵蓋。</p>
+<h3>查證過程與證據</h3>
+<p><strong>發布時點</strong>
+- 【事實】Hugging Face 的 DeepSeek-V4.1-Flash 模型庫建立於 2026-09-10 02:17 UTC；DeepSeek 官方公告新價格自 09-10 04:00 UTC 生效。「發布後 23 小時」對應 09-11 約 01:00 至 03:00 UTC。
+- 【事實】DeepSeek 官方公告與 Hugging Face 模型卡皆未點名任何硬體廠商，僅稱「將與開源社群合作推理支援」。</p>
+<p><strong>AMD 側映像時間戳（Docker Hub API 直接讀取，2026-09-12 查證）</strong>
+- 【事實】<code>lmsysorg/sglang:dev-dsv41-mi35x</code> 推送於 2026-09-10 06:20 UTC，距模型庫建立約 4 小時。SGLang 官方 cookbook 將 MI350X 列入 V4.1 支援硬體，並指定此映像。
+- 【事實】vLLM 的 NVIDIA 映像 <code>vllm/vllm-openai:deepseekv41-flash-0909</code> 推送於 09-10 06:47 UTC，比 SGLang 的 AMD 映像晚 27 分鐘。
+- 【事實】vLLM 的 AMD 映像 <code>vllm/vllm-openai-rocm:deepseekv41-flash-0909</code> 推送於 2026-09-11 20:20 UTC，距發布約 40 至 42 小時。在「23 小時」時點確實尚未公開，宣稱的這一部分成立。
+- 【事實】vLLM recipes 的 GitHub 提交紀錄顯示，V4.1-Flash 配方於 09-10 建立時已註明「在 MI350X 節點 4 卡 TP4 驗證」並有「add rocm image」提交；09-11 另一個 PR 為 ROCm 加入 breakable CUDA graph 環境變數，提交者在 MI355X 上驗證穩定生成。該 PR 提到配方「目前釘在 ECR」，暗示 AMD 側先用 AWS ECR 內部映像、後才同步到 Docker Hub。此推論來自單一 PR 留言，標為【傳聞】。
+- 【事實】AMD 自家 registry（<code>rocm/vllm</code>、<code>rocm/sgl-dev</code>）截至 09-11 無任何 V4.1 標籤；但 SGLang 正式版 v0.5.19 的 release notes 同樣未含 V4.1，NVIDIA 用戶也只能用 <code>dev-dsv41</code> 預覽映像。</p>
+<p><strong>官方 Day 0 文章</strong>
+- 【事實】AMD 官網與 ROCm 部落格截至 09-12 無 V4.1 專文，先前對 Qwen 3.8、Gemma 4、Llama 4 都有 Day 0 文章。但搜尋同樣找不到 NVIDIA 針對 V4.1 的技術部落格，不能據此推論單方面落後。</p>
+<p><strong>背景：V4 時期的真實差距</strong>
+- 【事實】2026 年 5 月 vLLM issue #42876 記載，v0.21.0 release notes 宣稱支援 DeepSeek V4 於 ROCm，但官方映像在 MI350X 上實際無法啟動，配方 YAML 將所有 AMD SKU 標為不支援。這是「軟體差距」敘事的原始來源。
+- 【機構估計】SemiAnalysis InferenceX 於 2026 年中記錄 MI355X 跑 DeepSeek-V4-Pro 在 26 天內每 GPU 吞吐提升 110 倍，AMD 官方文章亦稱不到一個月改善逾 100 倍。差距在 V4 後期已大幅收斂。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>AMD</strong>：本次 V4.1 的實際表現是 SGLang 路徑 Day 0 到位、vLLM 路徑 Day 2 到位，且從 V4 的「無法啟動」進步到 V4.1 的「發布當日 MI350X 驗證通過」。相對於 V4 時期，這是明確進步而非反轉。市場若以「ROCm 映像缺席」定價 AMD 軟體風險，失真點在於只看 vLLM 一條路徑，且把 Docker Hub 同步延遲當成功能缺失。真正的風險仍是 V4 時期就存在的 SKU 分裂：MI300X、MI325X 對 V4 系列多個 issue 顯示不支援，V4.1 配方也僅驗證 MI350X 系列，MI300 世代客戶的體驗與 MI355X 差距很大。</p>
+<p><strong>NVDA</strong>：V4.1 在 NVIDIA 側同樣沒有正式 release 映像，Day 0 靠 vLLM 與 SGLang 的預覽映像。NVIDIA 的護城河在本次事件中並未擴大，「開源模型出來 CUDA 立刻能跑」的優勢正在被兩大推理框架同時支援 AMD 的做法稀釋。V4.1 的 8B/16B 活性參數與 KV cache 減至四分之一的設計，降低單模型記憶體需求，對 MI355X 的 288GB HBM 優勢有輕微削弱。</p>
+<p><strong>TSM</strong>：兩家 GPU 均由台積電代工，軟體差距誰勝誰負對台積電中性；V4.1 大幅降低推理成本反而擴大整體算力需求，對先進製程與 CoWoS 需求偏正面。</p>
+<p><strong>反方觀點</strong>：主張差距未收斂者可指出，AMD 支援仍依賴 LMSYS 與 vLLM 社群及 AMD 內部工程師手動 PR，而非 AMD 自家 registry 的自動化發布；每次新架構（本次是 sparse SWA 與 CED）都需要新的 ROCm 特化 kernel，V4.1 仍需環境變數繞過 torch.compile 缺失。這種「人力跟進」模式在模型迭代加速時是持續性成本。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-09-14 04:00 UTC</strong>：DeepSeek 將 V4-Pro 流量全數導向 V4.1-Flash。此後若 AMD 自家 <code>rocm/sgl-dev</code> 或 <code>rocm/vllm</code> 仍無 V4.1 標籤，「AMD 官方發布流程落後」的說法升級。</li>
+<li><strong>SGLang 與 vLLM 下一個正式版</strong>：若 V4.1 支援進入正式版且同時涵蓋 gfx950，可將本結論升級為【查證不支持】原宣稱；若正式版僅含 CUDA，則原宣稱的差距論點升級。</li>
+<li><strong>AMD Day 0 技術文章</strong>：AMD 對 V4.1 若在一週內仍無專文，與過往 Qwen、Gemma 的處理明顯不同，值得追問是否刻意迴避。</li>
+<li><strong>SemiAnalysis InferenceX V4.1 數據</strong>：MI355X 對 B200 或 GB200 的每 GPU 吞吐與每百萬 token 成本，是判斷「功能支援」之外「效能差距」的關鍵訊號。</li>
+<li><strong>AMD 第三季法說（預計 2026 年 10 月底或 11 月初）</strong>：留意管理層是否提及 DeepSeek 或推理框架 Day 0 承諾。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「23 小時後映像未公開」的原始出處無法在公開網路找到，推測來自系統先前對 Docker Hub 的觀察，屬單一來源；本報告以 Docker Hub API 時間戳獨立重建時間線。</li>
+<li>Docker Hub 推送時間只代表映像公開時點，不等於功能可用時點；vLLM recipe 09-10 已聲稱 MI350X 驗證通過，但驗證細節僅見於 PR 描述，無第三方複現。</li>
+<li>「ECR 內部映像先於 Docker Hub」是從單一 PR 留言推論，未經 AMD 或 vLLM 維護者證實。</li>
+<li>各 GitHub 與 Docker Hub 頁面由工具摘錄，非逐字全文；SGLang releases 頁面摘錄中年份標示有誤，已依 v0.5.19 版本號判讀。</li>
+<li>AMD 官方是否已私下提供合作客戶映像無從查證。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://api-docs.deepseek.com/news/news260910/">DeepSeek-V4.1-Flash: Smarter, Faster, More Efficient | DeepSeek API Docs</a>
+- <a href="https://api-docs.deepseek.com/updates/">Change Log | DeepSeek API Docs</a>
+- <a href="https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash">Hugging Face API: deepseek-ai/DeepSeek-V4.1-Flash</a>
+- <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash">deepseek-ai/DeepSeek-V4.1-Flash · Hugging Face</a>
+- <a href="https://hub.docker.com/v2/repositories/lmsysorg/sglang/tags?name=dsv41&amp;page_size=50">Docker Hub API: lmsysorg/sglang tags (dsv41)</a>
+- <a href="https://hub.docker.com/v2/repositories/vllm/vllm-openai/tags?name=deepseekv41&amp;page_size=50">Docker Hub API: vllm/vllm-openai tags (deepseekv41)</a>
+- <a href="https://hub.docker.com/v2/repositories/vllm/vllm-openai-rocm/tags?page_size=30&amp;ordering=last_updated">Docker Hub API: vllm/vllm-openai-rocm tags</a>
+- <a href="https://hub.docker.com/v2/repositories/rocm/vllm/tags?page_size=30&amp;ordering=last_updated">Docker Hub API: rocm/vllm tags</a>
+- <a href="https://hub.docker.com/v2/repositories/rocm/sgl-dev/tags?page_size=30&amp;ordering=last_updated">Docker Hub API: rocm/sgl-dev tags</a>
+- <a href="https://recipes.vllm.ai/deepseek-ai/DeepSeek-V4.1-Flash">deepseek-ai/DeepSeek-V4.1-Flash | vLLM Recipes</a>
+- <a href="https://raw.githubusercontent.com/vllm-project/recipes/main/models/deepseek-ai/DeepSeek-V4.1-Flash.yaml">vllm-project/recipes: DeepSeek-V4.1-Flash.yaml</a>
+- <a href="https://github.com/vllm-project/recipes/commits/main/models/deepseek-ai/DeepSeek-V4.1-Flash.yaml">vllm-project/recipes: DeepSeek-V4.1-Flash.yaml 提交紀錄</a>
+- <a href="https://github.com/vllm-project/recipes/pull/946">vllm-project/recipes PR #946: add dsv41-flash</a>
+- <a href="https://github.com/vllm-project/recipes/pull/953">vllm-project/recipes PR #953: [ROCm] Enable breakable CUDA graphs for DeepSeek-V4.1-Flash</a>
+- <a href="https://docs.sglang.io/cookbook/autoregressive/DeepSeek/DeepSeek-V4_1">DeepSeek-V4.1 - SGLang Documentation</a>
+- <a href="https://github.com/sgl-project/sglang/releases">Releases · sgl-project/sglang</a>
+- <a href="https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v4_1/amd/rocm/">vLLM docs: deepseek_v4_1/amd/rocm</a>
+- <a href="https://github.com/vllm-project/vllm/issues/42876">vllm-project/vllm Issue #42876</a>
+- <a href="https://www.amd.com/en/developer/resources/technical-articles/2026/amd-instinct-mi355x-gpu-sets-a-new-bar-for-deepseek-inference.html">AMD Instinct MI355X GPU Sets a New Bar for DeepSeek Inference</a>
+- <a href="https://inferencex.semianalysis.com/blog/mi355x-deepseek-v4-pro-sglang-110x-in-26-days">MI355X DeepSeek-V4-Pro on SGLang: 110.5x Throughput per GPU in 26 Days | InferenceX</a>
+- <a href="https://www.amd.com/en/developer/resources/technical-articles/2026/day-0-support-for-qwen-3-8-on-amd-instinct-gpus.html">Day 0 Support for Qwen 3.8 on AMD Instinct GPUs</a>
+- <a href="https://siliconangle.com/2026/09/10/deepseek-releases-v4-1-flash-says-it-outperforms-flagship-v4-pro/">DeepSeek releases V4.1-Flash, says it outperforms flagship V4-Pro - SiliconANGLE</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>❌ TPU較Blackwell性價比爭議
+          <span class="takeaway">查證不支持｜「NVIDIA 領先 TPU 9.7 倍」是張冠李戴：9.7 倍出自 Blackwell 對 Hopper 的每美元代幣數比較，</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260912-0804@TPU%E8%BC%83Blackwell%E6%80%A7%E5%83%B9%E6%AF%94%E7%88%AD%E8%AD%B0">2026-09-12 08:04 觀點彙整</a></p>
+          
+          <h2>深查：TPU較Blackwell性價比爭議</h2>
+<p><strong>裁定</strong>：【查證不支持】
+「NVIDIA 領先 TPU 9.7 倍」是張冠李戴：9.7 倍出自 Blackwell 對 Hopper 的每美元代幣數比較，SemiAnalysis 儀表板從未做出 NVIDIA 勝 TPU 9.7 倍的結論。</p>
+<p>裁定細節：SemiAnalysis 唯一出現「9.7x」的文件是 2026-02-16 的 InferenceX v2 報告，比較對象是 Blackwell/Blackwell Ultra 對 Hopper，且當時 TPU 尚未納入平台。真正的 TPU 對 Blackwell 比較刊於 2026-09-07，結論是 FP8 聚合式服務下 TPUv7 每美元效能領先 B200/B300 最多約 50%，但在 FP4、以及 GB300 NVL72 分離式服務的中段延遲區間，NVIDIA 仍佈局領先。兩份文件的數字被錯誤拼接，才產生「50% 對 9.7 倍」的假衝突。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：宣稱聲稱來自「SemiAnalysis 儀表板」。我逐一讀取 InferenceX 官網首頁、GB300 NVL72 晶片頁、部落格列表，以及兩篇 SemiAnalysis 原文，均無「NVIDIA 領先 TPU 9.7 倍」的敘述。</p>
+<ul>
+<li>【事實｜2026-02-16】InferenceX v2 原文：「即使計入 Blackwell 與 Blackwell Ultra 較高的總持有成本，相較 Hopper，每美元代幣數改善 9.7 倍（40 tok/s/user）至 65 倍（116 tok/s/user）」。測試模型為 DeepSeek-R1-0528，FP4/FP8。該文完全不含 TPU。</li>
+<li>【事實｜2026-09-07】SemiAnalysis〈TPU Inference Externalization Full Steam Ahead〉：首次以第三方身分公佈 TPUv7 Ironwood 結果，標記為「Official Preview」。模型為 Qwen3.5-397B FP8，8k1k 負載，聚合式服務、單代幣預測。TPU 端使用原生 TorchTPU vLLM 堆疊。</li>
+<li>【機構估計｜2026-09-07】同上文數字：100 tok/s/user 時，TPU 每百萬代幣成本 0.181 美元，B200 為 0.222，B300 為 0.276，優勢分別約 19% 與 34%。20 tok/s/user 時，TPU 每晶片 9,364 tok/s 對 B200 的 8,903，換算每美元代幣數多 50.4%（對 B300 多 96%）。以 Google 內部 1.03 美元/晶片小時計算，並發數 256 下優勢擴大至 76.7% 與 130.2%。</li>
+<li>【機構估計｜2026-09-07】同文明載 NVIDIA 勝出處：「B200 在同類比較曲線的一小段仍勝出，包括約 30 秒中位回應時間附近」；「GB300 NVL72 分離式對 TPUv7 聚合式，在低與高端對端延遲具競爭力，但中段 GB300 約有 30% 每美元效能優勢」；「TPUv7 無原生 FP4，FP4 下 NVIDIA 仍保持領先，要到 TPUv8i 才改變」。</li>
+<li>【事實｜2026-09-12 查閱】InferenceX 首頁已列出 TPUv7 Ironwood 並掛出「Compare TPUv7 versus Blackwell &amp; Blackwell Ultra」橫幅，首頁未顯示任何倍數。</li>
+<li>【機構估計｜2025-11-28】SemiAnalysis 較早的 TPUv7 報告估計：Google 內部採購 TPUv7 的 TCO 較 GB200 伺服器低約 44%；外部客戶（以 Anthropic 約 1.60 美元/TPU 小時推估）較 GB200 低約 30%、較 GB300 低約 41%。峰值 FLOPs 較 GB200 落後約 10%。</li>
+<li>【事實｜2025-11-07】Google Cloud 官方 Ironwood 技術部落格只做世代內比較（perf/watt 為 Trillium 的 2 倍），未對 NVIDIA 提出任何每美元效能宣稱。</li>
+</ul>
+<p><strong>交叉比對</strong>：TPU 領先 50% 的宣稱在媒體端（OfficeChai、Superpower Daily、cloudnews.tech 等）全數引用 SemiAnalysis 同一份報告，屬單一來源多重轉述。Google 本身未發表獨立對比數據。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>GOOG</strong>：真實結論對 Google 偏正面但有條件。FP8 聚合式服務的每美元優勢是實測而非自吹，但成本假設（尤其內部 1.03 美元/晶片小時）是 SemiAnalysis 的 TCO 模型推估，且 Google Cloud 對外掛牌價高達 12 美元/晶片小時，外部客戶的實際性價比取決於議價。</p>
+<p><strong>NVDA</strong>：「NVIDIA 領先 9.7 倍」若在市場流傳，屬對 NVIDIA 過度有利的誤讀。真實狀況是 NVIDIA 在 FP4 與分離式服務仍有優勢，但在 FP8 聚合式已被 TPU 反超，CUDA 護城河在推論端確實受壓。反方觀點：SemiAnalysis 自己強調 GB200/GB300 NVL72 分離式仍具競爭力，TPU 外部軟體堆疊（分離式、推測解碼、KV cache 卸載）尚未成熟，結論不能外推至所有模型與延遲目標。</p>
+<p><strong>AVGO</strong>：TPU 每美元效能被第三方證實，強化客製 ASIC 敘事，對 Broadcom 是正面訊號。但同一時期市場亦有 SemiAnalysis 下修 TPU 出貨量的傳聞（Threads 貼文轉述，未取得原文），量與價的敘事需分開看。</p>
+<p><strong>TSM</strong>：TPU 與 Blackwell 皆在台積電投片，誰贏對台積電影響有限；TPUv8i 若導入 FP4 並持續放量，先進製程與封裝需求不減。</p>
+<p><strong>市場解讀失真處</strong>：把「Blackwell 對 Hopper 的世代進步」誤當「NVIDIA 對 TPU 的領先」，並把「最佳配置」（GB300 NVL72 FP4 分離式）與「TPU FP8 聚合式」跨精度混比。SemiAnalysis 原文刻意以同精度 FP8、同服務模式做「apples to apples」，這正是 50% 數字的邊界條件。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 年 10 月前後，InferenceX 開源版釋出</strong>：若儀表板新增 TPUv7 分離式與 MTP 結果，可直接檢驗「GB300 中段延遲領先 30%」是否縮小。若 TPU 分離式追平，NVIDIA 剩餘優勢僅剩 FP4。</li>
+<li><strong>TPUv8i 納入 InferenceX</strong>：原生 FP4 上線後若 FP4 同精度比較 TPU 仍領先，則「NVIDIA 在 FP4 領先」的最後防線被推翻。</li>
+<li><strong>Google Cloud 對外 TPU 定價與 Anthropic 等大客戶合約揭露</strong>：若外部價格遠高於 SemiAnalysis 假設，外部客戶的性價比優勢會被大幅削弱。</li>
+<li><strong>NVIDIA 下季法說與 GTC 對 InferenceX TPU 數據的回應</strong>：NVIDIA 過去引用 InferenceX 宣傳 GB300 對 Hopper 35 倍成本優勢，若改口質疑方法論，代表數據具殺傷力。</li>
+<li><strong>Broadcom 財報中 AI 半導體營收與 TPU 出貨指引</strong>：驗證性價比優勢是否轉化為實際採購量。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「9.7 倍領先 TPU」在所有可讀取的 SemiAnalysis 原文與儀表板頁面中皆不存在，無法找到該說法的原始出處，本報告判定為數字誤植或拼接。</li>
+<li>SemiAnalysis 兩篇報告的 TCO 模型細節位於付費牆內，B200/B300 的每 GPU 小時假設無法直接讀到原文，僅能依靠付費牆前的摘要數字；晶片頁顯示 GB300 NVL72 假設為 2.31 美元/小時（超大規模量）至 5.00 美元/小時（零售）。</li>
+<li>TPU 結果標為「Official Preview」，SemiAnalysis 自陳仍在與 Google、Inferact、RadixArk 合作補齊分離式與推測解碼，數字可能改版。</li>
+<li>TPU 領先 50% 的所有媒體報導均為同一來源轉述，屬單一來源；Google 官方未提供獨立驗證。</li>
+<li>TPU 出貨量下修僅為社群貼文轉述 SemiAnalysis 付費內容，無法取得原文，列為傳聞。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://newsletter.semianalysis.com/p/inferencex-v2-nvidia-blackwell-vs">InferenceX v2: NVIDIA Blackwell Vs AMD vs Hopper - SemiAnalysis</a>
+- <a href="https://newsletter.semianalysis.com/p/tpu-inferencex-full-steam">TPU Inference Externalization Full Steam Ahead - SemiAnalysis</a>
+- <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the">Google TPUv7: The 900lb Gorilla In the Room - SemiAnalysis</a>
+- <a href="https://inferencex.semianalysis.com/">InferenceX by SemiAnalysis 首頁</a>
+- <a href="https://inferencex.semianalysis.com/blog">InferenceX 部落格列表</a>
+- <a href="https://inferencex.semianalysis.com/chips/gb300-nvl72">NVIDIA GB300 NVL72 Specs, Pricing &amp; AI Inference Benchmarks - InferenceX</a>
+- <a href="https://cloud.google.com/blog/products/compute/inside-the-ironwood-tpu-codesigned-ai-stack">Inside the Ironwood TPU codesigned AI stack - Google Cloud Blog</a>
+- <a href="https://superpowerdaily.com/posts/google-s-ironwood-takes-an-fp8-cost-lead-in-new-serving-benchmarks">Google's Ironwood Takes an FP8 Cost Lead in New Serving Benchmarks - Superpower Daily</a>
+- <a href="https://officechai.com/ai/googles-tpuv7-ironwood-achieves-50-better-performance-per-dollar-than-nvidias-blackwell-ultra-says-semi-analysis/">Google's TPUv7 Ironwood Achieves 50% Better Performance Per Dollar Than NVIDIA's Blackwell Ultra - OfficeChai</a>
+- <a href="https://cloudnews.tech/googles-tpus-challenge-nvidia-up-to-50-more-performance-per-dollar/">Google's TPUs Challenge NVIDIA on Cost Per Token - cloudnews.tech</a>
+- <a href="https://www.threads.com/@cupmistock/post/DcDGrOnkkOe/">SemiAnalysis 下修 Broadcom TPU 產量 - Threads 貼文（轉述，未取得原文）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>✅ Dell 950億美元AI訂單積壓
+          <span class="takeaway">證實｜950億美元積壓與 CoreWeave 啟用 Dell 製 Rubin NVL72 均有官方一手來源；失真處在市場把「單一機櫃驗證」讀成放量交付，並把鴻海列為受益者</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260912-0804@Dell%20950%E5%84%84%E7%BE%8E%E5%85%83AI%E8%A8%82%E5%96%AE%E7%A9%8D%E5%A3%93">2026-09-12 08:04 觀點彙整</a></p>
+          
+          <h2>深查：Dell 950億美元AI訂單積壓</h2>
+<p><strong>裁定</strong>：【證實】
+950億美元積壓與 CoreWeave 啟用 Dell 製 Rubin NVL72 均有官方一手來源；失真處在市場把「單一機櫃驗證」讀成放量交付，並把鴻海列為受益者。</p>
+<p>補充細節：950億是 Dell 自報的 AI 伺服器「積壓（backlog）」，非 SEC 定義的剩餘履約義務（RPO）；CoreWeave 六月公告的 Rubin 部署是「第一個機櫃」的驗證上線，非商轉規模。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：宣稱原始出處為 Dell 於 2026-09-01 發布的 FY27 Q2（季末 2026-07-31）財報新聞稿與法說；CoreWeave 部分出自 CoreWeave 與 Dell 各自於 2026-06-01 發布的官方公告。台媒（鉅亨、Newtalk、鏈新聞）皆為轉述，非獨立來源。</p>
+<ul>
+<li>【事實｜2026-09-01】Dell Q2 AI 伺服器接單 609 億美元、認列營收 164 億美元、期末積壓 950 億美元，過去 12 個月接單 1,317 億美元；FY27 營收指引中值 1,920 億、AI 伺服器營收 740 億、EPS 25.50 美元。（Dell 財報投影片，經 Investing.com 轉載；Dell IR 與 BusinessWire 原頁多次逾時／403，無法直接讀取）</li>
+<li>【事實｜自行核算】Q1 FY27 期末積壓 513 億 ＋ Q2 接單 609 億 － Q2 認列 164 億 ＝ 958 億，與 950 億相符，數字內部一致，無灌水跡象。</li>
+<li>【事實｜2026-07-31 止 10-Q】RPO 約 1,320 億美元，多數預計 24 個月內認列；存貨由 1 月底 104.4 億暴增至 212.9 億美元；上半年營運現金流 63.1 億美元（Q2 單季僅 22 億）。</li>
+<li>【事實｜Dell 10-K/10-Q 語言，僅據搜尋摘錄】「產品積壓代表未履行製造訂單價值，僅在公司判定不可取消的範圍內計入 RPO」。換言之，950 億積壓並不等於全數不可取消；法說逐字稿中管理層亦未說明可取消性或轉換時程。</li>
+<li>【事實｜2026-09-01 法說】管理層直言主要限制是「DRAM、DRAM、DRAM，其次 NAND」，並警告 Q2 ISG 利潤率（15.0%）的有利因素「不應預期全數持續」；五季 pipeline 為積壓的「數倍」。</li>
+<li>【事實｜2026-06-01】CoreWeave 官方公告：於紐澤西 Livingston 完成「第一個 Vera Rubin NVL72 機櫃」的啟用與驗證，明載 Dell PowerEdge XE9812 為架構骨幹，Michael Dell 具名引言。公告未提客戶可用時程與放量規模。Dell 官方部落格同日稱交付後 6.5 小時內進入 production。</li>
+<li>【事實｜2026-08-11】CoreWeave Q2 法說：確認為首家啟用 Rubin NVL72 的雲端商，Rubin SKU 定價與利潤率創新高、已有合約；但全程未提及 Dell，也未揭露 Rubin 機櫃數或 MW 數。CoreWeave 2026 年 1 月公告僅承諾「2026 下半年」部署 Rubin。</li>
+<li>【機構估計｜2026-09-02】Morgan Stanley Woodring 目標價 434 美元、中性評等，為主要券商中最保守；FinanceFeeds 等指出 NVIDIA 因記憶體成本對 2027 年初出貨系統調漲逾 15%，而 Dell 積壓多以舊價成交。</li>
+<li>【傳聞｜2025-10-22】經濟日報稱 Dell 2026 年 AI 伺服器主力代工改為英業達、仁寶，鴻海與緯創被排除（單一來源，歸因於星門專案恩怨，未獲 Dell 證實）。Newtalk 引彭博供應鏈資料：仁寶約 43% 營收來自 Dell；9 月 2 日鴻海股價逆勢下跌 1.17%。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>誰受益</strong>：NVDA 與 TSM 最直接，Dell 積壓本質是 GB300/Vera Rubin 整櫃訂單，Rubin 首櫃已經第三方雲端商驗證上線，證實 Rubin 量產時程未落後。MU 是最強受益者也是最大變數：Dell 明言 DRAM 為第一瓶頸，等於替 Micron 的漲價背書；但同一句話也代表 Dell 的舊價積壓將吃到新價記憶體，利潤率壓力落在 Dell 而非 MU。</p>
+<p><strong>誰被誤讀</strong>：2317 鴻海。市場把「Dell 大單」直接映射到台系 ODM 四雄，但可查得的 Dell 代工名單以英業達、仁寶為主，鴻海的 AI 機櫃動能來自 NVIDIA 直供與超大規模雲端，Dell 積壓對鴻海是間接甚至零貢獻。此點雖依賴單一媒體來源，但股價反應（鴻海當日下跌）與彭博曝險資料方向一致。</p>
+<p><strong>反方觀點</strong>：存貨一季翻倍、單季營運現金流僅營收的 4.7%，顯示 Dell 正在為積壓墊付零組件；若記憶體價格續漲而合約無法轉嫁，FY28 轉換的訂單利潤率會被壓縮。Morgan Stanley 的中性看法即基於此。此外「積壓 ≠ 不可取消」，管理層並未給出可取消比例。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 年 11 月下旬 Dell FY27 Q3 財報</strong>：AI 營收是否達 190 億指引、積壓是否續增、存貨與營運現金流是否改善。積壓下降而營收未達標，則代表取消或延遲，結論降級。</li>
+<li><strong>Q3 10-Q</strong>：RPO 是否同步逼近積壓成長；若 RPO 增幅遠低於積壓增幅，代表大量訂單屬可取消。</li>
+<li><strong>2026 年 11 月 CoreWeave Q3 財報</strong>：是否揭露 Rubin 機櫃數或 MW 上線量；若仍只有「首櫃」敘事，Rubin 放量時程應下修。</li>
+<li><strong>2026 年 11 月 NVIDIA FY27 Q3 財報</strong>：Rubin 營收貢獻與供應鏈評論。</li>
+<li><strong>2026 年 12 月 Micron FQ1 財報</strong>：DRAM 合約價漲幅，直接決定 Dell 舊價積壓的利潤率風險。</li>
+<li><strong>10 月起仁寶、英業達月營收</strong>：驗證 Dell 訂單究竟流向哪家 ODM，可修正鴻海受益與否的判斷。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>Dell IR 新聞稿、BusinessWire、Exhibit 99.1 均無法直接讀取（逾時／403），財報數字係據 Investing.com 轉載投影片與法說逐字稿摘錄，與多家媒體交叉一致，且能以 Q1 積壓自行核算驗證。</li>
+<li>積壓定義原文來自搜尋引擎對 10-K/10-Q 的摘錄，10-Q 全文擷取未讀到該段，僅據摘錄。</li>
+<li>CoreWeave Q2 逐字稿 PDF 無法解析，改用 Motley Fool 文字版。</li>
+<li>Dell ODM 名單變動為單一媒體來源，Dell 與鴻海皆未公開證實，僅能列為傳聞。</li>
+<li>台媒對「950 億」的報導皆轉述同一份新聞稿，不構成獨立來源。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.investing.com/news/company-news/dell-q2-fy27-slides-ai-server-backlog-hits-95b-revenue-up-58-93CH-4884718">Dell Q2 FY27 slides: AI server backlog hits $95B, revenue up 58% (Investing.com)</a>
+- <a href="https://www.tradingkey.com/news/transcripts/262145053-tradingkey">Dell (DELL) Fiscal Q2 2027 Earnings Call transcript (TradingKey)</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001571996/000157199626000046/dell-20260731.htm">Dell Technologies Form 10-Q, quarter ended July 31, 2026 (SEC)</a>
+- <a href="https://www.stocktitan.net/sec-filings/DELL/10-q-dell-technologies-inc-quarterly-earnings-report-25303a868c38.html">Dell 10-Q summary (StockTitan)</a>
+- <a href="https://www.beatingthetide.com/p/dell-q1-fy2027-update-51-billion-ai-backlog-639-target">Dell (DELL): A $51B AI Backlog after a Record Q1 (Beating the Tide)</a>
+- <a href="https://www.coreweave.com/news/coreweave-completes-industry-first-bring-up-of-nvidia-vera-rubin-nvl72">CoreWeave Completes Industry-First Bring-Up and Validation of NVIDIA Vera Rubin NVL72 (CoreWeave)</a>
+- <a href="https://www.dell.com/en-us/blog/dell-first-to-ship-systems-built-on-nvidia-vera-rubin-platform-to-coreweave/">Dell First to Ship Systems Built on NVIDIA Vera Rubin Platform to CoreWeave (Dell Blog)</a>
+- <a href="https://www.coreweave.com/blog/a-deep-dive-on-coreweave-innovations-for-nvidia-vera-rubin-nvl72">A Deep Dive on CoreWeave Innovations for NVIDIA Vera Rubin NVL72 (CoreWeave Blog)</a>
+- <a href="https://investors.coreweave.com/news/news-details/2026/CoreWeave-Extends-Its-Cloud-Platform-with-NVIDIA-Rubin-Platform/default.aspx">CoreWeave Extends Its Cloud Platform with NVIDIA Rubin Platform (CoreWeave IR)</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/08/18/coreweave-crwv-q2-2026-earnings-call-transcript/">CoreWeave (CRWV) Q2 2026 Earnings Call Transcript (The Motley Fool)</a>
+- <a href="https://www.capitaxer.com/dell-q2-fy2027-a-95-billion-ai-backlog-and-the-margin/">Dell Q2 FY2027: A $95 Billion AI Backlog and the Margin… (Capitaxer)</a>
+- <a href="https://money.udn.com/money/story/5612/9088518">AI 伺服器大洗牌！仁寶、英業達成戴爾2026年主力供應商（經濟日報）</a>
+- <a href="https://newtalk.tw/news/view/2026-09-02/1057267">戴爾AI伺服器賣翻！手握950億美元待出貨 台廠緯創、英業達逆勢抗跌（Newtalk）</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-11（6 題）</summary>
     <div class="day-body">
       

@@ -178,7 +178,7 @@
   </nav>
 
   <h1>每日 X 摘要</h1>
-  <p class="meta">最後更新：2026-09-12 08:05｜每天彙整兩次，點各時段標題可展開/收合</p>
+  <p class="meta">最後更新：2026-09-12 08:49｜每天彙整兩次，點各時段標題可展開/收合</p>
   <p class="navlinks"><a href="leverage.html">📊 台股槓桿儀表板</a> <a href="hot_reports.html">📑 熱門外資研報</a> <a href="reports.html">🗂 研報庫</a> <a href="deepdive/">🔬 深查報告</a></p>
 
   
@@ -599,35 +599,19 @@ Van Geelen 目前將繼續擔任 Citrini 執行長，同時也計劃推出一檔
   
   
   
-  <h3 class="cat">🔬 待深查議題</h3>
+  <h3 class="cat">🔬 深查裁定</h3>
   <div class="section">
-    <ul>
-      
-      <li style="margin-bottom:0.7em">
-        <strong>AMD ROCm未支援DeepSeek V4.1</strong>
-        <small>（AMD、NVDA、TSM｜評分 22/25）</small><br>
-        待驗證宣稱：DeepSeek V4.1 Flash發布23小時後，AMD指定ROCm映像仍未公開。<br>
-        <small>為何重要：新宣稱是實際Day 0部署缺席，直接反轉先前軟體差距收斂敘事。</small><br>
-        <small>查證方向：查AMD官方映像庫、Docker Hub時間戳、vLLM提交紀錄及DeepSeek部署文件。</small>
-      </li>
-      
-      <li style="margin-bottom:0.7em">
-        <strong>TPU較Blackwell性價比爭議</strong>
-        <small>（GOOG、NVDA、AVGO、TSM｜評分 21/25）</small><br>
-        待驗證宣稱：同最佳配置比較時，SemiAnalysis儀表板顯示NVIDIA效能領先Google TPU 9.7倍。<br>
-        <small>為何重要：50%優勢與9.7倍落後結論嚴重衝突，牽動TPU、ASIC與GPU估值敘事。</small><br>
-        <small>查證方向：重建同負載、成本、精度與叢集配置；保存SemiAnalysis版本及原始基準設定。</small>
-      </li>
-      
-      <li style="margin-bottom:0.7em">
-        <strong>Dell 950億美元AI訂單積壓</strong>
-        <small>（2317、NVDA、TSM、MU｜評分 18/25）</small><br>
-        待驗證宣稱：Dell的AI伺服器積壓訂單已達950億美元，且CoreWeave正啟用Dell製Rubin NVL72。<br>
-        <small>為何重要：股價大漲但數字極大；若屬實將重估整櫃交付與ODM供應鏈需求。</small><br>
-        <small>查證方向：核對Dell財報、法說逐字稿、CoreWeave公告、採購文件與訂單定義。</small>
-      </li>
-      
-    </ul>
+    
+    <p style="margin:8px 0">⚠️ <strong>AMD ROCm未支援DeepSeek V4.1</strong><br>
+      <small>部分證實｜vLLM 的 ROCm 映像確實遲到約 40 小時，但 SGLang 的 AMD MI35x 映像在發布後約 4 小時即公開、比 vLLM 的 NVIDIA 映像還早，</small></p>
+    
+    <p style="margin:8px 0">❌ <strong>TPU較Blackwell性價比爭議</strong><br>
+      <small>查證不支持｜「NVIDIA 領先 TPU 9.7 倍」是張冠李戴：9.7 倍出自 Blackwell 對 Hopper 的每美元代幣數比較，</small></p>
+    
+    <p style="margin:8px 0">✅ <strong>Dell 950億美元AI訂單積壓</strong><br>
+      <small>證實｜950億美元積壓與 CoreWeave 啟用 Dell 製 Rubin NVL72 均有官方一手來源；失真處在市場把「單一機櫃驗證」讀成放量交付，並把鴻海列為受益者</small></p>
+    
+    <p style="margin:8px 0"><a href="deepdive/">→ 完整深查報告</a></p>
   </div>
   
 </div>
