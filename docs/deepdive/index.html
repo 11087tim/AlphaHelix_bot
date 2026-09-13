@@ -65,11 +65,218 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-12 20:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-13 08:47｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-13（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>❓ Google TPUv9i全電氣交換架構
+          <span class="takeaway">證據不足｜公開資訊只能支撐「聯發科以 336G SerDes 拿下 TPU v9 主要 I/O 訂單」這一段傳聞；「320-port 全電氣 ICI 交換器、支撐 1,280 顆 TPU」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260913-0805@Google%20TPUv9i%E5%85%A8%E9%9B%BB%E6%B0%A3%E4%BA%A4%E6%8F%9B%E6%9E%B6%E6%A7%8B">2026-09-13 08:05 觀點彙整</a></p>
+          
+          <h2>深查：Google TPUv9i 全電氣交換架構</h2>
+<p><strong>裁定</strong>：【證據不足】
+公開資訊只能支撐「聯發科以 336G SerDes 拿下 TPU v9 主要 I/O 訂單」這一段傳聞；「320-port 全電氣 ICI 交換器、支撐 1,280 顆 TPU」在網路上找不到任何可溯源出處。</p>
+<p>裁定細節：宣稱由三個不同可信度的片段拼接而成。「TPUv9i」的命名出自 SemiAnalysis 近期 X 串文的「傳聞」；「336G SerDes」出自工商時報 6 月 23 日供應鏈報導，台媒與 TrendForce 皆改寫自同一源頭；「320-port／全電氣／1,280 顆」則零來源，且與 Google 官方公布的 TPU 8i Boardfly 架構方向（機櫃內銅纜直連、跨群組仍靠 OCS 光路交換）相牴觸。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li><strong>TPUv9i 命名與拓樸方向</strong>【傳聞，2026-09】：SemiAnalysis 在 X 串文稱「近期傳聞」顯示 v9 維持雙軌，推論版 TPUv9i 沿用新版 Boardfly，訓練版 TPUv9t 改採 6D Torus，且 6D Torus「代價是需要多得多的光學元件與 OCS 容量」。串文本身付費牆／需登入，僅據搜尋摘錄。其 9 月 7 日 InferenceX 文章只談 TPUv7 與 TPUv8i，未提 v9 規格。</li>
+<li><strong>336G SerDes 由聯發科承接</strong>【傳聞，2026-06-23】：工商時報引供應鏈稱 Google 原訂 448G 因訊號完整性、功耗、散熱受阻，改訂 336G 過渡規格，聯發科完成客製化取得「主要開發機會」，2028 年初量產。TrendForce 6/23、8/3、永豐 7/2、signals.tw 6/27 均引自同一報導鏈，不構成獨立來源。騰旭投資程正樺 8/22 則稱為「300G 特規」，數字分歧。</li>
+<li><strong>聯發科官方說法</strong>【事實，2026-07 法說】：執行長蔡力行僅確認 400G/448G SerDes IP 以 2 奈米開發、2027 下半年就緒，並首次確認採用 Intel EMIB-T 封裝；未提 336G、未點名 Google、未提 ICI 交換器。</li>
+<li><strong>Google 官方 v8i 架構</strong>【事實，2026-04-22】：Google Cloud 技術文指出 Boardfly 為三層結構：4 顆一托盤、8 托盤以銅纜全互連成群組、36 群組經 OCS 連結，最多 1,024 顆啟用（1,152 顆互連）。The Next Platform 與 ServeTheHome（Hot Chips 2026）同樣描述為 ICI 埠直連加 Apollo OCS，未見獨立交換器晶片。</li>
+<li><strong>320-port 全電氣交換器、1,280 顆</strong>【無來源】：所有英文、中文關鍵字組合皆無命中。唯一出現「320」的是 fibermall 部落格對 OCS 可能升級為 320×320 埠的推測，屬光路交換而非電交換，性質相反。1,280 恰為 4×320，可能是某份未公開分析以「四平面單層交換」推算的結果，但這是我的推論，非查證所得。</li>
+<li><strong>Triggerfish 獨家</strong>【機構估計，2026-06-22】：郭明錤指聯發科獨拿 v9 升級版 Triggerfish（SRAM 2 至 3 倍、HBM4E、新增模擬晶粒），2027 年底量產、100 至 200 萬顆。原文 Medium 無法讀取，僅據 wccftech 轉述；同樣未提 ICI 交換架構。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p>市場敘事把「聯發科拿 SerDes 訂單」放大成「聯發科主導 TPU 網通架構、取代 AVGO 交換器與 OCS」，這一步目前沒有證據。若 336G 傳聞為真，聯發科（2454）受益的是 I/O 晶粒與 SerDes IP 授權，價值量在整顆 TPU 中仍是少數；博通（AVGO）保有 v9 訓練版 SKU，SemiAnalysis 亦明言「市場對博通的負面敘事過度」。</p>
+<p>若真出現全電氣 ICI 交換器並吃掉跨群組 OCS 流量，受害者將是光模組與 OCS 供應鏈（含 GLW 的光纖與玻璃基板曝險）；但現有證據方向相反：v9t 若採 6D Torus 反而增加光學用量，而工商時報引供應鏈稱每顆 TPU 光模組由 1.5 顆降至 1.25 顆，是「對外連結收斂」而非取消。台積電（TSM）不論哪家拿單都是製造方，鴻海（2317）機櫃組裝不受分工影響。</p>
+<p>反方觀點：Digitimes 4 月報導 v8x 再度工程變更，顯示聯發科方案時程仍有變數；TrendForce 8/20 引 Reuters 稱 Marvell、AMD 也進入 Google TPU 專案；程正樺直言投資人「看到黑影就開槍」，為 2028 年後未定案的供應鏈提前估值。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 年 10 月底聯發科 Q3 法說</strong>：若管理層首次點名 336G 或第二代 ASIC 客戶內容，傳聞升級為機構估計。</li>
+<li><strong>2026 年 12 月與 2027 年 3 月博通財報</strong>：AI 網通與 XPU 指引若未下修、續稱 v9 雙軌，將反駁「聯發科取代交換器」敘事。</li>
+<li><strong>2027 年 4 月 Google Cloud Next 與 8 月 Hot Chips</strong>：Google 若公布 v9 ICI 拓樸（含是否引入電交換器、埠數、每 lane 速率），可直接證實或推翻本議題。</li>
+<li><strong>光模組廠 2027 年出貨指引</strong>：每顆 TPU 光模組配比若跌破 1.25 或 OCS 採購縮減，才代表電氣化取代光路的方向成立。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>336G 訊息鏈全部回溯到工商時報單一供應鏈來源，數字與程正樺所稱 300G 不一致。</li>
+<li>SemiAnalysis X 串文與 InferenceX 深度內容、MarketScreener、郭明錤 Medium 原文均因付費牆或存取限制無法取得原文，僅據摘錄與轉述。</li>
+<li>「320-port、全電氣、1,280 顆」三項核心規格未找到任何公開來源，本報告無法確認其出處為分析師 note、招聘文件或市場口耳相傳。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.ctee.com.tw/news/20260623700059-439901">AI ASIC布局再擴大 聯發科力壓博通搶進Google TPU v9（工商時報 2026-06-23）</a>
+- <a href="https://www.ctee.com.tw/news/20260803700054-439901">聯發科布局Google、Meta合作新契機 AI晶片大藍圖曝光（工商時報 2026-08-03）</a>
+- <a href="https://www.trendforce.com/news/2026/06/23/news-mediatek-seen-raising-prices-10-20-reportedly-wins-tpu-v9-orders-on-serdes-shift/">MediaTek Seen Raising Prices 10–20%, Reportedly Wins TPU v9 Orders on SerDes Shift（TrendForce 2026-06-23）</a>
+- <a href="https://www.trendforce.com/news/2026/08/03/news-mediatek-advances-400g-serdes-on-2nm-targeting-google-tpu-v10-and-meta-ai-asic-orders/">MediaTek Advances 400G SerDes on 2nm, Targeting Google TPU v10（TrendForce 2026-08-03）</a>
+- <a href="https://www.trendforce.com/news/2026/08/20/news-marvell-amd-reportedly-shake-up-google-tpu-race-putting-broadcom-mediatek-under-pressure/">Marvell, AMD Reportedly Shake Up Google TPU Race（TrendForce 2026-08-20）</a>
+- <a href="https://cloud.google.com/blog/products/compute/tpu-8t-and-tpu-8i-technical-deep-dive">TPU 8t and TPU 8i technical deep dive（Google Cloud Blog）</a>
+- <a href="https://www.nextplatform.com/connect/2026/04/28/new-google-networks-tuned-up-for-genai-inference-and-training/5218978">New Google Networks Tuned Up For GenAI Inference And Training（The Next Platform 2026-04-28）</a>
+- <a href="https://www.servethehome.com/googles-tpuv8s-for-training-and-inference-at-hot-chips-2026/">Google's TPUv8s for Training and Inference at Hot Chips 2026（ServeTheHome）</a>
+- <a href="https://newsletter.semianalysis.com/p/tpu-inferencex-full-steam">TPU Inference Externalization Full Steam Ahead - InferenceX（SemiAnalysis 2026-09-07）</a>
+- <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the">Google TPUv7: The 900lb Gorilla In the Room（SemiAnalysis）</a>
+- <a href="https://x.com/SemiAnalysis_/status/2089472657666310342">SemiAnalysis on X：6D torus 串文</a>
+- <a href="https://x.com/SemiAnalysis_/status/2016209829748986352">SemiAnalysis on X：TPU v9 雙軌、博通敘事過度負面</a>
+- <a href="https://signals.tw/articles/mediatek-google-tpu-serdes/">數字大的這次輸了：聯發科以 336G SerDes 拿下（signals.tw 2026-06-27）</a>
+- <a href="https://www.sinotrade.com.tw/richclub/hotstock/Google-%E7%AD%89%E4%B8%8D%E5%8F%8A-448G-%E8%81%AF%E7%99%BC%E7%A7%91-336G-%E8%A3%9C%E4%BD%8D%E6%88%90%E5%8A%9F%E2%80%94Google-%E4%B8%8B%E4%B8%80%E4%BB%A3-TPU-%E9%AB%98%E9%80%9F%E5%82%B3%E8%BC%B8%E4%B9%8B%E7%88%AD-%E8%81%AF%E7%99%BC%E7%A7%91%E8%88%87%E5%8D%9A%E9%80%9A%E7%9A%84%E6%94%BB%E9%98%B2%E6%88%B0-%E5%8F%B0%E7%81%A3%E4%BE%9B%E6%87%89%E9%8F%88%E5%AE%8C%E6%95%B4%E8%A7%A3%E6%9E%90-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a4603f4dba502e5aec2e64a">Google 等不及 448G，聯發科 336G 補位成功（永豐金豐雲學堂）</a>
+- <a href="https://tw.stock.yahoo.com/news/%E8%81%AF%E7%99%BC%E7%A7%91%E6%AE%BA%E9%80%B2google-tpu-%E5%8D%9A%E9%80%9A%E4%B8%8D%E9%A1%98%E5%81%9A-%E5%AE%83%E9%9D%A01%E6%8B%9B%E6%9C%89%E6%9C%9B%E7%8D%A8%E6%8B%BFv9-plus%E8%A8%82%E5%96%AE-222330402.html">聯發科殺進Google TPU！博通不願做…有望獨拿V9 Plus訂單（Yahoo 股市 2026-08-30）</a>
+- <a href="https://tw.news.yahoo.com/%E4%B8%8B%E7%8F%AD%E5%9C%8B%E9%9A%9B%E7%B7%9A-%E8%81%AF%E7%99%BC%E7%A7%91%E6%90%B6google-tpu%E5%A4%A7%E5%96%AE-v9%E7%8D%A8%E5%AE%B6%E5%82%B3%E8%A8%80-v10%E8%AE%8A%E7%9B%A4%E5%8D%B1%E6%A9%9F-123000893.html">下班國際線》聯發科搶Google TPU大單？v9獨家傳言、v10變盤危機 程正樺解析（Yahoo 新聞 2026-08-22）</a>
+- <a href="https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000751193_XB60XB35L8W1EI29S0B59">Google TPU再度進行工程變更？聯發科ASIC業務隱憂浮現（Digitimes 2026-04-07）</a>
+- <a href="https://wccftech.com/google-mediatek-build-tpuv9-triggerfish-cpu-compute-die-one-package-agentic-ai/">Google Taps MediaTek to Build TPUv9 "Triggerfish"（wccftech，轉述郭明錤）</a>
+- <a href="https://www.fibermall.com/blog/unveiling-google-tpu-architecture.htm">Unveiling Google's TPU Architecture: OCS Optical Circuit Switching（fibermall）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Anthropic 5,170億美元算力承諾
+          <span class="takeaway">部分證實｜5,170億是 The Information 對「合約上限」的加總估計，非公司揭露；拿它對比2029年前1,800億的4年預算，是拿10年期上限比4年期預算，落差被放大</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260913-0805@Anthropic%205%2C170%E5%84%84%E7%BE%8E%E5%85%83%E7%AE%97%E5%8A%9B%E6%89%BF%E8%AB%BE">2026-09-13 08:05 觀點彙整</a></p>
+          
+          <h2>深查：Anthropic 5,170億美元算力承諾</h2>
+<p><strong>裁定</strong>：【部分證實】
+5,170億是 The Information 對「合約上限」的加總估計，非公司揭露；拿它對比2029年前1,800億的4年預算，是拿10年期上限比4年期預算，落差被放大。</p>
+<p>裁定細節：個別交易多數有官方新聞稿或多家獨立報導佐證（AWS、Microsoft/Nvidia、AMD、Lambda、Nscale、Fluidstack），但總額5,170億與其中最大單筆「Google 2,000億」皆僅出自 The Information，Anthropic 從未確認總額。The Information 原文為付費牆，本報告依多家轉述交叉比對。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：宣稱源自 The Information 2026-09-06 報導（作者 Valida Pau），標題為「Anthropic 11 個月內敲定 5,170 億美元算力交易」。DCD、Dealroom、The Decoder、Winzheng 等均為改寫同一來源，不構成獨立佐證。</p>
+<ul>
+<li>【機構估計｜2026-09-06】5,170億為 The Information 將 2025 年 10 月起所有合約「潛在最高成本」加總，「主要分布在未來十年」，含至少 14.8GW 新產能。Dealroom 轉述明載：Anthropic 未公開總產能或總支出，數字為外部推估；且「產能可能因許可、電網、零組件限制永遠無法完全上線」。</li>
+<li>【事實｜2026-04-20】Anthropic 官方新聞稿：向 AWS 承諾10年逾1,000億美元，最高5GW，Trainium2 到 Trainium4，Amazon 立即投資50億、後續最高200億。</li>
+<li>【事實｜2025-11-18】Microsoft 官方部落格：Anthropic 承諾購買300億美元 Azure 算力，另可契約最高1GW Nvidia 系統；Nvidia 投資最高100億、Microsoft 最高50億。</li>
+<li>【事實｜2026-04-06】Anthropic 官方：與 Google、Broadcom 擴大 TPU 合作，「數 GW」自2027年起上線，<strong>未揭露金額</strong>。</li>
+<li>【傳聞｜2026-05-05】「對 Google Cloud 5年承諾2,000億」僅出自 The Information，Reuters 表示無法獨立驗證，Google 與 Anthropic 皆未確認。此為5,170億中最大單一構成項。</li>
+<li>【事實｜2026-07-22】AMD 官方新聞稿：最高2GW MI450 系列，首GW自2027上半年部署，AMD 投資最高50億。</li>
+<li>【事實｜2026-08-31~09-03】Bloomberg、WSJ、Reuters 各自報導 Lambda 350億/6年（Hut 8 德州廠）與 Nscale 450億（西維吉尼亞）；多家獨立媒體報導，可視為證實。</li>
+<li>【傳聞｜2026-09-06】SpaceX 每月最高12.5億、至2029年5月（潛在450億），<strong>雙方可提前90天通知取消</strong>。此項在5,170億內但實質為可撤銷合約。</li>
+<li>【機構估計｜2025-12】「2029年前1,800億租用伺服器」為 Anthropic 2025年12月對投資人的預算，出處同為 The Information。Parekh 引述 The Information 5月報導時，Anthropic 該數字已上修至「約2,000億」，顯示預算本身也在滾動。</li>
+<li>【事實｜10-Q，2026-06-30】Amazon AWS 剩餘履約義務約4,960億，加權平均剩餘年限6.4年；Alphabet 剩餘履約義務5,195億，其中 Google Cloud 5,139億，約半數預計24個月內認列。兩家均未揭露客戶集中度，但 Amazon 10-Q 揭露持有 Anthropic 可轉債979億與特別股925億、單季未實現利得505億。</li>
+<li>【事實｜2026-08-17】CNBC、Bloomberg：Anthropic 告知投資人7月底年化營收突破650億，Q2 營收逾115億。</li>
+</ul>
+<p><strong>關鍵失真</strong>：1,800億是「2029年前」的4年現金預算；5,170億是「最高合約值」，多數產能2027年後才上線、期限達10年，且含可取消與選擇性產能。兩者不可直接相減。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受益方</strong>：
+- <strong>GOOG、AMZN</strong>：兩家 10-Q 積壓訂單各約5,000億，是市場能查到的最硬證據，說明 Anthropic 承諾確實已進入雲端商帳面。但積壓訂單是「未來營收」，兌現取決於 Anthropic 付款能力。兩家同時是 Anthropic 大股東，Amazon Q2 淨利中約505億來自 Anthropic 估值重估，屬循環利益。
+- <strong>NVDA</strong>：Azure 1GW、Lambda、Nscale、SpaceX 均為 Nvidia 系統；Nvidia 同時持股 Lambda、Nscale 與 Anthropic，Winzheng 引述 Nvidia 管理層稱「同時受惠硬體銷售與租賃分潤」。此結構放大上行，也集中對手方風險。
+- <strong>AVGO、TSM</strong>：Google TPU 數 GW 自2027起，直接對應 Broadcom 客製晶片與台積先進封裝需求，但金額未揭露。
+- <strong>AMD</strong>：2GW 為官方確認，屬 Nvidia 以外最明確的多元化訊號。</p>
+<p><strong>反方觀點</strong>：
+- Neil Campling 指出 Lambda 350億是「對尚未募得資金的承諾」，IPO 是唯一出路，對 NVDA、AMD 構成對手方風險。
+- The Decoder 引述 Sam Altman 警告算力建置存在「不可持續的荒謬」，技術進步可能讓昂貴專案失去經濟性。
+- Parekh 指出 Anthropic 與 OpenAI 合約約占四大雲端商2兆積壓訂單的一半，隱含兩家2029年營收需較2025年成長20至30倍，部分投資人持疑。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>Anthropic 公開 S-1（預期2026年9至10月）</strong>：採購承諾附註會揭露實際「無條件採購義務」金額與到期分布。若2029年前義務遠低於5,170億，本報告「上限被放大」的判斷成立；若接近，則升級為【證實】。</li>
+<li><strong>Amazon、Alphabet Q3 10-Q（2026年10月底）</strong>：積壓訂單增幅若與 Lambda、Nscale、SpaceX 之外的雲端承諾不匹配，可反推 Google 2,000億是否入帳。</li>
+<li><strong>2027上半年 TPU 與 AMD 首GW 上線進度</strong>：Technologies.org 指出「該看的不是金額，是14.8GW 有多少準時上線」。延遲即代表現金流出後延、供應鏈拉貨時點後移。</li>
+<li><strong>SpaceX 合約是否被任一方以90天通知終止</strong>：可直接扣減450億上限。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>The Information 原文與 DCD、Young Research 頁面均回傳 403，無法讀取全文；交易明細依 Dealroom、Winzheng、Remio、The Decoder 四家轉述交叉比對，細項（如 Nscale 450億與 Lambda 350億是否共用 460MW）各家表述不一致。</li>
+<li>5,170億、1,800億、Google 2,000億三個核心數字<strong>全部出自同一來源</strong> The Information，屬單一來源鏈。</li>
+<li>Anthropic 對此報導無公開回應，DCD 稱已聯繫但未見答覆。</li>
+<li>Amazon、Alphabet 10-Q 數據取自 StockTitan 轉載，未直接讀取 SEC 原檔。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theinformation.com/articles/anthropic-clinched-517-billion-compute-deals-11-months">How Anthropic Clinched $517 Billion in Compute Deals in 11 Months — The Information（付費牆，未能讀取）</a>
+- <a href="https://dealroom.co/news/info-iclajk-how-anthropic-clinched-517-billion-in-compute-deals-in-11-months/">Dealroom 轉述 The Information 報導</a>
+- <a href="https://www.winzheng.com/en/article/anthropic-517-billion-compute-contracts-11-months-ipo-arms-r">Winzheng：交易明細表</a>
+- <a href="https://www.remio.ai/post/anthropic-compute-deals-reach-517-billion-reversing-its-cautious-compute-stance">Remio：$517B 為上限估計、$180B 出處</a>
+- <a href="https://the-decoder.com/anthropic-reportedly-signs-517-billion-in-compute-deals-after-dario-amodei-warned-rivals-about-reckless-risk/">The Decoder：Amodei 與 Altman 觀點</a>
+- <a href="https://technologies.org/anthropic-14-8-gw-compute-517-billion/">Technologies.org：14.8GW 上線才是重點</a>
+- <a href="https://explainx.ai/blog/anthropic-517-billion-compute-commitments-openai-revenue-september-2026">explainx：已確認 vs 僅報導</a>
+- <a href="https://www.anthropic.com/news/anthropic-amazon-compute">Anthropic 官方：Amazon 算力合作擴大</a>
+- <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute">Anthropic 官方：Google、Broadcom TPU 擴大</a>
+- <a href="https://blogs.microsoft.com/blog/2025/11/18/microsoft-nvidia-and-anthropic-announce-strategic-partnerships/">Microsoft 官方部落格：Microsoft、Nvidia、Anthropic 合作</a>
+- <a href="https://newsroom.amd.com/news/amd-anthropic-strategic-partnership/">AMD 新聞稿：最高 2GW MI450</a>
+- <a href="https://www.usnews.com/news/top-news/articles/2026-05-05/anthropic-commits-to-spending-200-billion-on-googles-cloud-and-chips-the-information-reports">US News/Reuters：Anthropic 承諾 Google $200B（The Information 報導）</a>
+- <a href="https://michaelparekh.substack.com/p/ai-anthropic-and-opemai-half-of-2">Michael Parekh：雲端積壓訂單與 Anthropic/OpenAI 占比</a>
+- <a href="https://www.fool.com/investing/2026/09/06/anthropic-has-committed-more-than-usd100-billion-to-aws-and-its-prospectus-could-reveal-more-details-about-this-contract/">Motley Fool：AWS 積壓訂單與 S-1 可能揭露內容</a>
+- <a href="https://www.stocktitan.net/sec-filings/AMZN/10-q-amazon-com-inc-quarterly-earnings-report-0b79ef7cd1d2.html">Amazon Q2 2026 10-Q 摘要（StockTitan）</a>
+- <a href="https://www.stocktitan.net/sec-filings/GOOG/10-q-alphabet-inc-quarterly-earnings-report-8ffb92bbee5d.html">Alphabet Q2 2026 10-Q 摘要（StockTitan）</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/anthropic-just-committed-35-billion-163046754.html">Yahoo/24-7 Wall St：Lambda $35B 與 Campling 觀點</a>
+- <a href="https://finance.yahoo.com/news/anthropic-announces-50-billion-data-155247322.html">Yahoo：Anthropic $50B 資料中心計畫（Fluidstack）</a>
+- <a href="https://www.cnbc.com/2026/08/17/anthropic-says-annualized-revenue-climbed-to-65-billion-in-july.html">CNBC：Anthropic 年化營收 $65B</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ SpaceX資料中心進入實作階段
+          <span class="takeaway">部分證實｜「逾300名工程師投入」確有出處但屬單一媒體匿名消息；且其性質是「補救放緩」而非「加速實作」，市場敘事方向錯置</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260913-0805@SpaceX%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E9%80%B2%E5%85%A5%E5%AF%A6%E4%BD%9C%E9%9A%8E%E6%AE%B5">2026-09-13 08:05 觀點彙整</a></p>
+          
+          <h2>深查：SpaceX資料中心進入實作階段</h2>
+<p><strong>裁定</strong>：【部分證實】
+「逾300名工程師投入」確有出處但屬單一媒體匿名消息；且其性質是「補救放緩」而非「加速實作」，市場敘事方向錯置。</p>
+<p>裁定細節：人力數字、志願者規模、調整施工規範等內容全部溯源到 The Information 9月初的兩篇報導（9/1 領導層改組、約9/10 建置模式翻修），皆匿名消息來源、付費牆內無法讀取原文。SpaceX 未證實也未否認。可官方證實的只有周邊事實：Google 合約的 9/30 交付期限、Q2 AI 資本支出規模、9/3 Memphis 資料中心當機與 Musk 的「矯正措施」聲明。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【傳聞｜2026-09-10/11】逾300名工程師自火箭與 Starlink 部門（Bastrop、Cape Canaveral）改投資料中心，逾1,300人報名志願。來源為 The Information，Cryptopolitan、allweatherfinance、CryptoBriefing 等皆為改寫，非獨立來源。Newsquawk 亦標示「單一媒體」。</li>
+<li>【傳聞｜2026-09-01】領導層改組：Falcon/Dragon 前生產副總 Salandro 與 Starbase 營運主管 McConnell 接管；Palmer、Mendoza 等離任。各轉述對離任名單不一致（Venture Atlas 列 Zach Wells，allweatherfinance 列 Logan Beach、Tiffany Wilson、Aakash Verma），且 Rowland 遭替換時點（6月底）與 Palmer 離任（7月底）混用，顯示轉述品質參差。</li>
+<li>【傳聞｜2026-09-10】「重設既有設施、收緊施工規範」的實際內容：增設備援電力與冷卻、上線前完整測試、減少依賴臨時設備（Macrohard 站曾用逾100台移動冷卻機、可用率低於內部 99.9% 目標），Memphis 以外的新站（含德州）延後。</li>
+<li>【事實｜2026-06-05】SEC S-1 修正稿 FWP：Google 自 2026 年 10 月至 2029 年 6 月每月支付 9.2 億美元，換取約 11 萬顆 NVIDIA GPU；若 9/30 前未交付承諾 GPU，一個月寬限期後 Google 可立即終止或按比例減付。</li>
+<li>【事實｜2026-08-04】10-Q：AI 部門 Q2 營收 25.61 億美元、上半年 33.79 億美元。Q2 AI 資本支出 158 億美元係 CNBC、Motley Fool 據財報轉述，我未能直接於 10-Q 中核對。</li>
+<li>【事實｜2026-09-03】SpaceXAI 官方致歉 Memphis 運算中心當機約 3.5 小時，影響 Grok 及運算租戶；Musk 在 X 表示「採取矯正措施」。「施工誤觸電力線」的肇因僅見媒體轉述，官方未揭露。</li>
+<li>【事實｜2026-04-10】Nicolls 出任 SpaceXAI 總裁（維基百科引述），部分報導將此包裝成 9 月新人事，屬舊聞重述。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>敘事失真點</strong>：挑題理由把人力視為「太空曝險資本需求」的新訊號，但本案全部是 Memphis/Southaven 地面設施的可靠度補救，與軌道資料中心無關。若 The Information 報導屬實，方向是「放慢擴張、補備援」，短期資本支出結構從 GPU 轉向冷卻、渦輪、備援設備，德州新站延後。</li>
+<li><strong>GOOG</strong>：既是客戶也握有 9/30 後的終止或減付權，是最直接的受益或受害方；Google 租用而非自建，本身就是 hyperscaler 產能短缺的證據。</li>
+<li><strong>NVDA / 2317</strong>：Google 合約對應約 11 萬顆 GPU 已在採購中，短期需求不變；但若 SpaceX 擴張放緩，2027 年 10 GW 目標對 GPU 與伺服器組裝的增量將延後。</li>
+<li><strong>SPCX</strong>：Q2 一季 AI 資本支出 158 億美元、上半年 AI 部門虧損 37 億美元（媒體轉述），可靠度問題直接威脅每月 9.2 億美元的合約現金流。</li>
+<li><strong>反方觀點</strong>：Goldman、Morgan Stanley 維持買進（目標價 205 與 300 美元），Musk 8 月以「洋基打少棒隊」形容火箭工程師建資料中心的優勢；多頭認為調人是正面執行訊號而非危機。兩種解讀都仰賴同一份匿名報導。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-09-30 / 10-31</strong>：Google 合約交付期限與寬限期。若 SpaceX 或 Google 揭露如期交付，補救論被推翻為「執行力證明」；若減付或終止，本報告的「放緩」判斷升級為事實。</li>
+<li><strong>2026-11 上旬 Q3 10-Q</strong>：AI 資本支出結構、Google 合約狀態、資料中心可靠度風險揭露，可直接核對 The Information 的說法。</li>
+<li><strong>密西西比空氣許可</strong>：41 台永久渦輪的核准與到位進度，是「擺脫臨時設備」是否落實的硬指標。</li>
+<li><strong>德州 Bastrop 渦輪葉片鑄造廠與新資料中心動工</strong>：若動工公告出現，「擴張延後」說法即被推翻。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱為單一來源（The Information，匿名消息），原文兩篇均付費牆 403，僅據轉述。</li>
+<li>各改寫版本對離任名單與時間點互相矛盾，300/1,300 數字無第二獨立來源。</li>
+<li>SpaceX 對人事與工程師調動未發任何官方聲明；Musk 僅就 9/3 當機表態。</li>
+<li>Q2 AI 資本支出 158 億美元與上半年虧損數字未能在 10-Q 原文直接核對，僅據 CNBC 等轉述。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://cryptobriefing.com/spacex-engineers-data-center-project/">SpaceX reassigns over 300 engineers to shore up its AI data center operations — Crypto Briefing</a>
+- <a href="https://www.cryptopolitan.com/spacex-slows-ai-data-center-buildout/">SpaceX slows AI data center buildout to fix power and cooling gaps — Cryptopolitan</a>
+- <a href="https://allweatherfinance.com/spacex-makes-a-comprehensive-adjustment-to-its-ai-data-center-construction-model-expansion-slows-down-reliability-is-strengthened/">SpaceX makes a comprehensive adjustment to its AI data center construction model — allweatherfinance</a>
+- <a href="https://www.cryptopolitan.com/new-ai-chief-spacex-data-center-leadership/">Musk names new AI chief at SpaceX amid data center leadership reshuffle — Cryptopolitan</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/spcx-stock-focus-spacex-reportedly-172343782.html">SPCX Stock In Focus: SpaceX Reportedly Pulls Rocket Executives Into Data Centers — Yahoo Finance/Stocktwits</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/spacex-ai-buildout-shows-cracks-184838938.html">SpaceX AI Buildout Shows Cracks as Musk Shakes Up Data Center Team — Yahoo Finance/Benzinga</a>
+- <a href="https://www.ventureatlas.org/news/2026-09-04-spacex-ai-data-center-leadership-reshuffle">SpaceX shakes up AI data center team after reliability woes — Venture Atlas</a>
+- <a href="https://www.newsquawk.com/headlines/spacex-spcx-has-made-changes-to-the-team-constructing-data-centres-in-the-last-few-weeks-the-information-reports-citing-sources">Newsquawk headline citing The Information</a>
+- <a href="https://www.theinformation.com/articles/spacex-shakes-data-center-leadership-aggressive-build">SpaceX Shakes Up Data Center Leadership After Aggressive Build-Out — The Information（付費牆）</a>
+- <a href="https://www.theinformation.com/articles/spacex-overhauls-data-center-build-potentially-slowing-expansion">SpaceX Overhauls Data Center Build, Potentially Slowing Expansion — The Information（付費牆）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/1181412/000162828026041150/spacexagreementfwp.htm">SpaceX S-1 Amendment No. 2 FWP：Google Cloud Service Agreement — SEC</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001181412/000162828026052535/spcx-20260630.htm">SpaceX Form 10-Q, quarter ended June 30, 2026 — SEC</a>
+- <a href="https://techcrunch.com/2026/06/05/google-will-pay-spacex-920m-per-month-for-compute/">Google will pay SpaceX $920M per month for compute — TechCrunch</a>
+- <a href="https://www.engadget.com/2250789/spacexai-apologizes-for-outage-that-affected-grok-and-other-compute-partners/">SpaceXAI apologizes for outage that affected Grok and other compute partners — Engadget</a>
+- <a href="https://en.wikipedia.org/wiki/SpaceXAI">SpaceXAI — Wikipedia</a>
+- <a href="https://www.digitimes.com/news/a20260902VL212/spacex-elon-musk-data-center-infrastructure-data.html">Operations shake-up: how SpaceX is reengineering its AI data center strategy — DIGITIMES（付費牆）</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-12（6 題）</summary>
     <div class="day-body">
       
