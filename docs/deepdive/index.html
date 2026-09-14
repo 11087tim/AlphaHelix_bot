@@ -65,11 +65,210 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-13 20:52｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-14 08:48｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-14（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>❓ Google TPUv9i改採全電交換
+          <span class="takeaway">證據不足｜全部宣稱只溯及 SemiAnalysis 社群貼文中的「業界傳聞」，「Anthropic 要求」一節更是日媒作者推論，無任何官方或第二獨立來源</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260914-0805@Google%20TPUv9i%E6%94%B9%E6%8E%A1%E5%85%A8%E9%9B%BB%E4%BA%A4%E6%8F%9B">2026-09-14 08:05 觀點彙整</a></p>
+          
+          <h2>深查：Google TPUv9i 改採全電交換</h2>
+<p><strong>裁定</strong>：【證據不足】
+全部宣稱只溯及 SemiAnalysis 社群貼文中的「業界傳聞」，「Anthropic 要求」一節更是日媒作者推論，無任何官方或第二獨立來源。</p>
+<p>裁定細節：TPUv9i「Triggerfish」本身仍是分析師（郭明錤）層級的產業調查，Google 從未公開承認；「全電 ICI 交換、移除 Boardfly 與 OCS」為 SemiAnalysis 貼文所載的 industry chatter，本身即帶保留語氣；「應 Anthropic 要求」與「三種加速器統一架構」的動機，是 Postation 記者標明的「見立て」（自行推測）。市場若據此定價光通訊需求反轉，是把三層推測疊成一層事實。</p>
+<h3>查證過程與證據</h3>
+<p>溯源鏈條：郭明錤 X 貼文（6/22）→ 台媒改寫（Triggerfish 規格與訂單）；SemiAnalysis X/Threads 貼文（9 月上旬）→ Postation.jp 日文報導（9/14 01:39 JST）→ 本系統挑題。兩條鏈互不交叉：郭明錤全文未提 ICI、OCS 或 Anthropic。</p>
+<ul>
+<li>【機構估計｜2026-06-22】郭明錤：Google 在 TPU v9（Humufish）基礎上開發「代號可能是 Triggerfish」的升級版，聯發科獨家承接，SRAM 為 Humufish 的 2~3 倍、新增 simulation die、HBM4→HBM4E，追加 100~200 萬顆，2027 年底投產、2028 年放量，單價高約 30%。這是產業調查，非官方文件；「代號可能是」顯示連名稱都未確認。</li>
+<li>【傳聞｜2026-09 上旬】SemiAnalysis 社群貼文：搜尋摘錄的原文為「there have been some industry chatters around a full electrical switching ICI for Triggerfish」，並提到交換器為 Astera Labs Scorpio X 改良版、320 埠、可能由多家公司製造。原貼文因 X 付費牆無法讀取，僅據轉述/摘錄，無法取得原文。</li>
+<li>【傳聞｜2026-09-14】Postation.jp：「要望はアンソロピックから出ているとみられ」（要求似乎來自 Anthropic），使用「とみられ」推測語；「統一 Trainium/TPU/GPU 為 chip-switch-chip 架構」的動機明確標註為記者見立て；1,280 顆 = 120 台 × 320 埠 ÷ 4 為「記者の計算」；並自承「この観測を裏付ける各社の公表はない」（無任何公司公開證實）。</li>
+<li>【事實｜2026-04-23】Google Cloud 官方技術文件：TPU 8i 採 Boardfly 三層拓撲，4 顆建構單元→8 板銅纜組成 32 顆群組→36 群組經 OCS 連成最多 1,024 顆活躍晶片（實體 1,152 顆）的 pod，直徑 7 跳；TPU 8t 為 9,600 顆 3D torus 超級 pod，同樣依賴 OCS。Hot Chips 2026 簡報亦未揭露任何 v9 或電交換資訊。</li>
+<li>【事實｜2026-04-06】Anthropic 官方公告：與 Google、Broadcom 簽署多 GW 次世代 TPU 協議，2027 年起上線；全文未提及 Anthropic 參與晶片或網路設計，未提及互連方式。</li>
+<li>【事實｜2026-05-05】Astera Labs 新聞稿：Scorpio X-Series 為 320 lane（非 320 port）memory-semantic fabric switch，2H26 量產，未提及 Google、TPU 或 Anthropic。Postation 以 320 埠計算 pod 規模，與官方「lane」口徑不一致。</li>
+<li>【機構估計｜2026-08-01】arXiv 論文 Shiftfly 提出以固定排列的 OCS 光學層取代 Boardfly 全連接全域層，方向是「保留並改良光學層」而非移除；作者機構未在摘要標明，不能視為 Google 官方路線。</li>
+</ul>
+<p>交叉比對結果：「全電 ICI」為單一來源（SemiAnalysis），日媒與本系統皆為轉述；「Anthropic 要求」連單一來源都不算，是轉述者的推論。查證不支持將其視為已定案的設計決策。</p>
+<h3>供應鏈與持股意涵</h3>
+<p>即使傳聞為真，範圍也極窄：那是 Anthropic 專用的 TPUv9i 變體、2027 年底才投產。Google 自用的 TPU 8i/8t 與標準版 v9 仍以 OCS 為核心，Semifundamental 估 2026 年全球 OCS 需求逾 2 萬台、Google 約 1.8 萬台，這部分不受影響。</p>
+<ul>
+<li><strong>聯發科（2454）</strong>：郭明錤的 100~200 萬顆訂單量與 ICI 交換方式無關，晶片仍需 ICI SerDes；影響落在系統層而非 ASIC 訂單。中性。</li>
+<li><strong>AVGO</strong>：若電交換成真，交換 ASIC 需求上升，Broadcom 與 Astera Labs 是候選受益者；Broadcom 同時是 v9 訓練版設計方。偏正。</li>
+<li><strong>GLW / VIAV</strong>：挑題理由把「放棄 OCS」等同「反向 CPO 敘事」，這是概念混用。OCS 是 MEMS/LCoS 光路交換，供應商為 Google 自製 Apollo、Lumentum、Coherent；CPO 與光纖陣列是交換器端的光電整合。1,280 顆跨機櫃 pod 若改電交換，機櫃間仍需光纖與收發器，光纖/FAU 需求未必減少，甚至可能增加。Corning 在 OCS 準直器陣列的角色 Semifundamental 也僅稱「可能參與、程度不明」。對 GLW、VIAV 的衝擊被高估。</li>
+<li><strong>GOOG</strong>：若 Anthropic 真能要求客製拓撲，代表大客戶議價力上升、Google 內部架構一致性下降；但目前無證據。</li>
+</ul>
+<p>反方觀點：Google 過去五代（v4~v8）持續深化 OCS，官方強調 OCS 提供動態切片、故障繞行與 97% goodput；Hot Chips 2026 仍以 OCS 為賣點。單一客戶變體不構成路線轉向。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 Q4 聯發科法說</strong>：若管理層描述 ASIC 客戶系統架構或 SerDes 規格變動，可升級為【機構估計】；若否，維持傳聞。</li>
+<li><strong>Astera Labs 2026 Q3/Q4 財報（11 月、2027 年 2 月）</strong>：Scorpio X 是否揭露 TPU 相關超大規模客戶設計導入；有則傳聞升溫。</li>
+<li><strong>Lumentum / Coherent 財測（2026 年 11 月起）</strong>：OCS 訂單能見度若延伸至 2028 且未下修，可反證「Google 生態放棄 OCS」的敘事。</li>
+<li><strong>Google Cloud Next 2027（約 4 月）／Hot Chips 2027（8 月）</strong>：TPU v9 官方拓撲揭露，是唯一能升級為【事實】的節點。</li>
+<li><strong>SemiAnalysis 付費深度報告</strong>：若正式發布 TPUv9i 分析並具名來源，可從社群傳聞升級為機構估計。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>SemiAnalysis 原貼文（X 付費牆 402）與郭明錤 X 原文均無法直接讀取，前者僅據搜尋摘錄與 Postation 轉述，後者以 TechNews、INSIDE 等台媒轉載核對，多家台媒為同源改寫，不構成獨立來源。</li>
+<li>Postation 的 1,280 顆、120 台交換器為記者自行推算，且以「320 port」套用 Astera「320 lane」規格，數字口徑存疑。</li>
+<li>Google 官方 TPU 8i pod 數字有 1,024 活躍與 1,152 實體兩種口徑，比較「多 11%」時需注意基準。</li>
+<li>Shiftfly 論文作者機構未確認，不能引為 Google 官方立場。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.postation.jp/news/tpuv9i-electrical-switch-drop-optical-circuit-switch-1280">TPUv9iの電気スイッチ化、光回路スイッチを外しても1,280基 | Postation</a>
+- <a href="https://technews.tw/2026/06/23/google-and-mediatek-deepen-tpu-v9-collaboration-with-upgraded-triggerfish/">郭明錤：聯發科獨攬 Google TPU v9 升級版 | TechNews</a>
+- <a href="https://x.com/mingchikuo/status/2068924591490367683">郭明錤 X 貼文（Triggerfish）</a>
+- <a href="https://x.com/SemiAnalysis_/status/2089472660883312939">SemiAnalysis X 貼文（Triggerfish 全電 ICI 傳聞，付費牆）</a>
+- <a href="https://cloud.google.com/blog/products/compute/tpu-8t-and-tpu-8i-technical-deep-dive">TPU 8t and TPU 8i technical deep dive | Google Cloud Blog</a>
+- <a href="https://www.servethehome.com/googles-tpuv8s-for-training-and-inference-at-hot-chips-2026/">Google's TPUv8s at Hot Chips 2026 | ServeTheHome</a>
+- <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute">Anthropic expands Google and Broadcom compute deal</a>
+- <a href="https://www.globenewswire.com/news-release/2026/05/05/3288226/0/en/Astera-Labs-Extends-Leadership-in-Open-AI-Scale-Up-Networking-with-New-320-Lane-Scorpio-X-Series-Smart-Fabric-Switch.html">Astera Labs 320 Lane Scorpio X-Series 新聞稿</a>
+- <a href="https://arxiv.org/abs/2608.00897">Shiftfly: Scaling the Accelerator Interconnect Past the Pod | arXiv</a>
+- <a href="https://semifundamental.substack.com/p/optical-circuit-switches-ocs-fundamentals">Optical Circuit Switches (OCS) Fundamentals | Semifundamental</a>
+- <a href="https://newsletter.semianalysis.com/p/tpu-inferencex-full-steam">TPU Inference Externalization Full Steam Ahead | SemiAnalysis</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ ABF載板2032長約與預付款
+          <span class="takeaway">部分證實｜預付款與多年長約屬實且有官方文件佐證，但「簽至2032年」查證不支持；可驗證的合約期限止於2028年，「2032」極可能是與味之素ABF新廠投產年份混淆</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260914-0805@ABF%E8%BC%89%E6%9D%BF2032%E9%95%B7%E7%B4%84%E8%88%87%E9%A0%90%E4%BB%98%E6%AC%BE">2026-09-14 08:05 觀點彙整</a></p>
+          
+          <h2>深查：ABF載板2032長約與預付款</h2>
+<p><strong>裁定</strong>：【部分證實】
+預付款與多年長約屬實且有官方文件佐證，但「簽至2032年」查證不支持；可驗證的合約期限止於2028年，「2032」極可能是與味之素ABF新廠投產年份混淆。</p>
+<p>裁定細節：Ibiden、AT&amp;S的擴產確由客戶預付或承諾出資，NVIDIA與AMD的10-Q也揭露了含載板的多年採購承諾與預付款。但沒有任何一手文件或獨立報導顯示合約延伸至2032年。市場敘事的核心（瓶頸擴散至載板、客戶以營運資金鎖產能）成立，年限則被誇大。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：「2032」在英日中文搜尋中找不到任何載板長約的原始出處。唯一與2032對應的載板產業事件是味之素在岐阜可兒市新建ABF膜廠、2028年動工、2032年投產。台媒三月「客戶急簽7年賣身契」（2026+7≈2033）的報導無法讀取原文，且僅引述分析師，屬單一來源。</p>
+<ul>
+<li>【事實｜2026-02-03】Ibiden董事會決議2026至2028年度投資約5,000億日圓擴產高階IC載板，河間事業場約2,200億、大野事業場約2,800億，AI伺服器用產能2028年度增至2.5倍。來源：Ibiden新聞稿經EE Times Japan、Automation News轉述。</li>
+<li>【事實｜2026年第一季財報】Ibiden客戶預收款餘額由810億日圓增至1,545億日圓，管理層明言收取預付款以抵銷固定成本增加。來源：法說內容經Substack分析文轉述。</li>
+<li>【傳聞｜2026年2月】東洋經濟稱Intel預付2,200億、NVIDIA預付2,800億日圓。此金額與Ibiden兩廠區投資額完全相同，可能是記者推算而非揭露，且付費牆內無法讀原文。</li>
+<li>【事實｜2026-06/07】AT&amp;S Kulim廠擴產15至20億歐元，官方稱「完全由客戶長期承諾覆蓋」，客戶為AMD與另一家未具名科技公司。未揭露合約年限；另一分析網站指最終合約尚在談判。</li>
+<li>【事實｜截至2026-07-26】NVIDIA 10-Q揭露供應與產能承諾共2,790億美元，按年分布為920/870/880/60/50/10億美元，最後一欄為「2032財年及以後」。承諾內容註明「主要為記憶體與製造設施」，未單列載板。這可能是「2032」的另一個誤讀源頭，但落在該年份的金額僅10億美元。</li>
+<li>【事實｜截至2026-06-27】AMD 10-Q揭露無條件採購承諾303億美元，明文涵蓋晶圓、載板與零組件，最後一欄為「2031年及以後」僅5.66億美元。上半年預付款增加約10億美元。</li>
+<li>【機構估計｜2026年】Digitimes稱NVIDIA、AMD與雲端業者鎖定ABF產能「至2028年」，並要求供應商規劃2029至2030年擴產。元大報告與欣興法說稱光復二廠、楊梅二廠八至九成產能已被長約鎖定「最長五年」。</li>
+<li>【事實｜2026-02-25、2026-07-29】欣興法說兩度上修資本支出至537億台幣，同步增加長交期設備採購176億台幣。注意這是欣興付給設備商的預付，不是客戶付給欣興，部分媒體混用。欣興對客戶合作模式明確表示「不便透露」。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受益方</strong>：載板廠風險結構改變。Ibiden與AT&amp;S的擴產資本由客戶預付，資產負債表風險下降，等同客戶替供應商承擔景氣反轉風險。台廠欣興、南電、景碩雖有長約但未證實有同等規模預付。</p>
+<p><strong>承擔方</strong>：NVDA與AMD。兩家承諾表都顯示前三年集中、後段陡降，代表產能鎖定實際是「2026至2029年密集、之後幾乎沒有承諾」。營運資金的壓力真實存在，但年限遠短於「2032」敘事。TSM作為CoWoS環節與載板廠同屬瓶頸，客戶對載板的預付邏輯與對台積電的產能保證費相似，並非新的供應風險。</p>
+<p><strong>反方觀點</strong>：AMD與NVIDIA的10-Q都保留「可取消、可重排」條款，長約約束力有限。日媒與Ibiden自身都提及2007年與2021年過度擴產的創傷，市場正在辯論這輪是否重演。此外供需缺口22%至29%的預估全部來自券商模型，非官方數據。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026年11月Ibiden第二季財報：預收款餘額是否續增，以及是否首度揭露合約年限。若揭露超過2028年，本結論需上修。</li>
+<li>2026年11月NVIDIA第三季10-Q：2032財年欄位若明顯增加，才代表承諾真的延伸。</li>
+<li>AT&amp;S與AMD最終合約簽署公告：若含年限且超過五年，可升級為長期化證據。</li>
+<li>2026年11月欣興法說：光復二廠、楊梅二廠長約比率與年限是否更新。</li>
+<li>2028年味之素新廠動工：確認「2032」屬於上游材料而非客戶合約。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>旺得富兩篇關鍵報導遭HTTP 403無法讀取，Digitimes兩篇與東洋經濟為付費牆，均僅據摘錄或轉述。</li>
+<li>Intel與NVIDIA各預付2,200億與2,800億日圓的說法為單一來源，且與廠區投資額巧合一致，可靠性存疑。</li>
+<li>台媒對「長期設備預付款」與「客戶預付款」存在混用，讀者需分辨方向。</li>
+<li>未找到任何一手文件提及2032年載板合約，故此部分為「查證不支持」而非「證據不足」。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000075/nvda-20260726.htm">NVIDIA Form 10-Q, quarter ended July 26, 2026</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0000002488/000000248826000123/amd-20260627.htm">AMD Form 10-Q, quarter ended June 27, 2026</a>
+- <a href="https://eetimes.itmedia.co.jp/ee/articles/2602/05/news037.html">高機能ICパッケージ基板生産増強に5000億円、イビデン - EE Times Japan</a>
+- <a href="https://www.automation-news.jp/2026/05/104245/">イビデン、高機能ICパッケージ基板増産へ3カ年で5000億円投資 - Automation News</a>
+- <a href="https://toyokeizai.net/articles/-/937725">イビデン「エヌビディアとインテルが前払い」巨額投資の勝算 - 東洋経済</a>
+- <a href="https://nikhs.substack.com/p/ibiden-1qfy27-when-the-old-bargain">Ibiden 1QFY27: When the Old Bargain Broke - Nikhs Substack</a>
+- <a href="https://evertiq.com/news/2026-07-02-ats-expands-kulim-with-up-to-2-billion-investment">AT&amp;S expands Kulim with up to €2 billion investment - Evertiq</a>
+- <a href="https://sector-signals.net/en/themes/advanced-packaging/articles/abf-substrate-capacity-ats-ibiden-2026">ABF Substrates: AT&amp;S and IBIDEN Ramp Up - Sector Signals</a>
+- <a href="https://www.digitimes.com/news/a20260805PD222/demand-ai-chip-capacity-2028-abf-substrate.html">AI chip demand revives co-investment deals as ABF substrate capacity fills through 2028 - Digitimes</a>
+- <a href="https://www.digitimes.com/news/a20260204PD227/ibiden-expansion-capacity-production-plant.html">Japan's Ibiden channels US$3.3bn into IC substrate expansion - Digitimes</a>
+- <a href="https://www.trendforce.com/news/2026/05/08/news-ajinomoto-ramps-chip-packaging-push-with-%C2%A51-2b-land-buy-for-new-plant-in-2032-abf-margins-top-50-on-ai-boom/">Ajinomoto Boosts Chip Materials Business With ¥1.2B Land Buy for 2032 Plant - TrendForce</a>
+- <a href="https://www.gate.com/blog/why-abf-substrates-have-become-a-bottleneck-in-the-ai-gpu-supply-chain-2028-shortage-analysis">Why Have ABF Substrates Become the Bottleneck in the AI GPU Supply Chain - Gate Blog</a>
+- <a href="https://blog.fugle.tw/post/earnings-call-3037-2026-02-25">欣興電子法說會重點內容備忘錄 20260225 - 富果</a>
+- <a href="https://tw.stock.yahoo.com/news/%E6%AC%A3%E8%88%88%E4%B8%8A%E5%8D%8A%E5%B9%B4%E8%B3%BA11-7%E5%85%83-%E8%BF%BD%E5%8A%A0197%E5%84%84%E8%B3%87%E6%9C%AC%E6%94%AF%E5%87%BA%E6%93%B4ai%E8%BC%89%E6%9D%BF-211400085.html">欣興上半年賺11.7元；追加197億資本支出擴AI載板 - Yahoo奇摩股市</a>
+- <a href="https://wantrich.chinatimes.com/news/20260320900234-420101">輝達GPU的最強車架…這檔客戶急簽7年「賣身契」求產能 - 旺得富（無法讀取原文）</a>
+- <a href="https://wantrich.chinatimes.com/news/20260806900001-420101">輝達長約綁到2028！ABF載板三雄肥到誰 - 旺得富（無法讀取原文）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 台積電2/3奈米擴產路徑
+          <span class="takeaway">部分證實｜擴產方向與量級有官方與獨立分析師佐證，但「2027年中2奈米11萬片、3奈米21萬片」本身是今日經濟日報單一供應鏈消息，台積電未確認</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260914-0805@%E5%8F%B0%E7%A9%8D%E9%9B%BB2/3%E5%A5%88%E7%B1%B3%E6%93%B4%E7%94%A2%E8%B7%AF%E5%BE%91">2026-09-14 08:05 觀點彙整</a></p>
+          
+          <h2>深查：台積電2/3奈米擴產路徑</h2>
+<p><strong>裁定</strong>：【部分證實】
+擴產方向與量級有官方與獨立分析師佐證，但「2027年中2奈米11萬片、3奈米21萬片」本身是今日經濟日報單一供應鏈消息，台積電未確認。</p>
+<p>裁定細節：此組數字並非台積電對外揭露，而是報導所稱「供應鏈傳出」；報導自己也註明台積電「不評論市場傳聞，以公司公告為準」。官方僅給過成長率，從未給過月產能片數。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：「11萬／21萬片」目前唯一出處是經濟日報記者鐘惠玲 2026-09-14 報導。工商時報、TrendForce、TechNode 等此前所有產能片數報導，追到底都引用經濟日報「供應鏈」，屬同一來源鏈，不構成獨立佐證。</p>
+<ul>
+<li>【傳聞】2026-09-14 經濟日報：2奈米今年底9萬片、明年中11萬片（+22%）；3奈米今年底逾18萬片、明年中21萬片（+16%）。來源為供應鏈，台積電不評論。</li>
+<li>【事實】2026-04 北美技術論壇（侯永清）：2奈米家族 2026–2028 產能年複合成長率 70%；今年5座2奈米廠同步放量（新竹2、高雄3）；3奈米 2022–2027 年複合成長率約25%。</li>
+<li>【事實】2026-07-16 Q2 法說：魏哲家被問及70%是否變動，答「現在更大」；2026 資本支出上修至600–640億美元，七至八成投先進製程；N2 放量將稀釋下半年毛利率3–4個百分點。未給任何月產能片數。</li>
+<li>【事實】2026-04-16 Q1 法說：新增三座3奈米廠，台南 2027 上半年量產、亞利桑那二廠 2027 下半年、熊本二廠 2028，另將台灣部分5奈米機台轉換為3奈米。</li>
+<li>【機構估計】2026-08-06 工商時報引 Wedbush（Matt Bryson）：2奈米上半年5–6萬片、Q4初8萬片、年底靠攏10萬片；3奈米上半年15萬片、Q4初18萬片；2028 年3奈米22–25萬片、2奈米18萬片。與經濟日報年底數字大致吻合，是目前唯一非同源的量化對照。</li>
+<li>【傳聞】2026-01 市場曾流傳「2奈米年底最高14萬片」，無具名來源；對照現在的9萬片，該數字已被證明過度樂觀。</li>
+</ul>
+<p><strong>內部一致性檢驗</strong>：9萬到11萬片半年增22%，年化約49%，低於官方70% CAGR。這表示若數字為真，2027 上半年2奈米放量斜率會明顯放緩，須靠高雄後段廠與 2028 年再加速才能兌現 CAGR；Wedbush 估 2028 年18萬片，恰與此路徑相容。3奈米21萬片則對應台南新廠上半年投產加5奈米轉換，亞利桑那要到下半年，時序合理。</p>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>TSM</strong>：擴產方向與資本支出是官方確認的事實，不確定的只是片數。市場若把「11萬片」當成上修，是誤讀；相對一月的14萬片傳聞，這其實是趨於保守的軌跡。反方觀點：N2 稀釋毛利率3–4點已由官方承認，2027 上半年放量放緩若屬實，先進製程營收貢獻曲線會比 70% CAGR 敘事平緩。</li>
+<li><strong>NVDA、AVGO</strong>：2027 年主力產品（Rubin 系列以 N3P 為主、客製 ASIC 多在3奈米）更倚賴3奈米從18萬到21萬片的增幅，而非2奈米；3奈米擴產有三座新廠與官方時程背書，可信度高於2奈米數字。</li>
+<li><strong>AMD、2454</strong>：屬2奈米首波客戶群，若2027上半年2奈米僅11萬片且蘋果占大宗，排產競爭將延續至 2027 年。聯發科2奈米晶片今年9月設計定案，量產落點正好撞上供給最緊的區間。</li>
+<li><strong>設備端（ASML、AMAT）</strong>：ASML 稱 EUV 產能已被訂滿至 2028，2027 年 EUV 產能擴增30%；AMAT 稱客戶已預訂 2027 機台時段。此為擴產持續的旁證，但無法反推台積電各節點片數。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10 中旬 Q3 法說</strong>：若公司給出 2027 資本支出方向或 N2 營收占比目標，可推算 2027 放量斜率，升級或推翻「上半年放緩」推論。</li>
+<li><strong>2026 年底</strong>：供應鏈與分析師對「年底2奈米9萬、3奈米18萬」的驗證，若落差大，明年中數字同步失效。</li>
+<li><strong>2027-01 Q4 法說</strong>：官方 2027 資本支出與 2奈米 CAGR 更新，是唯一能把此傳聞升級為【事實】的場合。</li>
+<li><strong>2027 上半年台南3奈米新廠量產、下半年亞利桑那二廠</strong>：任一延宕直接動搖 21 萬片。</li>
+<li><strong>ASML 2026-10 Q3 財報</strong>：EUV 訂單與 2027 出貨指引若下修，2奈米路徑須重估。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱為單一來源（經濟日報供應鏈消息），台媒後續改寫皆同源。</li>
+<li>Digitimes 4/16 相關報導在付費牆內，僅據摘錄，無法取得原文。</li>
+<li>Wedbush 報告本身無法取得，數字據工商時報轉述。</li>
+<li>「月產能」與「月投片量」在各報導中混用，且產能不等於良品產出，各家數字不宜直接相減比較。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://udn.com/news/story/7240/9752345">台積電先進製程大擴產 明年計畫曝光 營收將續寫新高（聯合新聞網）</a>
+- <a href="https://money.udn.com/money/story/5612/9752345">台積電先進製程大擴產 明年計畫曝光（經濟日報）</a>
+- <a href="https://www.ctee.com.tw/news/20260806700613-430501">台積電3奈米出貨加速 Q4月衝18萬片 2奈米拚10萬片（工商時報）</a>
+- <a href="https://money.udn.com/money/story/5612/9468550">台積電5座2奈米廠同時放量 3年產能複合成長70%（經濟日報）</a>
+- <a href="https://technews.tw/2026/04/28/tsmc-5-2nm-fabs-ramp-up-70-percent-3-year-capacity-growth/">台積電五座2奈米廠同時放量，三年產能複合成長70%（TechNews）</a>
+- <a href="https://money.udn.com/money/story/11162/9565578">台積電2奈米家族大擴充 法人估2029年月產能數十萬片（經濟日報）</a>
+- <a href="https://www.theglobeandmail.com/investing/markets/stocks/TSM/pressreleases/3328221/tsm-tsm-q2-2026-earnings-call-transcript/">TSM Q2 2026 Earnings Call Transcript（The Globe and Mail）</a>
+- <a href="https://focustaiwan.tw/business/202604160016">TSMC expanding 3nm capacity in Taiwan, U.S., Japan（Focus Taiwan）</a>
+- <a href="https://www.trendforce.com/news/2026/08/03/news-tsmc-3nm-monthly-wafer-starts-to-hit-180k-by-early-4q26-on-strong-demand-2-3-months-ahead-of-expectations/">TSMC 3nm Monthly Wafer Starts to Hit 180K by Early 4Q26（TrendForce）</a>
+- <a href="https://www.trendforce.com/news/2026/04/27/news-tsmc-3nm-monthly-capacity-may-hit-180k-wafers-by-2026-up-over-40-yoy-on-ai-demand/">TSMC 3nm Monthly Capacity May Hit 180K Wafers by 2026（TrendForce）</a>
+- <a href="https://technode.com/2026/08/05/tsmcs-2nm-monthly-capacity-to-reach-100000-wafers/">TSMC's 2nm monthly capacity to reach 100,000 wafers（TechNode）</a>
+- <a href="https://finance.biggo.com/news/oh_2fJsBVumNf4IIIYto">TSMC's 2nm Capacity Exceeds Expectations, Monthly Output Could Reach 140,000 Wafers（BigGo Finance）</a>
+- <a href="https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000730870_CHR7LA788N295YL9QR5VE">台積2奈米準時報到 寶山、高雄、AZ廠同步大擴產（Digitimes）</a>
+- <a href="https://www.digitimes.com/news/a20260416PD240/tsmc-production-capacity-3nm-capacity-expansion.html">TSMC enters 2nm mass production, scales 3nm capacity（Digitimes，付費牆）</a>
+- <a href="https://www.asml.com/en/news/press-releases/2026/q2-2026-financial-results">ASML reports €9.3 billion total net sales in Q2 2026（ASML）</a>
+- <a href="https://247wallst.com/investing/2026/09/10/applied-materials-ceo-says-the-ai-boom-is-nowhere-near-over-his-order-book-is-the-proof/">Applied Materials CEO Says the AI Boom Is Nowhere Near Over（24/7 Wall St.）</a>
+- <a href="https://news.cnyes.com/news/id/5987142">聯發科2奈米晶片9月設計定案（鉅亨網）</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-13（6 題）</summary>
     <div class="day-body">
       
