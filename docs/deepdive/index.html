@@ -65,11 +65,202 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-16 20:44｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-17 08:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-17（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ Rubin NVL72每瓦效能差異
+          <span class="takeaway">部分證實｜SemiAnalysis 原文確有「最高 7 倍」字句，但它是 ~200 TPS 單一操作點、預發布軟體、內插值的「up to」數字，並非整體每瓦效能 7 倍</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260917-0804@Rubin%20NVL72%E6%AF%8F%E7%93%A6%E6%95%88%E8%83%BD%E5%B7%AE%E7%95%B0">2026-09-17 08:04 觀點彙整</a></p>
+          
+          <h2>深查：Rubin NVL72 每瓦效能差異</h2>
+<p><strong>裁定</strong>：【部分證實】
+SemiAnalysis 原文確有「最高 7 倍」字句，但它是 ~200 TPS 單一操作點、預發布軟體、內插值的「up to」數字，並非整體每瓦效能 7 倍。</p>
+<p>補充：所謂「官方 3 倍指引」也不是 NVIDIA 的主宣稱。NVIDIA 產品頁的正式口徑是相對 GB200 NVL72「每 MW 10 倍 token」；「3 倍」是 SemiAnalysis 對 GTC 2026 某張圖在 ~200 TPS 一個點的轉述。「7 倍 vs 3 倍」是同一家機構自設的對照，市場把它讀成「實測遠超官方指引」有失真。</p>
+<h3>查證過程與證據</h3>
+<p>溯源：宣稱原出處為 SemiAnalysis 2026-09-14 付費文章〈Rubin NVL72 Agentic Inference: 67x better Performance per Dollar〉。Yahoo/StockTwits/TechTimes 等媒體皆轉述此文與 NVIDIA 8/24 部落格，不構成獨立來源。</p>
+<ul>
+<li>【事實｜2026-09-14】原文逐字：「when compared to the real world performance of Rubin already on prelease software, we are already seeing up to 7x better token throughput per megawatt」；前文為「At GTC 2026, Jensen presented this graph that VR NVL72 achieved 3x performance per MW compared to Blackwell on O(1-3 Trillion) parameter model around 200 TPS」。測試模型為 DeepSeek V4 Pro 1.6T、NVFP4，軟體為「early pre-release TRTLLM」，數值「interpolated between measured benchmark points」。</li>
+<li>【機構估計｜2026-09-14】同文其他操作點：100 TPS 時對 GB300 Dynamo SGLang 僅 2.09 倍；170 TPS 時對 GB300 TRTLLM 62.9 倍、對 GB300 SGLang 5.56 倍；在多數業者實際運營的 60–100 TPS 區間，每 TCO 吞吐優勢僅 1.4–3 倍；每 GW 年利潤 +42%、營收 +39%（75 TPS、60% 利用率）。</li>
+<li>【事實｜2026-08-24】NVIDIA 技術部落格自述倍數隨互動性放大：110 TPS 2 倍、130 TPS 10 倍、160 TPS 30 倍，並註明 Rubin 結果「pending SemiAnalysis review」。</li>
+<li>【事實｜InferenceX 頁面】GB300 NVL72 跑 DeepSeek V4 Pro 的 tok/s/MW：84 TPS 3,100 萬、116 TPS 1,230 萬、148 TPS 570 萬。GB300 在高互動性下急速崩落，是倍數暴衝的主因。</li>
+<li>【事實｜NVIDIA 產品頁】官方正式宣稱為對 GB200 NVL72「up to 10x more tokens per megawatt」（Kimi-K2、32K/8K）與兆參數模型「up to 35x」；未揭露機櫃功耗。GB300 產品頁亦無機櫃瓦數。</li>
+<li>【機構估計】每 MW 分母皆為「provisioned megawatt」模型值（SemiAnalysis 假設 Rubin 每 GPU 2.3 kW TDP；第三方推估機櫃 190–230 kW），非實測牆插功耗。</li>
+<li>【事實｜2026-09-16】MLPerf Inference v6.1，Rubin NVL72 以 preview 類別提交：Qwen3-VL 吞吐最高 3.7 倍、DeepSeek-R1 最高 2.5 倍於 GB300，無功耗量測。標準化基準下倍數約在 3 倍量級。</li>
+<li>【機構估計｜2026-07-23】CoreWeave 自測 10 倍 tok/s/MW，對象是 GB200 而非 GB300；SemiAnalysis 同日文章對 GB300 為 100 TPS 2 倍、300 TPS 5.4 倍，並警示樣品為早期工程機、軟體仍在 bring-up。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>NVDA</strong>：真正的訊號不是 7 倍，而是「高互動性 agentic 工作負載下 GB300 有互動性懸崖，Rubin 沒有」。這支撐 Rubin 對 agent 推理的定價權，但對多數 60–100 TPS 部署，優勢是 1.4–3 倍，不足以觸發 GB300 提前汰換；SemiAnalysis 自己也說「不代表一台 Rubin 立刻取代十台 GB200」。9/16 股價盤前僅 +0.7%，市場反應理性。</li>
+<li><strong>TSM</strong>：Rubin 需求不因此改變，先進封裝排程早已鎖定；倍數口徑不影響代工量。</li>
+<li><strong>MU</strong>：Rubin HBM4 三家皆於 2026-06-05 通過認證，供應鏈估 SK hynix 60–70%、Samsung 25–30%、Micron 餘量【機構估計】。Rubin 升級需求強弱對 MU 是邊際、非主導變數。</li>
+<li><strong>GLW</strong>：本次查證未找到與此議題直接相關的證據，僅屬 CPO/玻璃基板的間接曝險。</li>
+<li><strong>反方</strong>：SemiAnalysis 7/27 補充文明言 GB300 軟體仍會進步、Rubin 的 CUDA 為預覽版不宜做生產基準；NVIDIA 部落格亦承認「軟體成熟雙向作用」。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>MLPerf v6.1 正式版 vs 後續 v7.0</strong>：Rubin 由 preview 轉為 available 類別後，若 DeepSeek-R1 倍數仍在 2.5–4 倍，「3 倍量級」定論成立；若含 power 子項且 per-watt 超過 5 倍，升級敘事升級。</li>
+<li><strong>InferenceX 公開儀表板</strong>：GB300 在 130–160 TPS 的 tok/s/MW 若因軟體優化回升，Rubin 倍數會顯著縮小；每筆數據可追溯 GitHub Actions run，可自行重跑。</li>
+<li><strong>NVDA Q3 FY27 財報（約 2026-11 下旬）</strong>：管理層是否揭露 Rubin 機櫃出貨與 GB300 訂單是否被排擠。</li>
+<li><strong>CoreWeave/Microsoft/Oracle 量產機櫃實測</strong>：真實牆插功耗取代 provisioned MW 模型值後，per-MW 數字才可視為實測。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>SemiAnalysis 兩篇原文皆為付費牆，本報告依可讀部分與逐字摘句；「3 倍」GTC 圖表未能取得原始投影片（CNBC 頁面 403），僅據 SemiAnalysis 轉述。</li>
+<li>「7 倍」與「3 倍」出自同一機構同一文章，屬單一來源框架；NVIDIA 官方數字與 MLPerf 為獨立交叉。</li>
+<li>所有 per-MW 數字皆為模型化功耗，且 SemiAnalysis 明言為內插值，GB300 在 &gt;148 TPS 並無公開實測點。</li>
+<li>HBM4 份額為供應鏈推估，NVIDIA 未公布配額。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://newsletter.semianalysis.com/p/vera-rubin-nvl72-agentic-inference">Rubin NVL72 Agentic Inference: 67x better Performance per Dollar</a>
+- <a href="https://newsletter.semianalysis.com/p/vera-rubin-nvl72-vs-gb200-nvl72-inference">Vera Rubin NVL72 vs GB200 NVL72? Inference TCO &amp; Architecture Analysis</a>
+- <a href="https://blogs.nvidia.com/blog/vera-rubin-nvl72-efficiency-ai-agents/">Up to 30x More Work Per Watt: NVIDIA Vera Rubin NVL72</a>
+- <a href="https://developer.nvidia.com/blog/nvidia-vera-rubin-and-blackwell-set-a-new-standard-for-agentic-ai-performance-per-watt/">NVIDIA Vera Rubin and Blackwell Set a New Standard for Agentic AI Performance per Watt</a>
+- <a href="https://blogs.nvidia.com/blog/vera-rubin-nvl72-mlperf-inference/">NVIDIA Vera Rubin NVL72 Delivers Leading Performance in MLPerf Inference v6.1 Debut</a>
+- <a href="https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/">NVIDIA Vera Rubin NVL72 產品頁</a>
+- <a href="https://www.nvidia.com/en-gb/data-center/gb300-nvl72">NVIDIA GB300 NVL72 產品頁</a>
+- <a href="https://inferencex.semianalysis.com/compare/deepseek-v4-gb200-vs-gb300">InferenceX：DeepSeek V4 Pro GB200 vs GB300</a>
+- <a href="https://www.coreweave.com/blog/nvidia-vera-rubin-nvl72-on-coreweave-10x-more-tokens-per-megawatt-than-blackwell">CoreWeave：First-Ever Measured Vera Rubin NVL72 Silicon Performance</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/nvda-stock-rises-premarket-vera-083712687.html">NVDA Stock Rises Premarket: Vera Rubin Delivers 2X Profit Per GW, Semianalysis Says</a>
+- <a href="https://www.remio.ai/post/openai-semianalysis-lens-vera-rubin-nvl72-beats-gb200-but-the-tco-case-is-narrow">Vera Rubin NVL72 Beats GB200, but the TCO Case Is Narrower</a>
+- <a href="https://hashrateindex.com/blog/nvidia-vera-rubin-nvl72-specs-breakdown/">NVIDIA Vera Rubin NVL72: Full Specs &amp; Platform Breakdown</a>
+- <a href="https://www.investing.com/news/stock-market-news/nvidia-certifies-samsung-sk-hynix-and-micron-for-vera-rubin-hbm4-supply-4728612">Nvidia certifies Samsung, SK Hynix and Micron for Vera Rubin HBM4 supply</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>❓ Apple企業AI伺服器與NVLink
+          <span class="takeaway">證據不足｜整條敘事出自 The Information 單一付費牆報導；Apple、Nvidia 皆未證實，產品最早 2029 年，且明言「可能取消或不用 Nvidia 技術」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260917-0804@Apple%E4%BC%81%E6%A5%ADAI%E4%BC%BA%E6%9C%8D%E5%99%A8%E8%88%87NVLink">2026-09-17 08:04 觀點彙整</a></p>
+          
+          <h2>深查：Apple 企業 AI 伺服器（M8 Ultra）與 NVLink Fusion</h2>
+<p><strong>裁定</strong>：【證據不足】
+整條敘事出自 The Information 單一付費牆報導；Apple、Nvidia 皆未證實，產品最早 2029 年，且明言「可能取消或不用 Nvidia 技術」。</p>
+<p>補充：宣稱「Apple 正研擬 2 或 4 顆 M8 Ultra 的企業推理伺服器」本身確有其來源（The Information，Aaron Tilley、Qianer Liu、Phoebe Liu 署名，2026-09-16），並非台媒捏造；但除該報導外，找不到任何獨立第二來源。Bloomberg、Reuters、MacRumors、9to5Mac、Benzinga 等全數註明「據 The Information」，屬同源轉述。市場把它讀成「Apple 進入 AI 伺服器供應鏈」與「NVDA 生態擴張」，目前都只有【傳聞】等級。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：原始出處為 The Information 付費文章，本次只能讀到標題與作者，內文細節（2/4 顆晶片、NVLink Fusion、Ternus 支持、2029）均僅據 MacRumors、9to5Mac、Investing.com、Implicator 等轉述。</p>
+<ul>
+<li>【傳聞｜2026-09-16】Apple 開發企業 AI 推理伺服器，兩款分別搭 2 顆或 4 顆 M8 Ultra，目標客戶為 AI 開發商、企業與政府，最早 2029 年上市。單一來源，未具名「知情人士」。</li>
+<li>【傳聞｜2026-09-16】Apple 曾與 Nvidia 討論以 NVLink Fusion 連接 M8 Ultra。轉述中明載「Nvidia 合作與伺服器本身皆未定案，專案可能取消或不用 Nvidia 技術」。</li>
+<li>【傳聞｜2026-09-16】Nvidia 高階主管 Dion Harris 對 The Information 表示「我們寧可賣點什麼也不要什麼都沒賣」、「Apple 一直是很好的客戶與夥伴」。此為對話式回應，不構成合作證實。僅據 Implicator 轉述。</li>
+<li>【傳聞｜2026-09-16】Bloomberg 的 Mark Gurman 在 X 回應：2029 伺服器可能用 M7 Ultra，「也可能同時做 M8 Ultra」。此非獨立確認，反而顯示晶片世代細節存疑。</li>
+<li>【事實｜2025-05-18】NVLink Fusion 為 Nvidia 官方產品，開放合作夥伴以 NVLink 連接自家 CPU/XPU；官方新聞稿列名 MediaTek、Marvell、Alchip、Astera Labs、Synopsys、Cadence、Fujitsu、Qualcomm，未提 Apple。2026-03-31 Nvidia 再投資 Marvell 20 億美元擴大 NVLink Fusion，新聞稿亦無 Apple。</li>
+<li>【事實｜2026-04 公告、2026-09-01 生效】John Ternus 接任 Apple CEO，先前為硬體工程資深副總，與「一年前以硬體主管身分支持此專案」的時間線相符，但這只證明人物背景，不證明專案。</li>
+<li>【事實｜2026-07-30】Apple 2026 財年第三季（截至 6/27）營收 1,094 億美元，年增 16%，Apple 新聞稿稱 Mac 創六月季新高。Mac 營收 104 億美元、年增約 29% 的數字來自財報電話會與媒體整理，新聞稿本文未列分項數字。</li>
+<li>【傳聞｜2026-08-30】The Information 另報 OpenAI 採購數萬台 Mac mini/Mac Studio 訓練電腦操作代理，Anthropic 透過 AWS 租用。同樣單一來源，但與 Mac 營收暴增、高階機型缺貨的公開現象一致。</li>
+<li>【傳聞｜2026-03-02】The Information 報導 Apple 自家 Private Cloud Compute 平均僅用約 10% 產能，伺服器以改裝 M2 Ultra 為主，閒置於倉庫。Bloomberg 2026 年 1 月有類似報導，屬弱交叉。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：若成真，意義在於 NVLink Fusion 從「賣 GPU」擴展為「賣互連與交換器給對手晶片」的授權模式再添一個指標客戶，強化 Nvidia 作為機櫃級標準的地位。但金額面近乎零：產品最早 2029 年，Apple 自製晶片伺服器反而是 GPU 的替代品而非需求。反方觀點：Apple 與 Nvidia 有長年芥蒂（Jobs 時代零件瑕疵與商業機密爭議、macOS 十多年未支援 Nvidia 硬體），Loop Capital 2025 年估 Apple 買了約 10 億美元 Nvidia 伺服器一事當時即受質疑；Nvidia 主管的談話更像是「來者不拒」而非承諾。9/16 當日 NVDA 僅漲約 0.8%，市場並未把它當重大訊號。</p>
+<p><strong>TSM</strong>：M 系列全數由台積電代工，M8 Ultra 若在 2029 年量產，按台積電公開路線圖會落在 A16 或 A14 世代，並需要 Ultra 級大尺寸晶片的先進封裝。但這是既有 Apple 先進製程投片的延伸，不是新增訂單；2029 年的晶片數量在台積電營收中不具重量。真正對 TSM 有意義的是已在進行的 Baltra 伺服器晶片（與 Broadcom 合作、N3P，2026 年底投產），那才是可追蹤的 Apple 伺服器晶片需求。</p>
+<p><strong>2317 鴻海／伺服器 ODM</strong>：機架式 1U/2U 產品若成真，將是 Apple 少見的伺服器組裝需求，但三年後才可能出現，現階段無法納入估值。</p>
+<p><strong>AAPL 敘事失真處</strong>：市場把「AI 實驗室大量買 Mac」與「Apple 做 AI 伺服器」連成一條線，但前者是用 Mac 訓練電腦操作代理的特殊用途，後者是尚未定案的三年後產品。Apple 自家 PCC 產能利用率僅約一成的報導，反而提示 Apple 對推理伺服器需求的判斷未必準確。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10 底 Apple 財年 Q4 財報</strong>：Mac 營收是否續強、管理層是否首次提及企業/伺服器產品線。若提及，升級為【部分證實】。</li>
+<li><strong>2026 年底至 2027 年</strong>：Baltra 晶片量產、德州伺服器廠出貨與台積電 N3P 投片訊號。可證明 Apple 伺服器晶片能力，但不直接證實 M8 Ultra 外售伺服器。</li>
+<li><strong>Nvidia GTC 2027（約 3 月）</strong>：NVLink Fusion 新夥伴名單若出現 Apple，直接升級為【證實】；若連續兩屆未出現，維持【證據不足】。</li>
+<li><strong>Apple 10-K 或供應商承諾揭露</strong>：若出現與 Nvidia 的採購或授權承諾，可作一手證據。</li>
+<li><strong>The Information 或 Bloomberg 後續獨立報導</strong>：Gurman 已暗示晶片世代可能是 M7 Ultra，若他獨立確認伺服器專案存在，可視為第二來源。</li>
+<li><strong>專案取消訊號</strong>：報導本身已預留「可能取消」，任何 Apple 硬體路線圖變動（如 Ultra 晶片停更）都會直接推翻。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li><strong>單一來源警語</strong>：全案僅 The Information 一篇報導，三位記者、未具名知情人士。所有英美與台媒報導皆為同源改寫，不構成交叉驗證。</li>
+<li><strong>付費牆限制</strong>：The Information 原文與 Bloomberg 報導均無法取得全文，細節僅據 MacRumors、9to5Mac、Investing.com、Implicator 轉述；Reuters 轉載頁面回傳 403，無法確認 Apple/Nvidia 是否「拒絕評論」。</li>
+<li><strong>數據分歧</strong>：晶片世代（M7 Ultra 或 M8 Ultra）在 The Information 與 Gurman 之間有出入；Mac 營收 104 億美元來自財報電話會，Apple 新聞稿本文未列。</li>
+<li><strong>時效</strong>：所有傳聞內容日期為 2026-09-16；NVLink Fusion 官方資料為 2025-05-18 與 2026-03-31。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theinformation.com/articles/apple-considers-return-server-market-talked-nvidia-use-network-tech">Apple Considers Return to Server Market, Has Talked With Nvidia to Use Network Tech — The Information</a>
+- <a href="https://www.macrumors.com/2026/09/16/apple-may-return-to-server-market/">Apple May Return to Server Market With Nvidia Technology — MacRumors</a>
+- <a href="https://9to5mac.com/2026/09/16/apple-planning-to-sell-ai-servers-powered-by-m8-ultra-chips-says-report/">Apple planning to sell AI servers powered by M8 Ultra chips, says report — 9to5Mac</a>
+- <a href="https://www.investing.com/news/stock-market-news/apple-building-m8-ai-servers-talks-with-nvidia-reports-the-information-4903850">Apple building M8 AI servers, talks with Nvidia, reports The Information — Investing.com</a>
+- <a href="https://www.implicator.ai/apple-m8-ultra-servers-nvlink-fusion/">Apple Weighs M8 Ultra Servers With Nvidia NVLink Fusion — Implicator.ai</a>
+- <a href="https://www.macworld.com/article/3237195/apple-may-revive-xserve-for-the-ai-market.html">Apple may revive Xserve for the AI market — Macworld</a>
+- <a href="https://nvidianews.nvidia.com/news/nvidia-nvlink-fusion-semi-custom-ai-infrastructure-partner-ecosystem">NVIDIA Unveils NVLink Fusion for Industry to Build Semi-Custom AI Infrastructure — NVIDIA Newsroom</a>
+- <a href="https://nvidianews.nvidia.com/news/nvidia-ai-ecosystem-expands-as-marvell-joins-forces-through-nvlink-fusion">NVIDIA AI Ecosystem Expands as Marvell Joins Forces Through NVLink Fusion — NVIDIA Newsroom</a>
+- <a href="https://www.apple.com/newsroom/2026/07/apple-reports-third-quarter-results/">Apple reports third quarter results — Apple Newsroom</a>
+- <a href="https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/">Tim Cook to become Apple Executive Chairman, John Ternus to become Apple CEO — Apple Newsroom</a>
+- <a href="https://9to5mac.com/2026/03/02/some-apple-ai-servers-are-reportedly-sitting-unused-on-warehouse-shelves-due-to-low-apple-intelligence-usage/">Some Apple AI servers are reportedly sitting unused on warehouse shelves — 9to5Mac</a>
+- <a href="https://appleinsider.com/articles/26/08/31/ai-needs-more-macs-but-not-for-the-reason-you-might-assume">Why AI is driving demand for Mac mini and Mac Studio — AppleInsider</a>
+- <a href="https://www.tomshardware.com/tech-industry/semiconductors/tsmc-unveils-process-technology-roadmap-through-2029-a12-a13-n2u-announced-a16-slips-to-2027">TSMC unveils process technology roadmap through 2029 — Tom's Hardware</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>✅ Meta MTIA 450部署時程
+          <span class="takeaway">證實｜Meta 官方路線圖與高層 9/15 受訪內容均支持「MTIA 450 於 2027 上半年部署、MTIA 500 於 2027 年底進場」；但「TSMC 製」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260917-0804@Meta%20MTIA%20450%E9%83%A8%E7%BD%B2%E6%99%82%E7%A8%8B">2026-09-17 08:04 觀點彙整</a></p>
+          
+          <h2>深查：Meta MTIA 450 部署時程</h2>
+<p><strong>裁定</strong>：【證實】
+Meta 官方路線圖與高層 9/15 受訪內容均支持「MTIA 450 於 2027 上半年部署、MTIA 500 於 2027 年底進場」；但「TSMC 製」一項有三星 2nm 傳聞干擾，且 12 顆樣品不等於量產。</p>
+<p>裁定細節：時程部分有 Meta 官方部落格（3 月）、博通新聞稿（4 月）、路透取得的內部備忘錄（7 月）與彭博高層訪談（9 月）四條獨立脈絡互相印證，屬高可信度。「代工廠為台積電」在彭博訪談中由 Meta 高層親口說明，但韓媒 7 月起持續報導三星拿下 2nm 訂單，兩造皆未正式回應，代工歸屬需持續觀察。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：本週市場消息源頭是彭博 9/15 對 Meta 工程副總裁 Yee Jiun Song 的專訪。彭博與 Quartz 原文被擋，僅據 Investing.com、GuruFocus、MoneyDJ 等多家轉述比對，內容一致。台媒（Yahoo、MoneyDJ、鉅亨）均為改寫彭博，不算獨立來源。</p>
+<ul>
+<li>【事實】2026-03-11 Meta 官方部落格：MTIA 450「scheduled for mass deployment in early 2027」、MTIA 500「scheduled for mass deployment in 2027」；四代晶片與博通共同開發。官方文件未提及台積電或製程節點。</li>
+<li>【事實】2026-04-14 博通新聞稿：與 Meta 合作推出「業界首款 2nm AI 加速器」，初期承諾超過 1GW，多 GW 分階段部署至 2029 年。祖克柏親自具名引述。新聞稿同樣未提代工廠。</li>
+<li>【事實】2026-07-09 路透引述 Meta 內部備忘錄：代號 Iris 的 MTIA 晶片 9 月投產，由台積電製造，博通設計，記憶體採三星，儲存採 SanDisk；測試僅六週無重大問題；今年部署 7GW 算力，2027 年倍增至 14GW。</li>
+<li>【事實（轉述）】2026-09-15 彭博訪談：MTIA 450（代號 Arke）測試中，12 顆晶片 9/1 由台積電交付，實測與模擬差距 2～3%，已跑過 Meta、DeepSeek、阿里巴巴模型；2027 上半年部署。MTIA 500（代號 Astrid）約一個月內完成設計，2027 年底前進資料中心。承諾 12 個月內部署超過 1GW。</li>
+<li>【事實（轉述）】同訪談：Meta 取消原定 2028～2029 年、兼顧訓練與推論的「Olympus」晶片，因成本高出 30% 在 GW 規模下「完全無法接受」。此點顯示 MTIA 定位為純推論晶片，不取代訓練用 GPU。</li>
+<li>【傳聞】2026-07-03～04 韓國《首爾經濟》等報導：Meta 第三代 MTIA 改用三星 2nm，訂單逾 10 兆韓元（約 65 億美元），並與三星 System LSI 從架構階段共同開發。SamMobile 明確指出 Meta、三星皆未確認。此與彭博訪談「台積電交付 Arke」直接矛盾。</li>
+</ul>
+<p><strong>交叉比對結論</strong>：部署時程三次獨立確認（官方文件、內部備忘錄、高層訪談），前後一致。代工廠部分，唯一來自 Meta 方面的說法皆指向台積電；三星版本僅有韓媒產業消息。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>TSM</strong>：MTIA 400（Iris）9 月投產、450 樣品已交付，屬短期正面確認。但博通新聞稿的「2nm 加速器」若對應 MTIA 450/500，台積電 2nm 產能已被 Apple、NVDA、AMD 佔滿，Meta 分流三星的動機真實存在。台積電是否吃到全部四代訂單，尚無法從公開資料判定。</p>
+<p><strong>NVDA / AMD</strong>：市場把「Meta 自研晶片提前」讀成 GPU 份額受威脅，此解讀有兩處失真。第一，Meta 明確將 MTIA 限縮為推論晶片，取消雙用途的 Olympus；訓練仍靠 GPU。第二，路透備忘錄同時載明 Meta「仍預期在 NVDA 與 AMD 上花費大量資金」，且今年 2 月才擴大 NVDA 採購合約。MTIA 侵蝕的是推論增量，而非既有訓練訂單。9/15 當日 NVDA 從歷史高點小幅回落，反應克制。</p>
+<p><strong>AVGO</strong>：最明確的受益者。官方新聞稿具名、多 GW、至 2029 年，四代晶片皆由其設計。</p>
+<p><strong>反方觀點</strong>：Meta 自 2023 年起已「部署數十萬顆 MTIA」用於廣告推薦，並未影響其成為 NVDA 最大客戶之一。半年一代的節奏也意味每代量產窗口極短，實際採購量可能低於 GW 數字暗示的規模。1GW 的承諾是 12 個月內累計，且橫跨 MTIA 400/450 兩代，非單一晶片放量。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10 底 Meta Q3 財報會</strong>：若管理層具體提及 MTIA 對 2027 資本支出結構的占比，可升級「GPU 支出被替代」的判斷；若只重申 GPU 合約，維持「增量而非替代」結論。</li>
+<li><strong>2026-10 中旬前</strong>：MTIA 500 設計完成（訪談稱一個月內）。若無定案消息，年底進場時程開始存疑。</li>
+<li><strong>2026-10 台積電法說</strong>：2nm 客戶組成與 2027 產能分配說明，可間接檢驗三星傳聞。</li>
+<li><strong>三星 Q3 財報／韓媒後續</strong>：若三星公開點名 Meta 為 2nm 客戶，「TSMC 製」宣稱需降級為「部分為 TSMC 製」。</li>
+<li><strong>2027 上半年</strong>：Meta 是否公開 MTIA 450 上線資料中心，為最終驗證。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>彭博原文與 Quartz 報導無法讀取，關鍵細節（12 顆樣品、2～3% 差距、1GW）全靠多家轉述比對，未見原文。</li>
+<li>三星 2nm 訂單為單一脈絡（韓媒產業消息），兩造未確認；與 Meta 高層說法矛盾時以 Meta 方面為準，但不排除雙代工。</li>
+<li>「Iris」與 MTIA 400 的對應關係由媒體推論，Meta 未正式對照代號與型號。</li>
+<li>Meta Q2 財報逐字稿為 PDF 格式，本次無法解析內文。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://ai.meta.com/blog/meta-mtia-scale-ai-chips-for-billions/">Four MTIA Chips in Two Years: Scaling AI Experiences for Billions（Meta 官方部落格）</a>
+- <a href="https://about.fb.com/news/2026/03/expanding-metas-custom-silicon-to-power-our-ai-workloads/">Expanding Meta's Custom Silicon to Power Our AI Workloads（Meta Newsroom）</a>
+- <a href="https://www.globenewswire.com/news-release/2026/04/14/3273998/19933/en/Broadcom-Announces-Extended-Partnership-with-Meta-to-Deploy-Technology-to-Support-Multi-Gigawatts-of-Meta-s-Custom-Silicon-MTIA.html">Broadcom Announces Extended Partnership with Meta（GlobeNewswire 新聞稿）</a>
+- <a href="https://www.investing.com/news/stock-market-news/meta-stock-rises-on-costsaving-ai-chip-deployment-plans-4902026">Meta stock rises on cost-saving AI chip deployment plans（Investing.com 轉述彭博）</a>
+- <a href="https://ca.finance.yahoo.com/news/meta-puts-arke-astrid-data-154831995.html">Meta Puts Arke and Astrid Into Data Centers in 2027（GuruFocus via Yahoo Finance）</a>
+- <a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=d8cbe35a-b602-4617-88db-080c1f2fc8cb">Meta擬擴大部署自研AI晶片、高層稱台積電已交貨（MoneyDJ）</a>
+- <a href="https://www.bitget.com/news/detail/12560605837704">Meta (META.US) strengthens self-developed AI chips（Bitget 轉述智通財經）</a>
+- <a href="https://en.sedaily.com/finance/2026/07/04/meta-picks-samsungs-2nm-process-foundry-orders-to-hit-50">Meta Picks Samsung's 2nm Process, Foundry Orders to Hit 50 Trillion Won（Seoul Economic Daily）</a>
+- <a href="https://www.sammobile.com/2026/07/04/samsung-talks-make-2nm-ai-chips-anthropic-meta/">Samsung reportedly in talks to make 2nm AI chips for Anthropic and Meta（SamMobile）</a>
+- <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262010137-meta-samsung-tsm-tsml-mu-tradingkey">From TSMC to Samsung, Why Is Meta's AI Chip Foundry Route Shifting?（TradingKey）</a>
+- <a href="https://money.usnews.com/investing/news/articles/2026-07-09/exclusive-meta-to-put-ai-chip-into-production-in-september-as-it-looks-to-double-computing-capacity-memo-shows">Exclusive-Meta to Put AI Chip Into Production in September, Memo Shows（Reuters via US News）</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-16（6 題）</summary>
     <div class="day-body">
       
