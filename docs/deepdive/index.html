@@ -65,11 +65,85 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-18 20:51｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-19 08:41｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-19（1 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ Nscale Rubin合約真實度
+          <span class="takeaway">部分證實｜46.1萬顆GPU與1,034億美元合約額確為S-1揭露數字，但僅約2.5萬顆已啟用，「78%為Rubin」在一手文件中查無此數</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260919-0802@Nscale%20Rubin%E5%90%88%E7%B4%84%E7%9C%9F%E5%AF%A6%E5%BA%A6">2026-09-19 08:02 觀點彙整</a></p>
+          
+          <h2>深查：Nscale Rubin合約真實度</h2>
+<p><strong>裁定</strong>：【部分證實】
+46.1萬顆GPU與1,034億美元合約額確為S-1揭露數字，但僅約2.5萬顆已啟用，「78%為Rubin」在一手文件中查無此數。</p>
+<p>「已簽約或啟用」的說法把兩件事混在一起。S-1原文的口徑是「active and contracted」，其中真正運轉中的GPU約2.5萬顆，占5%；其餘約43.6萬顆是待交付合約，且幾乎全部要到2027下半年以後才上線。合約額則以「up to」計算、以交付為起算條件，且公司自承尚未取得履約所需的融資承諾。</p>
+<h3>查證過程與證據</h3>
+<p>溯源：宣稱的原始出處是Nscale於2026-09-18向SEC提交的Form S-1（擬在NYSE掛牌，代號NSCL）。Reuters、TheStreet、Yahoo等報導均轉述同一份文件，不構成獨立來源。我直接讀取了S-1全文（工具僅能取回部分章節）、8月的DRS/A草稿，以及Nscale與客戶的官方新聞稿。</p>
+<ul>
+<li>【事實｜2026-08-31基準】S-1：「approximately 25,000 active GPUs and 461,000 active and contracted GPUs」，17個站點、約1.37GW active and contracted capacity；active and contracted TCV為1,034億美元，2025年底為380億美元。</li>
+<li>【事實】S-1對TCV的定義：簽約日計算的全期合約收入，排除選擇權、續約、未行使容量；並註明「Contract terms commence upon successful delivery of GPU compute clusters」，即未交付前不起算收入。</li>
+<li>【事實】客戶集中度：Microsoft協議付款上限438億、Anthropic協議上限446億美元，兩者合計占TCV約85%。Anthropic協議簽於2026-08-25，S-1證實了Bloomberg與CNBC於8/26的消息來源報導（當時雙方均未評論）。</li>
+<li>【事實】財務：2026上半年營收1.406億美元，淨損10.2億美元。融資工具包括約14億美元GPU融資額度、9億美元循環信貸、對NVIDIA發行21億美元可轉換票據，NVIDIA承諾至少投資31億美元。</li>
+<li>【事實｜僅據轉述】Techstrong引述S-1：公司「尚未取得為合約所需GPU設備與資料中心基礎設施融資的具約束力承諾」。我取回的S-1片段在風險因子章節被截斷，未能核對原句。</li>
+<li>【證據不足】「78%為Vera Rubin」：S-1可讀取的部分未出現78%或任何Rubin占比；各媒體亦無此數。由公開站點合約自下而上推算：Narvik 3萬顆Rubin（2026-04-14）、Sines 6.6萬顆Rubin（2026-05-05）、Figure最多10萬顆Rubin（2026-09-03）、Anthropic 460MW Rubin，對上Microsoft 2025-10-15合約的約20萬顆GB300，Rubin占比落在約六成至八成之間，78%位於區間上緣且取決於Anthropic的GPU顆數，該數字S-1未揭露。Leverage Shares於8/31引述「28.9萬顆中19.4萬顆為Rubin」（約67%）為單一來源。</li>
+<li>【事實】交期：所有Rubin部署時點均為2027年起。Narvik 2027年、Sines 2027年底、Figure 2027下半年、Anthropic 2027年底、Monarch園區首期2GW預計2028上半年上線。</li>
+<li>【事實】NVIDIA 2026-08-26季報新聞稿稱Vera Rubin「已進入全面生產」，點名的合作夥伴為CoreWeave、Google Cloud、Azure、OCI、Nebius，未提及Nscale。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：Nscale是NVIDIA以可轉債與股權資助的客戶，訂單本質是「NVIDIA出資、Nscale採購NVIDIA GPU」的循環結構。46.1萬顆中約九成五尚未交付且集中在2027至2028年，對NVIDIA近期營收無增量意義，但強化Rubin世代的需求能見度。若Nscale融資不到位，這批訂單具有可延後或縮減的性質。</p>
+<p><strong>TSM</strong>：Rubin採用先進製程與CoWoS-L封裝，Nscale的需求是2027年CoWoS排產中的一小塊，且NVIDIA已預訂大部分產能，Nscale個別合約成敗對台積電邊際影響有限。</p>
+<p><strong>MU</strong>：三家HBM4供應商均已通過Rubin認證（2026-06-05），供應鏈分析師估Micron份額約5%至15%【機構估計，單一轉述】。Nscale個案對MU幾無直接影響，真正變數是Rubin整體出貨量。</p>
+<p><strong>MSFT</strong>：Microsoft是最大客戶，透過neocloud把資本支出轉為租賃承諾，這是超大規模業者「表外擴產」的典型案例。</p>
+<p><strong>反方觀點</strong>：Noah Intelligence（2026-09-06）指出合約額不等於現金流，Nscale承擔交付與融資的執行風險；35億美元過橋融資不足以證明300億美元估值。Leverage Shares則點出約30億美元債務對比4至5億美元年化營收、GPU抵押品折舊快於債務假設。市場敘事把TCV當作「已鎖定收入」，這是最大的失真。</p>
+<h3>可驢證節點</h3>
+<ul>
+<li><strong>S-1修訂與IPO定價（預期2026年10月前後）</strong>：若補充揭露具約束力的設備融資或NVIDIA供應承諾，可升級至【證實】；若揭露客戶終止權或里程碑罰則，則進一步降級。</li>
+<li><strong>Texas GB300交付（原訂2025年10月起12至18個月）</strong>：2027年上半年前S-1/A或季報中的active GPU數是否明顯超過2.5萬顆，是執行力的第一個硬指標。</li>
+<li><strong>NVIDIA 2026年11月季報</strong>：Rubin出貨對象若仍未提及Nscale，代表其2027年配額尚未落實。</li>
+<li><strong>Narvik與Sines的Rubin上線（2027年）</strong>：這是Rubin占比能否兌現的首批實體證據。</li>
+<li><strong>Anthropic與Monarch園區（2027年底至2028上半年）</strong>：460MW自建電力微電網能否如期供電，決定TCV中約43%能否起算。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>S-1全文超出擷取工具長度，風險因子與部分業務章節被截斷，融資未落實的關鍵句僅據Techstrong轉述。</li>
+<li>「78%」占比為推算區間內的上緣值，無一手出處，應視為未證實。</li>
+<li>28.9萬顆與19.4萬顆的口徑（Leverage Shares）與DRS/A的5月底28.4萬顆難以完全對帳，可能反映GB300合約轉為Rubin，S-1未說明。</li>
+<li>Anthropic協議金額在S-1與媒體間一致（約446億對比450億），差異為四捨五入。</li>
+<li>Forbes、TheStreet、CNBC、DCD原文遭403封鎖，僅取用搜尋摘錄。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002110365/000119312526395475/ck0002110365-20260918.htm">NSCALE Ltd - Form S-1 (2026-09-18)</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002110365/000119312526285636/filename1.htm">NSCALE Ltd - Form DRS/A (2026年8月草稿)</a>
+- <a href="https://techstrong.ai/articles/nscale-files-for-us-ipo-after-year-of-major-ai-compute-deals/">Nscale Files for US IPO After Year of Major AI Compute Deals - Techstrong.ai</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/nscale-touts-103-billion-contracts-131255373.html">Nscale touts $103 billion in contracts ahead of IPO - Yahoo Finance/Reuters</a>
+- <a href="https://www.nscale.com/press-releases/nscale-microsoft-2025">Nscale and Microsoft: approximately 200,000 NVIDIA GB300 GPUs (2025-10-15)</a>
+- <a href="https://www.nscale.com/press-releases/nscale-microsoft-norway">Nscale announces expanded deal with Microsoft in Norway (2026-04-14)</a>
+- <a href="https://www.nscale.com/press-releases/nscale-start-campus">Nscale to Deliver 66000+ NVIDIA Rubin GPUs to Microsoft at Start Campus (2026-05-05)</a>
+- <a href="https://www.nscale.com/press-releases/nscale-nvidia-vera-rubin">Nscale to Deploy NVIDIA Vera Rubin Platform in 2027 (2026-03-16)</a>
+- <a href="https://www.prnewswire.com/in/news-releases/nscale-and-microsoft-announce-collaboration-with-nvidia-and-caterpillar-to-deliver-1-35gw-of-nvidia-vera-rubin-nvl72-gpus-at-flagship-ai-factory-campus-in-west-virginia-302715220.html">Nscale and Microsoft 1.35GW Vera Rubin at West Virginia - PR Newswire (2026-03-16)</a>
+- <a href="https://www.figure.ai/news/figure-and-nscale-sign-strategic-partnership">Figure and Nscale Sign Strategic Partnership (2026-09-03)</a>
+- <a href="https://bebeez.eu/2026/04/15/microsoft-contracts-30000-nvidia-rubin-gpus-from-nscale-at-data-center-in-narvik-norway/">Microsoft contracts 30,000 Nvidia Rubin GPUs from Nscale at Narvik - BeBeez (2026-04-15)</a>
+- <a href="https://leverageshares.com/us/insights/nscale-ipo-what-investors-should-know-about-the-risks/">Nscale IPO: What Investors Should Know About the Risks - Leverage Shares (2026-08-31)</a>
+- <a href="https://noah-news.com/nscale-bridge-does-not-prove-30bn-valuation/">Nscale's $3.5bn bridge does not prove a $30bn valuation - Noah Intelligence (2026-09-06)</a>
+- <a href="https://memeburn.com/nvidia-backed-nscale-touts-103-billion-in-contracted-revenue/">Nvidia-Backed Nscale Touts $103 Billion In Contracted Revenue - Memeburn (2026-09-10)</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000073/q2fy27pr.htm">NVIDIA Q2 FY2027 Press Release - Form 8-K (2026-08-26)</a>
+- <a href="https://www.investing.com/news/stock-market-news/nvidia-certifies-samsung-sk-hynix-and-micron-for-vera-rubin-hbm4-supply-4728612">Nvidia certifies Samsung, SK Hynix and Micron for Vera Rubin HBM4 supply - Investing.com</a>
+- <a href="https://www.datacenterdynamics.com/en/news/anthropic-signs-45bn-compute-capacity-agreement-with-nscale-report/">Anthropic signs $45bn compute capacity agreement with Nscale - DCD</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-18（6 題）</summary>
     <div class="day-body">
       
