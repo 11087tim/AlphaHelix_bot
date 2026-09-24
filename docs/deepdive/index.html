@@ -65,11 +65,208 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-09-23 20:51｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-09-24 08:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-09-24（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ TPUv7特定測試勝GB200
+          <span class="takeaway">部分證實｜數字本身出自 Inferact 原始部落格且程式碼公開，但 GB200 基準由同一方選定、無第三方重跑，且取樣於最樂觀的推測解碼接受長度，不足以支撐「平台翻轉」敘事</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260924-0803@TPUv7%E7%89%B9%E5%AE%9A%E6%B8%AC%E8%A9%A6%E5%8B%9DGB200">2026-09-24 08:03 觀點彙整</a></p>
+          
+          <h2>深查：TPUv7特定測試勝GB200</h2>
+<p><strong>裁定</strong>：【部分證實】
+數字本身出自 Inferact 原始部落格且程式碼公開，但 GB200 基準由同一方選定、無第三方重跑，且取樣於最樂觀的推測解碼接受長度，不足以支撐「平台翻轉」敘事。</p>
+<p>裁定細節：宣稱的「16 顆 TPUv7 達 709 tokens/s、16 顆 GB200 為 452」完整對應 Inferact 於 2026-09-23 發布的原文，並非媒體誤植。但這是單一公司、單一模型、低併發、單一使用者的延遲導向測試，且 TPU 端是手寫 megakernel，GB200 端是通用 vLLM recipe，軟體成熟度不對等。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：原始出處為 Inferact 部落格「700 TPS on Kimi K3: A Case for TPU Megakernels」，作者含 vLLM 共同創作者 Woosuk Kwon。runtimewire 等報導皆為同一來源改寫，不構成獨立來源。</p>
+<ul>
+<li>【事實｜2026-09-23】Inferact 原文數據：Kimi K3 於 16 顆 TPU v7（32 個 TensorCore，2×2×4 拓樸）在 DSpark 推測解碼、接受長度 6 時達 709 tok/s，GB200 基準 452 tok/s。接受長度 3 時為 350 對 229。無推測解碼時 batch 1 至 8 分別為 249/392/515/865 對 127/227/373/636，約 1.4 至 2 倍。程式碼以 Apache 2.0 於 GitHub 公開，附重現腳本。</li>
+<li>【事實｜2026-09-23】原文對 GB200 基準僅稱「採用 vLLM 已發布的 16 GPU Kimi K3 recipe」，未說明 vLLM 版本、系統型號（NVL72 或 NVL4）、輸入輸出長度，也未提供成本、功耗或 TCO。</li>
+<li>【事實｜2026-07-27】vLLM 官方 K3 部落格的 NVIDIA 數據為 GB300 NVL72 單使用者 TP16：無推測 118 tok/s，DSpark 後 370 tok/s。Inferact 的 452 並不出現於 vLLM 官方文件，推斷為 Inferact 自行量測，但原文未明言。</li>
+<li>【事實｜Red Hat AI 模型卡】Inferact 使用的 DSpark 推測器在 B300 上實測接受長度：數學 6.42、程式 4.96、摘要 4.10、問答約 3.2、寫作 3.14。接受長度 6 僅代表數學類任務，一般對話更接近 3 至 4，對應的 TPU 對 GB200 領先幅度約 1.5 倍而非「709 對 452」的表面差距。</li>
+<li>【機構估計｜2026-09-07】SemiAnalysis InferenceX 以 Qwen3.5 397B FP8 做獨立測試：TPU v7 在原始吞吐量「多數曲線段並未勝過 NVIDIA」，成本優勢來自較低 TCO，每 token 成本較 B200 低約 19%、較 B300 低約 34%；FP4 比較則 NVIDIA 占優，因 Ironwood 無原生 FP4。Kimi K3 尚未納入其測試。</li>
+<li>【事實｜2026-01】Inferact 為 vLLM 商業化公司，募資 1.5 億美元，投資人為 a16z、Lightspeed 等，未見 Google 持股揭露。但 SemiAnalysis 指出 Inferact 正與 Google 合作 TorchTPU 後端，屬利害關係方。</li>
+<li>【傳聞｜截至 2026-09-24】未找到任何第三方重跑、NVIDIA 回應或 Google 官方轉載。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p>市場敘事失真處：這份測試證明的是「TPU 軟體堆疊補課後，特定模型的單使用者延遲可與 GB200 平起平坐甚至領先」，而非 TPU 硬體整體優於 Blackwell。真正的訊號是 vLLM 核心團隊將 TPU 視為一等公民，這削弱 NVIDIA 的 CUDA 軟體護城河，對 NVDA 是慢性而非急性的負面。</p>
+<p>受益方：GOOG 的外部 TPU 商業化再添案例，Ironwood 按需價每晶片小時 12 美元，與 GB200 每 GPU 小時約 10.5 至 27 美元的租價區間重疊，性價比故事可持續。AVGO 為 Ironwood 物理設計與 CoWoS 封裝夥伴，2026 會計年度第三季 AI 半導體營收 167 億美元，並已開始出貨 TPU v8i，此類測試強化其客製晶片需求敘事。TSM 兩邊通吃，N3P 與 CoWoS 皆為 TPU 與 Blackwell 共用。</p>
+<p>受害方與反方觀點：NVDA 短期實際受害有限。反方認為 GB200 基準只是通用 recipe，若以 NVIDIA 自家 TensorRT-LLM、Dynamo 或 GPU 端 megakernel 重跑，差距很可能收斂；vLLM 於 2026-09-13 才發布 K3 在 NVIDIA 平台 2.8 倍吞吐的優化，Inferact 基準是否納入此版本未知。此外高併發下瓶頸移向向量運算與跨裝置通訊，Inferact 自己也承認此點，而高併發正是資料中心經濟的核心。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>SemiAnalysis InferenceX 納入 Kimi K3 與分離式 PD 測試</strong>：若 TPU v7 在多併發、每美元 token 指標上仍領先，結論升級為【證實】；若僅低併發領先則維持現狀。</li>
+<li><strong>第三方以公開腳本重跑</strong>：任何獨立團隊於 GCP TPU7x 重現 709 tok/s，且用最新 vLLM 或 TensorRT-LLM 於 GB200 NVL72 重跑基準，可直接判定 452 是否過低。</li>
+<li><strong>NVIDIA GTC 或 Dynamo 更新</strong>：若 NVIDIA 發布 K3 單使用者超過 700 tok/s 的官方數據，本測試優勢即被抵銷。</li>
+<li><strong>Google Cloud 財報與 AVGO 2026 會計年度第四季法說</strong>：外部 TPU 客戶數與 TPU 營收指引是否上修，決定此類測試是否轉化為訂單。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>全部效能數字皆來自 Inferact 單一來源，發布僅一日，尚無獨立重現。</li>
+<li>GB200 基準的量測方式、系統型號、軟體版本未揭露，屬方法論最大缺口。</li>
+<li>Woosuk Kwon 的 X 貼文因付款牆無法讀取，僅據轉述。</li>
+<li>未找到中文媒體報導，議題來源的中文轉述無法比對原文。</li>
+<li>Inferact 與 Google 有商業合作關係，但未見資金往來揭露。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://inferact.ai/blog/tpu-megakernels">700 TPS on Kimi K3: A Case for TPU Megakernels（Inferact 原文）</a>
+- <a href="https://github.com/Inferact/tpu-megakernels">Inferact/tpu-megakernels GitHub</a>
+- <a href="https://runtimewire.com/article/inferact-kimi-k3-tpu-megakernel-benchmark">Inferact's TPU megakernel hits 709 tokens per second on Kimi K3（runtimewire）</a>
+- <a href="https://vllm.ai/blog/2026-07-27-k3">Kimi K3 Is Here: Efficient Day-0 Support on vLLM</a>
+- <a href="https://vllm.ai/blog/2026-09-13-kimi-k3-performance-optimization">Kimi K3 Performance Optimizations in vLLM: The Road to 2.8× Throughput</a>
+- <a href="https://huggingface.co/RedHatAI/Kimi-K3-speculator.dspark">RedHatAI/Kimi-K3-speculator.dspark</a>
+- <a href="https://inferencex.semianalysis.com/blog/tpu-inferencex-full-steam">TPU Inference Externalization Full Steam Ahead（SemiAnalysis InferenceX）</a>
+- <a href="https://docs.nvidia.com/dynamo/dev/recipes/kimi-k3">Kimi-K3 NVIDIA Dynamo Recipe</a>
+- <a href="https://docs.cloud.google.com/tpu/docs/tpu7x">TPU7x (Ironwood) Google Cloud Documentation</a>
+- <a href="https://cloud.google.com/tpu/pricing">Cloud TPU pricing</a>
+- <a href="https://getdeploying.com/gpus/nvidia-gb200">GB200 Cloud Pricing: Compare 9+ Providers (2026)</a>
+- <a href="https://siliconangle.com/2026/01/22/inferact-launches-150m-funding-commercialize-vllm/">Inferact launches with $150M in funding to commercialize vLLM（SiliconANGLE）</a>
+- <a href="https://www.cnbc.com/2026/09/02/broadcom-avgo-q3-earnings-report-2026.html">Broadcom Q3 FY2026 earnings（CNBC）</a>
+- <a href="https://iamfabian.substack.com/p/inside-googles-ironwood-tpu-v7-supply-376">Inside Google's Ironwood TPU v7 Supply Chain</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Anthropic洽租1GW資料中心
+          <span class="takeaway">部分證實｜1GW 洽談確有可信媒體獨家報導但無官方證實；「400億美元」是開發商對 1GW 建置成本的通用估算，不是合約金額或 Anthropic 的資金缺口</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260924-0803@Anthropic%E6%B4%BD%E7%A7%9F1GW%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83">2026-09-24 08:03 觀點彙整</a></p>
+          
+          <h2>深查：Anthropic洽租1GW資料中心</h2>
+<p><strong>裁定</strong>：【部分證實】
+1GW 洽談確有可信媒體獨家報導但無官方證實；「400億美元」是開發商對 1GW 建置成本的通用估算，不是合約金額或 Anthropic 的資金缺口。</p>
+<p>補充：整條新聞鏈只有一個一手來源（The Information，付費牆），Anthropic、Stream、Apollo、Google 均未回應。市場把「需投資 400 億」讀成 Anthropic 的新增支出承諾，屬於敘事失真。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：原始出處為 The Information 2026-09-22 報導（作者 Valida Pau、Amir Efrati），標題為「Anthropic in Talks for 1-Gigawatt Data Center Lease With Apollo-Backed Developer」。全文在付費牆內，僅據轉述/摘錄，無法取得原文。Investing.com、TipRanks、GuruFocus、KuCoin、財訊快報（Yahoo 台灣）全部是同一篇的改寫，不構成獨立來源。</p>
+<ul>
+<li>【傳聞】2026-09-22：Anthropic 與 Apollo 控股的 Stream Data Centers 進行「初步」洽談，直接租用最多 1GW，自行部署伺服器與晶片，以 Google/Broadcom TPU 為主、可能搭配 NVIDIA GPU。談判早期，規模未定，可能破局。</li>
+<li>【傳聞】2026-09-22：Google 討論為此案提供信用擔保，擔保範圍不明。</li>
+<li>【機構估計】2026-09-22：「1GW 至少需 400 億美元」出自 The Information 訪問的資料中心開發商估算。Investing.com 版本根本未提此數字，顯示它是背景估算而非交易條款。需留意與 Google 四月宣布對 Anthropic 投資「上看 400 億美元」（100 億現金加 300 億條件式）混淆。</li>
+<li>【事實】2026-07-06：TeraWulf 向 SEC 提交 8-K，Anthropic 租用肯塔基 Hawesville 約 401MW，20 年期、約 190 億美元合約收入，2027 下半年起分階段交付。文件僅稱付款「預期由投資級信用支持」，未點名 Google 或任何擔保方。</li>
+<li>【事實】2026-04-06：Anthropic 官方宣布與 Google、Broadcom 擴大合作，取得「多 GW」次世代 TPU 容量，2027 年起上線。</li>
+<li>【傳聞】2026-06-11：The Information 報導 Anthropic 已簽逾 12 份非約束性意向書、合計超過 1GW，並洽談由 Google 擔保租金；Google 當時回應「不評論傳聞」。</li>
+<li>【事實】2025：Reuters 報導 Apollo 旗下基金收購 Stream Data Centers 多數股權，Stream 自稱擁有「多 GW 開發管線」。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>這是既有路線的延伸，不是路徑改變。</strong> Anthropic 從 2025 年 11 月的 500 億美元 Fluidstack 計畫、TeraWulf 401MW 到本次 Stream 1GW，一致採「自租機房、自購晶片、找投資級股東擔保」的模式。TeraWulf 8-K 已證實這個結構在實務上可行。</p>
+<ul>
+<li><strong>AVGO、GOOG 受益最明確。</strong> 報導指本案以 TPU 為主，若成局等於 Google/Broadcom TPU 在雲外新增約 1GW 出海口。Google 若擔保租金，實質是以信用換取 TPU 銷量與股權價值。</li>
+<li><strong>NVDA 為次要選項。</strong> 報導僅稱「可能」搭配 GPU，本案不能視為 NVIDIA 訂單。</li>
+<li><strong>AMZN 中性偏負。</strong> Anthropic 與 AWS 仍有最多 5GW 協議，但直租趨勢意味增量需求分流；MSFT 的 300 億 Azure 合約不受本案影響。</li>
+<li><strong>資本支出歸屬失真。</strong> 若 400 億中大部分是晶片與伺服器，付錢的是 Anthropic 及其融資方，Stream/Apollo 只出殼體與電力。市場若把它算進雲商 capex 是錯的。</li>
+<li><strong>反方觀點：</strong> 意向書非約束、Anthropic 無投資級評等，融資完全依賴 Google 擔保，這與 OpenAI/NVIDIA 的「循環融資」爭議相似。TeraWulf 案至今未公開擔保方，顯示此類結構落地慢、細節模糊。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>Stream 或 Apollo 新聞稿、Apollo 法說</strong>：若公告具名租戶或簽約 MW，傳聞升級為事實。</li>
+<li><strong>Google 財報附註或 10-Q 的擔保/或有負債揭露</strong>：出現對 Anthropic 租約的擔保，證實資金結構；缺席則削弱敘事。</li>
+<li><strong>Anthropic S-1 公開版（傳聞 10 月 IPO）</strong>：租賃承諾與擔保安排會被迫揭露，是最強驗證點。</li>
+<li><strong>Stream 場址的電力互聯申請與地方許可</strong>：可驗證 1GW 規模是否真實存在。</li>
+<li><strong>TeraWulf 後續 8-K</strong>：若公布擔保方為 Google，提高本案 Google 擔保的可信度。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>全案為單一來源（The Information），付費牆內，無法讀取原文；所有細節僅據轉述。</li>
+<li>「400 億美元」出處在各轉述間不一致，Investing.com 版本未提及，KuCoin 版本歸為開發商估算。</li>
+<li>Google 投資 400 億與 1GW 建置成本 400 億為兩件事，台媒標題易混。</li>
+<li>財訊快報版本無獨立採訪，不能算交叉證實。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theinformation.com/articles/anthropic-talks-cement-control-data-centers">Anthropic in Talks to Cement Control Over More Data Centers — The Information</a>
+- <a href="https://www.theinformation.com/briefings/anthropic-talks-lease-apollo-owned-stream-data-centers">Anthropic in Talks to Lease Apollo-Owned Stream Data Centers — The Information</a>
+- <a href="https://www.investing.com/news/stock-market-news/anthropic-in-talks-to-lease-1-gigawatt-from-stream-data-centers-the-information-93CH-4912045">Anthropic in talks to lease 1 gigawatt from Stream Data Centers — Investing.com</a>
+- <a href="https://www.kucoin.com/news/flash/anthropic-negotiates-1gw-data-center-lease-to-bypass-cloud-vendors">Anthropic Negotiates 1GW Data Center Lease to Bypass Cloud Providers — KuCoin</a>
+- <a href="https://finimize.com/content/anthropic-eyes-a-massive-data-center-lease">Anthropic Eyes A Massive Data Center Lease — Finimize</a>
+- <a href="https://tw.stock.yahoo.com/news/anthropic%E9%83%A8%E7%BD%B2%E5%8A%A0%E5%BC%B7%E7%AE%97%E5%8A%9B%E6%8E%A7%E5%88%B6-%E6%93%AC%E7%A7%9Fstream-data-centers%E6%9C%80%E9%AB%981%E5%90%89%E7%93%A6-030125528.html">Anthropic部署加強算力控制，擬租Stream Data Centers最高1吉瓦 — Yahoo奇摩股市／財訊快報</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001083301/000110465926080583/tm2619468d1_8k.htm">TeraWulf Form 8-K, 2026-07-06 — SEC</a>
+- <a href="https://investors.terawulf.com/news-events/press-releases/detail/142/terawulf-announces-anthropic-lease-at-justified-data-campus-and-sale-of-majority-interest-in-abernathy-joint-venture-to-fluidstack">TeraWulf Announces Anthropic Lease at Justified Data Campus — TeraWulf IR</a>
+- <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute">Anthropic expands Google and Broadcom compute deal — Anthropic</a>
+- <a href="https://mlq.ai/news/anthropic-signs-12-letters-of-intent-for-direct-data-center-leases-totaling-over-1-gw/">Anthropic Signs 12+ Letters of Intent for Direct Data Center Leases — MLQ News</a>
+- <a href="https://memeburn.com/anthropic-signs-12-data-center-leases-seeks-40b-google-backing-in-2026/">Anthropic Signs 12+ Data Center Leases, Seeks $40B Google Backing — Memeburn</a>
+- <a href="https://finance.technews.tw/2026/04/26/google-plans-to-invest-up-to-40-billion-in-anthropic/">助 Anthropic 擴充算力，Google 承諾挹注資金上看 400 億美元 — TechNews</a>
+- <a href="https://tr.tradingview.com/news/reuters.com%2C2025%3Anewsml_L4N3TY12L%3A0-apollo-funds-agrees-to-buy-majority-stake-in-stream-data-centers">Apollo funds agrees to buy majority stake in Stream Data Centers — Reuters via TradingView</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 台積電2027年調漲晶圓價
+          <span class="takeaway">部分證實｜「2027年1月起調價、先進製程漲幅最高」有多個獨立來源支持；但「3%至6%」是單一來源（Digitimes）數字，低於日經、路透交叉證實的5%至10%基本漲幅</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20260924-0803@%E5%8F%B0%E7%A9%8D%E9%9B%BB2027%E5%B9%B4%E8%AA%BF%E6%BC%B2%E6%99%B6%E5%9C%93%E5%83%B9">2026-09-24 08:03 觀點彙整</a></p>
+          
+          <h2>深查：台積電2027年調漲晶圓價</h2>
+<p><strong>裁定</strong>：【部分證實】
+「2027年1月起調價、先進製程漲幅最高」有多個獨立來源支持；但「3%至6%」是單一來源（Digitimes）數字，低於日經、路透交叉證實的5%至10%基本漲幅。</p>
+<p>裁定細節：台積電從未發布任何定價文件，官方僅表示「不評論價格」。市場敘事的失真在於把 Digitimes 9月下旬的3%至6%當成新消息，實際上更早、更多來源證實的版本是5%至10%加 HPC 追加單溢價，兩者尚無法調和。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：3%至6%的說法可追溯至 Digitimes 約9月23日引述「供應鏈消息」的報導，GuruFocus、AllWeatherFinance、Kira Trader 日報均轉引同一篇，屬單一來源。Digitimes 原文未能取得，僅據轉述。</p>
+<ul>
+<li>【傳聞｜2026-09-23】Digitimes：台積電決定自2027年1月依製程調整晶圓出貨價，幅度約3%至6%，2奈米、3奈米漲幅最大；8吋廠利用率逾100%，45奈米以下滿載，訂單能見度至2030年。台積電未評論。</li>
+<li>【事實（多獨立來源）｜2026-07-21】日經亞洲引述多名知情人士：先進製程基本漲幅5%至10%，超出原預估的 HPC 追加訂單再加收10%至15%；12/16/28奈米成熟製程最高漲10%；6月啟動協商、7月談定、2027年初生效。路透同日以兩名獨立消息人士證實「最高10%」，涵蓋6奈米以下與成熟製程，時程一致。</li>
+<li>【事實｜2026-07-21】台積電對路透與中央社回應：「不評論價格問題，定價策略始終為策略導向而非機會導向，會持續與客戶緊密合作以提供價值。」這是唯一官方表態，既未否認也未證實。</li>
+<li>【事實｜2026-07-16】第二季法說：毛利率67.7%，第三季指引65%至67%；魏哲家稱「我們賺取自身的價值，不會突然把價格拉高4倍、5倍」、「不想把客戶擠出市場」，未給任何2027年定價指引。財務長重申海外廠稀釋毛利率初期2至3個百分點、後期3至4個百分點。</li>
+<li>【機構估計｜2026-07-22】摩根大通預估2027年先進製程漲8%至10%，HPC 追加單另加10%至15%（TrendForce 轉引 Barron's，無法取得原始報告）。</li>
+<li>【傳聞→背景｜2025-11至2026-06】Digitimes 2025年11月報導台積電推出「2026年起連續四年」的先進製程調漲策略（付費牆，僅見導言）；TrendForce 引述經濟日報、工商時報稱2026年3奈米以下漲3%至10%；TechNews 2026年6月報導7奈米以下已陸續實施5%至10%調漲。這表示2027年調價是既定多年計畫的下一階段，而非突發事件。</li>
+<li>時效提醒：工商時報2022年8月曾報導「先進製程漲3%、成熟製程漲5%至6%」（針對2023年），「3%至6%」區間有歷史巧合，讀者易混淆。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>TSM</strong>：調價是對沖海外廠稀釋的主要手段。若日經版本成立，2027年毛利率有機會守住65%以上；若 Digitimes 的3%至6%才是最終落地數字，上行空間較市場預期收斂。高盛預估2026至2028年毛利率維持66%以上，已隱含持續調價。</li>
+<li><strong>NVDA、AVGO</strong>：MarketBeat 分析指出輝達鎖定2026至2027年約六成先進封裝擴產，兩者客戶重視效能與交付時程，轉嫁能力強。Benzinga 進一步認為漲價本身是「需求仍超過供給」的訊號，對輝達營收展望的正面意義大於對毛利的負面影響。</li>
+<li><strong>AMD、2454（聯發科）</strong>：AMD 先進封裝配額約一成一且常以價格競爭，聯發科手機 SoC 客戶對成本高度敏感，兩者較難完全轉嫁，毛利率承壓風險較高。</li>
+<li><strong>反方觀點</strong>：魏哲家明言不願擠壓客戶，官方定調「策略而非機會導向」，暗示實際漲幅可能低於報導上緣，Digitimes 的3%至6%或許正反映最終落地的溫和版本。此外，成熟製程漲價對聯發科等客戶的壓力，已被部分 IC 設計廠表態「仍需更多產能」所抵銷。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-08 九月營收</strong>：無法直接驗證定價，但可觀察先進製程占比走勢。</li>
+<li><strong>2026年10月中第三季法說</strong>（外部日曆列10/15，官方行事曆尚未公告）：若管理層給出2027年毛利率展望或回應定價提問，可升級為【證實】；若重申「不評論」，維持現狀。</li>
+<li><strong>2027年1月第四季法說</strong>：2027年第一季毛利率指引是新價格的第一個硬數據，若指引高於海外稀釋後的預期水準，間接證實調價落地。</li>
+<li><strong>客戶端財報</strong>（AMD、聯發科10月底至11月，NVDA 11月）：2027年第一季毛利率指引是否提及晶圓成本上升。</li>
+<li><strong>Digitimes 或日經後續報導</strong>：若出現與客戶簽約金額或具體製程價格表，可釐清3%至6%與5%至10%的分歧。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>3%至6%為單一來源，Digitimes 原文未取得，其他網站皆為轉述。</li>
+<li>日經與路透各自有獨立消息人士，屬兩個獨立來源，但兩者仍是匿名消息，非官方文件。</li>
+<li>台媒（經濟日報、自由、鉅亨、風傳媒等）7月報導全部改寫自日經，不構成額外獨立來源。</li>
+<li>Digitimes 2025年11月與2026年7月兩篇關鍵報導皆在付費牆內，僅能讀到導言。</li>
+<li>摩根大通8%至10%估計來自 Barron's 轉述，未取得原始報告。</li>
+<li>第二季法說完整逐字稿來自 Investing.com 轉載，非台積電官方文件；財務數據則以 SEC 6-K 為準。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://allweatherfinance.com/report-tsmc-will-raise-wafer-foundry-prices-by-3-to-6-starting-in-january-next-year-extending-order-visibility-to-2030/">Report: TSMC will raise wafer foundry prices by 3% to 6% starting in January next year (AllWeatherFinance 轉引 Digitimes)</a>
+- <a href="https://hklandjai.substack.com/p/kira-trader-daily-report-2026-09-3a9">Kira Trader Daily Report 2026-09-23</a>
+- <a href="https://www.cna.com.tw/news/afe/202607210321.aspx">日經亞洲：台積電2027漲晶片價格 基本漲幅5%至10%（中央社）</a>
+- <a href="https://finance.yahoo.com/technology/articles/tsmc-raise-chipmaking-prices-10-083253027.html">Contract chipmaker TSMC to raise prices by up to 10% in 2027, sources say（Reuters via Yahoo）</a>
+- <a href="https://money.udn.com/money/story/5612/9642084">明年調漲晶片價格？台積電：定價為策略導向而非機會（經濟日報）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000451/a2q26e_withguidancexfinal.htm">TSMC Q2 2026 Form 6-K 財報（SEC）</a>
+- <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-tsmc-lifts-2026-outlook-as-ai-demand-stays-hot-in-q2-2026-93CH-4794777">TSMC Q2 2026 法說逐字稿（Investing.com）</a>
+- <a href="https://www.trendforce.com/news/2026/07/22/news-tsmc-reportedly-plans-up-to-10-price-hikes-in-2027-with-extra-hpc-premiums-apple-nvidia-in-focus/">TSMC Reportedly Plans Up to 10% Price Hikes in 2027（TrendForce）</a>
+- <a href="https://www.trendforce.com/news/2025/12/29/news-tsmc-reportedly-to-raise-sub-3nm-prices-3-10-in-2026-plans-hikes-through-2029/">TSMC Reportedly to Raise Sub-3nm Prices 3-10% in 2026, Plans Hikes Through 2029（TrendForce）</a>
+- <a href="https://www.digitimes.com/news/a20251103PD204/tsmc-2026-manufacturing-price-increase-production.html">TSMC unveils four-year price hike for advanced chips starting 2026（Digitimes，付費牆）</a>
+- <a href="https://www.digitimes.com/news/a20260722VL211/tsmc-2027-intel-price-wafer.html">TSMC raises 2027 chip prices, giving Intel fresh pricing room（Digitimes，付費牆）</a>
+- <a href="https://technews.tw/2026/06/24/tsmc-raises-prices-for-all-advanced-process-technologies/">台積電漲價！範圍將涵蓋所有先進製程（TechNews）</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/tsmc-price-hikes-could-show-124000848.html">TSMC's Price Hikes Could Show Which AI Chip Stocks Have Real Pricing Power（MarketBeat via Yahoo）</a>
+- <a href="https://www.ctee.com.tw/news/20220826700354-430502">傳台積明年漲價3%起跳（工商時報，2022年）</a>
+- <a href="https://investor.tsmc.com/english/financial-calendar">TSMC Financial Calendar</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-09-23（6 題）</summary>
     <div class="day-body">
       
