@@ -65,12 +65,12 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-03 08:45｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-03 20:47｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
-    <summary>📅 2026-10-03（3 題）</summary>
+    <summary>📅 2026-10-03（6 題）</summary>
     <div class="day-body">
       
       <details class="topic">
@@ -249,6 +249,192 @@ AI6 減三分之一屬實，但 AI5「降至 72GB」已過時：Musk 公告後�
 - <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-micron-tops-q4-2026-estimates-as-demand-stays-hot-93CH-4925992">Earnings call transcript: Micron tops Q4 2026 estimates as demand stays hot - Investing.com</a>
 - <a href="https://www.globenewswire.com/news-release/2026/09/30/3372366/14450/en/micron-technology-inc-reports-record-fiscal-fourth-quarter-and-full-year-2026-results.html">Micron Technology Reports Record Fiscal Fourth-Quarter and Full-Year 2026 Results - GlobeNewswire</a>
 - <a href="https://www.trendforce.com/presscenter/news/20251211-12831.html">Memory Price Surge to Persist in 1Q26; Smartphone and Notebook Brands Begin Raising Prices and Downgrading Specs - TrendForce</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ OpenAI ASIC採AMD Turin
+          <span class="takeaway">部分證實｜硬體配置（Turin主機、每托盤1.5TB）屬OpenAI自揭事實，但「正內部部署」實為工程樣品與小量階段，「取代NVIDIA」訊號被市場放大</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261003-2003@OpenAI%20ASIC%E6%8E%A1AMD%20Turin">2026-10-03 20:03 觀點彙整</a></p>
+          
+          <h2>深查：OpenAI ASIC採AMD Turin</h2>
+<p><strong>裁定</strong>：【部分證實】
+硬體配置（Turin主機、每托盤1.5TB）屬OpenAI自揭事實，但「正內部部署」實為工程樣品與小量階段，「取代NVIDIA」訊號被市場放大。</p>
+<p>裁定細節：Turin與1.5TB的宣稱可回溯至OpenAI在Hot Chips 2026的簡報與硬體副總Richard Ho的訪談，屬一手公司聲明。然而量產排在2027年，且OpenAI同時承諾部署NVIDIA Vera Rubin與AMD MI450，Jalapeño是增量而非替代。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：所有媒體報導（Tom's Hardware、hyper.ai、remio.ai、kantan等）皆引用同一來源，即Tom's Hardware於2026年10月2日前後刊出的Richard Ho訪談，並非多個獨立來源。機櫃配置細節則來自OpenAI在2026年8月25日Hot Chips的簡報，SemiAnalysis同日有獨立整理。</p>
+<ul>
+<li>【事實】主機採用AMD EPYC Turin級CPU，每個Katsu主機托盤配兩顆CPU、1.5TB DRAM、400G前端網路。16個主機托盤搭配16個Vindaloo加速托盤，每托盤8顆Jalapeño，每套雙機櫃共128顆ASIC，功耗約160kW。（SemiAnalysis，2026-08-25；Tom's Hardware訪談轉述，2026-10-02）</li>
+<li>【事實】Ho稱選Turin是「務實」決定，NVIDIA Vera單獨CPU「在成熟度上稍微落後」，且製造夥伴已熟悉Turin生態。（Tom's Hardware訪談，僅據轉述）</li>
+<li>【事實】Jalapeño規格：216GB HBM4、15.4TB/s、700W、TSMC N3P，2025年11月下線，2026年5月中拿到A0晶片，B0目前在實驗室驗證。（ServeTheHome 2026-08-25；Ian Cutress訪談 2026-09-30）</li>
+<li>【事實】Ho於2026年8月25日表示Jalapeño將在2026年底「以非常小的量」部署，2027年才有實質部署。（TechCrunch）</li>
+<li>【事實】Broadcom執行長Hock Tan在2026年9月2日財報會稱Jalapeño按計畫於2027年部署1.3GW，2028年XPU超過5GW。（Broadcom Q3 FY26財報會）</li>
+<li>【事實】Celestica於2026年7月28日財報會稱OpenAI機櫃2026年稍晚開始初步交付，2027年量產，且為寄售模式，材料成本不入營收。</li>
+<li>【機構估計】SemiAnalysis指出目前僅工程樣品，尚未量產，2027年逐步爬坡且多數產出集中在年底；HBM4供應商「可能」為Samsung。（2026-08-25）</li>
+<li>【事實】NVIDIA於2026年5月31日宣布Vera CPU全面量產，系統2026年秋季供貨，並點名OpenAI為探索Vera的AI實驗室之一。Ho另稱「CPU和GPU絕對會繼續留在機隊中」。（NVIDIA新聞稿；Cutress訪談 2026-09-30）</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>AMD</strong>：Turin設計採用是真實但規模有限的驗證。每128顆ASIC僅搭配32顆CPU，CPU營收貢獻遠小於AMD自身6GW MI450合約。更有意義的是第二代Jalapeño已在開發，主機CPU是否續用AMD仍是未知數。Ho的用語是「成熟度時程」而非效能，NVIDIA Vera今秋起才有獨立供貨，OpenAI的選擇反映Jalapeño緊湊時程下的風險控管，不宜解讀為AMD在CPU上擊敗NVIDIA。</p>
+<p><strong>NVDA</strong>：「固定負載被替代」的敘事失真。OpenAI對NVIDIA有10GW意向書，Vera Rubin下半年上線；Jalapeño 2027年1.3GW相比之下是增量。SemiAnalysis也提醒效能比較對象是Blackwell而非同世代Vera Rubin，且數據由OpenAI提供、測試情境簡化。反方觀點：CNBC與部分分析師認為客製ASIC長期壓縮NVIDIA推論毛利，此為方向性風險而非2026至2027年的營收風險。</p>
+<p><strong>MU</strong>：Jalapeño的HBM4機構估計來自Samsung，Micron未被點名。每套系統24TB DDR5主機記憶體對DRAM整體需求正面，但無法指向特定供應商。</p>
+<p><strong>AVGO與2317</strong>：Broadcom提供晶片實作與Tomahawk 6交換器，是本案最直接受益者；系統整合商為Celestica而非鴻海，鴻海在此案無可查證角色。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026年12月至2027年1月：Celestica初步交付與SemiAnalysis提到的可靠度數據蒐集期。若延後，「部署中」宣稱需進一步降級。</li>
+<li>2026年12月初Broadcom Q4財報會：確認1.3GW 2027目標是否維持，並留意XPU客戶排序變化。</li>
+<li>2027年1月底Celestica Q4財報會：OpenAI機櫃實際出貨量與2027年量產節奏。</li>
+<li>第二代Jalapeño下線公告（Ho稱「數個月內」）：主機CPU若改為Vera或其他方案，AMD驗證訊號即告失效。</li>
+<li>NVIDIA 2026年11月財報會：Vera獨立CPU出貨與客戶名單，可驗證Ho的「成熟度」說法是否已過時。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>Tom's Hardware原始訪談文章無法直接讀取全文，Ho關於Turin與Vera的原話僅據hyper.ai與remio.ai轉述及搜尋摘錄，屬單一來源且非原文。</li>
+<li>OpenAI官方部落格與DCD、CNBC頁面回傳403，無法核對原文。</li>
+<li>SemiAnalysis關於NVIDIA、AMD影響的章節在付費牆內，產量與ASP估計無法取得。</li>
+<li>「1.3GW」來自Broadcom財報會轉述，未取得逐字稿原文。</li>
+<li>所有效能數據皆由OpenAI提供，無第三方獨立測試。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.tomshardware.com/pc-components/cpus/openais-jalapeno-asics-are-deployed-alongside-amd-epyc-turin-cpus-as-hosts-hardware-vp-says-nvidias-vera-standalone-is-a-little-bit-behind-on-that-maturity-level">OpenAI's Jalapeño ASICs are deployed alongside AMD EPYC Turin CPUs (Tom's Hardware)</a>
+- <a href="https://www.remio.ai/post/openai-jalapeno-asic-deployment-chooses-amd-turin-not-nvidia-vera">OpenAI Jalapeño ASIC deployment chooses AMD Turin (remio.ai 轉述)</a>
+- <a href="https://newsletter.semianalysis.com/p/openai-jalapeno-better-than-nvidia">OpenAI Jalapeño: Better Than Nvidia Blackwell (SemiAnalysis)</a>
+- <a href="https://www.servethehome.com/openai-jalapeno-asic-at-hot-chips-2026/">OpenAI Jalapeno Custom AI ASIC at Hot Chips 2026 (ServeTheHome)</a>
+- <a href="https://morethanmoore.substack.com/p/interview-with-richard-ho-openai">Interview with Richard Ho, OpenAI (More Than Moore)</a>
+- <a href="https://techcrunch.com/2026/08/25/openais-jalapeno-chip-is-built-for-fast-inference-at-scale-benchmarks-show/">OpenAI's Jalapeño chip is built for fast inference at scale (TechCrunch)</a>
+- <a href="https://www.theregister.com/systems/2026/08/25/openais-upcoming-jalapeno-chip-looks-like-itll-be-an-inference-beast/5292052">OpenAI's upcoming Jalapeño chip looks like it'll be an inference beast (The Register)</a>
+- <a href="https://momoview.com/blog/en/posts/celestica-cls-q2-2026-revenue-62-fy26-outlook-raised-to-20-5b/">Celestica Q2 2026 earnings summary (momoview)</a>
+- <a href="https://www.bitget.com/news/detail/12560605778957">Broadcom CEO says Jalapeno expected to deploy 1.3 GW in 2027 (Bitget)</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/09/09/broadcom-avgo-q3-2026-earnings-call-transcript/">Broadcom Q3 2026 Earnings Call Transcript (Motley Fool)</a>
+- <a href="https://nvidianews.nvidia.com/news/nvidia-unveils-vera-the-cpu-for-agents">NVIDIA Unveils Vera, the CPU for Agents (NVIDIA)</a>
+- <a href="https://openai.com/index/openai-nvidia-systems-partnership/">OpenAI and NVIDIA announce 10GW partnership (OpenAI)</a>
+- <a href="https://ir.amd.com/news-events/press-releases/detail/1260/amd-and-openai-announce-strategic-partnership-to-deploy-6-gigawatts-of-amd-gpus">AMD and OpenAI 6GW partnership (AMD IR)</a>
+- <a href="https://www.trendforce.com/news/2026/01/15/news-openai-reportedly-to-deploy-custom-ai-chip-on-tsmc-n3-by-end-2026-second-gen-planned-for-a16/">OpenAI reportedly to deploy custom chip on TSMC N3 by end-2026 (TrendForce)</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 台積電協助德州Terafab
+          <span class="takeaway">部分證實｜「正在討論」已獲 Musk 本人確認，但「協助營運」的具體形式、台積電官方立場與任何契約皆未證實，仍是單一獨家報導</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261003-2003@%E5%8F%B0%E7%A9%8D%E9%9B%BB%E5%8D%94%E5%8A%A9%E5%BE%B7%E5%B7%9ETerafab">2026-10-03 20:03 觀點彙整</a></p>
+          
+          <h2>深查：台積電協助德州 Terafab</h2>
+<p><strong>裁定</strong>：【部分證實】
+「正在討論」已獲 Musk 本人確認，但「協助營運」的具體形式、台積電官方立場與任何契約皆未證實，仍是單一獨家報導。</p>
+<p>細節上，整條敘事由三層疊成：Bloomberg 10/1 報導台積電評估德州園區、Culpium 10/2 獨家把德州園區與 Terafab 連結、Musk 10/3 回覆「只是討論」。只有第三層有可追溯的本人發言，前兩層都是匿名消息來源，台積電對兩者一律「不評論市場傳言」。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：原始出處是前 Bloomberg 專欄作家 Tim Culpan 的付費電子報 Culpium（2026-10-02），來源描述僅「my sources tell me」，未說明數量與身分，正文在付費牆內。台媒（經濟日報、中時、今周刊、ETtoday、動區）全數改寫自 Culpium 與 Bloomberg，不構成獨立來源。</p>
+<ul>
+<li>【事實｜2026-10-03】Musk 於台灣時間 10/3 早上在 X 回覆 @wholemars 轉貼報導的「Interesting if true」，原文為「Just discussions, but something may come of it」。X 原文因付費限制無法直接讀取，但 Culpium、經濟日報、TechFlow 三方轉述的措辭與時間一致。</li>
+<li>【傳聞｜2026-10-02】Culpium 稱台積電「探索協助 Terafab 營運其德州新廠」，並以 Terafab 為台積電未來德州園區的主要客戶。經濟日報轉述的兩種架構為：台積電持有並營運、SpaceX/Terafab 入股並保證訂單；或 Terafab 持多數股、台積電少量出資並提供技術與營運經驗。這些架構細節僅據轉述。</li>
+<li>【傳聞｜2026-10-02】Culpium 另稱「Terafab 與 Intel 的合作沒有進展」。查無 Intel 任何回應，Intel 於 2026-04-07 加入 Terafab 並承諾 14A 製程，此點目前只有單一來源。</li>
+<li>【機構估計｜2026-10-01】Bloomberg 引匿名人士稱台積電評估德州新園區，每座廠至少 200 億美元，規劃「仍在早期」，且取決於美國國會是否在年底前延長先進製造投資抵減。台積電回覆「對市場傳言不予評論」。</li>
+<li>【事實｜2026-08-06】德州州長新聞稿證實 SpaceX 為申請主體，Terafab 一期投資 168 億美元、3,000 個職缺、落腳 Grimes County，獲德州企業基金 3,000 萬美元與 JETI 資格。新聞稿未提及台積電或 Intel。Manufacturing Dive 另載 8 件 JETI 申請、郡政府 35 年減稅、一期 2028 年完工、全案最多四期合計 550 至 1,190 億美元。</li>
+<li>【事實｜2026-05】SpaceX S-1 招股書寫明 Terafab 與 Tesla 僅有「一般性框架」，「Tesla 與 Intel 均無義務留在專案內」，財務條款、智財權、時程與資本支出「尚未確定」。SEC 原檔過大無法載入，引文據 Electrek 與 Tom's Hardware 轉述。</li>
+<li>【事實｜2026-04-18】Musk 曾在 X 回應魏哲家「晶圓代工沒有捷徑」時表示，SpaceX/Tesla 永遠是台積電大客戶而非競爭者，自建只因「台積電產不出那麼多晶片」。這與本次合作傳聞方向一致，但不等於證實。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>對 TSM</strong>：若成真，台積電等於把 Terafab 從「客戶變對手」的風險轉回「客戶加合資方」，並由 Musk 體系分攤德州園區資本支出與訂單風險。反方觀點是台積電從未替他人營運晶圓廠，且德州園區投資本身尚繫於稅額抵減延長；在 Arizona 已承諾 2,650 億美元的情況下，再開一個州是重大資本決策，魏哲家至今公開態度僅是「祝福他」。</p>
+<p><strong>對 SPCX</strong>：S-1 已自承 Terafab 無定約、Intel 不受約束。若台積電接手營運，Terafab 可信度大幅上升，但也意味 SpaceX 招股書中「垂直整合自製」敘事會變成「委由台積電營運」，75% 晶片供軌道資料中心的時程仍無人背書。</p>
+<p><strong>對 Intel</strong>：Culpium 的「停滯」說若屬實，14A 失去最受矚目的外部宣示客戶，但此點為單一來源。Intel 財務長 9 月已表示代工損益兩平可能延至 2028 年底，市場本就未把 Terafab 計為真正訂單。</p>
+<p><strong>市場解讀失真處</strong>：BofA 3 月已認定 Terafab 對台積電影響有限，建 10 萬片月產能需逾 600 億美元、最快 2029 量產；Mark LaPedus 給出「八成不會成真」。本週敘事從「Terafab 威脅台積電」翻成「台積電拯救 Terafab」，兩種極端都建立在同一組未定約的事實上。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-16 台積電第三季法說</strong>：若魏哲家被問及德州或 Terafab 時改口承認評估，升級為【證實】；若重申「不評論」且資本支出指引未含新州，維持現狀。</li>
+<li><strong>2026 年底前美國國會稅額抵減延長案</strong>：未延長則 Bloomberg 的德州園區前提動搖，Terafab 合作也隨之降級。</li>
+<li><strong>2026-12-01 Terafab 德州申報的動工日</strong>：動工文件若出現台積電相關主體或營運協議，可直接驗證；若仍只有 SpaceX 與 Intel，Culpium 說法弱化。</li>
+<li><strong>SpaceX S-1 後續修訂</strong>：任何 amendment 若新增台積電條款或刪除 Intel，是最強一手證據。</li>
+<li><strong>Intel 第三季財報（10 月下旬）</strong>：管理層對 Terafab 與 14A 客戶的措辭變化，可驗證「停滯」傳聞。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>Culpium 為單一獨家且正文付費，兩種合作架構與 Intel 停滯均「僅據轉述，無法取得原文」。</li>
+<li>Musk 的 X 原貼文無法直接讀取，靠三方轉述交叉確認措辭。</li>
+<li>台媒出現「台積電德州第二園區」等標題，但 Bloomberg 原報導並未把德州園區與 Terafab 連結，連結是 Culpium 加上的，兩則報導被台媒合併成一則。</li>
+<li>10/3 為週六，台股休市，網上流傳的「台積電漲 45 元收 2,425 元」是 9 月中與 6 月的舊聞，與本議題無關。</li>
+<li>數據分歧：Terafab 總投資在 250 億（3 月宣布）、168 億（8 月一期）、550 至 1,190 億（申報四期）之間，取決於口徑。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.culpium.com/p/exclusive-tsmc-exploring-plans-to">Culpium: Exclusive: TSMC Exploring Plans to Work With Elon Musk's Terafab</a>
+- <a href="https://www.culpium.com/p/elon-musk-confirms-tsmc-terafab-talks">Culpium: Elon Musk Confirms TSMC-Terafab Talks</a>
+- <a href="https://finance.yahoo.com/technology/articles/tsmc-mulls-multibillion-dollar-chip-135354924.html">Yahoo Finance/Bloomberg: TSMC mulls multibillion-dollar chip manufacturing campus in Texas</a>
+- <a href="https://gov.texas.gov/news/post/governor-abbott-announces-spacex-expansion-in-grimes-county">Governor Abbott Announces SpaceX Expansion In Grimes County</a>
+- <a href="https://www.manufacturingdive.com/news/spacex-to-invest-16b-first-phase-terafab-project-grimes-county-texas/827422/">Manufacturing Dive: SpaceX to invest $16.8B on first phase of Terafab project</a>
+- <a href="https://electrek.co/2026/05/20/spacex-s1-tesla-terafab-macrohard-not-done-deal/">Electrek: SpaceX S-1 reveals Tesla's Terafab deal is far from done</a>
+- <a href="https://electrek.co/2026/08/06/tesla-spacex-terafab-grimes-county-16-8-billion/">Electrek: Tesla, SpaceX confirm 'Terafab' chip fab site — $16.8B first phase</a>
+- <a href="https://en.wikipedia.org/wiki/Terafab">Wikipedia: Terafab</a>
+- <a href="https://udn.com/news/story/6811/9792685">經濟日報：傳台積電正評估與Terafab合作在德州設廠 馬斯克回應了</a>
+- <a href="https://www.blocktempo.com/tsmc-explores-musk-terafab-partnership-culpium-texas-fab-anchor-client/">動區：台積電傳出「積極探索」合作馬斯克 Terafab 晶片廠！英特爾反而無進展</a>
+- <a href="https://www.businesstoday.com.tw/article/category/183025/post/202610030008/">今周刊：台積電德州第二園區傳和馬斯克Terafab合作？</a>
+- <a href="https://www.techflowpost.com/en-US/newsletter/138736">TechFlow: Musk Responds to Terafab and TSMC Collaboration</a>
+- <a href="https://www.knews.com.tw/news/DE1B5F082FD07ACA151FFD9A2E7A0B5D">知新聞：魏哲家評論馬斯克造晶圓「無捷徑」 釣出本人回應</a>
+- <a href="https://www.investing.com/news/economy-news/musks-terafab-plans-seen-having-limited-impact-on-tsmc-4586516">Investing.com: Musk's Terafab plans seen having limited impact on TSMC (BofA)</a>
+- <a href="https://marklapedus.substack.com/p/musks-terafab-is-it-real-or-not">Semiecosystem: Musk's Terafab: Is It Real Or Not?</a>
+- <a href="https://www.tikr.com/blog/intel-stock-fell-nearly-6-in-a-day-heres-the-foundry-deadline-that-matters-more">TIKR: Intel Stock Fell Nearly 6% in a Day. Here's the Foundry Deadline That Matters More</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Google太空TPU實測
+          <span class="takeaway">部分證實｜發射與 TPU 在軌測試屬實，但 SpaceX 只是搭便車的發射商，衛星由 Planet 建造；這是 1 千瓦等級、每次僅能運算約 15 分鐘的元件存活測試，與「商業算力」無關</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261003-2003@Google%E5%A4%AA%E7%A9%BATPU%E5%AF%A6%E6%B8%AC">2026-10-03 20:03 觀點彙整</a></p>
+          
+          <h2>深查：Google太空TPU實測</h2>
+<p><strong>裁定</strong>：【部分證實】發射與 TPU 在軌測試屬實，但 SpaceX 只是搭便車的發射商，衛星由 Planet 建造；這是 1 千瓦等級、每次僅能運算約 15 分鐘的元件存活測試，與「商業算力」無關。</p>
+<p>細節：「4 顆」這個數字在 Google 兩篇官方部落格與 Planet 新聞稿中均未載明，只見於 NPR、CNBC、CNN、Space.com 等媒體對 Google 9/24 媒體簡報的轉述；Google 官方文件僅說「我們的 TPU」。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【事實】2026-10-01 美東 14:32，Falcon 9 自 Vandenberg 執行 Transporter-18 共乘任務，共 130 個酬載。Google 官方部落格（作者 Travis Beals）同日確認已與衛星建立聯繫、運作正常。Planet Labs 同日新聞稿獨立證實，該衛星與 Tanager-2、18 顆 SuperDove 同批升空，由 Planet 建造並負責初期調試。</li>
+<li>【事實】Google 定位為「長期研究 moonshot」，未來數週蒐集 TPU 承受發射震動、輻射與溫差的資料；9/24 官方文章稱 2027 年將發射兩顆衛星測試雷射鏈路。</li>
+<li>【傳聞】「4 顆 Trillium TPU、約 1 kW 太陽能、衛星代號 MVP、每次運算約 15 分鐘後需停機散熱、任務期約一年」：多家主流媒體一致報導，來源指向 Google 9/24 簡報，但我無法取得任何載明數量的一手文件（CNBC 403、NPR 逾時、CNN 451）。</li>
+<li>【事實】2025-11-04 Google Research 原始文章：Trillium 以 67MeV 質子束測試，HBM 在 2 krad(Si) 後出現異常（約為五年任務劑量 750 rad 的三倍），15 krad 內無永久失效；構想為 650 km 高度、81 顆衛星、半徑 1 km 叢集；經濟性前提是 2030 年代中期發射成本降至 200 美元/公斤以下。</li>
+<li>【事實】Google 高層對投資人明言「未來幾年內不會有任何實際可用的運作系統」（Motley Fool 引述）。</li>
+<li>【事實】SpaceX 並非合作方而是潛在競爭者：2026-06 公布自家 Starmind AI1 衛星，峰值 150 kW、晶片供應商可替換，兩顆原型預定 2027 年初、Bastrop 工廠 2027 年底量產。Starcloud 更早於 2025-11 把 Nvidia H100 送上軌道並訓練模型。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>GOOG</strong>：純研發支出，對財報與資本支出無意義；市場若據此推估「太空資料中心商業化」屬過度外推。實際獲益是技術選擇權與人才敘事。</li>
+<li><strong>SPCX</strong>：真正的結構性受益者。無論誰做軌道算力，發射需求與「200 美元/公斤」的成本目標都繫於 Starship；且 SpaceX 自家 Starmind 功率是 Google MVP 的約 150 倍。「Google 與 SpaceX 合作」的敘事失真。</li>
+<li><strong>AVGO / TSM</strong>：Trillium 由 Broadcom 協同設計、台積電代工，但 4 顆晶片對出貨為零影響。反而 Google 輻射數據顯示 HBM 是最脆弱環節，對 <strong>MU</strong> 是長期技術議題而非訂單。</li>
+<li><strong>PL（Planet Labs，清單外）</strong>：最直接的近期受益者，衛星建造方且握有 2027 年雙星任務；股價已反應，但新聞稿未揭露合約金額。</li>
+<li><strong>反方觀點</strong>：Neil deGrasse Tyson 稱軌道資料中心是「失敗的商業模式」；Jonathan McDowell 認為時程「樂觀到不切實際」並點出高汰換率硬體再入大氣的風險；Moriba Jah 警告 Kessler 效應；Gartner 分析師稱之「空中樓閣」。散熱而非輻射才是瓶頸，15 分鐘運算週期即為證據。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>未來數週</strong>：Google 部落格公布在軌 TPU 數據。若證實 15 分鐘熱循環或出現 HBM 錯誤，將強化「元件測試」定位；若能持續運算，略為升級。</li>
+<li><strong>2026-10 下旬 Alphabet 財報會</strong>：Suncatcher 是否進入資本支出討論。預期不會，若出現則重估。</li>
+<li><strong>2026-12 Planet Labs 財報</strong>：是否揭露 Suncatcher 合約收入與 2027 雙星時程。</li>
+<li><strong>2027 年初</strong>：SpaceX Starmind AI1 原型是否如期升空，決定「誰領先軌道算力」。</li>
+<li><strong>2027 年</strong>：Google 雙星雷射鏈路測試，是從單機存活走向叢集的關鍵門檻。</li>
+<li><strong>Starship 商業報價</strong>：持續對照 200 美元/公斤門檻。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「4 顆 TPU、1 kW、15 分鐘、一年任務」皆為媒體轉述 Google 簡報，無一手書面文件；多數二線網站（tech-insider、cellcog 等）互相改寫，不構成獨立來源。</li>
+<li>CNBC、CNN、NPR、DCD 原文無法取得，僅據搜尋摘錄。</li>
+<li>Google 10/1 部落格提及論文已刊於 <em>Joule</em>，本次未取得全文。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-prototype/">Google's Project Suncatcher prototype satellite is in orbit</a>
+- <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/google-project-suncatcher-facts/">Learn about Google's Project Suncatcher</a>
+- <a href="https://research.google/blog/exploring-a-space-based-scalable-ai-infrastructure-system-design/">Exploring a space-based, scalable AI infrastructure system design</a>
+- <a href="https://www.stocktitan.net/news/PL/planet-launches-suncatcher-tanager-2-and-18-super-dove-s3on34tpzo6r.html">Planet Launches Suncatcher, Tanager-2, and 18 SuperDove Satellites</a>
+- <a href="https://www.satellitetoday.com/launch/2026/10/01/the-first-mission-milestones-onboard-spacexs-transporter-18-rideshare-launch/">The First Mission Milestones Onboard SpaceX's Transporter-18</a>
+- <a href="https://www.cnbc.com/2026/10/01/spacex-to-launch-google-ai-chips-to-orbit-with-planet-labs-satellites.html">SpaceX launches Google AI chips into orbit (CNBC)</a>
+- <a href="https://www.npr.org/2026/10/01/nx-s1-5983697/project-suncatcher-google-ai-data-center-space">Google launches Project Suncatcher (NPR)</a>
+- <a href="https://www.techtimes.com/articles/328482/20261002/google-project-suncatcher-reaches-orbit-cooling-not-radiation-now-defines-mission.htm">Google Project Suncatcher Reaches Orbit; Cooling, Not Radiation (TechTimes)</a>
+- <a href="https://www.fool.com/investing/2026/09/24/google-is-taking-a-major-step-forward-toward-space-based-ai-data-centers/">Google Is Taking a Major Step Toward Space-Based AI Data Centers (Motley Fool)</a>
+- <a href="https://finance.yahoo.com/sectors/technology/article/spacex-reveals-its-first-orbital-data-center-much-simpler-than-a-starlink-satellite-musk-says-141110185.html">SpaceX reveals its first orbital data center (Yahoo Finance)</a>
+- <a href="https://www.scientificamerican.com/article/googles-project-suncatcher-ai-data-center-test-has-officially-launched-to-space-aboard-spacex-rocket/">Google's Project Suncatcher test has launched (Scientific American)</a>
+- <a href="https://www.electronicsweekly.com/news/googles-suncatcher-aims-for-datacentres-in-space-with-tpu-moonshot-2026-09/">SunCatcher project aims for datacentres in space (Electronics Weekly)</a></p>
         </div>
       </details>
       
