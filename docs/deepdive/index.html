@@ -65,11 +65,196 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-08 20:48｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-09 08:47｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-10-09（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ Amazon尖峰斷電安排
+          <span class="takeaway">部分證實｜切斷機制真實存在且 Entergy 早在 2025 年 9 月就公開承認，但「新警告、Amazon 改線」僅有付費牆單一來源，且市場把「可中斷負載」誤讀成「算力受限」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261009-0802@Amazon%E5%B0%96%E5%B3%B0%E6%96%B7%E9%9B%BB%E5%AE%89%E6%8E%92">2026-10-09 08:02 觀點彙整</a></p>
+          
+          <h2>深查：Amazon 尖峰斷電安排（密西西比）</h2>
+<p><strong>裁定</strong>：【部分證實】
+切斷機制真實存在且 Entergy 早在 2025 年 9 月就公開承認，但「新警告、Amazon 改線」僅有付費牆單一來源，且市場把「可中斷負載」誤讀成「算力受限」。</p>
+<p>補充：宣稱中的「密西西比電力公司」實際是 <strong>Entergy Mississippi</strong>（Entergy 旗下），不是 Southern Company 旗下同名的 Mississippi Power，兩者是不同公司。本報告所有查證皆針對 Entergy Mississippi。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：原始出處是 The Information 2026-10-08 報導〈How Amazon Rewired Its Data Centers After Mississippi Power Warning〉（作者 Catherine Perloff），全文付費牆，只能看到標題。Crypto Briefing 等網站皆為改寫，不構成獨立來源。但「機制本身」有一手獨立佐證：Entergy Mississippi 執行長 Haley Fisackerly 在 2025-09-17 Mississippi Today 專訪中已承認此安排。</p>
+<ul>
+<li>【傳聞｜2026-10-08】Entergy「今年稍早」通知 Amazon 尖峰時段須將其資料中心踢出電網以保障其他用戶，Amazon 因此重新配置設施以避免服務中斷。僅據轉述與搜尋摘錄，無法取得原文；具體容量、時段、Amazon 改了什麼均不可知。</li>
+<li>【事實｜2025-09-17】Fisackerly 公開表示：「若出現容量短缺，資料中心會被切斷（curtailed），它們大概會改跑備援發電機，但這通常是非常短暫的期間。」並指出 AWS 現場用柴油備援，受環保法規限制運轉時數。此說法早於 The Information 報導一年，證明斷電條款是合約既有設計，不是新冒出的風險。（原文頁面多個鏡像均回傳 403，僅據搜尋摘錄。）</li>
+<li>【事實｜2026-05-30】Entergy 官方部落格：三座燃氣複循環機組 Delta Blues（2028 年 5 月）、Vicksburg（2028 年 8 月）、Traceview（2029 年 8 月）合計 2,100 MW、約 35 億美元。</li>
+<li>【機構估計｜2026-09-24】Distilled 報導引述：Amazon 密西西比負載 2027 年底達 1.5 GW。對照上一點，2026 至 2028 年新機組尚未上線，是供需最緊的窗口，這正是切斷條款會被啟用的期間。</li>
+<li>【事實｜2024 年立法】SB 2001 使 Entergy 與 AWS 合約免受公用事業委員會（PSC）審查並保密。Earthjustice 2026-05-28 報告與 Mississippi Free Press 2026-08-11 報導皆確認：合約僅揭露有最低帳單、年限與終止條款，數值不公開。因此「適用容量與時程」無法從官方文件驗證。</li>
+<li>【事實｜2026-10-03】Amazon 回應 TechCrunch 稱其資料中心發電機「99.9% 時間閒置，每年約運轉 10 小時，多為維護測試」。若尖峰切斷常態化，此說法與柴油機環保時數上限將出現張力。</li>
+</ul>
+<p><strong>裁定細節</strong>：查證支持「Entergy 可在容量短缺時切斷 AWS 市電、AWS 須自備備援」；不支持「這是新機制」，也無任何實際斷電事件的證據。</p>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>AMZN</strong>：這是典型的大負載「可中斷／非穩定供電」安排，常見於全美新資料中心併網談判。對 AWS 可用算力的影響取決於備援能否無縫接手，而非市電是否被切。真正的風險是 2026～2028 年密西西比新機組未上線期間，若 MISO 夏季尖峰多次觸發，柴油機運轉時數可能撞到環保上限，屆時 AWS 需要加裝電池或自建燃氣機組，資本支出上升但不影響需求。</li>
+<li><strong>NVDA、AMD、TSM</strong>：查證結果不構成 GPU 或先進製程需求下修的理由。密西西比只是 AWS 全球數十個區域之一，且 The Information 的標題本身說的是 Amazon「已重新配置」，意即問題正被解決而非惡化。「電力限制 AI 算力」的敘事在此案例被放大。</li>
+<li><strong>反方觀點</strong>：看空者會指出，Amazon 1.5 GW 負載先於 2.1 GW 新機組兩年到位，是電力確實成為 AI 擴張時程瓶頸的具體證據；若多州複製此模式，hyperscaler 的 2027 年算力上線時程可能延後，間接壓縮 GPU 出貨節奏。此論點有邏輯，但目前沒有任何一州出現實際斷電紀錄來佐證。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-30 前後 Amazon Q3 法說</strong>：若管理層提及密西西比或自備發電支出，可升級為【證實】；若完全不提，維持現狀。</li>
+<li><strong>2026 年 11 月初 Entergy Q3 法說</strong>：留意是否揭露密西西比大負載的可中斷容量或 MISO 容量採購變化。</li>
+<li><strong>2027 年 4 月 MISO 容量拍賣（PRA）結果</strong>：若 Entergy 南區容量價格飆升，表示短缺真實且切斷條款啟用機率上升。</li>
+<li><strong>2027 年夏季 MISO 最大發電警報（Max Gen）事件</strong>：若有媒體或 MDEQ 許可文件顯示 AWS 柴油機運轉時數異常，可推翻「影響極小」的判斷。</li>
+<li><strong>2028 年 5 月 Delta Blues 商轉</strong>：新機組上線後，切斷風險應顯著下降；若延期則風險窗口拉長。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱為 <strong>單一來源</strong>（The Information，付費牆），無法讀取原文，「Amazon 改線」的細節完全不明。</li>
+<li>Mississippi Today 執行長專訪原文與所有鏡像站均回傳 403，引文僅據搜尋摘錄，但兩次獨立搜尋回傳相同文字，可信度中等偏高。</li>
+<li>合約受 SB 2001 保密，適用容量、觸發條件、補償條款均無法驗證。</li>
+<li>Entergy 2,100 MW（官方）與 Distilled 引述的 2.3 GW 存在數據分歧，本報告採官方數字。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theinformation.com/articles/amazon-rewired-data-centers-mississippi-power-warning">How Amazon Rewired Its Data Centers After Mississippi Power Warning — The Information</a>
+- <a href="https://cryptobriefing.com/mississippi-utility-warns-aws-of-potential-disconnection-during-peak-demand/">Mississippi utility warns AWS of potential disconnection during peak demand — Crypto Briefing</a>
+- <a href="https://mississippitoday.org/2025/09/17/entergy-mississippi-ceo-fisackerly-answers-questions-on-data-centers-and-electricity-rates/">Entergy Mississippi CEO Fisackerly answers questions on data centers and electricity rates — Mississippi Today</a>
+- <a href="https://www.entergy.com/blog/were-investing-now-to-power-mississippis-energy-future">We're investing now to power Mississippi's energy future — Entergy</a>
+- <a href="https://www.powermag.com/entergy-mississippi-adding-third-gas-fired-power-plant-to-superpower-strategy/">Entergy Mississippi Adding Third Gas-Fired Power Plant to 'Superpower' Strategy — POWER Magazine</a>
+- <a href="https://www.distilled.earth/p/eight-new-gas-plants-will-power-amazons">Eight New Gas Plants Will Power Amazon's Next Wave of Data Centers — Distilled</a>
+- <a href="https://earthjustice.org/feature/data-center-mississippi-report">Mississippi "Data Center Giveaway Law" Leaves Residents in the Dark — Earthjustice</a>
+- <a href="https://www.mississippifreepress.org/entergy-says-amazon-data-centers-will-help-mississippians-save-on-power-some-experts-fear-otherwise/">Entergy Says Data Centers Will Help Mississippians Save on Power. Experts Say Otherwise. — Mississippi Free Press</a>
+- <a href="https://techcrunch.com/2026/10/03/amazon-responds-to-data-center-backlash-says-it-no-longer-uses-ndas">Amazon responds to data center backlash, says it no longer uses NDAs — TechCrunch</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ NVIDIA擬投資d-Matrix
+          <span class="takeaway">部分證實｜d-Matrix 加入 NVLink Fusion 是官方公告的事實；「NVIDIA 投資」則僅有 The Information 單一匿名來源，雙方皆未確認，金額與條件不明</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261009-0802@NVIDIA%E6%93%AC%E6%8A%95%E8%B3%87d-Matrix">2026-10-09 08:02 觀點彙整</a></p>
+          
+          <h2>深查：NVIDIA 擬投資 d-Matrix</h2>
+<p><strong>裁定</strong>：【部分證實】
+d-Matrix 加入 NVLink Fusion 是官方公告的事實；「NVIDIA 投資」則僅有 The Information 單一匿名來源，雙方皆未確認，金額與條件不明。</p>
+<p>宣稱其實是兩件事拼在一起。前半段（NVLink Fusion）已於 2026-09-10 由 d-Matrix 官方新聞稿證實，黃仁勳具名引述；後半段（投資）是 2026-10-08 晚間 The Information 的獨家報導，全球所有後續報導（Reuters 快訊、Investing.com、Newsquawk、GuruFocus、鏈捕手）皆轉引同一來源，不構成獨立交叉驗證。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【事實｜2026-09-10】d-Matrix 官網新聞稿：成為「NVIDIA NVLink Fusion partner」，下一代 Raptor XPU 將整合進 NVIDIA MGX 機架參考架構（含 Vera CPU、NVLink 交換器、BlueField-4、ConnectX-9、Spectrum-X、Astera Labs 連接方案）。Raptor 預計 2026 年底前 tape-out，MGX 機架版 2027 年第四季初步供貨。新聞稿全文未提及任何投資、股權或資金安排。Reuters、Bloomberg 當日獨立報導（官網列出，Reuters 原文無法讀取）。</li>
+<li>【傳聞｜2026-10-08】The Information（Phoebe Liu、Valida Pau）報導 NVIDIA「計畫」投資 d-Matrix，引述「三位知情人士」，明言「財務條款尚不清楚」。原文付費牆，僅據 Investing.com 與 Newsquawk 轉述。Newsquawk 稱為少數股權，並註明「單一媒體報導，待雙方正式確認」。未找到 NVIDIA 或 d-Matrix 任何回應，連「拒絕評論」都沒有。</li>
+<li>【傳聞｜待釐清】部分中文整理稿把「NVIDIA 承諾五年投資 10 億美元」掛在 d-Matrix 新聞旁。查證結果：那是 NVIDIA 2026-10-08 官方新聞稿宣布的「五年 10 億美元支持美國科學研究」承諾，與 d-Matrix 無關。切勿混用。</li>
+<li>【事實｜2025-11-12】d-Matrix C 輪募資 2.75 億美元，估值 20 億美元，由 Bullhound、Triatomic、Temasek 領投，微軟 M12、QIA 等參與。</li>
+<li>【機構估計｜2026-07-14】The Information 報導 d-Matrix 洽談新一輪募資「數億美元」，目標估值至少 50 億美元。NVIDIA 若投資，合理推測是加入這一輪，但目前無文件證實。</li>
+<li>【事實｜2026-09-01】先例：NVIDIA 認購聯發科 35 億美元可轉債（五年期、零票息、轉換價溢價 15%），綁定 NVLink Fusion 客製 XPU 與十年路線圖。這是「投資＋平台整合」模式的已證實樣板。</li>
+<li>【事實｜2025-12-24】NVIDIA 以約 200 億美元非獨家授權 Groq 推論技術，核心團隊併入 NVIDIA。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：挑題理由方向正確但證據仍弱。已證實的部分已足以說明策略：即使 d-Matrix 搶到推論訂單，機架內的 CPU、NVLink 交換器、DPU、網卡、乙太網路仍是 NVIDIA 貨。ServeTheHome 直指這同時把 AMD、Intel、Qualcomm、Arm 擋在這類機架之外。反方（24/7 Wall St，2026-09-16）：若 Raptor 每 token 效率真高出數倍，超大規模雲端可能把推論搬離 NVIDIA GPU、只留互連，單機架營收反而縮水。</p>
+<p><strong>AMD</strong>：最直接的受害方。NVLink Fusion 每多一個推論晶片夥伴，AMD 以「開放生態」切入推論市場的敘事就弱一分。</p>
+<p><strong>TSM</strong>：無論投資是否成真都受益。Corsair 已在 TSMC N6 量產（Alchip 協作），Raptor 採 TSMC N4 邏輯晶粒疊 3D DRAM，加上 Vera CPU 與整套 NVIDIA 網通晶片，整個機架都是台積電製程。</p>
+<p><strong>MU</strong>：需留意但勿過度反應。Raptor 在 Hot Chips 2026 明確定位為「HBM 替代方案」，宣稱頻寬密度 20 倍、功耗效率 13.5 倍。然而 2027 年第四季才出貨、產量極小、DRAM 晶粒供應商未公開，對 HBM 需求的實質影響在可見期內趨近於零。MoneyDJ（2026-09-11）反方觀點：先進封裝、HBM/DRAM 供給與測試產能才是瓶頸，雲端業者優先自研 ASIC，d-Matrix 接入 NVLink Fusion「有助打開對話空間」但未必換到實際配置。</p>
+<p>市場解讀失真處：投資尚未確認就被當成已簽約，且金額被張冠李戴。真正有價值的訊號是已證實的模式（聯發科、Groq、d-Matrix），而非這一筆的金額。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>NVIDIA 或 d-Matrix 正式公告</strong>：出現新聞稿或 d-Matrix 新一輪募資（估值、NVIDIA 持股比例、是否附帶產品承諾）即可升級為【證實】。若長期沉默或否認，降為【查證不支持】。</li>
+<li><strong>2026 年底 Raptor tape-out</strong>：d-Matrix 是否如期宣布，是技術路線可信度的第一道關卡。</li>
+<li><strong>NVIDIA 下一季 10-Q（2026 年 11 月）</strong>：非上市股權投資明細若新增推論晶片新創，可側面佐證。</li>
+<li><strong>2027 年第四季 MGX 機架供貨</strong>：有無超大規模雲端或新雲業者具名採用，決定對 AMD 與 MU 的影響是敘事還是實質。</li>
+<li><strong>NVIDIA 法說會</strong>：管理層是否把 NVLink Fusion 夥伴投資講成系統性策略。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>投資宣稱為單一來源（The Information），原文付費牆，僅據轉述與摘錄。所有其他媒體皆為轉引，不應視為多方證實。</li>
+<li>HPCwire、GuruFocus、CNBC 原文無法讀取（403），Reuters 無法存取；相關內容以 d-Matrix 官網與其他可讀來源替代。</li>
+<li>「五年 10 億美元」為不同新聞的誤植，本報告已排除。</li>
+<li>Raptor 的 DRAM 晶粒供應商與封裝夥伴未公開，對 MU 的推論屬方向性判斷。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.d-matrix.ai/announcements/d-matrix-rackscale-nvidia/">d-Matrix Adopts NVIDIA NVLink Fusion Rackscale Infrastructure（d-Matrix 官方新聞稿）</a>
+- <a href="https://www.d-matrix.ai/newsroom/">d-Matrix Newsroom</a>
+- <a href="https://theinformation.com/articles/nvidia-invest-chip-rival-d-matrix-challengers-choose-partnership">Nvidia to Invest in Chip Rival d-Matrix — The Information</a>
+- <a href="https://www.investing.com/news/stock-market-news/nvidia-plans-to-invest-in-ai-chip-rival-dmatrix-the-information-93CH-4940033">Nvidia plans to invest in AI chip rival d-Matrix — Investing.com</a>
+- <a href="https://www.newsquawk.com/headlines/nvidia-nvda-plans-to-invest-in-cgip-competitor-d-matrix-according-to-the-information">Nvidia plans to invest in chip competitor d-Matrix — Newsquawk</a>
+- <a href="https://www.chaincatcher.com/en/article/2295037">NVIDIA will invest in chip competitor DMatrix — ChainCatcher</a>
+- <a href="https://nvidianews.nvidia.com/news/nvidia-commits-1-billion-to-advance-us-science-over-the-next-five-years">NVIDIA Commits $1 Billion to Advance US Science Over the Next Five Years — NVIDIA Newsroom</a>
+- <a href="https://www.investing.com/news/stock-market-news/ai-chip-startups-furiosaai-nuvacore-dmatrix-pursue-major-funding-rounds-at-higher-valuations-the-information-93CH-4792130">AI chip startups FuriosaAI, Nuvacore, d-Matrix pursue major funding rounds — Investing.com</a>
+- <a href="https://www.datacenterdynamics.com/en/news/chip-startup-d-matrix-raises-275m-against-2bn-valuation/">Chip startup d-Matrix raises $275m against $2bn valuation — DCD</a>
+- <a href="https://www.servethehome.com/d-matrix-joins-the-nvidia-nvlink-fusion-platform/">d-Matrix Joins the NVIDIA NVLink Fusion Platform — ServeTheHome</a>
+- <a href="https://www.servethehome.com/d-matrix-raptor-3d-dram-accelerator-for-generative-inference-at-hot-chips-2026/">d-Matrix Raptor 3D-DRAM Accelerator at Hot Chips 2026 — ServeTheHome</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/nvidia-just-invited-rival-chipmaker-174532438.html">Nvidia Just Invited a Rival Chipmaker Into Its Own Racks — Yahoo Finance / 24/7 Wall St.</a>
+- <a href="https://www.ctee.com.tw/news/20260901700053-439901">台灣首例！輝達「準入股」聯發科揭十年產品路線圖 — 工商時報</a>
+- <a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=0268b48d-f019-465d-aa3c-18cdee1acc3b">d‑Matrix接入NVLink Fusion，是快速打入資料中心的捷徑？ — MoneyDJ</a>
+- <a href="https://www.cnbc.com/2025/12/24/nvidia-buying-ai-chip-startup-groq-for-about-20-billion-biggest-deal.html">Nvidia buying AI chip startup Groq's assets for about $20 billion — CNBC</a>
+- <a href="https://www.tradingview.com/news/reuters.com,2026:newsml_FWN45U238:0-nvidia-to-invest-in-chip-rival-d-matrix-the-information/">Nvidia To Invest In Chip Rival D-Matrix — Reuters via TradingView</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Samsung D0a採晶圓對晶圓鍵合
+          <span class="takeaway">部分證實｜W2W鍵合用於D0a有技術會議與多方佐證；但「路線圖改組、約兩年商用」僅出自單一韓媒業界消息，三星未證實</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261009-0802@Samsung%20D0a%E6%8E%A1%E6%99%B6%E5%9C%93%E5%B0%8D%E6%99%B6%E5%9C%93%E9%8D%B5%E5%90%88">2026-10-09 08:02 觀點彙整</a></p>
+          
+          <h2>深查：Samsung D0a採晶圓對晶圓鍵合</h2>
+<p><strong>裁定</strong>：【部分證實】
+W2W鍵合用於D0a有技術會議與多方佐證；但「路線圖改組、約兩年商用」僅出自單一韓媒業界消息，三星未證實。</p>
+<p>裁定細節：宣稱的技術核心（cell與peri分別製於兩片晶圓、以W2W混合銅鍵合接合）早在2026年2月ISSCC三星論文與4月The Elec獨家報導中就已出現，並非9月才有的新方向。9月ZDNet Korea的新資訊是「以不含VCT的B1b取代VCT版本成為D0a基線，VCT降為D0a-V」，此點目前只有一個原始來源。「約兩年」與先前The Elec報導的2028年量產目標一致，但屬業界估計，量產投資尚未拍板。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：DigiTimes 9/24與9/29兩篇、sammyfans、X平台轉述，全部回溯到ZDNet Korea 2026-09-23報導。該報導引述「業界知情人士」，明確無三星官方回應。DigiTimes兩篇付費牆，僅讀到導言。</p>
+<ul>
+<li>【事實】2026-02 ISSCC：三星發表16Gb 4F² VCT DRAM，核心/周邊電路與陣列分置不同晶圓，以W2W混合銅鍵合接合。原始論文未取得，依semiwiki技術討論串轉述。討論串版主並註記「4F²量產在2029-2030，不會更早」。</li>
+<li>【傳聞】2026-04-24 The Elec獨家：三星3月以10a製程產出working die，首次採4F²與VCT，周邊電路在另一片晶圓以W2W混合鍵合接合（PUC）；2026完成開發、2027品質測試、2028轉量產線。業界消息，未經三星證實。</li>
+<li>【傳聞】2026-09-23 ZDNet Korea：B1b納入正式路線圖並命名D0a，VCT改稱D0a-V並降低優先序；「設計上B1b商用門檻較低」；最快約兩年商用，量產投資預計2027年中決定；三星正評估將B1b用於2029年量產的HBM5。單一來源。</li>
+<li>【事實】2025-06-10 SK hynix官方新聞稿：10nm以下世代將採4F² VG平台與「電路置於cell下方的晶圓鍵合」。顯示cell-on-peri鍵合是兩大韓廠的共同方向，非三星獨有。</li>
+<li>【事實】2025-12-22 三星newsroom訪談（經EBN轉述，原文抓取逾時）：DRAM研發主管稱晶圓鍵合是3D結構的基礎技術，未給時程。</li>
+<li>【傳聞】2026-07-07與07-22 TrendForce轉述韓媒：三星與SK hynix重新評估HBM混合鍵合時程，16-high HBM4E為最早可能採用點；三星平澤將建約50台D2W混合鍵合機產線，BESI為主要供應商、SEMES與Hanwha備選，全面量產看2029-2030。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>市場敘事的失真點</strong>：挑題理由認為此事「與短期混合鍵合敘事相反」，但兩者其實是不同東西。HBM用的是D2W（die對wafer）鍵合，用來堆疊DRAM die；D0a用的是W2W（wafer對wafer）鍵合，用來把cell晶圓貼到peri晶圓上。前者設備商是BESI、Hanmi、SEMES；後者走EVG、SUSS、Applied Materials等前段鍵合路線。D0a消息不推翻、也不加速HBM混合鍵合，HBM的D2W時程自7月起就已被韓媒報導延後至2029-2030。</p>
+<p><strong>MU</strong>：三星首款10nm以下DRAM最快2028年，2026-27年Micron的1-gamma領先地位不受影響。若B1b如期，三星2028-29年可能在位元密度與HBM5基底die設計上扳回一城，屬中期競爭風險。Micron本身對sub-10nm的公開路線僅有DigiTimes 2025-10報導稱其考慮直接跳到9nm，未見晶圓鍵合DRAM公開說法。</p>
+<p><strong>NVDA、AMD</strong>：HBM5約2029年，2026-27年HBM4/HBM4E供給結構不變。三星放棄VCT作為首發節點，反而是降低技術風險的保守選擇，有助三星準時供應下一代HBM，長期對GPU廠的HBM採購議價有利。</p>
+<p><strong>TSM</strong>：無直接影響。W2W鍵合在記憶體廠內部完成，不經過CoWoS。</p>
+<p><strong>反方觀點</strong>：兩片晶圓做一顆die，晶圓成本上升，密度增益要能覆蓋鍵合與良率成本才划算；ZDNet報導本身就說投資決策要等2027年中，代表經濟性尚未確定。semiwiki技術討論也認為4F²量產要到2029-2030，比「兩年」更保守。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026年10月底三星Q3法說：若提及D0a或sub-10nm時程，可將「路線圖改組」從傳聞升級為事實。</li>
+<li>2026-12 IEDM與2027-02 ISSCC：三星若發表不含VCT的cell-on-peri鍵合DRAM論文，即證實B1b為基線；若仍以VCT為主，則ZDNet報導可疑。</li>
+<li>2027年中：ZDNet稱量產投資將於此時決定；若無相關設備採購訊息（W2W鍵合機訂單），兩年時程應下修。</li>
+<li>2027年：The Elec稱的品質測試期；客戶送樣消息出現與否決定2028量產是否可信。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「路線圖改組、B1b/D0a-V命名、兩年商用、HBM5評估」全部為ZDNet Korea單一來源，所有英文轉述皆非獨立證實。</li>
+<li>DigiTimes兩篇為付費牆，僅據導言與摘錄。ISSCC論文原文未取得，依技術論壇轉述。三星newsroom原文抓取逾時，依EBN轉述。</li>
+<li>各來源時程有分歧：The Elec說2028量產、ZDNet說約兩年商用（約2028）、semiwiki討論說4F²量產2029-2030、Hankyung 2024年曾稱0a目標2027。以上皆非三星官方數字。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://zdnet.co.kr/view/?no=20260923090551">삼성전자, 차세대 D램 'D0a' 로드맵 수정…하이브리드 본딩 앞당긴다 - ZDNet Korea</a>
+- <a href="https://www.digitimes.com/news/a20260924VL206/samsung-dram-roadmap-technology-development.html">Samsung reportedly shifts sub-10nm DRAM roadmap toward hybrid bonding - DigiTimes</a>
+- <a href="https://www.digitimes.com/news/a20260929PD238/samsung-dram-roadmap-technology-development.html">Samsung reshuffles DRAM roadmap, prioritizing B1b hybrid bonding for D0a, HBM5 - DigiTimes</a>
+- <a href="https://semiwiki.com/forum/threads/isscc-2026-samsung-electronics-demonstrated-a-16gb-dram.24808/">ISSCC 2026 Samsung Electronics demonstrated a 16Gb DRAM - SemiWiki</a>
+- <a href="https://www.thelec.net/news/articleView.html?idxno=6808">Samsung Electronics Produces First Working Die on Sub-10nm DRAM Node - The Elec</a>
+- <a href="https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/">Samsung Reportedly Produces Sub-10nm 10a DRAM Working Die Using 4F Square, VCT, Targets 2028 Production - TrendForce</a>
+- <a href="https://www.trendforce.com/news/2026/07/07/news-samsung-sk-hynix-reportedly-reconsider-hybrid-bonding-timeline-16-high-hbm4e-may-be-earliest-adoption/">Samsung, SK hynix Reportedly Reconsider Hybrid Bonding Timeline - TrendForce</a>
+- <a href="https://www.trendforce.com/news/2026/07/22/news-samsung-reportedly-builds-hybrid-bonding-mass-production-line-full-scale-deployment-seen-in-2029-2030/">Samsung Reportedly Builds Hybrid Bonding Mass Production Line - TrendForce</a>
+- <a href="https://www.trendforce.com/news/2025/12/17/news-samsung-unveils-sub-10nm-dram-breakthrough-with-ingao-reportedly-eyes-0a0b-adoption/">Samsung Unveils Sub-10nm DRAM Breakthrough with InGaO - TrendForce</a>
+- <a href="https://news.skhynix.com/sk-hynix-presents-future-dram-technology-roadmap-at-ieee-vlsi-2025/">SK hynix Presents Roadmap for Future DRAM at IEEE VLSI 2025 - SK hynix Newsroom</a>
+- <a href="https://www.thelec.kr/news/articleView.html?idxno=28571">삼성·SK, 3D D램에도 하이브리드 본딩 적용한다 - The Elec</a>
+- <a href="https://www.ebn.co.kr/news/articleView.html?idxno=1692145">삼성전자, '웨이퍼 본딩'으로 3D D램 상용화 가속 - EBN</a>
+- <a href="https://www.digitimes.com/news/a20260805VL200/samsung-2026-nand-dram-3d.html">Samsung previews zHBM stacked-on-logic concept, 400-layer bonded NAND at FMS 2026 - DigiTimes</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-10-08（4 題）</summary>
     <div class="day-body">
       
