@@ -65,11 +65,204 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-13 20:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-14 08:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-10-14（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ 模型推論價格半年暴跌
+          <span class="takeaway">部分證實｜「同等能力半年 5.63→0.21 美元」查無原始時序資料，數字疑為不同模型、不同口徑的橫向對照拼接；但「固定能力下推論價格急跌」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261014-0803@%E6%A8%A1%E5%9E%8B%E6%8E%A8%E8%AB%96%E5%83%B9%E6%A0%BC%E5%8D%8A%E5%B9%B4%E6%9A%B4%E8%B7%8C">2026-10-14 08:03 觀點彙整</a></p>
+          
+          <h2>深查：模型推論價格半年暴跌</h2>
+<p><strong>裁定</strong>：【部分證實】
+「同等能力半年 5.63→0.21 美元」查無原始時序資料，數字疑為不同模型、不同口徑的橫向對照拼接；但「固定能力下推論價格急跌」的大方向有 Epoch AI 與 Silicon Data 兩個獨立來源支持。</p>
+<p>細節：5.63 美元可重現為 GPT-5.4 的混合價（輸入 2.50、輸出 15.00，按 3:1 加權得 5.625），出現在 Axis Intelligence 的統計頁；0.21 美元則對應 DeepSeek V3.1 在聚合平台上曾出現過的最低輸入價。兩者是不同模型、不同口徑（混合價 vs 單向輸入價），且 DeepSeek V3.1（2025 年 8 月發布）早於 GPT-5.4（2026 年 3 月發布），時間方向與「六個月內降價」相反。以可查到的資料，無法支持該宣稱的「同等能力」與「六個月」兩個條件。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【傳聞】「5.63→0.21」的組合：唯一含兩個數字的來源是 Axis Intelligence 的統計頁，該頁回傳 403 無法讀全文，僅據搜尋摘錄。摘錄顯示 GPT-5.4 在其表中標為「2026 年 1 月」，但 Artificial Analysis 記錄 GPT-5.4 發布日為 2026 年 3 月 5 日，該表日期本身有誤。</li>
+<li>【事實】GPT-5.4 定價 2.50／15.00 美元；Artificial Analysis 以 7:2:1（快取/輸入/輸出）算出的混合價是 2.17 美元，與 5.63 不同，顯示 5.63 用的是另一套加權。（2026-10 查）</li>
+<li>【事實】DeepSeek V3.1 目前最低價 0.25／0.95 美元，聚合平台記錄近 90 天最低輸入價由 0.21 升至 0.25，即 0.21 是歷史輸入價而非輸出價，且近期是漲不是跌。（2026-10 查）</li>
+<li>【機構估計】Epoch AI 2026 年 9 月 22 日報告《The plunging price of thought》：以固定基準分數的「每任務成本」衡量，2023 年起每季降 47%、約每年 13 倍，五項基準範圍為每季 39%～52%；模型剛達 SOTA 時最快，約每季 66%。換算六個月約降 3.6 倍，遠低於 5.63/0.21 隱含的 27 倍。作者自列警語：基準最佳化、用戶不會每季換模型、僅三年數據。</li>
+<li>【機構估計】Epoch AI 2025 年 3 月資料洞察：依任務不同，年降幅 9 倍到 900 倍；例如 GPQA Diamond 水準從 GPT-4（2023-03，37.50 美元）到 Phi 4（2024-12，0.12 美元）。</li>
+<li>【事實】Silicon Data 的 LLM 代幣支出指數（用量加權、涵蓋 320 餘模型）：5 月底 2.04 美元，9 月 1 日 0.97 美元，10 月 12 日仍為 0.97 美元。注意此指數反映「市場實際購買組合」的均價，不是固定能力價格，下跌含用戶轉向便宜模型的組合效應。</li>
+<li>【事實】DeepSeek 2026 年 10 月 5～10 日再將 V4 Flash／V4 Pro 全線砍半（V4 Pro 降至 0.66／1.98 美元），顯示降價仍在進行。</li>
+<li>【機構估計】高盛 Rich Privorotsky（經 21 經濟網轉述，無法取得原文）：OpenRouter 8 月代幣量月增 47%、美元支出僅增 7%，「需求增但價格跌，若營收增速落後成本增速，對 AI 基建投資是壞消息」。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>市場敘事哪裡失真</strong>：原宣稱把橫向價差誤讀為時間序列，誇大了降速約 7 倍。但即使以 Epoch 的 13 倍／年計，單位價格的縮減速度仍遠超過歷史上任何通用技術，雲端 AI 收入必須靠用量成長覆蓋。</p>
+<p><strong>三大雲端（MSFT、GOOG、AMZN）</strong>：目前用量確實在補位。Alphabet 2026 年第二季 Google Cloud 營收 247.7 億美元、年增 82%，營業利益由 28 億升至 88 億美元；Gemini API 每分鐘處理約 220 億代幣。微軟 FY26 第四季 Azure 年增 43%，Nadella 直言公司在「推進成本對產出曲線」。AWS AI 業務年化營收逾 250 億美元，Bedrock 代幣量爆增。這些數字顯示到 2026 年中，量增仍壓過價跌，毛利率沒有惡化反而擴張。真正的風險是 Silicon Data 指數 5～9 月腰斬後，第三季財報能否維持同樣的「量補價」。</p>
+<p><strong>NVDA、AMD</strong>：固定能力價格下跌有部分來自硬體世代效率（TokenCost 轉述 NVIDIA 估 A100 到 B200 每單位成本降約 10 倍），這是加速器廠的賣點而非威脅。但若雲端客戶被迫壓低推論成本，自研 ASIC（AVGO 代工的 TPU 等）與開源低價模型的份額會上升，對 NVDA 推論端定價權是中期壓力。</p>
+<p><strong>反方觀點</strong>：Epoch 同一報告指出，追求最前沿能力的買家成本反而每年漲 3～18 倍，因為推理模型耗用更多代幣；Epoch 作者也承認真實用戶不會每季換模型。Silicon Data 自述其指數「不代表任何客戶的實際帳單」。因此「毛利假設需重估」目前仍是推論，不是已發生的事。</p>
+<h3>可驳證節點</h3>
+<ul>
+<li><strong>2026-10 下旬～11 月初，Alphabet／微軟／Amazon 第三季財報</strong>：若雲端增速與營業利益率在代幣指數腰斬後仍擴張，反方觀點強化；若增速放緩且管理層提到定價壓力，本議題升級。</li>
+<li><strong>Silicon Data 指數</strong>：若跌破 0.80 美元且 OpenRouter 支出成長持續落後代幣量成長，顯示價跌開始侵蝕營收。</li>
+<li><strong>Epoch AI 下一次更新</strong>：若固定能力降速明顯高於每季 47%，可部分支持原宣稱方向（但仍非 5.63→0.21）。</li>
+<li><strong>NVIDIA 2026 年 11 月財報</strong>：資料中心推論占比與客戶對 ASIC 的轉移跡象。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>5.63 與 0.21 的來源頁（Axis Intelligence）無法取得全文，上述解讀基於搜尋摘錄與獨立價格資料反推；該頁對 GPT-5.4 標注的日期已確認有誤，整體可信度低。</li>
+<li>CNBC、CIO、Bloomberg 相關報導皆為付費牆或 403，Silicon Data 指數數值取自其官網與 21 經濟網轉述。</li>
+<li>高盛觀點為二手轉述，未見原始報告。</li>
+<li>Epoch 與 Silicon Data 口徑不同（每任務成本 vs 用量加權每代幣價），不可直接相減比較。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://epoch.ai/publications/the-plunging-price-of-thought">Epoch AI — The plunging price of thought</a>
+- <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI — LLM inference prices have fallen rapidly but unequally across tasks</a>
+- <a href="https://www.silicondata.com/products/silicon-index/llm-token-expenditure-index">Silicon Data — LLM Token Expenditure Index</a>
+- <a href="https://axis-intelligence.com/ai-inference-cost-statistics/">Axis Intelligence — AI Inference Cost Statistics 2026</a>
+- <a href="https://artificialanalysis.ai/models/gpt-5-4">Artificial Analysis — GPT-5.4 (xhigh)</a>
+- <a href="https://artificialanalysis.ai/models/deepseek-v3-1/providers">Artificial Analysis — DeepSeek V3.1 providers</a>
+- <a href="https://dev.to/adrasmussen/deepseek-cuts-prices-in-half-mid-week-this-week-in-llm-pricing-okd">DEV Community — DeepSeek Cuts Prices in Half Mid-Week</a>
+- <a href="https://www.21jingji.com/article/20260914/herald/384ee8c253d25b82588efbec5c31a196.html">21經濟網 — 三个月价格腰斩，大模型的"聪明"正在贬值？</a>
+- <a href="https://agentik.blog/p/ai-got-13x-cheaper-a-year-the-best-ai-got-more-expensive">agentik — AI Got 13x Cheaper a Year. The Best AI Got More Expensive.</a>
+- <a href="https://report-ai.org/indexes/ai-economics/llm-token-price-index/">Report AI — LLM Token Price Index 2026</a>
+- <a href="https://tokencost.app/blog/ai-price-index">TokenCost — AI Price Index</a>
+- <a href="https://www.microsoft.com/en-us/investor/earnings/fy-2026-q4/press-release-webcast">Microsoft FY26 Q4 Press Release</a>
+- <a href="https://futurumgroup.com/insights/alphabet-q2-fy-2026-google-cloud-leads-growth-amid-rising-ai-investment/">Futurum — Alphabet Q2 FY 2026</a>
+- <a href="https://aibusinessweekly.net/p/ai-token-prices-record-lows-inference-costs">AI Business Weekly — AI Token Prices Hit Record Lows</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 微軟啟動AI成本削減討論
+          <span class="takeaway">部分證實｜「Azure 部門研議省 20%」僅 The Information 單一來源且微軟否認；但官方指引顯示削的是營運費用與人力，資本支出仍在上修，「雲端客戶收緊支出」的敘事不成立</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261014-0803@%E5%BE%AE%E8%BB%9F%E5%95%9F%E5%8B%95AI%E6%88%90%E6%9C%AC%E5%89%8A%E6%B8%9B%E8%A8%8E%E8%AB%96">2026-10-14 08:03 觀點彙整</a></p>
+          
+          <h2>深查：微軟啟動AI成本削減討論</h2>
+<p><strong>裁定</strong>：【部分證實】
+「Azure 部門研議省 20%」僅 The Information 單一來源且微軟否認；但官方指引顯示削的是營運費用與人力，資本支出仍在上修，「雲端客戶收緊支出」的敘事不成立。</p>
+<p>裁定細節：宣稱中「資料中心重資本支出」與「AI 人才競爭」兩個動機，在微軟官方財務指引與近半年人事措施中都有佐證；但「內部討論削減成本」本身只有付費牆報導，微軟發言人直接否認有此指令。重點是：被討論的成本是 Azure 軟體團隊的 opex，不是對 NVDA/AMD/TSM 的採購。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：原始出處為 The Information 2026-10-13～14 的報導（作者 Kevin McLaughlin、Aaron Holmes），標題「Microsoft Cloud President Asks Leaders to Find 20% Cost Cuts」。全文在付費牆內，無法取得原文；Stocktwits、TradingView、Runtimewire、Cryptobriefing、GuruFocus 等全是改寫同一篇，不構成獨立來源。未找到 Bloomberg、Reuters、CNBC 的獨立確認。</p>
+<ul>
+<li>【傳聞｜2026-10-13】據轉述，Azure 核心軟體部門（約 11,500 人）總裁 Girish Bablani 要求主管提出至少 20% 的成本節省方案，目的是抵銷 AI 資料中心資本支出，並籌措留才加薪以對抗 Meta、Anthropic 挖角。注意：轉述間人名不一致，Cryptobriefing 與 Runtimewire 寫成 Cloud + AI 執行副總 Scott Guthrie，Stocktwits 寫成 Bablani；原報導標題只稱「Cloud President」。</li>
+<li>【事實｜2026-10-14】微軟發言人聲明：「Azure leadership has not directed teams to develop cost-cutting plans. Every responsible company prepares for a range of scenarios and market dynamics, both positive and negative.」這是否認「指令」存在，但未否認有情境規劃，措辭留有空間。</li>
+<li>【事實｜2026-07-29 法說】財務長 Amy Hood：Q4 FY26 資本支出 410 億美元，約三分之二為 CPU/GPU 等短壽命資產；「FY27 資本支出將年增」；Q1 FY27 資本支出「超過 500 億美元」；營運費用「中到高個位數成長」；全公司人數年減 2%。2026 曆年資本支出從 1,900 億下修至約 1,750 億，純屬租賃會計重分類，Hood 明言投資預期「不變」。</li>
+<li>【事實｜2026-09 SEC 8-K】FY27 分部重組簡報再次確認 Q1 資本支出「預期超過 500 億美元」。</li>
+<li>【事實｜2026-04-23】微軟對約 7% 美國員工提供自願優離（Bloomberg 報導內部備忘錄）；【事實｜2026-07/08】微軟對員工 AI token 用量設部門預算，執行副總 Jay Parikh 稱「tokenmaxxing 不是公司目標」（PCMag、404Media 兩家獨立報導）。</li>
+<li>【事實｜2026-10-12】微軟官方部落格（Guthrie 署名）宣布 Maia 300，採台積電 N2P、8 顆 HBM4，宣稱每百萬瓦 token 產出比領先 GPU 系統高 40%，2027 年起多 GW 部署並成為微軟產品的「主要推論系統」。</li>
+<li>【機構估計｜2026-10-13】Evercore ISI 估計 Maia 到 2027 年初僅占微軟 AI 晶片支出約 10%；分析師 Patrick Moorhead 指出 Maia 效能數據無外部驗證。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>市場解讀失真處</strong>：挑題理由假設「核心雲端客戶收緊支出」，但官方指引是資本支出年增、單季破 500 億美元、三分之二買晶片。即使 20% 節省為真，對象是 Azure 軟體部門的人事與營運費用，是為了「養得起」資本支出而擠出利潤，這反而是資本支出維持高檔的訊號，而非反轉。</p>
+<p><strong>對供應鏈的真實風險不在這則報導，而在 Maia</strong>。微軟明言 2027 年推論主力轉向自研晶片，受益者是 TSM（N2P 代工）與 HBM 供應商；AVGO 未被提及參與 Maia，需留意。NVDA 的曝險集中在推論份額，但微軟同時承諾繼續採購 NVDA 訓練用硬體並率先部署 Vera Rubin，Evercore 的 10% 估計也顯示 2027 年初替代幅度有限。10/13 MSFT 漲 1.14%、NVDA 跌 1.29%，市場已部分反映。</p>
+<p><strong>反方觀點</strong>：Newsquawk 的評論指出，這類措辭狹窄的否認在科技大廠歷史上常先於實際支出紀律；且微軟 4 月優離、7 月 token 預算、人數年減 2%，顯示 opex 緊縮是持續趨勢。若資本支出持續膨脹而 Azure 成長從 40% 以上放緩，管理層確實有壓力把成本壓力傳導到採購端，但目前無證據。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-28 Q1 FY27 財報</strong>：若資本支出確實超過 500 億美元且 FY27 年增指引維持，「收緊支出」敘事即被推翻；若 Hood 下修 FY27 資本支出或 Azure 成長低於約 45% 共識，本結論需升級為風險。</li>
+<li><strong>財報會上的營運費用與人數</strong>：若 opex 指引從中高個位數下修、或宣布 Azure 部門重組，將間接證實 The Information 報導。</li>
+<li><strong>The Information 後續或 Bloomberg/Reuters 跟進</strong>：出現第二個獨立來源或內部備忘錄原文，可將「傳聞」升級。</li>
+<li><strong>2027 年 Maia 300 量產與 NVDA 財報中雲端客戶集中度變化</strong>：驗證推論晶片替代幅度是否超過 Evercore 的 10% 估計。</li>
+<li><strong>TD Cowen 等機構的資料中心租約追蹤</strong>：若再出現如 2025 年 3 月那樣的 GW 級租約退出，才是真正的需求端反轉訊號。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱為單一來源（The Information），付費牆內，僅據轉述，無法取得原文；轉述間對發起人身分（Guthrie 或 Bablani）記載不一。</li>
+<li>多個網站（Stocktwits、TradingView、Asianet、GuruFocus）內容幾乎相同，屬同源改寫。</li>
+<li>網路上有「FY27 資本支出指引 2,550～2,600 億美元」的說法（valueaddvc），與官方法說紀錄「年增、Q1 超過 500 億」不符，未採用。</li>
+<li>Maia 300 效能數據皆為微軟自報，無第三方測試。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theinformation.com/articles/microsoft-cloud-president-asks-leaders-find-20-cost-cuts">Microsoft Cloud President Asks Leaders to Find 20% Cost Cuts — The Information</a>
+- <a href="https://www.tradingview.com/news/stocktwits:04d6c2a6f094b:0-microsoft-weighs-20-cost-cuts-in-azure-vertical-amid-soaring-ai-data-center-spending-report/">Microsoft Weighs 20% Cost Cuts In Azure Vertical — TradingView/Stocktwits</a>
+- <a href="https://runtimewire.com/article/microsoft-cloud-leaders-20-percent-cost-cuts">Microsoft's cloud chief asks leaders to find 20% in cost cuts — Runtimewire</a>
+- <a href="https://www.newsquawk.com/headlines/microsoft-msft-spokesperson-says-azure-leadership-has-not-directed-teams-to-develop-cost-cutting-plans">Microsoft spokesperson says Azure leadership has not directed teams to develop cost-cutting plans — Newsquawk</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/08/07/microsoft-msft-q4-2026-earnings-call-transcript/">Microsoft (MSFT) Q4 2026 Earnings Call Transcript — The Motley Fool</a>
+- <a href="https://www.cfodive.com/news/microsoft-holds-line-ai-spending-plans/826648/">Microsoft holds the line on AI spending plans — CFO Dive</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0000789019/000119312526380280/d291965dex991.htm">MICROSOFT CORP Form 8-K Exhibit 99.1 FY27 Segments and Investor Metrics — SEC</a>
+- <a href="https://blogs.microsoft.com/blog/2026/10/12/microsoft-to-expand-azure-maia-system-to-multi-gigawatt-deployments/">Microsoft to expand Azure Maia system to multi-gigawatt deployments — Official Microsoft Blog</a>
+- <a href="https://investing.com/news/stock-market-news/microsoft-to-scale-custom-ai-chips-in-multigigawatt-push-to-cut-costs-4944742">Microsoft to scale custom AI chips in multi-gigawatt push to cut costs — Investing.com/Reuters</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/microsoft-just-took-biggest-step-130454639.html">Microsoft Just Took Its Biggest Step Toward Independence From Nvidia — Yahoo Finance</a>
+- <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262213096-microsoft-stock-forecast-october-13-2026-tradingkey">Microsoft Stock Forecast: Maia 300 Targets Azure Costs Ahead of October 28 Earnings — TradingKey</a>
+- <a href="https://fortune.com/2026/04/23/meta-microsoft-layoffs-job-cuts-not-filling-open-roles-voluntary-buyouts/">Meta, Microsoft look to trim workforces amid heavy AI spending — Fortune</a>
+- <a href="https://technews.tw/2026/08/05/microsoft-tells-engineers-tokenmaxxing-is-not-the-company-s-goal/">員工狂燒 token 非目標，微軟研擬 AI 預算限制 — TechNews</a>
+- <a href="https://news.cnyes.com/news/id/5913217">微軟縮減資料中心租賃計畫 — 鉅亨網</a>
+- <a href="https://www.marketbeat.com/earnings/reports/2026-10-28-microsoft-co-stock/">Microsoft (MSFT) Q1 2027 Earnings Date — MarketBeat</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ CXMT以4F²繞過EUV限制
+          <span class="takeaway">部分證實｜CXMT年底推4F² DDR5 RDIMM的宣稱屬實且時程帳面上領先三星約兩年，但「BofA報告」找不到出處，且4F²並不等於繞過EUV瓶頸</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261014-0803@CXMT%E4%BB%A54F%C2%B2%E7%B9%9E%E9%81%8EEUV%E9%99%90%E5%88%B6">2026-10-14 08:03 觀點彙整</a></p>
+          
+          <h2>深查：CXMT以4F²繞過EUV限制</h2>
+<p><strong>裁定</strong>：【部分證實】
+CXMT年底推4F² DDR5 RDIMM的宣稱屬實且時程帳面上領先三星約兩年，但「BofA報告」找不到出處，且4F²並不等於繞過EUV瓶頸。</p>
+<p>裁定細節：查到的唯一BofA（Vivek Arya，2026-08-03）論述方向恰好相反，把CXMT缺EUV視為劣勢（同產量需多耗約30%晶圓）。「因無EUV所以更快轉4F²」這個因果框架來自韓媒「業界解讀」與中國財經博主，而非任何可查證的機構報告。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：原始出處是CXMT總裁曹堪宇2026-10-10於上海「第四屆集成芯片和芯粒大會」演講，首發為快科技與第一財經，之後TrendForce、TechNode、彭博、韓媒皆改寫自同一演講。CXMT官網未發布對應新聞稿。全球數十篇報導實為單一來源。</p>
+<ul>
+<li>【事實｜2026-10-10】CXMT宣布4F²架構採自研VSG垂直環繞閘極電晶體、混合鍵合分離記憶單元與周邊CMOS，已公開逾300件4F²專利族，「預計年底推出」DDR5 RDIMM。用詞是「推出／亮相」，非「量產」。演講未提良率、產能、節點、EUV或DUV。</li>
+<li>【事實｜2021～2025】CXMT確有技術積累：2021年發表中國首篇4F²論文，IEDM論文展示18nm half-pitch、無接面GAA垂直通道電晶體與8Gb全陣列（據搜尋摘錄的ResearchGate論文，未取得全文）。</li>
+<li>【事實｜2026-04】三星10a DRAM以4F²＋VCT＋IGZO通道開發，時程為2026年完成開發、2027年品質驗證、2028年量產（The Elec報導，經TrendForce轉述）。SK hynix則於10b節點導入。故CXMT若如期出貨，帳面領先約兩年。</li>
+<li>【機構估計｜2025-06】朝鮮日報引述業界：美光跳過4F²直攻3D DRAM。因此「比美光更快推4F²」在技術路線上無可比性。</li>
+<li>【機構估計｜2026-09-21】CXMT G5以DUV SAQP達11.95nm half-pitch、宣稱量產，但未揭露良率、產出、晶圓成本或晶粒面積懲罰，尚無獨立拆解驗證。</li>
+<li>【機構估計｜2026-06-23】SemiAnalysis估CXMT 2026年主力仍為1z級G4，前段良率疑低於85–90%業界標準；2026年晶圓產能約350k wspm、全球產能占比13%。</li>
+<li>【事實｜2026-10-13】市場反應：美光跌約3.9%，三星、SK hynix盤中跌逾6～9%，費半跌2.7%。</li>
+</ul>
+<p><strong>對「繞過EUV」的物理檢視</strong>：4F²在同一F值下將單元面積縮約三分之一，是一次性的佈局紅利，無法替代微影縮小F。三大廠不急於導入的原因，連中國財經博主都承認是「有EUV可以繼續往下做、成本划不來」。CXMT是被迫用結構換密度，代價是DUV多重曝光的pitch walk與混合鍵合良率。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>MU</strong>：CXMT首款4F²產品鎖定DDR5 RDIMM，正是伺服器標準DRAM，與美光商品型DRAM業務正面重疊，中長期定價壓力真實存在，HSBC指CXMT市佔一年內由約4%升至約10%（僅據CNBC摘錄）。但短期衝擊有限：美光獲利重心已移向HBM，而CXMT HBM3落後SK hynix約四年（BofA）。反方觀點：瑞穗Jordan Klein（10-13）列七大理由，核心是「發布≠成熟、面積小≠成本低、DDR5與AI建設關聯有限」；Morningstar預期「從發布到有利潤的商業化之間有顯著時間差」；Counterpoint強調關鍵在量產良率與供應規模。更重要的歷史先例：CXMT原定2022年推DDR5，實際2024年才上市。</p>
+<p><strong>TSM</strong>：直接曝險小。間接影響有二：三星與SK hynix的4F²採周邊電路置底（PUC）＋晶圓鍵合，The Elec提到SK hynix缺12吋邏輯產能、可能外包台積電；若中國走DUV多重曝光路線，受益的是設備與材料商而非代工。</p>
+<p><strong>失真點</strong>：市場把「單一演講、無規格的年底推出」解讀為「兩年技術超車」，並把BofA掛名在一個BofA沒說過的論點上。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026年12月底</strong>：CXMT是否實際發布4F² DDR5 RDIMM並公布容量、速度、節點。若僅工程樣品或跳票，結論降為【查證不支持】。</li>
+<li><strong>2027年上半年</strong>：TechInsights等機構拆解確認是否全陣列4F²、採用何種節點，以及是否只「部分採用」4F²。</li>
+<li><strong>2026-12中旬美光FQ1法說</strong>：管理層對中國DDR5競爭與伺服器DRAM定價的評論。</li>
+<li><strong>Counterpoint／TrendForce 2026 Q3、Q4市佔</strong>：CXMT伺服器DRAM出貨占比是否躍升。</li>
+<li><strong>2026年底三星10a開發完成公告</strong>：若三星提前至2027年量產，CXMT領先幅度縮窄。</li>
+<li><strong>CXMT上海上市後定期報告</strong>：產能、良率與資本支出首次有法定揭露。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>全部4F²消息源於單一演講，無官方新聞稿；屬「單一來源、多方轉述」。</li>
+<li>BofA原始報告未能取得，僅據TheStreet／Yahoo轉述；且找不到BofA論及4F²的任何記錄，原宣稱的「BofA」歸屬無法證實。</li>
+<li>CNBC（HSBC市佔）、TechPowerUp（Counterpoint數據）、Tom's Hardware原文無法讀取，相關數字僅據搜尋摘錄。</li>
+<li>市佔數據存在分歧：Counterpoint Q2約10%、TrendForce 9.5%、BofA 8月稱8%。</li>
+<li>SemiAnalysis後段為付費牆，良率推估屬其模型數字。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://finance.sina.com.cn/tech/roll/2026-10-10/doc-iniututi7445936.shtml">新浪科技：國產DRAM重大突破！長鑫4F架構產品年底亮相（快科技原發）</a>
+- <a href="https://www.trendforce.com/news/2026/10/12/news-cxmt-accelerates-4f%C2%B2-dram-push-eyes-year-end-server-ddr5-rdimm-launch/">TrendForce: CXMT Accelerates 4F² DRAM Push</a>
+- <a href="https://technode.com/2026/10/12/cxmt-plans-next-generation-ddr5-server-memory-using-denser-dram-architecture/">TechNode: CXMT plans next-generation DDR5 server memory</a>
+- <a href="https://www.globaltimes.cn/page/202610/1371987.shtml">Global Times: CXMT's innovative 4F² DRAM</a>
+- <a href="https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/">TrendForce: Samsung Reportedly Produces Sub-10nm 10a DRAM Working Die Using 4F², VCT, Targets 2028</a>
+- <a href="https://semiwiki.com/forum/threads/samsung-and-sk-hynix-advance-4f%C2%B2-dram-as-gateway-to-3d-memory.23054/">SemiWiki 轉載朝鮮日報：Samsung and SK hynix advance 4F² DRAM；Micron skipping 4F²</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/bofa-downplays-china-threat-micron-161700225.html">Yahoo Finance: BofA downplays China's threat to Micron's AI business</a>
+- <a href="https://www.worldjournal.com/wj/story/121477/9812971">世界日報：瑞穗分析師七大理由 長鑫技術不致威脅美光、三星</a>
+- <a href="https://theedgemalaysia.com/node/821633">The Edge Malaysia 轉載彭博：China's CXMT claims memory advances ahead of Samsung, Hynix</a>
+- <a href="https://en.sedaily.com/international/2026/10/13/chinese-memory-makers-tech-claim-sinks-samsung-sk-hynix">Seoul Economic Daily: Chinese Memory Maker's Tech Claim Sinks Samsung, SK hynix Shares</a>
+- <a href="https://www.koreajoongangdaily.com/business/global-chip-stocks-tumble-as-chinas-cxmt-unveils-nextgeneration-dram-plans/12917865">Korea JoongAng Daily: Global chip stocks tumble as China's CXMT unveils next-generation DRAM plans</a>
+- <a href="https://techwireasia.com/2026/09/cxmt-dram-g5-samsung-sk-hynix-without-euv/">Tech Wire Asia: CXMT's newest DRAM narrows the gap without EUV tools</a>
+- <a href="https://newsletter.semianalysis.com/p/chinas-cxmt-is-set-to-challenge-dram">SemiAnalysis: China's CXMT Is Set to Challenge DRAM Incumbents</a>
+- <a href="https://www.sina.cn/weibo/detail/5353835657691421.html">新浪博主：巨頭十年未攻克的4F²，長鑫為何敢年底量產</a>
+- <a href="https://www.cnbc.com/2026/10/13/cxmt-memory-chip-stock-rout.html">CNBC: Why this little known Chinese chipmaker has caused a global stock rout（僅據摘錄）</a>
+- <a href="https://www.researchgate.net/profile/Deyuan-Xiao/publication/371517221_Vertical_Channel_Transistor_VCT_as_Access_Transistor_for_Future_4F_2_DRAM_Architecture/links/67355e9e68de5e5a3075aa71/Vertical-Channel-Transistor-VCT-as-Access-Transistor-for-Future-4F-2-DRAM-Architecture.pdf">ResearchGate: Vertical Channel Transistor as Access Transistor for Future 4F² DRAM（僅據摘錄）</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-10-13（6 題）</summary>
     <div class="day-body">
       
