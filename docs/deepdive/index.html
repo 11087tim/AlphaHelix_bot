@@ -65,11 +65,197 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-15 20:49｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-16 08:46｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-10-16（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ Grok測試疑傳機密至SpaceX
+          <span class="takeaway">部分證實｜Cursor 確有內部調查且已改規則，但「機密資料實際流入 SpaceX」至今無人證實，仍只是一個未排除的風險</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261016-0803@Grok%E6%B8%AC%E8%A9%A6%E7%96%91%E5%82%B3%E6%A9%9F%E5%AF%86%E8%87%B3SpaceX">2026-10-16 08:03 觀點彙整</a></p>
+          
+          <h2>深查：Grok測試疑傳機密至SpaceX</h2>
+<p><strong>裁定</strong>：【部分證實】
+Cursor 確有內部調查且已改規則，但「機密資料實際流入 SpaceX」至今無人證實，仍只是一個未排除的風險。</p>
+<p>細節：此事全部源自 The Information 2026-10-15 的單篇獨家報導（付費牆，本次無法讀取原文）。所有中英文媒體（新浪、富途、TokenPost、Crypto Briefing、rallies.ai）皆為改寫，不構成獨立來源。沒有任何 Cursor 或 SpaceX 的公開聲明，也沒有調查結論被公開。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【傳聞→單一來源】Cursor 員工自 2026 年 6 月起大量使用內部版 Grok Bot（代號「Sand」）做測試與日常工作；7 月下旬工程師在 Slack 質疑 Sand 可能把客戶、供應商、合作方機密夾帶進送往 SpaceXAI 訓練的資料。出處：The Information（2026-10-15），僅據轉述。</li>
+<li>【傳聞→單一來源】Cursor 律師在 Slack 寫下「法律上我們可說沒有權利用這些資料訓練」，並警告若外界得知恐引發「嚴重信任危機」。同上出處，僅據轉述。</li>
+<li>【事實（行動層面）】Cursor 事後採取兩項措施：Sand 登入限公司信箱、未來訓練排除員工使用資料；TokenPost 版本另提到「檢視已被分享資料的用戶」。這些措施多家轉述一致，但仍同源。</li>
+<li>【證據不足】沒有任何來源聲稱調查「確認」資料已外流；新浪原文明寫「外界尚不清楚調查結論」。SpaceXAI 未回應置評。</li>
+<li>【事實】時間線官方可查：SpaceX 與 Cursor 於 2026-04 簽訂運算與收購選擇權協議（S-1 揭露，隱含股權價值 600 億美元）；Grok Bot 2026-08-11 進入 beta；收購 2026-08-14 完成。問題發生在收購完成前、雙方已合作訓練的灰色期。</li>
+<li>【事實】Cursor 官方在 2026-08-12 社群論壇答覆：開啟 Privacy Mode 時，Grok Bot 資料不會被 Cursor 或任何模型供應商（含 xAI）用於訓練。xAI 官方 Grok Bot 安全頁亦寫明 Privacy Mode 下客戶資料不用於訓練。問題在於內部 Sand 測試是否套用相同規則，無從得知。</li>
+<li>【事實，脈絡】SpaceXAI 2026-07-14 另有獨立事件：研究者 Cereblab 證實 Grok Build 把整個 Git 儲存庫（含已刪除密鑰、SSH key）上傳至公司 GCS bucket，且 /privacy 指令並未阻止。Musk 承諾全數刪除。這顯示該 AI 單位在資料最小化上確有紀錄，提高本案可信度，但並非本案證據。</li>
+<li>【事實】紐約市議會 2026-09-28 對 SpaceXAI 發出傳票，10-05 缺席後同意於 10-16（今日）10 時作證，議員點名要談資料隱私、安全護欄與吹哨者保護。官方新聞稿未提 Cursor 或 Grok 資料案。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>對 SPCX</strong>：本案的實質風險不是「一次外洩」而是治理敘事。S-1 已列約 5.3 億美元潛在責任（含愛爾蘭 DPC 對 Grok 的調查），加上 7 月 Grok Build 事件與本案，形成「AI 單位重複出現資料邊界鬆散」的模式，對企業客戶採用 Grok Bot / Cursor 企業版構成摩擦。Cursor 的客戶是開發者與企業（新浪提及 Verizon、Bosch、Coupa 曾因另一網站漏洞受影響），信任受損會直接傷及 600 億美元收購的「資料飛輪」論述，而 Musk 自己把資料稱為護城河。</p>
+<p><strong>受益方</strong>：競爭對手 Anthropic、OpenAI、Google 的程式碼代理產品，可借「企業級資料隔離」做差異化；OpenAI 已在收購後禁止 Cursor 使用其模型，此案提供了現成的話術。</p>
+<p><strong>反方觀點</strong>：（1）就目前證據，這是一樁「內部自我糾錯」的故事。工程師主動提問、律師介入、公司在收購完成前就改了規則，這其實是合規機制運作的證據，而非失靈。（2）涉及的是員工內部使用資料，不是外部客戶直接送進 Grok Bot 的資料，影響範圍可能遠小於標題暗示。（3）SpaceX 市值規模下，單一未證實的內部事件對估值幾乎無量化影響，除非升級為監管行動或大型客戶流失。</p>
+<p><strong>市場解讀失真處</strong>：多數中文標題寫成「機密數據流入 SpaceX」，省略了「調查是否」三字。目前能說的只有「有人擔心、公司查了、規則改了」。</p>
+<h3>可驜證節點</h3>
+<ul>
+<li><strong>2026-10-16 紐約市議會聽證</strong>：若 SpaceXAI 代表被問及 Cursor/Sand 資料處理並給出說法，本結論可升級為「有官方回應」；若議會後續要求文件，風險升級。</li>
+<li><strong>SpaceX 下一次 10-Q 或 S-1 修正</strong>：風險因素或法律程序章節若新增 Cursor 資料相關敘述或撥備，轉為【證實】有實質責任。</li>
+<li><strong>Cursor 隱私政策/企業 DPA 更新</strong>：若正式寫入「員工內部使用資料不用於訓練」或公開 Sand 調查結論，可釐清範圍。</li>
+<li><strong>The Information 或其他媒體取得調查文件/Slack 原文</strong>：若出現第二個獨立消息源，或任何客戶（如 Verizon、Bosch）公開提出申訴，升級。</li>
+<li><strong>監管動作</strong>：FTC、加州或愛爾蘭 DPC 若把 Cursor 資料納入既有 Grok 調查，直接推翻「無實質後果」的反方觀點。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li><strong>單一來源警語</strong>：全部事實只來自 The Information 一篇報導，本次 fetch 遭 403 擋下，無法讀原文，細節均據轉述。中英文轉述間略有差異（TokenPost 多出「檢視已分享資料的用戶」一項，其他版本未見）。</li>
+<li><strong>無當事方回應</strong>：Cursor 與 SpaceXAI 皆無公開聲明，SpaceXAI 對記者置評請求未回應。</li>
+<li><strong>調查結論未公開</strong>：「是否真有資料外流」在所有來源中都是開放問題。</li>
+<li>Axios、Crypto Briefing、The Next Web 原文亦遭 403，僅據搜尋摘錄。</li>
+<li>時效：所有事件資訊截至 2026-10-15；紐約聽證於今日舉行，結果尚未納入。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.theinformation.com/articles/cursor-staff-investigated-whether-confidential-data-reached-spacex-ai-training">Cursor Staff Investigated Whether Confidential Data Reached SpaceX for AI Training — The Information</a>
+- <a href="https://www.tokenpost.com/news/technology/32809">Cursor Tightens Grok Bot Training Rules After Employee Data Concerns — TokenPost</a>
+- <a href="https://finance.sina.com.cn/stock/usstock/c/2026-10-15/doc-iniviksk1495820.shtml">Cursor员工调查机密数据是否流入SpaceX用于AI训练 — 新浪财经</a>
+- <a href="https://cryptobriefing.com/cursor-probes-grok-data-exposure-spacex/">Cursor probed whether employee Grok use exposed client data to SpaceX — Crypto Briefing</a>
+- <a href="https://rallies.ai/news/cursor-staff-investigated-whether-confidential-data-reached-spacex-for-ai-training-1c754bcd492f64f8">Cursor staff investigated whether confidential data reached SpaceX — rallies.ai</a>
+- <a href="https://docs.x.ai/grok-bot/security">Grok Bot security — docs.x.ai</a>
+- <a href="https://forum.cursor.com/t/privacy-and-term-of-use-of-grok-bot-with-cursor-account/168075">Privacy and Term of Use of Grok Bot with Cursor account — Cursor Community Forum</a>
+- <a href="https://council.nyc.gov/press/2026/10/13/3295/">Speaker Julie Menin Announces that SpaceXAI Agrees to Testify on AI Safety Following Subpoena — NYC Council</a>
+- <a href="https://www.cnbc.com/2026/10/13/spacex-agrees-to-testify-to-nyc-council-about-ai-safety-.html">SpaceX agrees to testify to NYC Council about AI safety after receiving subpoena — CNBC</a>
+- <a href="https://www.theregister.com/ai-and-ml/2026/07/14/musk-promises-purge-after-grok-build-caught-sending-entire-repos-to-the-cloud/5271123">Musk promises purge after Grok Build caught sending entire repos to the cloud — The Register</a>
+- <a href="https://www.axios.com/2026/07/14/spacexai-grok-customer-data">SpaceXAI wipes customer data after Grok uploads sensitive info — Axios</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/1181412/000162828026040364/spaceexplorationtechnologib.htm">Space Exploration Technologies - S-1/A — SEC</a>
+- <a href="https://thenextweb.com/news/xai-cursor-gun-jumping-antitrust-spacex-ipo">xAI told staff to stop mingling with Cursor employees — The Next Web</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ GOOG記憶體長約延至2035
+          <span class="takeaway">部分證實｜「Google 洽談至 2035 年長約」確有出處，但僅為 KeyBanc 一家的亞洲供應鏈調查，措辭是「討論中」，非已簽約；供應商官方揭露最遠僅到 2031 年</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261016-0803@GOOG%E8%A8%98%E6%86%B6%E9%AB%94%E9%95%B7%E7%B4%84%E5%BB%B6%E8%87%B32035">2026-10-16 08:03 觀點彙整</a></p>
+          
+          <h2>深查：GOOG記憶體長約延至2035</h2>
+<p><strong>裁定</strong>：【部分證實】
+「Google 洽談至 2035 年長約」確有出處，但僅為 KeyBanc 一家的亞洲供應鏈調查，措辭是「討論中」，非已簽約；供應商官方揭露最遠僅到 2031 年。</p>
+<p>裁定細節：宣稱本身被精確還原為 KeyBanc 分析師 John Vinh 2026 年 10 月 15 日報告中的一句話，屬「機構通路調查」而非官方文件。Micron、Samsung、SK hynix 三家供應商的公開說法只支持「5 年期、滾動延長、客戶有意要求更長」的方向，沒有任何一家證實與 Google 簽有或正簽 2035 年合約。市場若把「討論至 2035」解讀為「已鎖定 10 年供給」，是過度延伸。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【機構估計】2026-10-15：KeyBanc 的 Vinh 在亞洲供應鏈行程後發布報告，原文為「HP 與 Dell 正將供應協議延長至 2031 年，而 Google 正在討論（discussing）至 2035 年的交易」，據此認為本輪為「更持久的週期」。Investing.com 英文版與德文版措辭一致，皆為討論中、未簽署。這是本議題唯一的原始出處，台媒與社群轉述均源自此。</li>
+<li>【事實】2026-09-30：Micron 第四季財報法說揭露已簽 26 項策略客戶協議（SCA），涵蓋 2030 年前約 35% 營收，客戶財務承諾 320 億美元（多為現金押金），並稱「客戶希望 2030 年後仍有保證供給，已簽延至 2031 年的 SCA，另有兩項協議一年延長至 2031 年」。2027 曆年 HBM 位元供給絕大部分已簽約，價格顯著上漲。未提及任何客戶名稱或 2035 年。</li>
+<li>【事實】Micron 2026 財年 10-K：SCA 為多年期「照付不議」（take-or-pay）結構，多數定價設有上下限區間，客戶以現金押金與信用狀提供擔保；未揭露合約年限與客戶名稱。</li>
+<li>【機構估計】2026-09-29：鉅亨網引述韓國大信證券報告，三星約 70% 記憶體產能已納入長約、供給涵蓋至 2031 年，並稱「客戶提出最長 10 年協議的需求」，但未指名 Google，亦未確認任何 10 年約已簽署。</li>
+<li>【傳聞】2026-08-02 Korea Herald、2026-10-13 TechNews：三星採「5 年基本期、每年滾動延長 1 年」模式，鎖定 2027 年近八成產能；客戶據稱含 NVIDIA、Google、Microsoft，來源為未具名業界人士，三星未證實客戶名單。</li>
+<li>【傳聞】2026-04-06 KED Global：SK hynix 與 Google、Microsoft 洽談多年期 DRAM 長約，Microsoft 為 3 年期 DDR5；對 Google 的具體年限文中未說明。社群轉述的「5 年加 2 年 HBM 條件延長」版本，無法回溯到一手報導。</li>
+</ul>
+<p>交叉比對結論：「超長約」方向有三家供應商的獨立訊號支持（5 年滾動、客戶要求 10 年、Micron 延至 2031），但「Google 至 2035」這個具體年份為單一來源。</p>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>MU（受益，但已部分反映）</strong>：若 Google 真以 10 年期鎖定供給，等同為 Micron 新增 2031 年後的營收能見度與押金，強化「週期鈍化」論述。但 Micron 自己只敢說到 2031 年，且四分之三 SCA 設有價格上限，超長約在價格下行期會變成 Micron 的義務而非客戶的義務。SK hynix 長約據報無價格上限，議價結構對供應商更有利，Micron 在 HBM 談判中的相對地位不應被 KeyBanc 的單句過度放大。</li>
+<li><strong>GOOG（受益於供給保障，代價是資本綁定）</strong>：2025 年底曾傳出 Google 因未及早簽長約、遭 SK hynix 與 Micron 拒絕擴供而撤換採購主管，顯示 Google 有強烈動機補簽超長約。但 10 年期承諾意味現金押金與照付不議風險，若 TPU 架構或 HBM 世代更迭快於預期，長約可能變成負擔。</li>
+<li><strong>AVGO、TSM（間接）</strong>：Google TPU 的 HBM 配置由 Broadcom 與台積電 CoWoS 封裝決定，記憶體長約若真延至 2035，暗示 TPU 路線圖的長期承諾，對 AVGO 客製 ASIC 業務是正面訊號，但這是二階推論。</li>
+<li><strong>反方觀點</strong>：三星「每年滾動延長 1 年」的設計正說明供應商不願一次承諾 10 年；Micron 法說稱客戶討論「多集中在 2028 年」，距 2035 仍遠。分析師報告中「discussing」一詞，可能只是 Google 單方面開出的要價，而非供應商接受的條件。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026-12 下旬 Micron 第一季財報法說：若 SCA 年限揭露超過 2031 年，或 SCA 數量與押金再顯著增加，升級本結論；若仍停在 2031，維持「部分證實」。</li>
+<li>2027-01 下旬 Samsung、SK hynix 第四季法說：關注是否公開承認「超過 5 年」的合約期，或改口描述滾動機制。</li>
+<li>2027-02 Alphabet 10-K：檢視購買承諾（purchase commitments）金額是否出現跳升，可間接驗證是否有新的多年期記憶體押金。</li>
+<li>KeyBanc 或其他券商後續報告：若有第二家獨立券商以不同通路得到相同「2035」數字，升級為機構共識；若 KeyBanc 自行修正，直接降級。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「2035」為單一來源（KeyBanc 通路調查），且僅據 Investing.com 轉述，KeyBanc 原始報告在付費牆內，無法取得全文。</li>
+<li>Micron 法說講稿 PDF 無法解析，SCA 數據改以兩份第三方逐字稿交叉確認，數字一致。</li>
+<li>韓媒關於三星、SK hynix 客戶名單均為未具名業界人士，三家供應商皆未公開證實 Google 為長約客戶。</li>
+<li>Micron 10-K 與法說對 SCA 涵蓋比例的表述不同（35% 營收 vs 35% 位元量），屬口徑差異，不影響結論。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://za.investing.com/news/stock-market-news/keybanc-downgrades-cirrus-logic-after-asia-trip-sees-memory-and-analog-strength-4506307">KeyBanc downgrades Cirrus Logic after Asia trip, sees memory and analog strength (Investing.com)</a>
+- <a href="https://de.investing.com/news/stock-market-news/keybanc-stuft-cirrus-logic-nach-asienreise-ab--speicher-und-analogchiphersteller-im-aufwind-3705677">KeyBanc stuft Cirrus Logic nach Asien-Reise ab (de.investing.com)</a>
+- <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-micron-tops-q4-2026-estimates-as-demand-stays-hot-93CH-4925992">Micron Q4 2026 Earnings Call Transcript (Investing.com)</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/01/micron-mu-q4-2026-earnings-call-transcript/">Micron (MU) Q4 2026 Earnings Call Transcript (The Motley Fool)</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm">Micron Technology Form 10-K FY2026 (SEC)</a>
+- <a href="https://news.cnyes.com/news/id/6617258">誰還對記憶體悲觀？AI客戶搶談10年長約 三星七成產能已被鎖定 (鉅亨網)</a>
+- <a href="https://technews.tw/2026/10/13/samsung-plans-to-allocate-80-of-its-memory-production-capacity-to-the-ai-%E2%80%8B%E2%80%8Bmarket-by-2027/">科技大廠都簽五年長約，三星 2027 年記憶體產能八成給了 AI 市場 (TechNews)</a>
+- <a href="https://www.koreaherald.com/article/10828101">Samsung, SK hynix expand binding memory supply deals amid prolonged shortage (Korea Herald)</a>
+- <a href="https://www.kedglobal.com/korean-chipmakers/newsView/ked202604060003">SK Hynix in talks with Microsoft, Google for long-term DRAM supply (KED Global)</a>
+- <a href="https://www.trendforce.com/news/2026/07/02/news-sk-hynix-reportedly-removes-price-cap-in-memory-long-term-agreements-diverging-from-micron/">SK hynix Reportedly Removes Price Cap in Memory Long-Term Agreements, Diverging from Micron (TrendForce)</a>
+- <a href="https://www.androidheadlines.com/2025/12/google-fires-executives-ai-memory-shortage.html">Google Fires Executives After Failing to Secure AI Memory Chips Amid Shortage (Android Headlines)</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ SK海力士大連NAND設備交換
+          <span class="takeaway">部分證實｜路透獨家確有「以美廠換大連設備許可」之說，但SK海力士否認擴產，且近期NAND並非供過於求，「加劇過剩」的推論站不住</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261016-0803@SK%E6%B5%B7%E5%8A%9B%E5%A3%AB%E5%A4%A7%E9%80%A3NAND%E8%A8%AD%E5%82%99%E4%BA%A4%E6%8F%9B">2026-10-16 08:03 觀點彙整</a></p>
+          
+          <h2>深查：SK海力士大連NAND設備交換</h2>
+<p><strong>裁定</strong>：【部分證實】
+路透獨家確有「以美廠換大連設備許可」之說，但SK海力士否認擴產，且近期NAND並非供過於求，「加劇過剩」的推論站不住。</p>
+<p>細節：原宣稱的三個環節中，「Solidigm 申請額外設備許可」與「掛鉤美國建廠」皆僅來自路透兩位匿名消息人士，全球媒體（韓、台、英文）均為同一來源改寫；SK海力士公開否認「擴產」，但承認 Mod B 正在美方協商與許可下裝機。美國商務部與 Solidigm 均未評論。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：原始出處為路透 2026-10-15 獨家（兩位知情人士）。TechCrunch、Tom's Hardware、工商時報、聯合報、先驅經濟、首爾經濟等皆轉述路透，不構成獨立佐證。</p>
+<ul>
+<li>【事實｜2025-08-29 / 2025-12-31】商務部 BIS 撤銷三星、SK海力士中國廠 VEU 資格，年底生效；BIS 明言只核發「維持既有廠運作」的許可，「不打算核准擴產或技術升級」。SK海力士 2026-07-09 美股上市公開說明書亦載明 VEU 遭撤銷、2025 年 12 月取得 2026 年度許可，並警示未能及時取得許可將「重大影響中國製造營運」。</li>
+<li>【傳聞｜2026-10-15】路透：Solidigm 已就大連 Mod B 申請額外 Lam、Applied Materials、KLA 設備出口許可；2026 年度許可「限制設備數量」；2027 年許可尚未核發；SK海力士將美國 NAND 新廠與此掛鉤。單一來源。</li>
+<li>【事實｜2026-10-15】SK海力士回應韓聯社與路透：「Mod B 裝機正與美國政府密切協商並經核准進行」、「未推動大連 Mod B 產能擴大」。這是公司否認「擴產」框架，但未否認申請許可本身。</li>
+<li>【機構估計｜2026-08-11、08-24】首爾經濟日報獨家與中央日報引業界人士：大連一廠約 10 萬片/月，Mod B 規劃 4~6 萬片/月（約 +50%），最早 11 月裝機、2027 上半年量產。與公司「不擴產」說法存在明顯張力，可能源於公司將 2022 年已規劃的 Mod B 完工視為「既有設施」而非擴產，此解釋屬本報告推論。</li>
+<li>【機構估計｜2026-09-25/26】彭博、路透：Solidigm 考慮最早 2027 年赴美 IPO，估值上看 1,500 億美元、募資約 150 億美元；美國 NAND 廠以紐約州北部為首選，另與英特爾談俄亥俄廠區。SK海力士稱尚無確定計畫。</li>
+<li>【機構估計｜2026-09-30】TrendForce：4Q26 NAND 合約價季增 15~20%，企業級 SSD 是唯一漲幅擴大的品類；供過於求僅為中長期風險，非現況。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>挑題理由的前提有誤</strong>。挑題稱「新增供給加劇 NAND 供過於求、強化既有偏空趨勢」，但 TrendForce 最新預測顯示 4Q26 NAND 仍在漲價、企業級 SSD 加速。大連 Mod B 即使全數獲准，最快 2027 上半年才量產，且規模約 5 萬片/月，對 2026 年供需無影響。</p>
+<p><strong>對 MU、SNDK</strong>：Solidigm 強項是 QLC 企業級 SSD，與 SanDisk、美光的資料中心 NAND 直接競爭。若許可通過，2H27 起企業級 SSD 競爭加劇，是中期負面，但要以「美方違背自身 BIS 政策」為前提。反方觀點：BIS 已公開表明不批擴產，2027 年度基本許可尚未核發，SK海力士本身也否認擴產，市場把「申請」當「獲准」是過度解讀。另一面，若美方真以投資換許可，三星西安廠可能跟進，形成政策先例，這對 NAND 同業的長期意涵大於 Mod B 本身。</p>
+<p><strong>受益方</strong>：設備商 Lam、Applied Materials、KLA 若許可放寬可得大連訂單。<strong>受害方</strong>：短線是 SKHY 自身，10 月累跌約兩成，報導後盤後再跌 6.5%，市場解讀為政治風險而非供給利多。</p>
+<h3>可驳證節點</h3>
+<ul>
+<li><strong>2026-10 下旬 SK海力士 Q3 法說</strong>：若管理層正面說明 Mod B 裝機進度與美國新廠條件，升級為【證實】；若重申不擴產且不提掛鉤，維持部分證實。</li>
+<li><strong>2026-11 大連 Mod B 裝機</strong>：韓媒報導的設備進場若成真，代表至少部分設備已在 2026 年度許可內，驗證「不擴產」是否只是話術。</li>
+<li><strong>2026-12 商務部 2027 年度許可</strong>：若核發且數量放寬，政策交換說成立；若維持「僅維運」，推翻擴產敘事。</li>
+<li><strong>2027 Solidigm IPO 文件</strong>：S-1 須揭露大連產能、許可風險與美國建廠資金來源，是最可靠的一手驗證點。</li>
+<li><strong>TrendForce 1Q27 價格預測（約 2026-12）</strong>：若 NAND 轉跌，「供過於求」前提才成立。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱為路透單一來源、匿名消息，商務部與 Solidigm 均未評論，所有其他報導皆為轉述。</li>
+<li>大連佔 SK海力士 NAND 產出比例，韓國經濟日報稱約 20%、中央日報稱約 30%，數據分歧，均非官方數字。</li>
+<li>Mod B 產能 4~6 萬片/月來自韓媒「業界人士」，非公司揭露。</li>
+<li>Tom's Hardware、DigiTimes 原文受付費牆或版面限制無法讀取全文，僅據摘錄；Federal Register 原文被阻擋，BIS 政策表述引用自韓國經濟日報與路透轉述。</li>
+<li>路透 10/15 原文透過 Yahoo Finance 鏡像讀取，非 reuters.com 原站。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://ca.finance.yahoo.com/news/exclusive-sk-hynix-conditions-us-020530404.html">Exclusive-SK Hynix conditions new US factory on more US chip equipment exports to China, sources say（Reuters via Yahoo）</a>
+- <a href="https://techcrunch.com/2026/10/15/sk-hynix-bargains-for-chip-equipment-exports-to-its-china-facility-in-return-for-building-a-factory-in-us/">SK Hynix bargains for chip equipment exports to its China facility in return for building a factory in US（TechCrunch）</a>
+- <a href="https://en.sedaily.com/international/2026/10/15/sk-hynix-unit-seeks-us-nod-for-china-chip-tools-reuters-says">SK hynix Unit Seeks U.S. Nod for China Chip Tools, Reuters Says（Seoul Economic Daily）</a>
+- <a href="https://biz.heraldcorp.com/article/10903794">“美공장 짓는 대신 中장비 허용해달라”…SK하이닉스, 美정부와 협의（헤럴드경제）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm">SK hynix Inc. Form 424B4 Prospectus（SEC）</a>
+- <a href="https://www.kedglobal.com/korean-chipmakers/newsView/ked202508310003">Samsung, SK Hynix lose US waiver on chip equipment for China use（KED Global）</a>
+- <a href="https://finance.yahoo.com/news/samsung-wins-us-annual-approval-041415683.html">US approves Samsung, SK Hynix chipmaking tool shipments to China for 2026（Reuters via Yahoo）</a>
+- <a href="https://www.sedaily.com/article/20078238">[단독] SK하이닉스, 中 낸드 생산 50% 늘린다（서울경제）</a>
+- <a href="https://www.koreajoongangdaily.com/business/samsung-sk-hynix-pour-fresh-investment-into-aging-china-factories-despite-us-curbs/12832376">Samsung, SK hynix pour fresh investment into aging China factories despite U.S. curbs（Korea JoongAng Daily）</a>
+- <a href="https://www.koreajoongangdaily.com/business/sk-hynixs-solidigm-eyes-150b-ipo-as-early-as-2027-reuters-report-suggestsnbsp/12891770">SK hynix's Solidigm eyes $150B IPO as early as 2027（Korea JoongAng Daily）</a>
+- <a href="https://www.trendforce.com/news/2026/10/15/news-sk-hynix-reportedly-seeks-u-s-chip-tool-approval-for-china-expansion-to-fund-potential-u-s-nand-fab/">SK hynix Reportedly Seeks U.S. Chip Tool Approval for China Expansion（TrendForce News）</a>
+- <a href="https://www.trendforce.com/presscenter/news/20260930-13258.html">AI Server Demand Sustains Memory Contract Price Increases in 4Q26（TrendForce）</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/skhy-tracks-worst-month-since-034114532.html">SKHY Tracks Worst Month Since Nasdaq Debut（Yahoo Finance）</a>
+- <a href="https://finance.biggo.com/news/3b0a6a1e-796d-4587-a22e-44645ec9681c">SK Hynix Races to Restart Dalian Fab 2 Before U.S. License Expires（BigGo Finance）</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-10-15（6 題）</summary>
     <div class="day-body">
       
