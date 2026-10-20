@@ -65,11 +65,222 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-19 20:45｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-20 08:44｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-10-20（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ TPU v10供應商歸屬矛盾
+          <span class="takeaway">部分證實｜AVGO 與 2454 都有一手或機構證據指向參與 v10；「二選一」的敘事框架本身失真，真正未決的是各自 SKU 的量占比</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261020-0804@TPU%20v10%E4%BE%9B%E6%87%89%E5%95%86%E6%AD%B8%E5%B1%AC%E7%9F%9B%E7%9B%BE">2026-10-20 08:04 觀點彙整</a></p>
+          
+          <h2>深查：TPU v10供應商歸屬矛盾</h2>
+<p><strong>裁定</strong>：【部分證實】
+AVGO 與 2454 都有一手或機構證據指向參與 v10；「二選一」的敘事框架本身失真，真正未決的是各自 SKU 的量占比。</p>
+<p>兩地分析師的「矛盾」大多是描述不同 SKU：UBS 講的是博通 2nm、3.5D 封裝的主力訓練/推論款，Jeff Pu 講的是聯發科 Icefish（A14、與創意 3DIC 合作）款。延續 v8 的 8i（博通）／8t（聯發科）雙軌模式，v10 最合理的解讀是多 SKU、多夥伴，而非替換。AMD 與 Marvell 的角色則被市場高估。</p>
+<h3>查證過程與證據</h3>
+<p><strong>一手文件（官方）</strong>
+- 【事實】Broadcom 2026-04-06 8-K：與 Google 簽訂長期協議，「為 Google 未來世代 TPU 開發並供應客製 TPU」，另有網通與零組件供應保證協議至 2031 年；Anthropic 2027 年起透過博通取得約 3.5GW 算力。文件未提及獨家、未提及世代編號。
+- 【事實】Broadcom Q3 FY26 法說（2026-09-02，逐字稿）：Hock Tan 稱 v8i 已量產出貨，「出貨時點領先聯發科的 v8t 版本」；並稱長期協議下「未來數年每年交付數百億美元 TPU」。這是博通管理層首次在公開場合直接點名聯發科為 TPU 共同供應商，等於官方承認雙軌。
+- 【事實】Marvell 2026-08-18 8-K：與 Google 的商業協議範圍是「附掛於 TPU 生態系的客製晶片」（推論加速器、儲存／網路／記憶體控制器、近記憶體運算），不含 TPU 運算晶粒本身。市場把 Marvell 當 v10 競爭者是誤讀。
+- 【事實】聯發科 2026-07-31 法說：2026 年 ASIC 營收目標上調至 20 億美元，2027 年資料中心 ASIC 市占目標 15–20%；管理層從未點名 Google 或世代編號。</p>
+<p><strong>機構研究</strong>
+- 【機構估計】UBS（2026-10-05，據 Investing.com 轉述）：博通 v9 改為多顆 3nm 運算晶粒、2027 年底放量；v10 轉 2nm、3.5D 封裝最多 16 顆 die、搭博通自家 448G SerDes，2028 年底出貨並占 2029 年 TPU 出貨多數。UBS 調整單位數但未改營收預估。
+- 【機構估計】JPMorgan Harlan Sur（2026-06-17）：博通五年協議涵蓋 v8 至 v11，v10 已與 v9 並行開發。
+- 【機構估計】廣發證券 Jeff Pu（X 貼文，約 2026-10 中）：「TPU v10（4Q28/1Q29）：Icefish（聯發科＋創意 3DIC、A14 製程）是目前唯一已確認的主流 SKU」；同時將 v9 Humufish 時程推遲一季至 2028 年 Q1 出貨。
+- 【機構估計】SemiAnalysis（2026-08-17，據 Tom's Hardware／tbreak 轉述）：AMD 參與的是整合 CPU 核心的混合型 v10 變體，提供 CPU IP、封裝與互連；「AMD 實作 v10i 或 v10t 本體的機率低」。Google 與 AMD 均未回應。
+- 【傳聞】TrendForce 引工商時報（2026-08-03）：聯發科 2nm 400G/448G SerDes 預計 2027 下半年就緒，被視為「競標」v10 的關鍵，說法本身隱含 v10 全部分工尚未鎖定。
+- 【傳聞】DigiTimes 中英文版（2026-08-19／26）標題即稱「v10 未定案」、「AMD 加入但不排擠博通與聯發科」，全文付費牆內。</p>
+<p><strong>來源獨立性</strong>：台媒「聯發科奪 v10、打破博通壟斷」的敘事幾乎全數回溯至 Jeff Pu 與郭明錤兩位分析師；美系「博通穩坐 v10」敘事回溯至 UBS 與 JPMorgan。四者皆為供應鏈調研，無任何一方取得 Google 官方確認。</p>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>AVGO</strong>：下檔有 8-K 長期協議與法說「每年數百億美元」指引護底；v10 份額被壓縮的風險存在但不是歸零。若 UBS 對 2029 年「多數出貨」的判斷成立，市場對博通 TPU 曲線的悲觀是過度反應。</li>
+<li><strong>2454</strong>：Icefish 若為主流 SKU 之一，2028 下半年起才認列，對 2026–27 營收無影響；且聯發科毛利結構（SemiAnalysis 估約 30% 出頭）遠低於博通，份額上升不等於同等利潤。近期 v9 推遲一季是更實在的短期變數。</li>
+<li><strong>TSM</strong>：不論誰拿單，2nm／A14 與 CoWoS-L／3.5D 需求均落在台積電；UBS 與 Pu 的製程說法分歧（2nm vs A14）反而暗示兩個不同 SKU 並存，對台積電先進製程是加法。</li>
+<li><strong>反方觀點</strong>：台媒將「聯發科 SerDes 就緒」等同「奪單」，但 TrendForce 原文的用語是「競標資格」；反之，美系將「長期協議」等同「主力份額」，而 8-K 文字並無獨家或數量承諾。Jeff Pu 與 UBS 都未取得 Google 內部採購文件。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-30 聯發科 Q3 法說</strong>：若管理層首次提及「第三代」或 2029 年後案子、或上修 2028 展望，Icefish 說法升級；若只重申 2027 指引，維持機構估計。</li>
+<li><strong>2026-12 Broadcom Q4 FY26 法說</strong>：Hock Tan 是否再點名 v9／v10 或更新「每年數百億」口徑，決定 UBS 情境可信度。</li>
+<li><strong>2027 年 Q1 v9 tape-out、Q2 量產版 tape-out</strong>：若再延，聯發科在後續世代的執行力會被重新評價。</li>
+<li><strong>2027 下半年聯發科 448G SerDes 驗證</strong>：這是 Icefish 能否成為主流 SKU 的硬門檻，未達標則 v10 份額說法降級。</li>
+<li><strong>Google Cloud Next／I/O 2027 的 TPU 路線圖簡報</strong>：任何官方代號或夥伴揭露都會直接取代目前所有機構估計。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>Jeff Pu 原貼文與 UBS 原報告皆未能取得全文，僅據 TrendForce、Investing.com 與推文摘錄轉述。</li>
+<li>DigiTimes、Tom's Hardware、聯發科 7/31 法說中時報導均受付費牆或防爬限制，相關內容僅據標題與摘要。</li>
+<li>UBS（2nm）與 Pu／TechNews（A14／1.4nm）對 v10 製程說法互相矛盾，本報告以「不同 SKU」解釋，但這是推論而非證據。</li>
+<li>台媒報導高度同質，多篇可回溯至同一則分析師貼文，不構成獨立交叉來源。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.sec.gov/Archives/edgar/data/1730168/000119312526144028/d87999d8k.htm">Broadcom 8-K 2026-04-06（Google 長期協議）</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/09/09/broadcom-avgo-q3-2026-earnings-call-transcript/">Broadcom Q3 FY2026 法說逐字稿（Motley Fool）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001835632/000119312526356217/d412696d8k.htm">Marvell 8-K 2026-08-18（Google 商業協議與認股權證）</a>
+- <a href="https://www.investing.com/news/stock-market-news/ubs-adjusts-broadcom-tpu-model-on-v10-design-changes-93CH-4932112">UBS adjusts Broadcom TPU model on v10 design changes（Investing.com）</a>
+- <a href="https://www.kucoin.com/news/flash/jpmorgan-confirms-broadcom-s-tpu-v9-on-track-for-2028-production">JPMorgan Confirms Broadcom's TPU v9 on Track（KuCoin 轉述）</a>
+- <a href="https://x.com/sssjeffpu/status/2109855992846696879">Jeff Pu on X：ASIC Update TPU v9 Timeline &amp; v10 Opportunities</a>
+- <a href="https://www.trendforce.com/news/2026/08/03/news-mediatek-advances-400g-serdes-on-2nm-targeting-google-tpu-v10-and-meta-ai-asic-orders/">TrendForce：MediaTek Advances 400G SerDes on 2nm, Targeting Google TPU v10</a>
+- <a href="https://www.trendforce.com/news/2026/10/19/news-mediateks-google-tpu-v9-shipments-may-slip-to-1q28-asic-race-heats-up-as-taiwan-firms-eye-new-opportunities/">TrendForce：MediaTek's Google TPU v9 Shipments May Slip to 1Q28</a>
+- <a href="https://www.trendforce.com/news/2026/08/20/news-marvell-amd-reportedly-shake-up-google-tpu-race-putting-broadcom-mediatek-under-pressure/">TrendForce：Marvell, AMD Reportedly Shake Up Google TPU Race</a>
+- <a href="https://tbreak.com/google-amd-tpu-v10/">tbreak：Google reportedly taps AMD for a CPU-heavy v10 design</a>
+- <a href="https://abmedia.io/broadcom-google-tpu-mediatek">abmedia：博通站穩 Google TPU！外資曝 v9、v10 都參與</a>
+- <a href="https://money.udn.com/money/story/5612/9581938">經濟日報：聯發科獨拿 Google TPU 新單</a>
+- <a href="https://money.udn.com/money/story/5612/9702307">經濟日報：超微奪單Google 聯發科警戒</a>
+- <a href="https://www.mirrordaily.news/story/75695">鏡報：新ASIC客戶浮上檯面？聯發科法說會在即</a>
+- <a href="https://cdn.technews.tw/ai-agent/guc-google-tpu-v10-asic/30461/">TechNews：TPU v10 分工對 ASIC 影響？</a>
+- <a href="https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000766181_IIJ2SOWP7B4SXI2HCI07M">DigiTimes：Google TPU v10未定案先轟動（付費牆）</a>
+- <a href="https://www.digitimes.com/news/a20260819PD202/amd-google-tpu-broadcom-mediatek.html">DigiTimes：Google's v10 TPU opens door to AMD without sidelining Broadcom, MediaTek（付費牆）</a>
+- <a href="https://finance.biggo.com/news/2321b566-ceec-46d5-896a-e9f05c23f8e5">BigGo：SemiAnalysis Cuts Google TPU Shipment Forecast</a>
+- <a href="https://tw.stock.yahoo.com/news/%E5%85%AC%E5%91%8A-%E8%81%AF%E7%99%BC%E7%A7%91%E6%96%BC115-10-30%E5%8F%AC%E9%96%8B%E7%AC%AC%E4%B8%89%E5%AD%A3%E8%B2%A1%E5%A0%B1%E6%9A%A8%E7%87%9F%E9%81%8B%E7%B7%9A%E4%B8%8A%E8%AA%AA%E6%98%8E%E6%9C%83-092634575.html">聯發科 10/30 第三季法說公告（Yahoo 股市）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>❌ Google TPU v9玻璃載板延誤
+          <span class="takeaway">查證不支持｜TPU v9 確有延後約一季，但原因是 Google 核心晶粒重新設計與 Intel EMIB-T「有機載板」良率，與玻璃載板無關</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261020-0804@Google%20TPU%20v9%E7%8E%BB%E7%92%83%E8%BC%89%E6%9D%BF%E5%BB%B6%E8%AA%A4">2026-10-20 08:04 觀點彙整</a></p>
+          
+          <h2>深查：Google TPU v9玻璃載板延誤</h2>
+<p><strong>裁定</strong>：【查證不支持】
+TPU v9 確有延後約一季，但原因是 Google 核心晶粒重新設計與 Intel EMIB-T「有機載板」良率，與玻璃載板無關。</p>
+<p>細節補充：所謂「玻璃載板良率卡關」是台媒標題對 EMIB-T 載板的誤植。EMIB-T 是在有機載板內嵌入矽橋，載板供應商為 Ibiden 等 ABF 載板廠。Intel 的玻璃核心載板與台積電 CoPoS 都要到 2028 年以後才量產，不可能是 2027 年 TPU v9 的瓶頸。「晚於原訂 2027 年底」這一半大致成立，但延後幅度為一季，且反方機構認為載板良率已達量產門檻。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：此議題的原始出處是廣發證券（GF Securities）分析師蒲得宇 2026 年 10 月 13 日的 ASIC 更新報告，之後由 Seeking Alpha、GuruFocus、工商時報、TrendForce、Yahoo 台灣等轉載。這些全是同一來源的轉述，不構成獨立佐證。DigiTimes 10 月 20 日的標題寫「玻璃基板良率卡關？」，但其可見導言只提到「Google 重新調整設計」，全文在付費牆內。</p>
+<ul>
+<li>【機構估計｜2026-10-13】廣發證券：Google 負責的 Core A 重設計延後約 3 週，連帶聯發科 Core B 與 I/O 需修改。送樣維持 11 月，初版定案延至 2027 年 1 月，量產版 tape-out 2027 年 Q2，出貨延至 2028 年 Q1。報告原文在 X 平台，無法直接讀取，僅據 Yahoo 台灣與 vlsi.kr 轉述。</li>
+<li>【機構估計｜2026-10-13】同一報告指 EMIB-T 載板良率目前約 45 至 50%，但供應鏈已找到根因，預期加速改善。報告對 EMIB-T 的措辭是「建設性」，並非看壞。</li>
+<li>【傳聞｜2026-07，更新 2026-10-19】SemiAnalysis 7 月率先報導 TPU v9「Humufish」改用 Intel EMIB-T 取代台積電 CoWoS，Google 至今未公開證實。EMIB-T 是在有機載板中嵌入矽橋，透過 TSV 供電，不涉及玻璃核心。</li>
+<li>【機構估計｜2026-10 中旬】UBS 持相反看法：Ibiden 良率改善進度超前計畫，已達量產目標約 50%，EMIB-T 執行優於預期，2028 年可支援聯發科 TPU v9 超過 200 萬片載板需求。此為 X 平台用戶轉述 UBS 報告，原文無法取得。</li>
+<li>【事實｜2026-06-04】台積電股東會上魏哲家表示 CoPoS 玻璃載板試產線已建立，但「沒有捷徑」，量產放大約需再 2 至 3 年，即 2028 至 2029 年。</li>
+<li>【機構估計｜2026-01 起】Intel 的玻璃核心載板尚在樣品展示階段，產業報導指首批 AI 晶片採用時點為 2028 年，大量生產 2030 年。此僅據搜尋摘錄。</li>
+<li>【事實｜2026-09】SKC 子公司 Absolics 仍處於客戶認證與良率穩定階段，正增資約 2.9 億美元，初始商業出貨最快 2027 年。</li>
+<li>【機構估計｜2026 年中】TPU v9 原訂時程：Humufish 2027 年 Q3 量產、Triggerfish 2027 年 Q4，兩款合計 500 至 700 萬顆。此為郭明錤等分析師推估，Google 未公布官方路線圖。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>GLW（Corning）</strong>：此議題與 Corning 無關。玻璃載板目前對 Corning 營收貢獻趨近於零，其 AI 題材主要來自光纖與 CPO 玻璃材料。若市場因「玻璃載板延誤」賣出 GLW，屬於敘事錯置。反之，也不該把 TPU v9 當成 Corning 玻璃載板的訂單憑證。</p>
+<p><strong>TSM（台積電）</strong>：TPU v9 若真的改用 Intel EMIB-T，台積電在先進封裝上首度失去一個旗艦 AI 加速器專案，這才是對台積電的實質議題，與玻璃無關。但晶圓端 TPU v9 仍採台積電 2 奈米，前段收入不受影響。EMIB-T 良率若持續卡在 50%，反而會強化 CoWoS 的不可替代性，是台積電的隱性利多。</p>
+<p><strong>GOOG（Alphabet）</strong>：延後一季對 2027 年雲端擴建影響有限，因 v8t 世代仍是 2027 年主力。UBS 估 v8t 2026 年 Q4 銷售逾 20 億美元、2027 年約 180 億美元。真正的風險在 EMIB-T 良率若無法突破，TPU v9 的封裝成本優勢會縮水，Google 可能被迫回到擁擠的 CoWoS 產能。</p>
+<p><strong>2454（聯發科）</strong>：受衝擊最直接，10 月中旬股價已反映「延一季」利空。但廣發與 UBS 都維持正面，因 v9 專案聯發科獨家供應。</p>
+<p><strong>反方觀點</strong>：UBS 認為 EMIB-T 執行超前；廣發自身也稱根因已找到。三週的設計延誤屬正常工程範圍，市場把它放大為「結構性供應瓶頸」缺乏證據支撐。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-30 聯發科 Q3 法說</strong>：若管理層確認 TPU v9 時程或 EMIB-T 進度，可將「延後一季」從機構估計升級為事實。若提及玻璃載板，才需重新評估本結論。</li>
+<li><strong>2026-10-27 Corning Q3 財報</strong>：觀察是否提及玻璃載板客戶認證進展。若完全未提，進一步確認 GLW 與此議題無關。</li>
+<li><strong>2026-11 TPU v9 送樣</strong>：若 11 月送樣如期，代表 3 週延誤未再擴大。若送樣再延，延後幅度可能超過一季。</li>
+<li><strong>2027-01 初版 tape-out</strong>：廣發報告的關鍵時點。</li>
+<li><strong>Intel Foundry 2027 上半年法說或 Direct Connect</strong>：EMIB-T 載板良率若公開突破 70% 以上，成本優勢敘事回復；若仍停在 50%，TSM CoWoS 受益。</li>
+<li><strong>台積電 2027 年 CoPoS 試產進度</strong>：確認玻璃載板量產時點仍在 2028 年後，排除其對 2027 年產品的影響。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>延後消息實質上是單一來源（廣發證券 10/13 報告），多家媒體轉載不構成交叉驗證。報告原文位於 X 平台付費牆，僅據轉述。</li>
+<li>UBS 反方報告同樣僅據 X 用戶摘要，無法取得原文。</li>
+<li>DigiTimes「玻璃基板」標題與其可見內文不一致，全文在付費牆內，無法判斷是標題誤植還是另有獨立消息。本報告基於所有其他來源一致指向 EMIB-T 有機載板，判定為誤植。</li>
+<li>Google 從未公布 TPU v9 官方時程，「原訂 2027 年底」本身也是分析師推估，延後與否沒有官方基準可比。</li>
+<li>TPU v9 改用 EMIB-T 一事 Google 與 Intel 均未證實，整條推論鏈建立在 SemiAnalysis 的產業查訪上。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://tw.news.yahoo.com/%E8%81%AF%E7%99%BC%E7%A7%91%E7%9F%AD%E6%9C%9F%E9%80%86%E9%A2%A8%E8%82%A1%E5%83%B9%E6%9C%89%E5%A3%93-%E5%A4%96%E8%B3%87-google-tpu-v9%E5%BB%B6-024449048.html">聯發科短期逆風股價有壓！外資：Google TPU v9延一季、出貨要到2028年了 - Yahoo 台灣</a>
+- <a href="https://x.com/sssjeffpu/status/2109855992846696879">Jeff Pu on X: ASIC Update: TPU v9 Timeline &amp; v10 Opportunities</a>
+- <a href="https://www.trendforce.com/news/2026/10/19/news-mediateks-google-tpu-v9-shipments-may-slip-to-1q28-asic-race-heats-up-as-taiwan-firms-eye-new-opportunities/">TrendForce: MediaTek's Google TPU v9 Shipments May Slip to 1Q28</a>
+- <a href="https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000771936_S1EL12IA2J94BA7U44MUF">DigiTimes: 聯發科TPU v9玻璃基板良率卡關？ 2026年拉貨仍拚高檔</a>
+- <a href="https://www.vlsi.kr/en/tpu-emib-mb-en/">vlsi.kr: Market Bulletin: Google TPU Ditches TSMC CoWoS for Intel EMIB-T</a>
+- <a href="https://seekingalpha.com/news/4652429-googles-tpu-v9-faces-slight-delay-marvell-remains-well-positioned-long-term-in-supply-chain-gf">Seeking Alpha: Google's TPU v9 faces slight delay; Marvell remains well-positioned: GF</a>
+- <a href="https://x.com/QQ_Timmy/status/2109892893078958407">駿HaYaO on X: UBS 聯發科／EMIB-T 執行優於預期</a>
+- <a href="https://x.com/LIWEI_TWCapital/status/2097552082425491637">LIWEI_TW Capital on X: UBS on EMIB-T yield and TPU v9 substrate demand</a>
+- <a href="https://x.com/SemiAnalysis_/status/2072141907879133459">SemiAnalysis on X: Google's next TPU Humufish to use Intel EMIB-T</a>
+- <a href="https://www.tomshardware.com/tech-industry/semiconductors/intels-emib-packaging-gains-traction-as-chip-designers-look-to-skirt-tsmcs-cowos-constraints-googles-reported-decision-for-9th-gen-tpus-highlights-intels-attractive-alternative">Tom's Hardware: Intel's EMIB packaging gains traction as Google's reported decision for 9th-gen TPUs highlights alternative</a>
+- <a href="https://finance.biggo.com/news/kLg0kp4BrX5PFN7BKrXD">BigGo Finance: TSMC Unveils CoPoS Glass Substrate Timeline: C.C. Wei Says At Least 2-3 Years Away</a>
+- <a href="https://www.trendforce.com/news/2026/01/26/news-intel-reportedly-presents-first-thick-core-glass-substrate-with-emib-targeting-ai-data-centers/">TrendForce: Intel Reportedly Presents First Thick-Core Glass Substrate with EMIB</a>
+- <a href="https://www.tomshardware.com/tech-industry/semiconductors/analyzing-intels-emib-and-foveros-advanced-packaging-roadmaps-how-intel-plans-to-scale-chips-in-every-direction">Tom's Hardware: Analyzing Intel's EMIB and Foveros advanced packaging roadmaps</a>
+- <a href="https://en.fnnews.com/news/202609100721535061">fnnews: SKC Glass Substrates Enter Yield Stabilization Phase, IBK Securities</a>
+- <a href="https://www.atlaspcb.com/news/news-skc-absolics-290-million-glass-substrate-semiconductor-packaging-2026/">AtlasPCB: SKC Injects $290 Million into Absolics</a>
+- <a href="https://www.thetechoutlook.com/news/innovation/google-tpu-v9-triggerfish-with-mediatek-tipped-hbm4e-memory-3x-sram-capacity-production-from-late-2027/">The Tech Outlook: Google TPU v9 Triggerfish With MediaTek Tipped, Production From Late 2027</a>
+- <a href="https://finance.biggo.com/news/88844d2c-2cd1-41e9-9204-ec6e05a9e0b6">BigGo Finance: MediaTek Solely Secures Google TPU v9 Upgrade Order; Triggerfish Set for Volume Production in 2028</a>
+- <a href="https://tw.stock.yahoo.com/news/%E5%85%AC%E5%91%8A-%E8%81%AF%E7%99%BC%E7%A7%91%E6%96%BC115-10-30%E5%8F%AC%E9%96%8B%E7%AC%AC%E4%B8%89%E5%AD%A3%E8%B2%A1%E5%A0%B1%E6%9A%A8%E7%87%9F%E9%81%8B%E7%B7%9A%E4%B8%8A%E8%AA%AA%E6%98%8E%E6%9C%83-092634575.html">公告：聯發科於115/10/30召開第三季財報暨營運線上說明會</a>
+- <a href="https://investor.corning.com/news-and-events/events-and-presentations/event-details/2026/Corning-Incorporated-Quarter-3-2026-Earnings-Call-2026-PqCAFWCqa4/default.aspx">Corning Incorporated Quarter 3, 2026 Earnings Call</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ NVHBM標準化壓縮記憶體定價
+          <span class="takeaway">部分證實｜「介面規格統一」有 NVIDIA 官方文件背書；「三家 base die 全用台積電 3 奈米」只有韓媒單一來源，各方皆未證實</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261020-0804@NVHBM%E6%A8%99%E6%BA%96%E5%8C%96%E5%A3%93%E7%B8%AE%E8%A8%98%E6%86%B6%E9%AB%94%E5%AE%9A%E5%83%B9">2026-10-20 08:04 觀點彙整</a></p>
+          
+          <h2>深查：NVHBM 標準化壓縮記憶體定價</h2>
+<p><strong>裁定</strong>：【部分證實】
+「介面規格統一」有 NVIDIA 官方文件背書；「三家 base die 全用台積電 3 奈米」只有韓媒單一來源，各方皆未證實。</p>
+<p>細節：NVIDIA 8/26 官方部落格明言要建立「標準 NVHBM 實作、由多家記憶體供應商提供」，這部分是【事實】。但「NVIDIA 要求三星、SK hynix、美光統一用 TSMC 3nm 做 base die、1c DRAM 做 core die」全部回溯到首爾經濟日報 10/18 一篇引「業界消息」的報導，三星與台積電均拒絕評論，NVIDIA 未回應。至於「定價權轉為下行風險」，目前唯一有法說表態的美光反而說 NVHBM 會有更高 ASP 與更好毛利，市場敘事此處明顯超前證據。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【事實｜2026-08-26】NVIDIA 官方部落格：NVHBM 把記憶體控制器移入 HBM base die，較標準 HBM4E 頻寬最多增 30%、HBM 功耗降 15%、釋出最多 25% XPU 晶粒面積；「NVIDIA 正建立標準 NVHBM 實作，可由多家記憶體供應商提供」。首批採用者是 AWS Annapurna Labs 的 Trainium4。全文<strong>未提及</strong>台積電、3 奈米或任何記憶體廠名稱。</li>
+<li>【傳聞｜2026-10-18】首爾經濟日報引「業界消息」：NVIDIA 要求三家供應商 base die 用 TSMC 3nm、core die 用 1c；三星 DS 部門內部審查後同意，但同時驗證自家晶圓廠作備援。無具名官員、無文件。</li>
+<li>【事實｜2026-10-19 至 10-20】TrendForce、TNW、SamMobile、韓媒 e-focus 等後續報導全部標註「據首爾經濟日報」，屬同源轉述，不構成獨立交叉。e-focus 另載明三星與台積電均拒絕提供正式說法。</li>
+<li>【事實｜2026-09（FY2025 Q4 法說）】美光已於去年宣布 HBM4E 的標準與客製 base die 均交台積電生產，目標 2027 年量產。此為官方表述，早於本次傳聞。</li>
+<li>【事實｜FY2026 Q4 法說，逐字稿 2026-10-01】美光技術長 DeBoer：與 NVIDIA 共同設計 NV HBM 已逾一年，是「市場上第一個主要客製 HBM 產品」；HBM4E 的客製與 JEDEC 標準版「都在代工製程上」。未指名台積電或 3 奈米。營運長 Bhatia：HBM 是高價產品，NV HBM 預期也是高價值產品；2027 年 HBM 定價已「大幅調高」以縮小與一般 DRAM 的獲利差距。</li>
+<li>【事實｜2026-10-15】台積電 Q3 法說逐字稿全文未提及 HBM、base die 或 NVHBM；3 奈米佔晶圓營收 33%。無法從代工端佐證訂單。</li>
+<li>【機構估計｜2026-10-18】UBS（經首爾經濟日報轉述）：明年 HBM 需求約 615 億 Gb、年增 91%，供給僅 546 億 Gb，缺口約 10%。</li>
+<li>【傳聞】「base die 成本是 core die 的 3 至 4 倍、NVHBM 讓三大廠淪為商品化」為 wccftech 評論，原文 403 無法讀取，僅據搜尋摘錄。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>NVDA</strong>：介面標準化是官方策略，目的是降低跨供應商整合與驗證成本，並讓訂單可在三家間切換。這確實強化 NVIDIA 對 HBM 的議價籌碼，方向上支持「挑題理由」，但時程落在 2027 年後的 Rubin Ultra 或 Feynman 世代，非當下。</li>
+<li><strong>TSM</strong>：若傳聞屬實，台積電把 HBM 價值鏈中最貴的邏輯層全部收入囊中，三星晶圓廠則等於承認 2 奈米良率落後。但台積電自身法說未提供任何佐證，應視為尚未入帳的潛在增量。</li>
+<li><strong>MU</strong>：市場把「標準化」解讀為差異化消失，美光管理層的說法正好相反：差異化轉到功耗、速度與良率執行，客製產品可收溢價，且 2027 年合約價已上調。美光是三家中最早公開擁抱台積電 base die 的，標準化對它反而是縮小與 SK hynix 差距的機會。</li>
+<li><strong>反方觀點</strong>：短期供需才是定價主變數。UBS 估明年 HBM 缺口 10%，在缺貨週期內買方很難靠規格統一壓價。「定價權轉為下行風險」若成立，更可能出現在 2028 年後供給追上之際，而非 2027 年。</li>
+</ul>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-28 SK hynix Q3 法說</strong>：若管理層證實 NVHBM base die 全交台積電 3 奈米，傳聞升級為事實；若強調自有或 12 奈米路線，則三家統一的說法被削弱。</li>
+<li><strong>2026-10 底三星 Q3 法說</strong>：是否承認將 base die 委外台積電，或重申自家晶圓廠方案。三星若公開否認，本結論降級為【證據不足】。</li>
+<li><strong>2026-11 NVIDIA FY27 Q3 財報及 2027-03 GTC</strong>：是否公布 NVHBM 供應商名單、製程節點與 Rubin Ultra 搭載時程。</li>
+<li><strong>2027 年 HBM 合約價走勢</strong>：若三家 2027 年 ASP 如美光所述上調，則「定價壓縮」敘事在近期被推翻；若出現降價則升級為下行風險。</li>
+<li><strong>台積電 2027 年 Fab 18 新 3 奈米產線投產</strong>：觀察是否有明確 HBM base die 相關產能表述。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「TSMC 3nm 統一」為<strong>單一來源</strong>（首爾經濟日報，匿名業界消息），其餘報導皆轉述，三星與台積電拒絕評論，NVIDIA 未回應。</li>
+<li>NVIDIA 官方文件只證實「標準實作、多供應商」，未提製程與代工廠，不可混用。</li>
+<li>wccftech 的 base die 成本倍數原文無法取得，僅據摘錄。</li>
+<li>UBS 供需數字為韓媒轉述，未見原始報告。</li>
+<li>美光 FY2026 Q4 法說逐字稿來自 Motley Fool 轉錄，非公司官方文件。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://blogs.nvidia.com/blog/nvlink-fusion-nvhbm-custom-high-bandwidth-memory/">NVIDIA NVLink Fusion Expands With NVHBM Custom High-Bandwidth Memory</a>
+- <a href="https://en.sedaily.com/finance/2026/10/18/samsung-to-use-tsmc-for-base-die-in-nvidias-custom-hbm">Samsung to Use TSMC for Base Die in Nvidia's Custom HBM - Seoul Economic Daily</a>
+- <a href="https://en.sedaily.com/finance/2026/10/18/samsung-to-tap-tsmc-3-nanometer-lines-for-nvidia-custom-hbm">Samsung and TSMC Join Forces to Expand HBM Output for Nvidia - Seoul Economic Daily</a>
+- <a href="https://en.sedaily.com/finance/2026/10/19/nvidia-co-designs-custom-hbm-with-samsung-tsmc-to-widen">Nvidia Co-Designs Custom HBM With Samsung, TSMC - Seoul Economic Daily</a>
+- <a href="https://www.trendforce.com/news/2026/10/19/news-nvidia-reportedly-pushes-tsmc-3nm-nvhbm-base-dies-for-samsung-sk-hynix-micron-in-unlikely-foundry-tie-up/">TrendForce: NVIDIA Reportedly Pushes TSMC 3nm NVHBM Base Dies</a>
+- <a href="https://www.trendforce.com/news/2026/10/09/news-nvidias-nvhbm-reshapes-memory-makers-base-die-strategies-as-micron-samsung-turn-to-external-foundries/">TrendForce: NVIDIA's NVHBM Reshapes Base Die Strategies</a>
+- <a href="https://www.e-focus.co.kr/news/articleView.html?idxno=3003094">이포커스：삼성전자, NVHBM 베이스다이 TSMC 3나노로</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/01/micron-mu-q4-2026-earnings-call-transcript/">Micron (MU) Q4 2026 Earnings Call Transcript</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/15/tsmc-tsm-q3-2026-earnings-call-transcript/">TSMC (TSM) Q3 2026 Earnings Call Transcript</a>
+- <a href="https://www.heise.de/en/news/Nvidia-announces-High-Bandwidth-Memory-NVHBM-11432407.html">heise: Nvidia announces High Bandwidth Memory NVHBM</a>
+- <a href="https://www.tomshardware.com/micron-hands-tsmc-the-keys-to-hbm4e">Tom's Hardware: Micron teams up with TSMC to deliver HBM4E</a>
+- <a href="https://wccftech.com/with-the-hbm-base-die-costing-3-4x-as-much-as-the-core-die-nvidias-nvhbm-is-a-master-stroke-for-capturing-most-of-the-hbm-value-while-relegating-the-big-three-to-the-commodity-status/">wccftech: HBM Base Die Costing 3-4x As Much As The Core Die（原文無法讀取）</a>
+- <a href="https://www.tipranks.com/news/company-announcements/sk-hynix-sets-october-28-conference-call-for-q3-2026-earnings">SK hynix Sets October 28 Conference Call for Q3 2026 Earnings</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-10-19（6 題）</summary>
     <div class="day-body">
       
