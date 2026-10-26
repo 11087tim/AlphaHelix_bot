@@ -65,12 +65,12 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-26 08:50｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-26 20:48｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
-    <summary>📅 2026-10-26（3 題）</summary>
+    <summary>📅 2026-10-26（6 題）</summary>
     <div class="day-body">
       
       <details class="topic">
@@ -269,6 +269,201 @@ Anthropic 已官方證實組建自研晶片團隊，但「開發時程為 OpenAI
 - <a href="https://www.cnbc.com/2026/10/09/verizon-att-tmobile-stocks-spacex-network.html">Verizon, AT&amp;T and T-Mobile sell off on SpaceX U.S. network plans - CNBC</a>
 - <a href="https://stocktwits.com/news-articles/markets/equity/vz-tmus-t-stocks-face-valuation-pressure-from-space-x-wireless-push-but-tower-operators-stand-to-gain-says-citi/cZxyZVjRBxu">VZ, TMUS, T Stocks Face Valuation Pressure From SpaceX Wireless Push, Says Citi</a>
 - <a href="https://finance.yahoo.com/markets/stocks/articles/crown-castle-american-tower-stocks-081318584.html">Crown Castle, American Tower Stocks Catch A SpaceX Boost</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Rubin HBM4層數規格
+          <span class="takeaway">部分證實｜Rubin本體的12層HBM4早已由NVIDIA官方定案並量產；「8層或12層未定」只適用於2027年的Rubin Ultra，市場把兩代混為一談</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261026-2004@Rubin%20HBM4%E5%B1%A4%E6%95%B8%E8%A6%8F%E6%A0%BC">2026-10-26 20:04 觀點彙整</a></p>
+          
+          <h2>深查：Rubin HBM4層數規格</h2>
+<p><strong>裁定</strong>：【部分證實】
+Rubin本體的12層HBM4早已由NVIDIA官方定案並量產；「8層或12層未定」只適用於2027年的Rubin Ultra，市場把兩代混為一談。</p>
+<p>細節上，8月底韓媒曾報導NVIDIA要求供應商在2026下半年把Rubin的HBM4主力從12層改為8層，但10月的Counterpoint分析與最新韓媒追蹤都指出12層在2026年維持主力，8層要到2027年Q2才為Rubin Ultra出貨。「三種互斥說法」實際上是時間軸不同的三個階段，而非同一產品的三個版本。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：宣稱的三個源頭分別是 (1) TrendForce 8月4日新聞稿、(2) ZDNet Korea 8月26日引述業界消息、(3) SemiAnalysis 8月初的X貼文。多數英文媒體（wccftech、TechTimes、Tom's Hardware）皆為轉述，非獨立來源。</p>
+<ul>
+<li>【事實｜2026-07-21】NVIDIA開發者部落格原文：「Rubin integrates up to 288 GB of HBM4 memory, driven by dedicated HBM controllers and 12-Hi stacks」。Rubin本體層數是官方定案，不存在未定問題。</li>
+<li>【事實｜2026-09】Micron 10-K揭露2026年已量產HBM4 36GB 12-high，16-high 48GB送樣，HBM4E預定2027年量產。36GB單顆正對應12層。</li>
+<li>【機構估計｜2026-08-04】TrendForce新聞稿：NVIDIA自3Q26起對Rubin Ultra評估四種方案（12-Hi HBM4E原案、8-Hi HBM4E、12-Hi HBM4、8-Hi HBM4），最終規格未定。原因為2027年DRAM缺貨與12-Hi HBM4E驗證時程不確定。新聞稿僅談Rubin Ultra，未涉及Rubin本體。</li>
+<li>【機構估計｜2026-08】SemiAnalysis稱Rubin Ultra主流SKU從HBM4E 12-Hi 384GB降為HBM4 8-Hi 192GB，原因是記憶體已占機架資本成本約四成。原貼文付費牆無法讀取，僅據TechTimes轉述。</li>
+<li>【傳聞｜2026-08-26】ZDNet Korea引述匿名業界人士：NVIDIA要求三星、SK hynix在2026下半年將HBM4主力供應由12層改8層，理由是2048個I/O導致發熱、12層堆疊良率低、分散供應風險。單一來源，後續報導未再支持「2026下半年」時點。</li>
+<li>【機構估計｜2026-10-09】Counterpoint Research：Rubin搭載產品「反而向12層收斂」，市場傳言的減層缺乏實證，ASIC廠的4層產品亦未確認。</li>
+<li>【傳聞｜2026-10-26】ZDNet Korea今日報導：12層在2026年維持主力；三星、SK hynix目標2027年Q2為Rubin Ultra量產出貨8層HBM4，8層認證尚未完成；NVIDIA將依NVL機架規模混用8層HBM4與8層HBM4E。</li>
+<li>【事實｜2026-07-06】SK hynix F-1/A文件未揭露任何HBM4層數資訊，僅載IDC數據2026年Q1 HBM市占56.4%。供應商官方文件無法用於驗證層數宣稱。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：Rubin本體規格穩定，對2026下半年至2027上半年出貨無影響。Rubin Ultra降規是在記憶體佔成本四成的前提下保利潤率，不是需求轉弱。但Rubin Ultra記憶體容量若低於Rubin，將削弱其對客戶的升級吸引力，可能拉長Rubin本體生命週期。</p>
+<p><strong>MU</strong>：Micron的HBM4是12層36GB，正好是Rubin主力規格。若Rubin Ultra轉8層，三家供應商的位元需求同步下修，但TrendForce仍預估2027年HBM位元出貨成長50至60%且供不應求，JPMorgan更估HBM4均價較2025年漲121%。對MU而言，單價上漲效應大於層數下修的位元損失。反方觀點：Counterpoint認為8層傳言被過度解讀，AI工作負載更看重頻寬與容量而非成本。</p>
+<p><strong>TSM</strong>：8層堆疊較薄，CoWoS-L封裝的翹曲與良率壓力減輕，對台積電先進封裝產出是正面因素。Rubin Ultra從四晶粒改雙晶粒的傳聞也降低CoWoS-L面積需求。</p>
+<p><strong>市場解讀失真處</strong>：將「Rubin Ultra未定」套在「Rubin」上，誤判為當前平台規格飄移。另一失真是把8層視為供應商技術退步，實際是NVIDIA為了供應彈性與成本主動選擇。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-28 SK hynix Q3法說</strong>：若管理層提及8層HBM4認證或Rubin Ultra規格混用，將把ZDNet今日報導從傳聞升級為事實。TrendForce前瞻另指SK hynix Q3 HBM4出貨低於預期，需留意是否與規格變動有關。</li>
+<li><strong>2026年12月 Micron FQ1'27法說</strong>：若HBM4E樣品描述從12層轉為8層優先，即證實Rubin Ultra降規。</li>
+<li><strong>2027年3月 GTC</strong>：NVIDIA若正式公布Rubin Ultra容量為192GB或288GB，本議題即可結案。若維持原1TB HBM4E敘事，TrendForce與SemiAnalysis的推估將被推翻。</li>
+<li><strong>2027年Q2 供應商8層出貨</strong>：韓媒給出的時點，屆時未出貨則8層說法降級。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「NVIDIA要求2026下半年改8層」為ZDNet Korea單一匿名來源，與NVIDIA官方7月部落格和Counterpoint10月分析相左，查證不支持此宣稱的時點。</li>
+<li>SemiAnalysis原文與Micron Q4法說預備講稿PDF無法讀取，相關數字僅據轉述或摘錄。</li>
+<li>三星、SK hynix、Micron皆未在SEC文件或新聞稿中揭露Rubin Ultra層數，供應商端缺乏一手證據。</li>
+<li>Rubin Ultra容量數字在192GB、288GB、384GB之間分歧，反映多方案評估未定。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/">Inside NVIDIA Rubin GPU Architecture (NVIDIA Developer Blog)</a>
+- <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Vera-Rubin-Ramps-Into-Full-Production-to-Power-Agentic-AI-Factories-Worldwide/default.aspx">NVIDIA Vera Rubin Ramps Into Full Production (NVIDIA IR)</a>
+- <a href="https://developer.nvidia.com/blog/nvidia-vera-rubin-pod-seven-chips-five-rack-scale-systems-one-ai-supercomputer/">NVIDIA Vera Rubin POD (NVIDIA Developer Blog)</a>
+- <a href="https://www.trendforce.com/presscenter/news/20260804-13166.html">TrendForce: DRAM Supply Tight in 2027, NVIDIA to Lower HBM Configurations for Rubin Ultra</a>
+- <a href="https://zdnet.co.kr/view/?no=20260826094826">ZDNet Korea: 삼성·SK, HBM4 8단 출하 비중 늘린다 (2026-08-26)</a>
+- <a href="https://zdnet.co.kr/view/?no=20261026115227">ZDNet Korea: 삼성·SK, 내년 2월 HBM4 8단 양산 출하 (2026-10-26)</a>
+- <a href="https://www.newstomato.com/readnews.aspx?no=1316173">뉴스토마토: 엔비디아 루빈, 12단 유지 (Counterpoint)</a>
+- <a href="https://www.mdtoday.co.kr/news/articleView.html?idxno=617980">메디컬투데이: 엔비디아 루빈 HBM4 12단 유지 전망</a>
+- <a href="https://www.g-enews.com/article/Global-Biz/2026/08/202608101555456998fbbec65dfb_1">글로벌이코노믹: HBM 12단서 8단 후퇴 검토</a>
+- <a href="https://www.techtimes.com/articles/323106/20260805/nvidia-rubin-ultra-ai-chip-may-deliver-less-hbm-rubin-forcing-procurement-replanning.htm">TechTimes: Rubin Ultra May Deliver Less HBM Than Rubin</a>
+- <a href="https://www.tokenpost.com/news/business/40833">TokenPost: Samsung, SK hynix Aim for 8-layer HBM4 Shipments Around Q2 2027</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000023/mu-20260903.htm">Micron FY2026 Form 10-K (SEC)</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526295501/d32785df1a.htm">SK hynix Form F-1/A (SEC)</a>
+- <a href="https://www.trendforce.com/news/2026/10/26/news-sk-hynix-3q-earnings-preview-record-profit-at-78-operating-margin-hbm4-ltas-solidigm-in-focus/">TrendForce: SK hynix 3Q Earnings Preview (2026-10-26)</a>
+- <a href="https://www.trendforce.com/news/2026/01/09/news-nvidia-demand-fuels-hbm4-race-12-layer-ramps-16-layer-push-by-sk-hynix-samsung-and-micron/">TrendForce: NVIDIA Fuels HBM4 Race (2026-01-09)</a>
+- <a href="https://www.trendforce.com/news/2026/03/09/news-samsung-sk%E2%80%AFhynix-reportedly-tapped-as-nvidia-rubin-hbm4-suppliers-shipments-could-start-in-march/">TrendForce: Samsung, SK hynix Tapped as Rubin HBM4 Suppliers (2026-03-09)</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ SpaceX融資採購2027 GPU
+          <span class="takeaway">部分證實｜400億美元、Apollo主導、GPU於2027上半年交付皆有SEC文件佐證；但「SPV」與「已完成」是Musk與媒體說法，8-K載明僅為具約束力承諾函，年底前才交割</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261026-2004@SpaceX%E8%9E%8D%E8%B3%87%E6%8E%A1%E8%B3%BC2027%20GPU">2026-10-26 20:04 觀點彙整</a></p>
+          
+          <h2>深查：SpaceX融資採購2027 GPU</h2>
+<p><strong>裁定</strong>：【部分證實】
+400億美元、Apollo主導、GPU於2027上半年交付皆有SEC文件佐證；但「SPV」與「已完成」是Musk與媒體說法，8-K載明僅為具約束力承諾函，年底前才交割。</p>
+<p>裁定細節：原宣稱三個要素中，金額與交付時程為【事實】，融資形式是「主融資租賃（master finance lease）」而非媒體所稱的債券SPV，且交易尚未定價、尚未交割。市場敘事把「簽承諾函」聽成「資金到位」，這是主要失真點。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：一手文件是SpaceX於2026-10-26向SEC提交的8-K（事件日10-24，Item 8.01，CFO Bret Johnsen簽署）。Musk的說法來自10-25他在X上回覆Chamath Palihapitiya的貼文。CNBC、Reuters、工商時報、聯合報等中英媒體全部轉述這兩個來源，不構成獨立佐證。Bloomberg 10-7與10-23兩篇為「知情人士」消息，Bloomberg原文付費牆無法讀取，僅據Investing.com與Yahoo轉述。</p>
+<ul>
+<li>【事實｜2026-10-26】8-K載明：SpaceX與Apollo Global Management管理的實體簽訂「具約束力承諾函」，建立主融資租賃；Apollo購入GPU pod與相關設備再租給SpaceX。預計租賃本金總額約400億美元，分批交付、每批獨立租約，期限約5至5.25年。租金每季預付，等於融資成本的二十分之一加固定利率利息。</li>
+<li>【事實｜2026-10-26】8-K明示：固定利率「將於定價時決定」，進入主租約「仍受特定交割條件限制」，預計年底前交割；租約於2027上半年GPU交付後起算。8-K全文未出現「SPV」「表外」「可贖回」字眼。</li>
+<li>【事實｜2026-10-25】Musk原文：「SpaceX closed $40B of debt for GPUs, but we're investment grade and have Starlink &amp; launch revenue」；補充「This is primarily callable debt for GPU purchases that will arrive in Q1 and Q2. Not a major factor this quarter」。「closed」與8-K的「承諾函、待交割」有落差。</li>
+<li>【傳聞｜2026-10-23，Bloomberg知情人士】結構為SPV發行三檔私募債券：次順位約250至300億美元（殖利率一度談到8%中段）、另兩檔約100億與50億美元；Goldman Sachs主導、Apollo旗下Atlas SP管理載體、PIMCO考慮參與。此結構與8-K的租賃形式可相容（Apollo實體即為出租載體），但債券細節無官方文件可核。</li>
+<li>【傳聞｜2026-10-23，Bloomberg】先前xAI的一筆融資未達到預期會計處理，審計後SpaceX認列約130億美元債務。此為「表外」能否成立的重要反例，僅據轉述。</li>
+<li>【事實｜2026-08-05】SpaceX首次法說宣布AI平台全面採用Nvidia Vera Rubin；Nvidia Q2 FY27 10-Q載明Vera Rubin已於FY27第三季開始量產出貨。8-K未指明GPU型號，「Rubin」是合理推論而非文件事實。</li>
+<li>【事實｜2026-10-20】Q3財報：AI部門營收75.6億美元，Q4資本支出指引350至400億美元，前三季自由現金流負350億美元。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：400億美元若全數落在Rubin，是2027上半年最大單一可見訂單之一，但訂單本身8月已揭露，本次只是確認資金來源。增量訊息是「以設備租賃而非公司債」，顯示投資級客戶仍需靠結構化融資買GPU，對Nvidia中期需求能見度是正面但非新增。</p>
+<p><strong>TSM、MU</strong>：Micron 2027年HBM產能已全數簽約、TSMC CoWoS至2027年中滿載，SpaceX這批需求早已在供應商排程內，此消息不改變產能緊俏判斷，也不會帶來新的加單彈性。</p>
+<p><strong>SPCX</strong>：關鍵是會計。8-K的「融資租賃」在現行會計準則下通常要認列租賃負債，與Bloomberg所述「表外、保護投資級評等」目標存在張力，且已有xAI那筆130億美元被迫入表的前例。S&amp;P原本就預期SpaceX到2030年前現金流為負、2028年借款攀至1320億美元。若這400億美元最終入表，槓桿敘事會明顯惡化。</p>
+<p><strong>反方觀點</strong>：Dan Ives（Yorkville Ives，Outperform）認為AI合約積壓與Starlink現金流足以償債。但Q3 AI營收約75%來自少數AI實驗室的短期現貨合約，Anthropic可能佔一半，2027年約10 GW新產能上線時租金能否維持，才是租賃能否自償的核心。Musk借此宣稱200多家neocloud將倒閉，本質是對競爭者的敘事攻擊，不是融資條件的一部分。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026年底前</strong>：是否出現第二份8-K宣告主租約正式簽署與定價。若固定利率公開且高於8%，確認「投資級也得付高價」；若遲未交割，裁定降為【證據不足】。</li>
+<li><strong>2027年Q1財報（約2027-04）與10-K</strong>：租賃負債是否入表。入表則推翻「表外融資」敘事。</li>
+<li><strong>2027年Q1、Q2</strong>：Nvidia財報Data Center分項與SpaceX資本支出，驗證GPU是否如期交付。</li>
+<li><strong>Micron 2027會計年度各季法說</strong>：HBM4出貨節奏能否佐證Rubin上半年放量。</li>
+<li><strong>S&amp;P、Moody's評等行動</strong>：任何展望調整會直接改變「保住投資級」的判斷。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「SPV、Goldman主導、三檔債券、8%殖利率、Atlas SP、PIMCO」全來自Bloomberg匿名消息，原文付費牆無法取得，僅據Investing.com與Yahoo轉述；SpaceX、Goldman、Apollo皆未評論。</li>
+<li>台媒、陸媒與加密媒體內容均改寫自Reuters、CNBC與Musk貼文，不是獨立來源。</li>
+<li>「Vera Rubin」為8月法說與Nvidia文件交叉推論，8-K未指明型號。</li>
+<li>「可贖回」僅Musk一人說法，8-K未載。</li>
+<li>Benzinga「定價高於8%」與Stocktwits頁面無法讀取，未採用。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001181412/000110465926118614/tm2628247d1_8k.htm">SpaceX Form 8-K, Item 8.01, Apollo master finance lease (2026-10-26)</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001181412/000162828026066482/spcx-20261020.htm">SpaceX Form 8-K, Q3 2026 earnings release (2026-10-20)</a>
+- <a href="https://www.investing.com/news/sec-filings/spacex-signs-40-billion-gpu-equipment-lease-agreement-with-apollo-93CH-4972481">SpaceX signs $40 billion GPU equipment lease agreement with Apollo, Investing.com</a>
+- <a href="https://www.investing.com/news/stock-market-news/musk-says-spacex-raised-40-billion-in-debt-for-gpus-4971248">Musk says SpaceX raised $40 billion in debt deal, Reuters via Investing.com</a>
+- <a href="https://teslanorth.com/2026/10/25/spacex-40b-gpu-debt-elon-musk/">Elon Musk Says SpaceX Locked In $40B of GPU Debt, TeslaNorth</a>
+- <a href="https://www.investing.com/news/company-news/spacexs-40bn-ai-debt-deal-faces-hurdles-amid-credit-market-turmoil--bloomberg-4970497">SpaceX's $40bn AI debt deal faces hurdles, Bloomberg via Investing.com</a>
+- <a href="https://finance.yahoo.com/markets/stocks/article/spacex-stock-slips-on-report-of-its-40-billion-in-new-debt-for-nvidia-chips-140223011.html">SpaceX stock slips on report of $40 billion new debt, Yahoo Finance</a>
+- <a href="https://huggingnews.com/ai/spacex-signs-40b-gpu-finance-lease-with-apollo-4c3db8bd">SpaceX Signs $40B GPU Finance Lease With Apollo, HuggingNews</a>
+- <a href="https://www.matterfact.com/newsletter/2026-08-10-ai-accelerators-014-spacex-picks-nvidia">SpaceX Picks Nvidia, Matterfact newsletter (2026-08-10)</a>
+- <a href="https://leafyecfa.substack.com/p/spacex-spcx-q3-2026-earnings-analysis">SpaceX (SPCX) Q3 2026 Earnings Analysis, Substack</a>
+- <a href="https://en.wikipedia.org/wiki/Initial_public_offering_of_SpaceX">Initial public offering of SpaceX, Wikipedia</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000075/nvda-20260726.htm">NVIDIA Form 10-Q, Q2 FY2027</a>
+- <a href="https://www.techtimes.com/articles/329105/20261016/micron-opens-hbm-plant-2027-output-fully-contracted-strike-vote-looms.htm">Micron Opens HBM Plant With 2027 Output Fully Contracted, TechTimes</a>
+- <a href="https://www.advisorperspectives.com/articles/2026/06/24/spacexs-quickfire-investment-brings-skeptics">SpaceX's Quickfire Investment-Grade Rating Brings Out Skeptics, Advisor Perspectives</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ iPhone Duo增單與裂損
+          <span class="takeaway">部分證實｜「加單30%」是供應鏈傳聞且數字來源混用；裂損屬實但「Apple正在調查」無官方佐證，整機組裝由鴻海獨家承接則獲多方一致</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261026-2004@iPhone%20Duo%E5%A2%9E%E5%96%AE%E8%88%87%E8%A3%82%E6%90%8D">2026-10-26 20:04 觀點彙整</a></p>
+          
+          <h2>深查：iPhone Duo增單與裂損</h2>
+<p><strong>裁定</strong>：【部分證實】
+「加單30%」是供應鏈傳聞且數字來源混用；裂損屬實但「Apple正在調查」無官方佐證，整機組裝由鴻海獨家承接則獲多方一致。</p>
+<p>細節：加單消息至少有三個版本（30%／30%／44%），全部來自匿名供應鏈人士，Apple與鴻海皆未證實。螢幕裂損有一手用戶案例與 iFixit 拆解交叉支持，但失效率、批次、成因均未確認；Apple 僅以保固換機處理，沒有任何公開聲明使用「調查」字眼。</p>
+<h3>查證過程與證據</h3>
+<p><strong>宣稱一：售罄後加單30%</strong>
+- 【傳聞】2026-10-11：工商時報轉引陸媒《證券時報》，一家大陸供應商稱 Duo「加單30%，總量仍未超過1,000萬台」。此時預購尚未開始，30% 與「售罄」無因果關係。
+- 【傳聞】2026-10-22：DigiTimes 獨家稱 Apple 將 12 個月出貨目標由 970 萬上修至 1,400 萬（+44%），依據為預購表現，付費牆內原文無法讀取，僅據 MacRumors 轉述。
+- 【傳聞】2026-10-26：經濟日報、工商時報報導「售罄後追加三成訂單」，鴻海、台積電、新日興受惠。工商時報版本註明引自《華爾街見聞》，經濟日報則稱「供應鏈傳出」。兩家台媒數字、備貨量（600萬→800至1,000萬、2027年3,300萬）、供應商名單完全相同，應視為單一消息源的改寫，非獨立交叉。
+- 【事實】2026-10-23：Duo 開賣即售罄，官網交期排至 2027-01-22，多家媒體與 Apple 官網一致。但工商時報同日另篇報導指出，大陸拼多多已出現低於官價 200 元人民幣的售價、轉售溢價鬆動、且有消費者取消訂單，顯示「售罄」部分反映供給瓶頸而非純需求。
+- 【機構估計】Morgan Stanley 供應鏈查核推估 2H26 產量約 650 萬台、JPMorgan 估今年 800 至 900 萬台，低於台媒引用的上緣。此兩筆僅據搜尋摘錄，原文被擋。</p>
+<p><strong>宣稱二：內螢幕裂損由 Apple 調查</strong>
+- 【事實】2026-10-23起：Reddit、MacRumors 論壇出現多起內螢幕沿鉸鏈裂開案例，澳洲用戶稱使用約 6 小時、開合不足 20 次即裂。Apple 直營店免費換機，Gulf News 同時指出部分流傳照片為造假。
+- 【機構估計】2026-10-25/26：iFixit 拆解以 CT 掃描與 3D 模擬提出假說：鉸鏈中央支撐條閉合時下沉不足，在排線穿越處下方形成應力熱點，且裝置易進粉塵。iFixit 原文抓取失敗，僅據 Notebookcheck、AppleInsider 轉述；轉述一致強調成因未確認。
+- 【事實】2026-10-26：韓國鉸鏈背板供應商 Fine M-Tech 股價重挫 15.7%，發聲明否認其零件有品質瑕疵。
+- 【傳聞】2026-10-26：新浪轉微博財經報導，一名匿名富士康員工稱 Apple 曾為保供「降低良率質檢標準」。單一匿名來源，無法驗證。
+- 【查證不支持】「Apple 正在調查」：The National 稱 Apple「據報」將故障機送回加州工程團隊，但未附任何出處；MacRumors 只寫「可能正在收集故障機研究」。截至 10-26 無 Apple 聲明、無支援文件、無發言人引述。</p>
+<p><strong>供應鏈事實</strong>：鴻海獨家組裝、台積電代工處理器、鉸鏈由鴻海與新日興合資公司主供、Amphenol 為第二供應商，此組合在經濟日報、工商時報、DigiTimes、BigGo 一致出現，Apple COO 10 月中赴鄭州廠視察亦獲多家報導。【事實】</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>對鴻海（2317）</strong>：兩條敘事並不真正相反。加單只是「目標」上修，實際出貨受組裝良率限制；9 月底 DigiTimes 曾報鴻海組裝良率僅六成出頭，成熟需半年至一年。若裂損源自鉸鏈與支撐結構公差，重工與換機備料會吃掉同一條產能，等同加單數字打折。鴻海一方面是組裝商，另一方面透過合資公司供鉸鏈，品質責任曝險雙重。Duo 在鴻海營收占比仍小，10-26 股價收跌 2%，市場並未將其視為重大利多或利空。</p>
+<p><strong>市場解讀失真處</strong>：
+- 台媒把 10-11 的 30% 與 10-26 的 30% 連成「售罄→加單」的因果，實際上是同一數字在不同時點被重複引用。
+- 「售罄」被解讀為需求爆發，但大陸通路破發、取消訂單、以及投行 650 至 900 萬的估計顯示供給端才是主要約束。
+- 裂損被放大為「Crackgate」，但目前沒有任何失效率數據，且部分照片已被證實造假。</p>
+<p><strong>反方觀點</strong>：Fine M-Tech 否認零件瑕疵；多家外媒明言「系統性缺陷未確認」；Apple 官方 IP68 與鉸鏈設計說明未改。若最終裂損集中於首批特定批次，對 2027 年 3,300 萬台的長期敘事影響有限。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-30 Apple FY4Q26 財報會</strong>：管理層若給出 Duo 供給或品質表述，或提及保固費用，可直接升級或推翻「調查中」判斷。</li>
+<li><strong>2026-11-05前後 鴻海 10 月營收與 11 月中法說</strong>：消費電子出貨節奏、是否提及折疊機良率。</li>
+<li><strong>Apple 支援文件或維修方案</strong>：若出現 Duo 內螢幕專屬維修計畫，裂損升級為【事實】級系統性問題。</li>
+<li><strong>2027-01-22 第二波出貨</strong>：交期若提前，印證取消訂單與供給改善；若再延，加單數字可信度下降。</li>
+<li><strong>新日興、Fine M-Tech 月營收與聲明</strong>：鉸鏈出貨變化是加單是否落地的最直接數據。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>所有加單數字均為匿名供應鏈消息，Apple、鴻海、新日興皆無回應。</li>
+<li>DigiTimes 兩篇關鍵報導（9/29 良率、10/22 加單44%）均在付費牆內，僅據首段與轉述。</li>
+<li>iFixit 原文抓取失敗，依賴 Notebookcheck 與 AppleInsider 轉述。</li>
+<li>Morgan Stanley、JPMorgan 估計僅據搜尋摘錄，CNBC 與 Invezz 原文被擋。</li>
+<li>台媒 10-26 兩篇報導內容高度重疊，計為單一來源。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://money.udn.com/money/story/5612/9836711">折疊 iPhone 搶手 傳蘋果要求追加三成訂單 鴻海、台積等進補（經濟日報）</a>
+- <a href="https://www.ctee.com.tw/news/20261026700309-430502">蘋果折疊機賣爆、傳追加3成訂單 鴻海、台積電、新日興吃補（工商時報）</a>
+- <a href="https://www.ctee.com.tw/news/20261011700073-439901">陸蘋鏈：iPhone Duo加單30％（工商時報）</a>
+- <a href="https://www.ctee.com.tw/news/20261026700334-430804">iPhone Duo官網排隊等明年 陸通路卻見「降價求售」（工商時報）</a>
+- <a href="https://9to5mac.com/2026/10/12/apple-has-reportedly-increased-its-iphone-duo-orders-by-30/">Apple has reportedly increased its iPhone Duo orders by 30%（9to5Mac）</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/apple-seeks-more-iphone-duo-001005225.html">Apple seeks more iPhone Duo supplies amid strong demand（Yahoo Finance/Investing.com）</a>
+- <a href="https://www.digitimes.com/news/a20261022PD219/iphone-apple-shipments-demand-foldable.html">Exclusive: Apple raises iPhone Duo shipment target 44%（DigiTimes）</a>
+- <a href="https://www.macrumors.com/2026/10/22/apple-boosts-iphone-duo-orders/">Apple Reportedly Boosts iPhone Duo Orders by 44%（MacRumors）</a>
+- <a href="https://www.digitimes.com/news/a20260929PD205/apple-iphone-foldable-launch-production.html">Apple's foldable iPhone Duo faces low yields ahead of October launch（DigiTimes）</a>
+- <a href="https://udn.com/news/story/7333/9808235">蘋果折疊機良率沒卡關 COO親赴鴻海鄭州廠視察（聯合新聞網）</a>
+- <a href="https://www.macrumors.com/2026/10/23/iphone-duo-screen-cracks/">Crackgate? iPhone Duo Owners Report Screens Breaking Along the Hinge（MacRumors）</a>
+- <a href="https://www.notebookcheck.net/iFixit-teardown-reveals-matte-screen-light-scattering-oval-pixels-and-possible-cause-for-Apple-iPhone-Duo-Crackgate.1433904.0.html">iFixit teardown reveals possible cause for iPhone Duo 'Crackgate'（Notebookcheck）</a>
+- <a href="https://www.thenationalnews.com/future/technology/2026/10/25/apples-iphone-duo-faces-screen-damage-complaints-as-first-buyers-report-cracks/">iPhone Duo buyers complain of cracks and display failures（The National）</a>
+- <a href="https://finance.biggo.com/news/f4b4a4e5-b555-4abe-8a04-e3baf5865a48">Fine M-Tech Shares Plunge Over 10% on iPhone Duo Durability Controversy（BigGo Finance）</a>
+- <a href="https://www.sina.cn/weibo/detail/5358362872516084.html">为了保供应降低质检？苹果折叠屏首周故障引关注（新浪）</a>
+- <a href="https://www.dcfever.com/news/readnews.php?id=42335">iPhone Duo 摺疊螢幕出現不同災情（DCFever）</a>
+- <a href="https://www.apple.com/newsroom/2026/10/open-up-to-new-possibilities-with-iphone-duo/">Open up to new possibilities with iPhone Duo（Apple Newsroom）</a></p>
         </div>
       </details>
       
