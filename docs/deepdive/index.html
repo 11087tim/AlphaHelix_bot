@@ -65,11 +65,217 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-25 20:54｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-26 08:50｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-10-26（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>❌ NVIDIA下調HBM4腳位速度
+          <span class="takeaway">查證不支持｜找不到任何來源記載「11.7Gbps→9.6Gbps」；可查到的只有「目標22TB/s、首批約20TB/s（約10Gbps）」的機構推估與「可能接納10.6Gbps次級品」</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261026-0802@NVIDIA%E4%B8%8B%E8%AA%BFHBM4%E8%85%B3%E4%BD%8D%E9%80%9F%E5%BA%A6">2026-10-26 08:02 觀點彙整</a></p>
+          
+          <h2>深查：NVIDIA下調HBM4腳位速度</h2>
+<p><strong>裁定</strong>：【查證不支持】
+找不到任何來源記載「11.7Gbps→9.6Gbps」；可查到的只有「目標22TB/s、首批約20TB/s（約10Gbps）」的機構推估與「可能接納10.6Gbps次級品」的匿名韓媒傳聞，且NVIDIA從未證實。</p>
+<p>裁定細節：待驗證宣稱把三個不同層次的數字拼在一起。11.7Gbps 是三星與 SK hynix 的產品標示速度，不是 NVIDIA 公告的規格；9.6Gbps 是 HBM3E 的上限速度（三星新聞稿原文對照用），或是把「約20TB/s」除以8顆堆疊反推出的數字（9.6Gbps×2048bit×8顆≈19.7TB/s）。兩種來路都不是 NVIDIA 的規格文件。NVIDIA 官方對 Rubin 的描述至今仍是 288GB HBM4、22TB/s，反推每腳位約10.7Gbps。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：「下調」敘事有兩條源頭，一是 SemiAnalysis 2026-02-25 的 Vera Rubin 專文，二是韓國 ZDNet 2026-02-13 的匿名消息；TechPowerUp、TweakTown、TrendForce 新聞與多篇台媒皆為這兩者的轉述，不構成獨立來源。</p>
+<ul>
+<li>【事實｜2025-04-16】JEDEC JESD270-4 標準定義 HBM4 為 2048-bit、最高 8Gbps，約 2TB/s 每堆疊。各家量產品都遠超標準。</li>
+<li>【機構估計｜2026-01-08】TrendForce 指 NVIDIA 於 2025 年第三季「上修」Rubin HBM4 每腳位要求至 11Gbps 以上，三家供應商因此改版重送樣。該文完全沒有提到下調。</li>
+<li>【傳聞｜2026-02-13】ZDNet Korea 引述匿名記憶體業高層：若 NVIDIA 堅持 11.7Gbps 等級會拿不到足夠 HBM4，預期 NVIDIA 會同時採購 11.7Gbps 與 10.6Gbps 等級產品。文中零 NVIDIA 直接發言，是純粹的「業界預期」。</li>
+<li>【機構估計｜2026-02-25】SemiAnalysis 公開段落稱 NVIDIA 目標 22TB/s，「首批出貨會略低、接近 20TB/s」，並稱 Micron「實質上出局」。具體腳位數字與認證細節在付費牆內，僅據摘錄，無法取得原文。</li>
+<li>【事實｜2026-01-05】NVIDIA 開發者部落格仍寫 Rubin「最高 288GB HBM4、總頻寬最高 22TB/s」，未更動。</li>
+<li>【事實｜2026-02-12】三星新聞稿：HBM4 穩定 11.7Gbps、最高 13Gbps，每堆疊 3.3TB/s；文中 9.6Gbps 指 HBM3E 上限。</li>
+<li>【事實｜2026-01-27】SK hynix 官方社群公告 HBM4 達 11.7Gbps 以上。</li>
+<li>【事實｜2026-02-12】Micron 財務長 Murphy 於 Wolfe Research 會議反駁「零訂單」說，稱 HBM4 已通過 NVIDIA 認證並提前出貨；【事實｜2026-03-16】Micron 新聞稿與產品頁標示每腳位超過 11Gbps、每堆疊超過 2.8TB/s，第一季起量產。</li>
+<li>【事實｜2026-06-05】黃仁勳對 Bloomberg 記者證實三星、SK hynix、Micron 三家皆通過 Vera Rubin HBM4 認證，「三家都在量產」。未談腳位速度。</li>
+<li>【事實｜2026-10-01】Micron 第四季財報會：HBM4 爬坡執行良好，與 NVIDIA 合作客製 HBM4E「NV-HBM」，2027 年 HBM 位元供應大部分已簽約且價格顯著上漲。無任何關於 NVIDIA 下修規格的發言。</li>
+</ul>
+<p>交叉比對結論：三家供應商官方規格一致落在 11Gbps 以上，NVIDIA 官方規格未變，唯一指向「放寬」的證據是一份付費牆機構推估與一篇匿名韓媒報導，兩者的數字（約10Gbps、10.6Gbps）也與 9.6Gbps 不符。</p>
+<h3>供應鏈與持股意涵</h3>
+<p>挑題理由假設「規格下修會改變 MU 高階產品認證預期」，方向其實相反。若 NVIDIA 真的接納較低速等級，門檻降低受益的是落後者，而 Micron 自身標示速度已超過 11Gbps，認證也已獲黃仁勳公開確認。對 MU 真正的風險從來不是腳位速度，而是份額：市場估計 SK hynix 佔 Rubin HBM4 六至七成、三星二至三成、Micron 拿剩餘，SemiAnalysis 甚至維持「首批 Rubin 幾乎沒有 Micron」的看法。MU 的 HBM 故事重心已移到 HBM4E 客製品 NV-HBM 與已鎖定的 2027 年漲價合約。</p>
+<p>對 NVDA 而言，首批 Rubin 若真以約 20TB/s 出貨，是供應量優先於極限規格的務實選擇，對整機出貨影響有限；AMD MI450 的頻寬競爭敘事才是 NVIDIA 當初上修規格的動機。反方觀點：SemiAnalysis 與 TrendForce 均認為「放寬」只是為了確保 Rubin 放量，不代表供應商技術落後，三家 11.7Gbps 的產品標示本身就是證明。</p>
+<p>另有一條容易混淆的支線：2026 年 8 月多家媒體報導 NVIDIA 測試較低記憶體容量的 Rubin Ultra 版本（最低 192GB、退回 HBM4）。這是容量與世代的調整，不是腳位速度，且本次無法讀到原文，僅據摘錄。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026-11 NVIDIA 第三季財報會：若管理層或產品頁把 Rubin 頻寬改寫為低於 22TB/s，升級為【部分證實】「放寬」，但仍與 9.6Gbps 無關。</li>
+<li>2026-12 Micron 第一季財報會：HBM4 於 Rubin 的實際份額與是否提及速度分級出貨，決定 MU 產品組合預期。</li>
+<li>2027-01 SK hynix 與三星第四季法說：HBM4 出貨中 11.7Gbps 與較低速等級的佔比，是「分級採購」傳聞的直接檢驗。</li>
+<li>Rubin 正式產品規格表或第三方拆解測得的 HBM 時脈：唯一能把腳位速度從推估變成事實的訊號。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「11.7→9.6Gbps」在英、韓、繁中搜尋均找不到出處，最接近的是把 20TB/s 反推或誤植 HBM3E 上限，建議視為錯誤引用。</li>
+<li>下調說法實質上是單一付費機構（SemiAnalysis）加單一匿名韓媒（ZDNet Korea），其餘皆改寫。TechPowerUp、TweakTown、Wccftech 原文回傳 403，無法核對其引文。</li>
+<li>Micron 第四季財報會準備稿 PDF 無法解析，改以財報會摘要與新聞稿交叉確認。</li>
+<li>供應商份額（60–70% / 25–30% / 其餘）全為分析師估計，三家公司均未公布。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.trendforce.com/presscenter/news/20260108-12869.html">TrendForce: HBM4 Mass Production Delayed to End of 1Q26 By Spec Upgrades (2026-01-08)</a>
+- <a href="https://www.trendforce.com/news/2026/02/13/news-nvidia-may-relax-hbm4-specs-as-samsung-and-sk-hynix-reportedly-face-capacity-yield-limits/">TrendForce: NVIDIA May Relax HBM4 Specs (2026-02-13)</a>
+- <a href="https://zdnet.co.kr/view/?no=20260213100835">ZDNet Korea: HBM4 출하 경쟁 '과열' (2026-02-13)</a>
+- <a href="https://newsletter.semianalysis.com/p/vera-rubin-extreme-co-design-an-evolution">SemiAnalysis: Vera Rubin — Extreme Co-Design (2026-02-25)</a>
+- <a href="https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/">NVIDIA Developer Blog: Inside the NVIDIA Rubin Platform (2026-01-05)</a>
+- <a href="https://www.jedec.org/news/pressreleases/jedec%C2%AE-and-industry-leaders-collaborate-release-jesd270-4-hbm4-standard-advancing">JEDEC: JESD270-4 HBM4 Standard 新聞稿</a>
+- <a href="https://news.samsungsemiconductor.com/global/samsung-ships-industry-first-commercial-hbm4-with-ultimate-performance-for-ai-computing/">Samsung: Ships Industry-First Commercial HBM4 (2026-02-12)</a>
+- <a href="https://news.nate.com/view/20260127n23146">Nate News: SK하이닉스 "HBM4, 초당 11.7Gb 넘는다" (2026-01-27)</a>
+- <a href="https://www.g-enews.com/article/Global-Biz/2025/12/202512300717288296fbbec65dfb_1">Global Economic: 삼성 HBM4, 엔비디아 테스트서 11Gbps (2025-12-30)</a>
+- <a href="https://www.micron.com/products/memory/hbm/hbm4">Micron HBM4 產品頁</a>
+- <a href="https://investors.micron.com/news/press-release/2026/Micron-in-High-Volume-Production-of-HBM4-Designed-for-NVIDIA-Vera-Rubin-PCIe-Gen6-SSD-and-SOCAMM2-03-16-2026/default.aspx">Micron 新聞稿: High-Volume Production of HBM4 for NVIDIA Vera Rubin (2026-03-16)</a>
+- <a href="https://technews.tw/2026/02/12/did-micron-lose-nvidias-hbm4-order/">TechNews: 輝達 HBM4 訂單落空？美光財務長反駁 (2026-02-12)</a>
+- <a href="https://finance.yahoo.com/sectors/technology/articles/nvidia-certifies-samsung-sk-hynix-133001560.html">Yahoo Finance / Bloomberg: Nvidia certifies Samsung, SK Hynix and Micron for Vera Rubin HBM4 (2026-06-05)</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/micron-technology-q4-earnings-call-230239520.html">Yahoo Finance: Micron Technology Q4 Earnings Call Highlights (2026-10-01)</a>
+- <a href="https://www.tomshardware.com/pc-components/gpus/nvidia-reportedly-testing-lower-memory-configs-of-rubin-ultra-as-memory-shortage-bites-back-designs-tested-include-as-little-as-192-gb-and-step-back-to-hbm4">Tom's Hardware: Nvidia reportedly testing lower memory configs of Rubin Ultra (僅據摘錄)</a>
+- <a href="https://www.techpowerup.com/346983/nvidia-lowers-hbm4-specs-for-vera-rubin-vr200-as-memory-suppliers-miss-22-tb-s-target">TechPowerUp: NVIDIA Lowers HBM4 Specs for Vera Rubin VR200 (原文 403，僅據搜尋摘錄)</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Anthropic自研客製晶片
+          <span class="takeaway">部分證實｜Anthropic 已官方證實組建自研晶片團隊，但「開發時程為 OpenAI 一半」只見於單一聚合站，無一手來源，查證不支持</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261026-0802@Anthropic%E8%87%AA%E7%A0%94%E5%AE%A2%E8%A3%BD%E6%99%B6%E7%89%87">2026-10-26 08:02 觀點彙整</a></p>
+          
+          <h2>深查：Anthropic 自研客製晶片</h2>
+<p><strong>裁定</strong>：【部分證實】
+Anthropic 已官方證實組建自研晶片團隊，但「開發時程為 OpenAI 一半」只見於單一聚合站，無一手來源，查證不支持。</p>
+<p>前半宣稱（已啟動自有 ASIC 開發）有 Anthropic 發言人聲明、官方職缺、Bloomberg 報導的高階人事佐證。後半宣稱（時程目標為 OpenAI 一半）追溯到 2026-10-25 的 HuggingNews 一篇文章，該文未註明消息來源，且與 The Information、Bloomberg、博通法說所描繪的「尚在定義規格」階段矛盾。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：OpenAI 的 Jalapeño 從設計到投片 9 個月（OpenAI/博通 2026-06-24 官方宣稱）。若「一半」成立，Anthropic 需在約 4 到 5 個月內投片，但沒有任何權威來源提及此目標。</p>
+<ul>
+<li>【事實｜2026-08-05】Anthropic 發言人向 Business Insider、TechCrunch 證實正組建「custom silicon team」，將硬體與模型共同設計，並強調 AWS、Google、Nvidia、AMD 仍是「多晶片策略」核心。官方 Greenhouse 職缺「Technical Program Manager, Silicon」描述涵蓋架構定義、投片、首批矽片點亮到量產，需管理 ASIC 設計服務商、IP 供應商、代工廠與封測廠。兩則職缺均未提及晶片名稱、製程或時程。</li>
+<li>【事實｜2026-06 / 2026-08-21】前 OpenAI 晶片團隊第二號員工 Clive Chan 於 6 月加入；Bloomberg 8/21 報導 Google TPU 計畫創始人 Amir Salek 加入，直屬 James Bradbury。</li>
+<li>【傳聞｜2026-07-02】The Information（經 Bloomberg、TrendForce 轉述，無法取得原文）：Anthropic 與三星初步洽談 2nm 代工與先進封裝，但「尚未決定晶片功能、效能與伺服器整合方式」，正接觸多家設計公司，知情者稱可能中途放棄。三星回應「無法評論」，Anthropic 拒絕評論晶片計畫。</li>
+<li>【傳聞｜2026-10-07】X 帳號 SemiconductorsX、Jukan 貼文（經 TechPowerUp、Design-Reuse 轉述）：博通負責設計，三星 SF2 2nm，4,000 TOPS、1,300W、192GB HBM3E、首批約 20 萬顆。無官方確認，無投片時點。</li>
+<li>【事實｜2026-09-02】博通 Q3 FY26 法說：Anthropic 2027 年將成博通最大 XPU 客戶，但所有內容均指 Google TPU（Ironwood、v8i），未提 Anthropic 自有 XPU。OpenAI 第二代 XPU「approaching tape-out」。</li>
+<li>【事實｜2026-10-01】Anthropic 公開 S-1（據 Briefs 等轉述）：揭露 1,252 億美元五年 TPU 租約、博通最高 420 億美元可轉債，未提及自研晶片計畫或三星。</li>
+<li>【傳聞｜2026-10-25】HuggingNews 稱「目標以 OpenAI 一半時間完成」，未標來源。另引 SemiAnalysis Dylan Patel 估計自研可讓每 GW 建置成本從 600 億降至 200 億美元【機構估計】。</li>
+<li>【機構估計｜2026-08】Packet Nebula、Humans of Technology 等分析均指從零到首批矽片通常需 18 到 24 個月，現階段僅「團隊、預算與招募頁」。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<ul>
+<li><strong>AVGO（博通）</strong>：短期最受益且最確定。Anthropic 2027 至 2028 年的 TPU 需求（1,252 億美元租約、博通 600 億美元融資聯貸）已入帳；若 10/7 傳聞成真，博通同時拿下 Anthropic 自有 ASIC 設計案，等於兩頭吃。風險在 S-1 自揭的「供應商兼放款人」利益衝突。</li>
+<li><strong>TSM</strong>：傳聞中 Anthropic 選三星 2nm 的理由是成本、時程與「避開台積電產能爭奪」。這是台積電罕見被繞過的訊號，但首批 20 萬顆相較 Google TPU、OpenAI Jalapeño 在台積電的量，影響微小。</li>
+<li><strong>NVDA / AMD</strong>：Anthropic 反覆聲明 Nvidia 是「關鍵基礎設施」，自研是「為未來規模優化而非取代」。即便最樂觀，Anthropic 自有晶片 2028 年前難有量產貢獻，對 GPU 採購無近期衝擊。</li>
+<li><strong>市場解讀失真處</strong>：把「組建團隊」讀成「晶片將問世」。OpenAI 從 Broadcom 合作到 Jalapeño 量產約 4 年；Anthropic 現有最強證據仍是人才與洽談，連規格都未凍結。</li>
+<li><strong>反方觀點</strong>：Futurum 指出「9 個月投片不等於 9 個月產品」，矽片驗證、良率、系統整合仍需時間。Clive Chan 與 Amir Salek 兩位帶著完整 TPU/Jalapeño 經驗，加上博通 IP 平台，確實可能壓縮時程，但「壓縮」與「一半」之間沒有證據橋接。</li>
+</ul>
+<h3>可驯證節點</h3>
+<ul>
+<li><strong>2026-12 博通 Q4 FY26 法說</strong>：若 Hock Tan 宣布第 7 個 XPU 客戶或點名 Anthropic 自有 XPU 進入設計，傳聞升級為事實。</li>
+<li><strong>三星 2026 Q4 / 2027 Q1 法說</strong>：三星代工若公布新 2nm 美系 AI 客戶，可驗證 10/7 傳聞。</li>
+<li><strong>Anthropic S-1 後續修訂版（Amendment）</strong>：若新增自研晶片風險因子或資本支出項目，代表計畫已達需揭露的實質階段；若持續缺席，支持「仍在早期」判斷。</li>
+<li><strong>Anthropic Greenhouse 職缺變化</strong>：出現「post-silicon validation」「production ramp」專職而非 TPM 泛稱，表示已過投片；反之持續招 RTL/前端則仍在設計初期。</li>
+<li><strong>2027 H1</strong>：若此時無投片消息，「OpenAI 一半時程」（約 2027 年初投片）即被推翻。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「一半時程」為單一來源（HuggingNews），該站非權威媒體且未註明出處，搜尋引擎摘要曾把此句錯誤歸給其他文章，實際逐篇核對後均無此宣稱。</li>
+<li>The Information 原文與 Bloomberg 三篇報導均在付費牆內，僅據 TrendForce、The Elec、Design-Reuse 等轉述。</li>
+<li>10/7 規格傳聞原始 X 貼文無法讀取，僅據 TechPowerUp、Design-Reuse 轉述；多家媒體（SammyFans、SammyGuru、Wccftech）互相改寫，實為同一來源。</li>
+<li>Business Insider 原文無法存取，發言人引述據 SiliconANGLE、Unite.AI 等多家轉述且措辭一致。</li>
+<li>Anthropic S-1 內容據 Briefs 轉述，未直接讀取 EDGAR 全文。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://siliconangle.com/2026/08/05/confirming-rumors-anthropic-reveals-plan-develop-custom-chip/">Confirming rumors, Anthropic reveals plan to develop custom chip - SiliconANGLE</a>
+- <a href="https://techcrunch.com/2026/08/05/anthropic-is-hiring-an-ai-chip-design-team/">Anthropic is hiring an AI chip design team - TechCrunch</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/anthropic-gets-ready-build-own-151456819.html">Anthropic Gets Ready to Build its Own Chips - Yahoo Finance</a>
+- <a href="https://www.unite.ai/anthropics-silicon-team-is-hiring-for-tapeout-and-production-ramp/">Anthropic's Silicon Team Is Hiring for Tapeout and Production Ramp - Unite.AI</a>
+- <a href="https://job-boards.greenhouse.io/anthropic/jobs/5380377008">Technical Program Manager, Silicon - Anthropic Greenhouse</a>
+- <a href="https://job-boards.greenhouse.io/anthropic/jobs/5286348008">Silicon Engineer - Anthropic Greenhouse</a>
+- <a href="https://www.trendforce.com/news/2026/07/03/news-anthropic-reportedly-eyes-custom-ai-chip-in-talks-with-samsung-for-2nm-foundry-and-advanced-packaging/">Anthropic Reportedly Eyes Custom AI Chip; in Talks with Samsung - TrendForce</a>
+- <a href="https://www.thelec.net/news/articleView.html?idxno=11933">Samsung and Anthropic Discuss Collaboration on 2nm AI Chips - The Elec</a>
+- <a href="https://www.design-reuse.com/news/202531258-samsung-foundry-to-manufacture-anthropic-ai-asic-on-2-nm-node/">Samsung Foundry to Manufacture Anthropic AI ASIC on 2 nm Node - Design-Reuse</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/09/09/broadcom-avgo-q3-2026-earnings-call-transcript/">Broadcom (AVGO) Q3 2026 Earnings Call Transcript - The Motley Fool</a>
+- <a href="https://www.briefs.co/news/anthropic-s-ipo-filing-spotlights-a-broadcom-tie-up-that-goe/">Anthropic IPO Reveals Deep Broadcom Partnership - Briefs</a>
+- <a href="https://huggingnews.com/ai/anthropic-begins-work-on-custom-ai-chips-to-rival-openai-fa9982c4">Anthropic Begins Work on Custom AI Chips to Rival OpenAI - HuggingNews</a>
+- <a href="https://aiweekly.co/alerts/anthropic-stands-up-custom-chip-team-keeps-multi-silicon-mix">Anthropic Stands Up Custom-Chip Team, Keeps Multi-Silicon Mix - AI Weekly</a>
+- <a href="https://the-decoder.com/anthropic-poaches-openais-second-ever-chip-engineer-as-both-companies-race-toward-ipos/">Anthropic poaches OpenAI's second-ever chip engineer - The Decoder</a>
+- <a href="https://en.sedaily.com/international/2026/04/10/anthropic-joins-openai-in-custom-chip-development-push-to">Anthropic Joins OpenAI in Custom Chip Development Push - Seoul Economic Daily</a>
+- <a href="https://futurumgroup.com/insights/jalapeo-in-nine-months-did-ai-just-break-chip-design-timelines/">Jalapeño in Nine Months: Did AI Just Break Chip Design Timelines? - Futurum</a>
+- <a href="https://packetnebula.com/articles/anthropic-custom-silicon-team-no-chip-yet/">Anthropic's custom silicon team: no chip, no timeline - Packet Nebula</a>
+- <a href="https://humansoftechnology.com/en/anthropic-ai-chips-claude-custom-silicon/">Anthropic Is Developing Its Own AI Chips for Claude - Humans of Technology</a>
+- <a href="https://anthropic.com/news/google-broadcom-partnership-compute">Expanding our use of Google Cloud TPUs and Broadcom - Anthropic</a>
+- <a href="https://finance.yahoo.com/sectors/technology/articles/why-anthropics-custom-chip-plans-111500055.html">Why Anthropic's Custom Chip Plans Could Benefit Broadcom - Yahoo Finance / MarketBeat</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Starlink洽談美國基地台商
+          <span class="takeaway">部分證實｜洽談確有單一權威來源（彭博）且 Crown Castle 執行長未否認，但無任何合約、條款或 FCC 文件；市場已把「2028 年第四大電信商」當成既定事實定價</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261026-0802@Starlink%E6%B4%BD%E8%AB%87%E7%BE%8E%E5%9C%8B%E5%9F%BA%E5%9C%B0%E5%8F%B0%E5%95%86">2026-10-26 08:02 觀點彙整</a></p>
+          
+          <h2>深查：Starlink洽談美國基地台商</h2>
+<p><strong>裁定</strong>：【部分證實】
+洽談確有單一權威來源（彭博）且 Crown Castle 執行長未否認，但無任何合約、條款或 FCC 文件；市場已把「2028 年第四大電信商」當成既定事實定價。</p>
+<p>裁定細節：宣稱「SpaceX 正與至少一家美國大型基地台公司洽談」屬【傳聞偏向可信】等級。彭博 10/23 引述知情人士點名 Crown Castle，American Tower 與 Vertical Bridge「可能也涉入」；路透同日報導僅轉引彭博，非獨立證實。真正有官方文件支撐的是「頻譜與衛星」這一側，不是「地面基地台」這一側。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：地面基地台洽談的唯一原始出處是彭博 10/23（週四晚）報導。Forbes、路透、24/7 Wall St、PhoneArena 等全部引用彭博，屬一源多轉。SpaceX、American Tower、Vertical Bridge 皆未回應或拒絕評論。</p>
+<ul>
+<li>【傳聞】2026-10-23 彭博：SpaceX 洽談取得至少 8 萬個美國基地台站點，Crown Castle 為洽談對象之一，協議價值「可達數十億美元」。單一來源，無文件。</li>
+<li>【事實】2026-10-21 Crown Castle Q3 法說（Motley Fool 逐字稿）：Raymond James 分析師問及與衛星公司的主租約（MLA）進度，執行長 Hillabrant 答「不談特定客戶，但你可以假設我們正與所有各方對話」。財務長 Patel 證實 DISH 棄置的設備仍在部分站點上。這是間接佐證，不是明確承認。Crown Castle 全美約 4 萬站。</li>
+<li>【事實】2026-10-08 Grain Management 官方新聞稿：SpaceX 簽定義性協議收購其全美 800 MHz 低頻組合（14 MHz 配對），需 FCC 核准，價格未揭露。該頻譜為 Grain 於 2026 年 8 月以現金加 600 MHz 與 T-Mobile 交換取得。</li>
+<li>【傳聞】80 億美元交易金額：路透引述估計，官方文件未揭露。</li>
+<li>【事實】2026-10-06 FCC 部分核准 SpaceX 1.5 萬顆次世代 D2D 衛星（326–335 公里），並豁免「須與地面電信商簽頻譜租約」的要求。2026-10-21 FCC 無線局核准 Tristar AWS-3（1695–1710 MHz，僅上行、覆蓋約 4% 人口）轉讓至 SpaceX 子公司，並以衛星上行速率里程碑取代建塔義務。</li>
+<li>【事實】2026-10-20 SpaceX Q3 法說逐字稿：Shotwell 稱 800 MHz 協議「為 Starlink Mobile 成為美國主要電信商鋪路」，目標 2028 年初以自有頻譜開通服務，2027 年以 Starship 發射 Mobile V2 衛星；Musk 稱「我們會建設地面網路」。逐字稿中沒有提及任何基地台公司或租約談判。</li>
+<li>【事實】2026-10-23 CTIA（三大電信商公會）致函 FCC，要求衛星業者排除於 2.5 GHz 與 3.45 GHz 頻段，並保留電信商對衛星頻譜租約的核准與終止權。FCC 預定 10/29 表決「太空補充覆蓋」規則修訂。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受害方（市場定價已反映）</strong>：AT&amp;T、Verizon、T-Mobile。10/8 頻譜公告當日 TMUS 收跌 13.3%、T 跌 9.8%、VZ 跌 8.75%；10/23 基地台報導再跌（收盤路透：T -5.6%、TMUS -5%、VZ -1.6%）。Citi 估三家估值風險 29–32%。</p>
+<p><strong>受益方</strong>：基地台 REIT。10/23 Crown Castle 漲 11.6%，American Tower 漲 4.9%，SBA 漲 4.6%。Goldman 估 8 萬站每年租金約 40 億美元。Crown Castle 純美國業務，曝險最直接；且 DISH 遺留設備可能縮短部署時間。</p>
+<p><strong>對 SPCX 持股</strong>：法說承諾 Q4 資本支出 350–400 億美元中部分用於地面網路，但地面建設總成本未揭露。這是 IPO 後市場最大的未定價風險，不是利多。</p>
+<p><strong>反方觀點（必須並陳）</strong>：Moor Insights 指出 SpaceX 低頻加中頻約 79 MHz，三大電信商各持 280–380 MHz，「14 MHz 低頻不足以建立有競爭力的蜂巢網路」；DISH 耗資 130 億美元建 5G 仍失敗。AT&amp;T 執行長 Stankey 10/23 稱「這不是一夜能做到的事」，並強調都會區有 6–8 個低頻載波與室內天線系統。UBS 認為 Starlink 規模化需時，AT&amp;T 本益比壓力在未來 12 個月會變得「更難合理化」。Bernstein 則認為競爭影響「可能還要數年」，但預期心理會持續壓抑類股。</p>
+<p><strong>市場解讀失真處</strong>：電信股下跌幅度隱含「地面網路已拍板」，但目前只有頻譜協議（待 FCC 核准）與一則未經證實的洽談報導。基地台股反向大漲同樣是在為尚未簽約的租約定價。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-10-27 American Tower Q3 法說</strong>：若執行長明確提及 SpaceX 或新大型租戶，洽談由單源傳聞升級為多方佐證；若迴避，維持現狀。</li>
+<li><strong>2026-10-29 FCC 太空補充覆蓋規則表決</strong>：若 CTIA 要求（電信商保留租約核准權、排除 2.5/3.45 GHz）被採納，SpaceX 獨立營運的監管可行性受限，結論下修。</li>
+<li><strong>FCC ULS 系統出現 Grain 800 MHz 轉讓申請及核准</strong>：核准是 2028 年時程的前提；若遭三大電信商以公共利益理由反對並延宕，時程推遲。</li>
+<li><strong>任何基地台 REIT 8-K 或新聞稿揭露與 SpaceX 的 MLA</strong>：這是唯一能把本議題升級為【證實】的文件。</li>
+<li><strong>SpaceX Q4 法說（2027 年初）</strong>：Musk 承諾的「連網計畫專門簡報」若揭露地面網路資本支出與站點數，可量化影響。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>基地台洽談為<strong>單一來源</strong>（彭博），所有其他報導皆為轉引；彭博原文在付費牆內，本報告僅據 Forbes、路透、Drive Tesla 的轉述，無法取得原文。</li>
+<li>Forbes、CNBC、Benzinga、Stocktwits 頁面回傳 403，股價與 Citi 數字僅據搜尋摘錯與其他媒體轉述。</li>
+<li>股價跌幅數據分歧：Forbes 稱 T 與 TMUS「近 8%」為盤中數字，路透收盤為 -5.6% 與 -5%；本報告以收盤為準。</li>
+<li>SpaceX 官方聲明原文未能直接取得，引述來自 Via Satellite 轉載。80 億美元價格為路透估計，非官方揭露。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://finance.yahoo.com/technology/articles/grain-management-announces-definitive-agreement-201700927.html">Grain Management Announces Definitive Agreement to Sell Nationwide 800 MHz Spectrum Portfolio to SpaceX</a>
+- <a href="https://www.satellitetoday.com/connectivity/2026/10/08/spacex-moves-to-acquire-nationwide-low-band-spectrum-for-starlink-mobile/">SpaceX Moves to Acquire Nationwide Low-Band Spectrum for Starlink Mobile - Via Satellite</a>
+- <a href="https://driveteslacanada.ca/news/spacex-starlink-mobile-80000-cell-towers/">SpaceX in Talks to Access 80,000 US Cell Towers for Starlink Mobile: Report - Drive Tesla</a>
+- <a href="https://www.investing.com/news/stock-market-news/us-telecom-operators-wobble-after-report-spacex-in-talks-for-cell-sites-4970138">US telecom operators wobble after report SpaceX in talks for cell sites - Reuters via Investing.com</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/21/crown-castle-cci-q3-2026-earnings-call-transcript/">Crown Castle (CCI) Q3 2026 Earnings Call Transcript</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/20/spacex-spcx-q3-2026-earnings-call-transcript/">SpaceX (SPCX) Q3 2026 Earnings Call Transcript</a>
+- <a href="https://www.techspot.com/news/114128-fcc-approves-15000-spacex-starlink-mobile-satellites-could.html">FCC approves 15,000 SpaceX Starlink satellites that could compete directly with cellular carriers</a>
+- <a href="https://driveteslacanada.ca/news/fcc-approves-spacex-tristar-aws-3-spectrum/">FCC Approves SpaceX Deal for Tristar's AWS-3 Spectrum - Drive Tesla</a>
+- <a href="https://finance.yahoo.com/technology/articles/real-consequences-t-verizon-t-134500537.html">'Real consequences': AT&amp;T, Verizon and T-Mobile warn FCC as Elon Musk plots a SpaceX phone network</a>
+- <a href="https://finance.yahoo.com/markets/stocks/article/its-not-something-that-gets-done-overnight-spacexs-telecom-ambitions-will-be-hard-won-ceos-and-analysts-say-120348084.html">'It's not something that gets done overnight': SpaceX's telecom ambitions will be hard-won, CEOs and analysts say</a>
+- <a href="https://moorinsightsstrategy.com/field-notes/spacex-earnings-call-leaves-starlink-mobiles-big-questions-unanswered/">SpaceX Earnings Call Leaves Starlink Mobile's Big Questions Unanswered - Moor Insights &amp; Strategy</a>
+- <a href="https://www.cnbc.com/2026/10/09/verizon-att-tmobile-stocks-spacex-network.html">Verizon, AT&amp;T and T-Mobile sell off on SpaceX U.S. network plans - CNBC</a>
+- <a href="https://stocktwits.com/news-articles/markets/equity/vz-tmus-t-stocks-face-valuation-pressure-from-space-x-wireless-push-but-tower-operators-stand-to-gain-says-citi/cZxyZVjRBxu">VZ, TMUS, T Stocks Face Valuation Pressure From SpaceX Wireless Push, Says Citi</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/crown-castle-american-tower-stocks-081318584.html">Crown Castle, American Tower Stocks Catch A SpaceX Boost</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-10-25（6 題）</summary>
     <div class="day-body">
       
