@@ -65,12 +65,12 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-10-30 08:45｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-10-30 20:48｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
-    <summary>📅 2026-10-30（3 題）</summary>
+    <summary>📅 2026-10-30（6 題）</summary>
     <div class="day-body">
       
       <details class="topic">
@@ -248,6 +248,199 @@ NVIDIA對Anthropic專案的擔保僅為單一媒體報導的「談判中」，�
 - <a href="https://www.sec.gov/Archives/edgar/data/0001039399/000103939926000040/ex9901-earningsreleasexq326.htm">FormFactor Q3 FY2026 Earnings Release（SEC 8-K）</a>
 - <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-advantest-lifts-outlook-in-q2-2026-on-ai-test-demand-93CH-4979771">Advantest Q2 FY2026 Earnings Call Transcript（Investing.com）</a>
 - <a href="https://404kresearch.substack.com/p/404k-semi-ai-evening-brief-october-b2a">404K SEMI-AI Evening Brief — October 23, 2026</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Rubin NVLink與Kyber降規
+          <span class="takeaway">部分證實｜NVLink 由 3.6 降至 3.0TB/s 已獲 NVIDIA 官網與官方聲明證實；「Kyber 改採 NVL72」則是語意錯置，</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261030-2003@Rubin%20NVLink%E8%88%87Kyber%E9%99%8D%E8%A6%8F">2026-10-30 20:03 觀點彙整</a></p>
+          
+          <h2>深查：Rubin NVLink與Kyber降規</h2>
+<p><strong>裁定</strong>：【部分證實】
+NVLink 由 3.6 降至 3.0TB/s 已獲 NVIDIA 官網與官方聲明證實；「Kyber 改採 NVL72」則是語意錯置，正確說法是 Kyber NVL144 延至 2028、2027 年 Rubin Ultra 沿用 Oberon NVL72，且此點 NVIDIA 從未承認。</p>
+<p>兩項宣稱性質不同：前者是一手文件可查的既成事實，後者是 SemiAnalysis 單一研究機構在 2026 年 7 月發出、再由台灣專家調研紀要轉述的推估，NVIDIA 官方回應僅為「路線圖不變」。</p>
+<h3>查證過程與證據</h3>
+<p><strong>宣稱一：NVLink 3.6→3.0TB/s</strong></p>
+<ul>
+<li>【事實｜2026-01-05 vs 2026-10-30】NVIDIA 開發者部落格（1 月 5 日）原寫 NVLink 6「每 GPU 3.6TB/s、每 NVL72 機櫃 260TB/s、HBM4 最高 22TB/s」。NVIDIA 官網 NVLink 頁現為「每 GPU 3,000GB/s、NVL72 216TB/s」；Vera Rubin NVL72 產品頁現為「NVLink 216TB/s、HBM4 20.7TB/1,400TB/s、網路 32.4TB/s」。兩份一手文件直接比對，數字下修成立。</li>
+<li>【事實｜2026-10-26】Hardware Busters 等媒體以 Wayback Machine 比對，指出修改發生在 9 月 1 日至 11 日之間；HGX NVL8 HBM4 總頻寬由 176 降至 130TB/s（-26%），容量 2.3 降至 2TB。</li>
+<li>【事實｜2026-10-30】NVIDIA 對 Wccftech 的聲明（原文被擋，據 jctechspace 與新浪轉述）：更新後規格「如實反映高品質大規模量產條件下的系統效能」，平台已全面量產出貨；並強調 SemiAnalysis 與 Artificial Analysis 的第三方基準測試是用量產規格硬體完成。NVIDIA 未說明原因。</li>
+<li>【傳聞｜2026-10】Nyquist 頻率由 56GHz 降至 47GHz、HBM4 pin 速度由 11.7 降至 9.6Gbps 的「原因」解釋，來自媒體與社群推測，NVIDIA 未確認。</li>
+<li>【機構估計｜2026-10-27】TrendForce 轉述 ZDNet：Rubin Ultra 將由 12-Hi HBM4E 改為 8-Hi HBM4；IT Home 推測放寬頻寬門檻可讓更多 HBM4 通過驗證、提升產出。</li>
+</ul>
+<p><strong>宣稱二：Kyber 改採 NVL72</strong></p>
+<ul>
+<li>【機構估計｜2026-07-06】SemiAnalysis（X 貼文，原文付費牆）：Kyber NVL144 因 78 層正交中板 PCB 良率問題延至 2028；備案 NVL72x2 因 CSP 反對取消；4 顆運算晶粒版 Rubin Ultra 取消、僅剩 2 晶粒版；2027 年 Rubin Ultra 限於既有 Oberon NVL72 架構。CNBC、Tom's Hardware、The Decoder、TechTimes 均為同一來源轉述，不是獨立證實。</li>
+<li>【事實｜2026-07】NVIDIA 回應 CNBC 與 Tom's Hardware：「Our roadmap is intact」。黃仁勳 7 月在東京表示「Vera Rubin 已在生產」，但未針對 Kyber NVL144 或 Rubin Ultra 時程發言。</li>
+<li>【傳聞｜2026-09-12】鉅亨網轉載專家調研紀要：「原計畫的 Kyber 144 卡方案因技術挑戰已被移除路標」，2027 年主線為 NVL72 及 8 櫃互聯的 NVL576。這是本議題「Kyber 改採 NVL72」說法的直接源頭，屬匿名專家訪談，無法驗證。</li>
+<li>【事實｜2026-03-24 基線】SemiAnalysis GTC 2026 報導：NVIDIA 原規畫 Rubin Ultra 同時提供 Oberon NVL72、Kyber NVL144、NVL288 與 8 櫃 Oberon 加 CPO 的 NVL576。亦即 NVL72 本來就在選項內，「改採」只是主力從 Kyber 轉回 Oberon，不是全新規格。</li>
+<li>【事實｜2025-10-13 基線】NVIDIA OCP 部落格仍寫「Kyber 2027 年容納 576 顆 Rubin Ultra GPU」，官方至今未更新此時程。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：NVLink 降規是為量產良率讓路，市場若解讀為「技術受挫」失真。NVIDIA 已先用降規版硬體跑完第三方基準，實際出貨效能並未再變；且網路頻寬反而上調至 32.4TB/s，顯示 scale-out 配置加碼。真正的風險在 Rubin Ultra：若 2 晶粒版加 Oberon NVL72 成為 2027 主力，單櫃 FP4 算力與售價會明顯低於 Kyber NVL144 原預期，2027 年營收模型需下修櫃均價。</p>
+<p><strong>2317 鴻海</strong>：Vera Rubin NVL72 由鴻海子公司鴻佰組裝、首櫃已出貨微軟。Kyber 延後反而讓鴻海熟悉的 Oberon 機櫃產線多撐一個世代，2027 年組裝出貨櫃數受益；受害者是 Kyber 專屬的高層數 PCB 與 CCL 供應商（7 月 Ibiden 跌 10%、建滔 18%、台光電 10%）。</p>
+<p><strong>TSM</strong>：NVLink 速率和 HBM 堆疊降規不影響 CoWoS 需求；8-Hi HBM4 替代 12-Hi 若成真，中介層面積與顆數不變，反而降低良率損耗。4 晶粒版 Rubin Ultra 取消會減少超大型 CoWoS 載板需求，屬中性偏負。</p>
+<p><strong>GLW 康寧</strong>：NVL576 須靠 CPO 跨櫃互聯，SemiAnalysis 認為 CPO 尚未準備好量產、NVL576 可能延後或限量。Kyber 延後等於 scale-up 光學滲透往後推，康寧 FAU 與玻璃基板的 scale-up 題材要再等一年；專家紀要則稱 NPO 是 scale-up 量產托底，對光纖元件仍有需求。</p>
+<p><strong>反方觀點</strong>：NVIDIA 堅稱路線圖不變，Spheron 等轉述也承認 NVIDIA 從未公開確認延後。摩根士丹利 7 月仍估 Kyber 機櫃 ABF 載板價值增加 82%，顯示部分機構仍以 Kyber 如期為假設。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-11-19 NVIDIA Q3 FY27 法說</strong>：若管理層主動提及 Rubin Ultra 2027 機櫃型態或 Kyber 時程，可升級或推翻宣稱二。</li>
+<li><strong>2027-03 GTC 2027 主題演講</strong>：路線圖頁若把 Kyber 標至 2028，宣稱二升級為【事實】；若維持 2027 並展示量產中板，推翻。</li>
+<li><strong>2026 Q4 至 2027 Q1 HBM 供應商財報</strong>：三星、SK 海力士是否公告 8-Hi HBM4 通過 Rubin Ultra 驗證，驗證 TrendForce 轉述。</li>
+<li><strong>NVIDIA 官網規格頁任何再次無預警修改</strong>：Wayback Machine 持續比對 Vera Rubin NVL72 與 HGX NVL8 頁面。</li>
+<li><strong>台光電、欣興、Ibiden 法說對高層數中板訂單的描述</strong>：PCB 供應鏈是 Kyber 時程最早的側面訊號。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>NVIDIA 官方聲明原文刊於 Wccftech，該站回傳 403，本報告依 jctechspace 與新浪轉述，未能核對逐字原文。</li>
+<li>SemiAnalysis 兩則 X 貼文回傳 402 付費牆，所有延後細節均為 CNBC、Tom's Hardware、TechTimes 等轉述；多家媒體引用同一來源，屬單一來源。</li>
+<li>鉅亨網專家調研紀要為匿名訪談，日期 9 月 12 日，無法驗證受訪者身分與資訊時效。</li>
+<li>「Kyber 改採 NVL72」在技術上不成立：Kyber 是 144 GPU 的機櫃形式，不能「改採」NVL72。原宣稱應修正為「Rubin Ultra 2027 主力機櫃由 Kyber NVL144 改回 Oberon NVL72」。</li>
+<li>HBM4 pin 速度與 Nyquist 頻率數字在不同媒體間有分歧（11.7 vs 13Gbps），本報告不採用。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/">Inside the NVIDIA Vera Rubin Platform: Six New Chips, One AI Supercomputer</a>
+- <a href="https://www.nvidia.com/en-us/data-center/nvlink/">NVIDIA NVLink 官網規格頁</a>
+- <a href="https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/">NVIDIA Vera Rubin NVL72 產品頁</a>
+- <a href="https://blogs.nvidia.com/blog/gigawatt-ai-factories-ocp-vera-rubin/">NVIDIA, Partners Drive Next-Gen Efficient Gigawatt AI Factories in Buildup for Vera Rubin</a>
+- <a href="https://hwbusters.com/news/nvidia-quietly-lowers-vera-rubin-hbm4-bandwidth-and-the-hgx-nvl8-loses-a-quarter-of-it/">Nvidia Quietly Lowers Vera Rubin HBM4 Bandwidth, and the HGX NVL8 Loses a Quarter of It - Hardware Busters</a>
+- <a href="https://jctechspace.com/nvidia-official-statement-vera-rubin-spec-change/">NVIDIA Vera Rubin 規格微調惹議！官方親上火線釋疑 - jctechspace</a>
+- <a href="https://finance.sina.com.cn/tech/roll/2026-10-29/doc-iniwwtux5263873.shtml">不裝了！NVIDIA官方承認Vera Rubin規格下調：NVLink砍17% - 新浪科技</a>
+- <a href="https://www.trendforce.com/news/2026/10/27/news-nvidias-memory-shake-up-rubin-ultra-rethinks-12-hi-hbm4e-for-8-hi-hbm4-rubin-gpu-bandwidth-cut-13/">NVIDIA's Memory Shake-Up: Rubin Ultra Rethinks 12-Hi HBM4E for 8-Hi HBM4 - TrendForce</a>
+- <a href="https://newsletter.semianalysis.com/p/nvidia-the-inference-kingdom-expands">Nvidia - GTC 2026 - SemiAnalysis</a>
+- <a href="https://www.techtimes.com/articles/320033/20260709/nvidia-kyber-nvl144-slips-2028-physics-not-software-defeats-backup-plan.htm">Nvidia Kyber NVL144 Slips to 2028 as Physics, Not Software, Defeats the Backup Plan - TechTimes</a>
+- <a href="https://the-decoder.com/nvidias-kyber-nvl144-reportedly-pushed-back-more-than-a-year-asian-suppliers-drop/">Nvidia's Kyber NVL144 reportedly pushed back more than a year, Asian suppliers drop - The Decoder</a>
+- <a href="https://www.spheron.network/blog/nvidia-kyber-rack-delayed-to-2028-what-it-means-for-rubin-ul/">Rubin Ultra NVL576 Delay: NVIDIA's Kyber Rack Slips to 2028 - Spheron</a>
+- <a href="https://www.techlab.hk/p/toms-hardware-vera-rubin-vera-rubinkyber-nvl144">Vera Rubin 真係冇延期？黃仁勳只回應咗 Vera Rubin，Kyber NVL144 仲未有答案 - TechLab</a>
+- <a href="https://hao.cnyes.com/post/267359">輝達Rubin Ultra專家調研紀要 - 鉅亨網</a>
+- <a href="https://udn.com/news/story/6848/9632448">台股觀風向鏈 - 聯合新聞網</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 美司法部擴大調查NVIDIA
+          <span class="takeaway">部分證實｜司法部確實在問 Hugging Face 案與收購、投資、銷售手法，但「擴大為正式調查」是媒體框架，一手證據只有路透獨家的兩位匿名消息來源</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261030-2003@%E7%BE%8E%E5%8F%B8%E6%B3%95%E9%83%A8%E6%93%B4%E5%A4%A7%E8%AA%BF%E6%9F%A5NVIDIA">2026-10-30 20:03 觀點彙整</a></p>
+          
+          <h2>深查：美司法部擴大調查NVIDIA</h2>
+<p><strong>裁定</strong>：【部分證實】
+司法部確實在問 Hugging Face 案與收購、投資、銷售手法，但「擴大為正式調查」是媒體框架，一手證據只有路透獨家的兩位匿名消息來源。</p>
+<p>裁定細節：所謂「涵蓋投資、收購與銷售手法」並非新事，而是路透對 2024 年起多年期調查的既有範圍描述。Hugging Face 案本身需經併購審查，司法部詢問屬常規程序；司法部與 NVIDIA 都未證實任何「升級」。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【傳聞｜2026-10-28】路透獨家（Cherney、Dastin、Godoy 三人署名）：司法部就 129.3 億美元 Hugging Face 案發問，兩位匿名消息來源。原文用字是「inquiries」「questioning」，未提及傳票、民事調查令（CID）或新立案。司法部與 NVIDIA 皆拒絕評論。</li>
+<li>【事實｜2026-09-02】NVIDIA 8-K：支付股東 119 億美元加最多 10 億美元留任股權，預計 2027 上半年交割，條件含「取得必要監管核准」。即併購審查本來就在流程中，司法部發問不等於另闢戰場。</li>
+<li>【事實｜2024-09-04】NVIDIA 回應 Bloomberg 傳票報導：「未被傳喚」，但承認收到 CID，內容涉及 Run:ai 併購與晶片業務。這是整起調查的真正起點，距今已逾兩年。</li>
+<li>【傳聞→機構估計｜2026-09-10】Bloomberg 與紐時各自報導司法部查 Groq 200 億美元授權案是否規避併購審查；參議員 Warren、Blumenthal 於 3 月 20 日去函質疑。兩家媒體獨立報導，可信度高於單一來源，但仍無官方文件。</li>
+<li>【事實｜2026-02-20】NVIDIA FY2026 10-K 及其後兩份 10-Q 揭露：持續收到歐盟、美國、英國、中國、韓國競爭監管機關「廣泛資訊請求」，範圍含 GPU 銷售、供應分配、基礎模型投資與合作協議。這是公司自己承認的調查範圍，與路透描述一致，但 NVIDIA 從未用「正式調查」或「擴大」字眼。</li>
+<li>【事實｜2026-10-28】司法部發言人未評論個案，僅稱「將持續優先推進超級智慧」。</li>
+</ul>
+<p>溯源結論：Bloomberg 10/28 報導標題明寫「Reuters Says」，CNBC、Tom's Hardware、udn（引中央社）、TechNews 全部轉述路透。看似多家報導，實為單一來源。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>對 NVDA</strong>：真正風險不在 Hugging Face 本身，而在路透提到的「以晶片配額為籌碼，要求客戶同時採購網通設備與 Groq 處理器」。若此綁售指控成立，影響的是 NVIDIA 把 GPU 優勢延伸到交換器、InfiniBand 與推論晶片的能力，這正是 AVGO 與 AMD 最在意的戰場。</p>
+<p><strong>對 AMD、AVGO</strong>：10/28 當日 AMD 漲 3.24%、AVGO 漲 2.77%、MU 漲 5.86%，而 NVDA 跌 1.17%，市場確實按「競爭者受益」劇本交易。但若 Hugging Face 真被要求維持晶片中立（8-K 已承諾支援其他矽晶供應商），對 AMD 反而是正面，因為平台不會綁定 CUDA。</p>
+<p><strong>對 GOOG、MSFT、AMZN</strong>：作為 NVIDIA 最大客戶，他們是調查中「被施壓的客戶」，也是最可能提供證詞的第三方。TPU 與 Trainium 的自研路線在反壟斷敘事下獲得額外正當性。</p>
+<p><strong>反方觀點</strong>：執法環境明顯寬鬆。Semafor 2 月報導反壟斷主管 Slater 被免職，2025 年併購調查件數接近歷史低點，律師界稱「和解救濟重新上桌」。川普 9 月 21 日僅說「必要時才管」。多方預期即使查出問題，結果偏向罰款或附條件核准，而非拆解交易。此外 10/29 股價下跌同時受紐時「華裔高管涉中國情報」報導干擾，不能全歸因司法部。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-11 下旬 Q3 法說與 10-Q</strong>：若風險因子新增 Hugging Face 或 DOJ 專段，等於公司承認調查升級，結論升為【證實】。</li>
+<li><strong>HSR 第二次請求（Second Request）</strong>：若司法部對 Hugging Face 案發出正式二次資料請求，交割將延後、本案由傳聞升格。</li>
+<li><strong>司法部對 Groq 案的處分</strong>：罰款或要求補交 HSR 申報，將是全案第一個官方文件。</li>
+<li><strong>2027 上半年交割時點</strong>：如期完成則調查對商業綁定能力無實質限制，結論降為【查證不支持】。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>10/28 核心宣稱為單一來源（路透兩位匿名人士），所有轉述媒體無獨立佐證。</li>
+<li>SEC 原文透過 WebFetch 抓取時被截斷，監管請求揭露段落僅據搜尋引擎索引摘錄確認，未能逐字核對。</li>
+<li>Bloomberg、CNBC、Benzinga、參議員信函 PDF 均遭 403 拒絕，僅據轉述/摘錄，無法取得原文。</li>
+<li>「擴大」一詞不見於任何一手文件，屬台媒與二手媒體的標題加工。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://ca.finance.yahoo.com/news/exclusive-us-doj-inquiring-nvidias-183442587.html">Exclusive-US DOJ is inquiring about Nvidia's purchase of Hugging Face, sources say（Reuters via Yahoo）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000078/nvda-20260902.htm">NVIDIA Form 8-K 2026-09-02（Hugging Face 收購）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm">NVIDIA Form 10-K FY2026</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000075/nvda-20260726.htm">NVIDIA Form 10-Q 2026-07-26</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/nvidia-stock-falls-doj-probes-122547655.html">Nvidia Stock Falls. DOJ Probes $20 Billion Groq Deal（Yahoo 轉述 Bloomberg）</a>
+- <a href="https://ailawsuittracker.com/cases/doj-antitrust-investigation-into-nvidia-subpoenas-issued-september-2024-no-formal-case-number/">DOJ Antitrust Investigation into Nvidia: Status (2026)</a>
+- <a href="https://www.semafor.com/article/02/14/2026/after-antitrust-firing-its-open-season-for-mergers-in-trumps-washington">After antitrust firing, Trump's Washington is wide open for mergers（Semafor）</a>
+- <a href="https://technews.tw/2026/10/29/us-doj-is-inquiring-about-nvidias-purchase-of-hugging-face/">輝達涉壟斷？傳美調查 Hugging Face、AI 晶片綁售（TechNews）</a>
+- <a href="https://udn.com/news/story/6811/9844427">路透：輝達逾4千億併Hugging Face 面臨反壟斷調查（udn）</a>
+- <a href="https://www.heygotrade.com/en/news/nvidia-nvda-stock-news-october-29-2026/">Nvidia Stock (NVDA) Falls 1.2% on Reports of DOJ Inquiry (Oct 28)</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>✅ 聯發科取得第二ASIC客戶
+          <span class="takeaway">證實｜聯發科 CFO 顧大為在 10/30 法說 Q&amp;A 親口確認已取得第二家 AI ASIC 客戶，但「2028 量產」在原稿中其實是「2028 開始貢獻營收」，且細節全數保留</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261030-2003@%E8%81%AF%E7%99%BC%E7%A7%91%E5%8F%96%E5%BE%97%E7%AC%AC%E4%BA%8CASIC%E5%AE%A2%E6%88%B6">2026-10-30 20:03 觀點彙整</a></p>
+          
+          <h2>深查：聯發科取得第二ASIC客戶</h2>
+<p><strong>裁定</strong>：【證實】
+聯發科 CFO 顧大為在 10/30 法說 Q&amp;A 親口確認已取得第二家 AI ASIC 客戶，但「2028 量產」在原稿中其實是「2028 開始貢獻營收」，且細節全數保留。</p>
+<p>裁定細節：此訊息並未寫入官方新聞稿與 CEO 準備稿，只在 Q&amp;A 回答 UBS 與摩根士丹利分析師提問時口頭確認。書面文件中的「第二個 AI 加速器專案、2028 Q1 量產」是指既有客戶（市場普遍認定為 Google TPU v9）的第二代晶片，與「第二家客戶」是兩件事，部分台媒將兩者混寫成「第二客戶 2028 Q1 量產」，屬失真。</p>
+<h3>查證過程與證據</h3>
+<p>溯源結果：原始出處是 2026/10/30 聯發科 3Q26 法說會本身，而非 TrendForce。TrendForce 8 月文章僅轉述工商時報、經濟日報與分析師 Jeff Pu 的 Meta 推測，10/19 文章則轉述工商時報的 TPU v9 延後傳聞。所有今日報導（中時、自由、TechNews、TVBS、風傳媒、鏡報等）皆源自同一場法說，屬同一一手來源的多重轉述，非獨立來源。</p>
+<ul>
+<li>【事實】2026/10/30 法說 Q&amp;A：UBS 分析師 Sunny Lin 提問，顧大為答「we do have the second customer」，為「不同於主要專案的客戶」，設計已啟動，「first revenue coming in 2028」。兩家逐字稿服務（BigGo、earningsapi）與多家台媒報導一致。</li>
+<li>【事實】同場 Q&amp;A：摩根士丹利 Charlie Zhang 追問，顧大為答第二客戶「非來自中國」，細節日後公布。此說法直接否定 Bloomberg 10/15 的字節跳動洽購報導作為「第二客戶」的解讀。</li>
+<li>【事實】官方準備稿（2026/10/30）：第二個 AI 加速器 ASIC 專案「持續朝 2028 年第一季量產目標推進」，大晶粒 tape-out 較其他晶粒晚 2 至 3 週但符合原計畫；首款加速器 9 月已小量出貨，Q4 目標 25 億美元，2027 年約 160 億美元、約佔 AI 加速器 ASIC 市場 20%。準備稿全文未出現「第二家客戶」字樣。</li>
+<li>【事實】3Q26 新聞稿：營收 1,680.58 億元、毛利率 46.3%、EPS 17.5 元；Q4 指引季增 25% 至 32%。存貨升至 1,535 億元、週轉 127 天，營業現金流轉負。</li>
+<li>【事實】2026/7/31 法說：顧大為當時僅稱「多個專案進行中，尚無法提供細節」，顯示第二客戶是在 8 至 10 月間定案或獲准揭露。</li>
+<li>【傳聞】客戶身分：DIGITIMES 與供應鏈消息（2026/7）指向 Meta；伯恩斯坦（2026/9/29）推測亞馬遜；公司未確認任何一家。</li>
+<li>【傳聞】工商時報（2026/10/20）引機構消息稱 TPU v9 出貨延至 2028 Q1，原因含設計修改與 EMIB-T 封裝良率。公司在法說否認延遲，但承認已將美系 IDM 封裝良率列為最高優先。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p>對 2454：第二客戶確認了「多客戶 ASIC 平台」的敘事，但 2028 才有首筆營收，對 2026 至 2027 年獲利沒有貢獻。真正決定估值的仍是首款加速器 Q4 的 25 億美元能否兌現，以及 2027 年 160 億美元目標。手機業務年減 17%、佔比降至 37%，資料中心確實正在改寫營收結構，但毛利率 45% 指引顯示 ASIC 放量會稀釋毛利。</p>
+<p>對 AVGO：聯發科目標 2027 年佔 ASIC 市場 20%，主要從 Google TPU 份額切入，第二客戶若為 Meta 或亞馬遜，會直接侵蝕博通或 Marvell 的多客戶護城河。但伯恩斯坦同時指出 Anthropic 與 OpenAI 訂單也在推升博通，市場並非零和。</p>
+<p>對 TSM：蔡力行強調台積電是最重要夥伴，但第二代專案封裝依賴 Intel EMIB-T 的疑慮未完全消除。摩根士丹利認為 CoWoS 產能支援可化解 2028 年 TPU 疑慮，若 EMIB-T 良率卡關，CoWoS 備援反而讓台積電受益。</p>
+<p>反方觀點：法說當日股價仍跌，盤中一度重挫近 6%，較 9 月高點回落逾三成。市場關注點在毛利稀釋、Intel 封裝基板供應、Alphabet 資本支出警訊帶來的 CSP 需求疑慮，第二客戶消息未能逆轉這些擔憂。公司未揭露第二客戶的營收規模與製程，無法量化其對 2028 年的貢獻。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2027 年 1 月底 4Q26 法說：Q4 資料中心營收是否達 25 億美元，是「執行力」的第一道驗證，未達標將削弱 2027 年 160 億美元可信度。</li>
+<li>2027 年 1 月至 Q2：TPU v9 大晶粒 tape-out 與量產 tape-out 時點，若晚於公司所稱 2 至 3 週，延遲傳聞成立。</li>
+<li>2027 年內任一法說：第二客戶是否進入 tape-out、公司是否給出 2028 年營收區間或公布客戶名稱。</li>
+<li>2027 下半年：448G SerDes 與 2nm 開發完成與否，決定能否爭取 TPU v10 與第二客戶後續世代。</li>
+<li>博通 12 月財報、Meta 與亞馬遜自研晶片路線圖更新：可間接交叉第二客戶身分。</li>
+<li>4Q26 存貨與營業現金流：若 127 天週轉持續惡化，放量品質存疑。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱來自單一一手來源（公司法說口頭答覆），尚無書面文件佐證，所有媒體報導皆為同源轉述。</li>
+<li>兩份 Q&amp;A 逐字稿皆為第三方摘要，非官方逐字稿；earningsapi 版本未收錄「非中國」段落，以 BigGo 與多家台媒為準。</li>
+<li>「2028 量產」與「2028 開始貢獻營收」被多數台媒混用，自由時報等更將 Q1 2028 套到第二客戶上，屬誤植。</li>
+<li>DIGITIMES 8/17 深度報導在付費牆內，僅據摘錄。Bloomberg 字節跳動原文無法取得，據鉅亨網轉述。</li>
+<li>客戶身分（Meta、亞馬遜）全屬推測，分析師之間互相矛盾。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.mediatek.com/hubfs/MediaTek-Assets/Pdfs/Quarterly%20Earnings%20Release/2026/Quarterly%20Earnings%20Release-2026Q3/Prepared%20remarks.pdf">MediaTek 3Q26 Earnings Call Prepared Remarks（官方）</a>
+- <a href="https://www.mediatek.com/hubfs/MediaTek-Assets/Pdfs/Quarterly%20Earnings%20Release/2026/Quarterly%20Earnings%20Release-2026Q3/Press%20Release.pdf">MediaTek 3Q26 Press Release（官方）</a>
+- <a href="https://finance.biggo.com/quote/2454.TW/earnings-call/TW_2454.TW_2026-10-30">BigGo：MediaTek 2026-10-30 Earnings Call Q&amp;A 摘要</a>
+- <a href="https://earningsapi.io/transcripts/mediatek-inc_2454_earnings_call_transcript_2026-10-30">earningsapi：MediaTek 2026-10-30 逐字稿</a>
+- <a href="https://earningsapi.io/transcripts/mediatek-inc_2454_earnings_call_transcript_2026-07-31">earningsapi：MediaTek 2026-07-31 逐字稿</a>
+- <a href="https://finance.technews.tw/2026/10/30/mediateks-asic-revenue-will-reach-2-5-billion-in-2026">TechNews：聯發科 2026 年 ASIC 營收將達 25 億美元，確認已取得第二家雲端 ASIC 客戶</a>
+- <a href="https://www.storm.mg/article/11177180">風傳媒：蔡力行證實第二家客戶到手</a>
+- <a href="https://news.tvbs.com.tw/money/4043531">TVBS：蔡力行：ASIC客戶非中國、2028年再公布</a>
+- <a href="https://news.videoland.com.tw/article/2b3c41cc-5aad-4f72-8198-68b75233f4a7.html">緯來新聞：聯發科法說 ASIC 進展六大問</a>
+- <a href="https://ec.ltn.com.tw/article/breakingnews/5623967">自由財經：破除ASIC延後雜音</a>
+- <a href="https://www.peoplenews.tw/articles/economic-news/64583">民報：聯發科拆彈 4大疑雲一次看</a>
+- <a href="https://news.nextapple.com/finance/20261030/E6D85A35BE597F50E50343C8FC80DFAC">壹蘋新聞網：蔡力行看旺未來3年</a>
+- <a href="https://www.mirrormedia.mg/external/setn_1930792">鏡週刊：聯發科法說當日重挫</a>
+- <a href="https://www.trendforce.com/news/2026/10/19/news-mediateks-google-tpu-v9-shipments-may-slip-to-1q28-asic-race-heats-up-as-taiwan-firms-eye-new-opportunities/">TrendForce 2026/10/19：TPU v9 Shipments May Slip to 1Q28</a>
+- <a href="https://www.trendforce.com/news/2026/08/03/news-mediatek-advances-400g-serdes-on-2nm-targeting-google-tpu-v10-and-meta-ai-asic-orders/">TrendForce 2026/8/3：MediaTek Advances 400G SerDes, Targeting TPU v10 and Meta</a>
+- <a href="https://news.cnyes.com/news/id/6631028">鉅亨網：傳字節跳動洽購聯發科AI晶片（轉述 Bloomberg）</a>
+- <a href="https://hao.cnyes.com/post/257336">鉅亨號：聯發科ASIC第二大客戶預計為Meta（轉述 DIGITIMES）</a>
+- <a href="https://money.udn.com/money/story/5607/9781841">經濟日報：伯恩斯坦推測亞馬遜為第二家 hyperscaler 客戶</a>
+- <a href="https://finance.biggo.com/news/0b58fca2-c519-4c39-a81d-c985b5b94349">BigGo：法說前股價重挫與摩根士丹利觀點</a></p>
         </div>
       </details>
       
