@@ -65,12 +65,12 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-11-02 08:44｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-11-02 20:49｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
-    <summary>📅 2026-11-02（2 題）</summary>
+    <summary>📅 2026-11-02（5 題）</summary>
     <div class="day-body">
       
       <details class="topic">
@@ -205,6 +205,205 @@
 - <a href="https://tw.stock.yahoo.com/news/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E6%97%97%E4%B8%8B%E8%B3%BC%E8%87%AA%E7%BE%A4%E5%89%B5ap8%E5%BB%A0%E4%BB%8A%E5%A4%A9%E6%AD%A3%E5%BC%8F%E8%A3%9D%E6%A9%9F-%E4%B8%8B%E5%8D%8A%E5%B9%B4%E5%B0%8E%E5%85%A5%E9%87%8F%E7%94%A2-030046962.html">台積電旗下購自群創AP8廠今天正式裝機，下半年導入量產（Yahoo）</a>
 - <a href="https://www.techflowpost.com/en-US/article/32210">Morgan Stanley: TSMC AI Revenue to Double by 2027, CoWoS Remains a Bottleneck（TechFlow）</a>
 - <a href="https://www.digitimes.com/news/a20260710PD226/tsmc-cowos-2027-packaging-capacity.html">TSMC CoWoS output reportedly to reach at least 200K wafers in 2027（DigiTimes）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ Rubin HBM4規格下修原因
+          <span class="takeaway">部分證實｜規格下修本身已由 NVIDIA 官網證實（22→19.2 TB/s、NVL8 2.3→2.0 TB），但「下修原因」仍無一手證據，市場流傳的良率/熱管理說法全屬推論</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261102-2003@Rubin%20HBM4%E8%A6%8F%E6%A0%BC%E4%B8%8B%E4%BF%AE%E5%8E%9F%E5%9B%A0">2026-11-02 20:03 觀點彙整</a></p>
+          
+          <h2>深查：Rubin HBM4規格下修原因</h2>
+<p><strong>裁定</strong>：【部分證實】
+規格下修本身已由 NVIDIA 官網證實（22→19.2 TB/s、NVL8 2.3→2.0 TB），但「下修原因」仍無一手證據，市場流傳的良率/熱管理說法全屬推論。</p>
+<p>數字宣稱完全成立，而且 NVIDIA 自家文件至今仍新舊並存。真正未解的是原因：NVIDIA 僅稱舊數字是「初步架構目標」，新數字「反映量產可持續水準」，未提供技術解釋。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：規格變動的原始出處是 NVIDIA 官方產品頁，最早由 IT Home 與 TechPowerUp 等比對網頁存檔發現，ServeTheHome 於 10/31 做完整對照，台媒鉅亨網等為轉譯。</p>
+<ul>
+<li>【事實｜2026-11-02 查核】NVIDIA Vera Rubin NVL72 官網現行規格：每 GPU HBM4 頻寬 19.2 TB/s、288 GB、NVLink 3 TB/s；整櫃 1,400 TB/s、20.7 TB。HGX 頁面的 Rubin NVL8 列 2 TB HBM4、130 TB/s、NVLink Switch 24 TB/s。</li>
+<li>【事實｜2026-07-21】NVIDIA 開發者部落格「Inside NVIDIA Rubin GPU Architecture」仍寫「峰值 22 TB/s」、NVLink「3,600 GB/s」、12-Hi 堆疊，無任何「初步規格」註記。這是舊規格的一手證據，也顯示 NVIDIA 自身文件尚未同步。</li>
+<li>【事實｜2026-11-02】igor'sLAB 指出 NVIDIA 德文產品頁仍標 1,580 TB/s，而資料表已改 1,400 TB/s，兩者皆為官方來源。</li>
+<li>【事實｜多獨立來源】網頁存檔比對顯示改動發生在 2026 年 9 月 1 日至 11 日之間，未發新聞稿。NVL72 容量與 FP4 算力（50 PFLOPS/GPU、3,600 PFLOPS/櫃）未動；scale-out 網路頻寬反而從 0.4 升至 0.45 TB/s。</li>
+<li>【事實｜2026-10-29】NVIDIA 對 Wccftech 的聲明（經 cloudnews.tech 轉述，原文 403 無法讀取）：舊數字為初步目標，新數字反映系統在合格量產下可持續的水準，第三方基準測試均以量產規格量測。未解釋原因。</li>
+<li>【機構估計｜2026-10-26】vlsi.kr 換算：19.2 TB/s ÷ 8 顆 ÷ 2,048 bit ≈ 9.3 Gbps/pin，22 TB/s 對應約 10.7 Gbps。TechPowerUp 另稱 11.7→9.6 Gbps，兩者算法基礎不同，數據分歧。</li>
+<li>【機構估計｜2026-10-31】ServeTheHome 推論 NVL8 降至 2.0 TB 代表每 GPU 僅啟用 7 顆（約 252 GB）HBM4，但 7×2.4 TB/s = 16.8 TB/s × 8 = 134 TB/s，與官網 130 TB/s 不完全吻合，屬推論。</li>
+<li>【傳聞｜2026-10-29】Digitimes「消息人士稱 NVIDIA 下修 HBM4 頻寬」付費牆，原因段落無法取得。鉅亨網引 TrendForce/大信證券稱「熱管理難度與良率偏低」，屬二手分析。</li>
+<li>【事實｜2026-06-05】黃仁勳於 GTC Taipei 後確認 Samsung、SK hynix、Micron 三家皆通過 Vera Rubin HBM4 認證（Bloomberg）。</li>
+<li>【機構估計｜2026-02～03】SemiAnalysis 曾將 Micron 的 NVIDIA HBM4 份額估為零，理由是自製 base die 導致 pin 速度偏低；TrendForce 3 月報導 NVIDIA 要求超過 10 Gbps。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：下修的是「規格表」而非已出貨硬體的實際表現。NVIDIA 強調基準測試早以量產規格量測，若屬實，對客戶 TCO 與訂單的影響有限。但 NVL8 單板失去 26% 頻寬和 13% 容量，對不買整櫃的中小型客戶是實質減配。另需注意：Rubin Ultra 已先在 8 月傳出 HBM4E 由 12-Hi 改 8-Hi，兩次下修疊加，顯示 HBM 供給而非 GPU 設計是 Rubin 世代的瓶頸。</p>
+<p><strong>MU</strong>：這是本次最被市場誤讀的點。若 pin 速度門檻從約 10.7 降到約 9.3 Gbps，原本被 SemiAnalysis 認為「速度不足」而排除的 Micron，反而更容易達標。vlsi.kr 的分析也指出，三家供應商現有產品皆超過 9.3 Gbps 達 20% 以上，競爭軸從「速度溢價」轉為良率與量，對 SK hynix 的稀缺性是負面、對 Samsung 與 Micron 相對有利。反方觀點：TradingKey（10/30）認為 Rubin Ultra 層數減三分之一，GPU 出貨需增 50% 才能補足每顆記憶體用量，壓縮 Micron 高階產品溢價；UBS 則認為減配讓 NVIDIA 能出更多顆晶片，總 HBM 需求仍上升，HBM 均價今年漲近 8 成（僅據搜尋摘錯，未讀原文）。</p>
+<p><strong>AMD</strong>：AMD 官網未能讀取；搜尋結果稱 MI455X 每 GPU 432 GB、23.3 TB/s，若屬實則 Helios 在記憶體頻寬上已反超 Rubin，但此點未經一手驗證。</p>
+<p><strong>TSM、2317</strong>：規格下修不改變 CoWoS 與機櫃組裝的量，影響中性。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-11-19 NVIDIA FQ3 財報會</strong>：若管理層被問及規格變動並承認 HBM4 良率或供給限制，則原因從推論升級為事實；若重申「不影響效能」且 Rubin 出貨指引不變，市場重估溢價的理由減弱。</li>
+<li><strong>2026-12 下旬 Micron FQ1 FY27 財報</strong>：觀察 HBM4 出貨與 NVIDIA 份額說法。若 Micron 明確提到 Rubin 份額提升，支持「門檻降低利多 Micron」的推論。</li>
+<li><strong>NVIDIA 開發者部落格與德文頁面是否改版</strong>：若 22 TB/s 被全面改為 19.2 TB/s 並加註，確認這是正式規格定案而非文件錯誤。</li>
+<li><strong>Rubin Ultra 正式規格公布（2027 GTC）</strong>：HBM4E 層數若確為 8-Hi，證實 HBM 供給是跨世代瓶頸。</li>
+<li><strong>第三方實測（MLPerf 等）</strong>：若量產機實測頻寬接近 19.2 TB/s，則 NVIDIA「基準測試已用量產規格」的說法可被驗證。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>NVIDIA 官方聲明原文來自 Wccftech，該頁回傳 403，本報告依 cloudnews.tech 轉述，無法逐字核對。</li>
+<li>Digitimes 消息人士報導為付費牆，原因部分完全不可得；所有「良率/熱管理」說法皆為二手分析或推論。</li>
+<li>pin 速度換算出現 9.3 與 9.6 Gbps 兩種版本，係不同媒體算法差異，NVIDIA 從未公布 pin 速度。</li>
+<li>NVL8「啟用 7 顆 HBM」為 ServeTheHome 推論，算術上與官網 130 TB/s 有約 3% 落差。</li>
+<li>網頁存檔（Wayback Machine）無法直接讀取，舊規格依 NVIDIA 7 月開發者部落格與多家媒體存檔比對交叉確認。</li>
+<li>多數英文媒體（hwbusters、Dataconomy、VideoCardz 等）互相引用同一組存檔比對，獨立性有限；真正獨立的一手證據是 NVIDIA 現行頁面與 7 月部落格兩者的差異。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/">NVIDIA Vera Rubin NVL72 官方規格頁</a>
+- <a href="https://www.nvidia.com/en-us/data-center/hgx/">NVIDIA HGX 官方規格頁（Rubin NVL8）</a>
+- <a href="https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/">NVIDIA 開發者部落格：Inside NVIDIA Rubin GPU Architecture</a>
+- <a href="https://www.servethehome.com/nvidia-updates-rubin-gpu-specs-as-first-production-hardware-arrives/">ServeTheHome：NVIDIA Updates Rubin GPU Specs as First Production Hardware Arrives</a>
+- <a href="https://hwbusters.com/news/nvidia-quietly-lowers-vera-rubin-hbm4-bandwidth-and-the-hgx-nvl8-loses-a-quarter-of-it/">Hardware Busters：Nvidia Quietly Lowers Vera Rubin HBM4 Bandwidth</a>
+- <a href="https://cloudnews.tech/nvidia-lowers-vera-rubins-memory-and-nvlink-bandwidth-blames-production-ramp/">cloudnews.tech：NVIDIA Vera Rubin HBM4 and NVLink Bandwidth Cut in Spec Sheet</a>
+- <a href="https://wccftech.com/nvidia-official-statement-on-vera-rubin-spec-change/">Wccftech：NVIDIA's Official Statement on Vera Rubin Spec Change（無法讀取原文）</a>
+- <a href="https://www.igorslab.de/en/nvidia-vera-rubin-hbm4-memory-bandwidth-specifications/">igor'sLAB：Vera Rubin: NVIDIA cites differing HBM4 bandwidth figures</a>
+- <a href="https://pasqualepillitteri.it/en/news/27546/nvidia-site-confirms-vera-rubin-spec-cut-hbm4-nvlink-6">pasqualepillitteri.it：Nvidia's own site confirms Vera Rubin spec cut</a>
+- <a href="https://www.vlsi.kr/en/nvidia-rubin-hbm4-pin-speed-9-3-en/">vlsi.kr：Vera Rubin's HBM4 Is 19.2 TB/s: What 9.3 Gbps Pin Speed Means</a>
+- <a href="https://www.digitimes.com/news/a20261029PD202/nvidia-hbm4-bandwidth-rubin-hbm.html">Digitimes：Nvidia trims HBM4 bandwidth for Rubin platform, sources say（付費牆）</a>
+- <a href="https://news.cnyes.com/news/id/6639104">鉅亨網：傳輝達下一代AI晶片頻寬悄悄砍13%</a>
+- <a href="https://finance.yahoo.com/sectors/technology/articles/nvidia-certifies-samsung-sk-hynix-133001560.html">Yahoo Finance／Bloomberg：Nvidia certifies Samsung, SK Hynix and Micron for Vera Rubin HBM4 supply</a>
+- <a href="https://www.trendforce.com/news/2026/03/09/news-samsung-sk%E2%80%AFhynix-reportedly-tapped-as-nvidia-rubin-hbm4-suppliers-shipments-could-start-in-march/">TrendForce：Samsung, SK hynix Reportedly Tapped as NVIDIA Rubin HBM4 Suppliers</a>
+- <a href="https://www.investing.com/news/stock-market-news/micron-stock-dips-as-analyst-slashes-nvidia-hbm4-supply-forecast-to-zero-4491031">Investing.com：Micron stock dips as analyst slashes Nvidia HBM4 supply forecast to zero</a>
+- <a href="https://ts2.tech/en/micron-technology-rises-as-analysts-look-past-nvidia-vera-rubin-hbm4-setback/">ts2.tech：Micron rises as analysts look past Nvidia Vera Rubin HBM4 setback</a>
+- <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262262351-mu-stock-forecast-nvidia-rubin-hbm4-bandwidth-cut-micron-outlook-tradingkey">TradingKey：Micron Stock Price Forecast: Rubin Ultra HBM Layer Cut</a>
+- <a href="https://enertuition.substack.com/p/micron-out-of-initial-nvidia-rubin">Enertuition：Micron Out Of Initial Nvidia Rubin Builds（付費牆）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 中國Blackwell現貨價格飆升
+          <span class="takeaway">部分證實｜深圳 B300 八卡灰市報價半年內漲約 2.5~3 倍屬實，但「四個月漲三倍至 1,600 萬」是把不同時點、不同出處的數字拼接，且全為報價、無合規供貨</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261102-2003@%E4%B8%AD%E5%9C%8BBlackwell%E7%8F%BE%E8%B2%A8%E5%83%B9%E6%A0%BC%E9%A3%86%E5%8D%87">2026-11-02 20:03 觀點彙整</a></p>
+          
+          <h2>深查：中國Blackwell現貨價格飆升</h2>
+<p><strong>裁定</strong>：【部分證實】
+深圳 B300 八卡灰市報價半年內漲約 2.5~3 倍屬實，但「四個月漲三倍至 1,600 萬」是把不同時點、不同出處的數字拼接，且全為報價、無合規供貨。</p>
+<p>細節上，最接近的一手報導是《財經》雜誌 10 月 10 日的調查：4 月現貨 550~700 萬、9 月破 1,500 萬、10 月 10 日破 1,700 萬人民幣。從 4 月到 10 月是六個月、約 2.5~3 倍；而「四個月」版本出自搜狐 10 月 30 日文章，講的是 1,500 萬漲到 1,900 萬、僅 27%。1,600 萬這個數字只出現在一篇付費牆內的 X 長文，無法取得原文。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【事實｜2026-06-24】英國《金融時報》訪談多名中國晶片貿易商：DGX B300（八卡）黑市價六個月內由 400 萬漲至逾 800 萬人民幣（約 110 萬美元），美國售價約 40 萬美元。路透、cnBeta 等皆轉述同一來源，不算獨立佐證。</li>
+<li>【事實｜2026-05-01】快科技報導 B300 整機成交價約 700 萬、較 2025 年底約 400 萬近乎翻倍，一年期月租 19 萬。與 FT 時間線一致，屬獨立中文來源。</li>
+<li>【機構估計｜2026-08-11】算力平台晨澗雲整理：B300 整機由 2025 年約 450 萬升至 6~7 月 1,300~1,450 萬，接近三倍。同文以長協租金與 Token 收益倒推，認為合理承受價僅 900~1,000 萬。</li>
+<li>【傳聞｜2026-10-10】《財經》雜誌：8 月上旬 B300「期貨」到深圳 135 萬美元（約 906 萬），9 月 8 日漲到 1,030 萬；現貨 10 月 10 日破 1,700 萬。僅據華爾街見聞轉載，財經網原文連結已 404。</li>
+<li>【傳聞｜2026-10-30】搜狐自媒體稱 10 月 17 日 144 台訂單成交 1,960 萬、10 月下旬 1,900 萬區間，月租由 4 月 19 萬升至 10 月 42 萬。單一來源，成交單無法核實。</li>
+<li>【事實｜2026-08-24】台灣基隆地檢署起訴 9 人，含輝達台灣資深經理與美超微台灣子公司主管：以假終端用戶聲明與假資料中心騙過原廠審查取得 130 台 B300，74 台經印尼、日本、香港流入中國，56 台遭海關查扣，獲利 2,120 萬美元。</li>
+<li>【事實｜2026-03、2026-05-31】美國司法部 3 月起訴美超微共同創辦人涉 25 億美元伺服器轉運；商務部 BIS 5 月 31 日重申，中國總部企業的海外子公司採購先進運算品項仍需許可證。</li>
+<li>【事實｜2026-07-26 季末】輝達 Q2 FY27 財務長評論：對中國 Hopper 出貨不到資料中心營收 1%，Q3 展望「不假設任何來自中國的資料中心運算營收」。Blackwell 無任何合法對中銷售管道。</li>
+</ul>
+<p>小結：合規供貨來源為零，所有報價皆為灰市；「八卡 1,600 萬」無可追溯的原始出處。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA</strong>：灰市溢價不是輝達的定價權，而是制度性溢價，一分錢都進不了輝達帳上。真正的訊號是中國推理算力需求極度真實，而這部分需求被強制讓給國產晶片。查價網站同期顯示昇騰 910B 單卡 11~12 萬、可直接採購，對比 B300 灰市單卡約 87.5 萬，價差本身就在替華為做市場。對輝達而言，灰市案件還帶來合規風險：台灣案被告包含輝達自家員工，參議院銀行委員會 3 月也曾致函商務部質疑黃仁勳「無轉運證據」說法。</p>
+<p><strong>AMD</strong>：MI300 系列同受管制，無法替補，不是受益者。</p>
+<p><strong>系統組裝（2317 等）與美超微</strong>：灰市鏈條都從原廠出貨端開始，ODM/EMS 的客戶審查（KYC）成本和被追訴風險上升，是隱性負面。</p>
+<p><strong>反方觀點</strong>：晨澗雲的回本模型認為 1,300 萬以上已脫離租金與 Token 收益能支撐的區間，回調目標 900~1,000 萬。查價網站 11 月 2 日顯示 B300 雲端時租近七日跌 14.5%、B200 跌 16.7%，與「租價現貨同升」敘事相左，可能反映國產替代與 H200 供給緩和。市場若把灰市報價當作「中國需求強到輝達必然重返中國」的證據，是解讀失真；美方執法趨嚴才是漲價主因。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-11-17 輝達 Q3 FY27 財報</strong>：若中國資料中心營收仍為零且展望維持不假設，確認 Blackwell 無合規管道。</li>
+<li><strong>台灣基隆地院審理進度與美國美超微案開庭</strong>：判決書若揭露進貨價與轉售價，可取代目前自媒體報價，作為實際成交數據。</li>
+<li><strong>BIS 後續執法行動或對華出口許可變化</strong>：若放行 B30A 等中國特規晶片，灰市溢價應快速收斂，本結論將需下修。</li>
+<li><strong>中國算力租賃平台月租與雲端時租走勢</strong>：時租若連續下跌而整機報價續漲，證明現貨價為渠道投機，而非需求支撐。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>所有中國價格皆為「報價」而非可核實成交單，發布者多為自媒體與算力平台，具有行銷動機。</li>
+<li>1,900 萬以上與月租 42 萬僅見於搜狐單一來源；1,600 萬出自付費牆內 X 文章，無法取得原文。</li>
+<li>財經網原文無法讀取，僅據華爾街見聞轉載。</li>
+<li>數據分歧：FT 6 月說 800 萬，晨澗雲說同期 1,300~1,450 萬，可能是 DGX 原廠機與 HGX 白牌整機、含稅與否的差異，各源皆未說明配置。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.tradingview.com/news/reuters.com,2026:newsml_L4N42W01R:0-nvidia-s-banned-ai-chips-double-in-price-on-china-s-black-market-ft-reports/">Nvidia's banned AI chips double in price on China's black market, FT reports（Reuters via TradingView）</a>
+- <a href="https://www.cnbeta.com.tw/articles/tech/1566824.htm">英伟达遭禁"Blackwell"AI服务器在中国黑市飙至110万美元 - cnBeta</a>
+- <a href="https://chipbriefing.substack.com/p/daily-banned-blackwells-price-doubles">Daily: Banned Blackwell's price doubles in China - Chip Briefing</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/china-black-market-nvidia-prices-102128947.html">China black market Nvidia prices rocket in wake of smuggling crackdown and customs freeze - Yahoo/Tom's Hardware</a>
+- <a href="https://news.mydrivers.com/1/1119/1119716.htm">700万元一台还抢不到！NVIDIA B300服务器价格暴涨 - 快科技</a>
+- <a href="https://wallstreetcn.com/articles/3783365">倒卖B300：看似暴利，满地陷阱 - 华尔街见闻（轉載《財經》雜誌）</a>
+- <a href="https://www.sohu.com/a/1086583227_122014422">B300出厂370万，深圳现货炒到1700万+ - 搜狐</a>
+- <a href="https://m.sohu.com/a/1094848260_121948416">B300 上涨至 1900 万 - 搜狐</a>
+- <a href="https://www.sohu.com/a/1094980520_122504552">1900万的B300，不只是在买算力，而是在赌通道 - 搜狐</a>
+- <a href="https://www.mornai.cn/news/gpu/why-b300-and-h200-server-prices-surged/">B300涨至近3倍、H200月租破10万：高价从何而来 - 晨涧云</a>
+- <a href="https://www.tandiu.cn/compute">GPU价格：B300、H200、H20、昇腾910B整机价、市场价与云端时租 - TANDIU</a>
+- <a href="https://www.cls.cn/detail/2266607">2026算力市场开局：显卡商转行炒内存 "套牌车"混进服务器 - 财联社</a>
+- <a href="https://www.mirrordaily.news/story/81464">6.7億元暴利！輝達B300走私鏈曝光 - 鏡報</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000073/q2fy27cfocommentary.htm">NVIDIA Q2 FY27 CFO Commentary - SEC 8-K</a>
+- <a href="https://globalsanctions.com/2026/06/bis-confirms-licence-requirement-for-advanced-computing-exports-to-china-headquartered-entities/">BIS confirms licence requirement for advanced computing exports to China-headquartered entities - Global Sanctions</a>
+- <a href="https://www.cnn.com/2026/03/19/politics/super-micro-computer-founder-charged-ai-chips-china">Co-founder of tech company charged with diverting $2.5 billion in Nvidia AI chips to China - CNN</a>
+- <a href="https://www.banking.senate.gov/imo/media/doc/letter_to_commerce_nvidia_supermicro.pdf">Senate Banking Committee letter to Commerce re Nvidia/Supermicro（2026-03-23）</a>
+- <a href="https://www.marketbeat.com/earnings/reports/2026-11-18-nvidia-co-stock/">NVIDIA Q3 FY2027 Earnings Date - MarketBeat</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 台積電德州Sherman設廠傳聞
+          <span class="takeaway">部分證實｜台積電確已證實「派團隊評估德州」，但「Sherman」與「數百億美元」均來自未具名公司的州政府文件加媒體推論，台積電與 Sherman 市府皆未確認</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261102-2003@%E5%8F%B0%E7%A9%8D%E9%9B%BB%E5%BE%B7%E5%B7%9ESherman%E8%A8%AD%E5%BB%A0%E5%82%B3%E8%81%9E">2026-11-02 20:03 觀點彙整</a></p>
+          
+          <h2>深查：台積電德州 Sherman 設廠傳聞</h2>
+<p><strong>裁定</strong>：【部分證實】
+台積電確已證實「派團隊評估德州」，但「Sherman」與「數百億美元」均來自未具名公司的州政府文件加媒體推論，台積電與 Sherman 市府皆未確認。</p>
+<p>細節：這條傳聞其實是三條獨立線索被市場疊加成一個敘事：(1) 彭博 10 月 1 日「德州多座廠、每座至少 200 億美元」；(2) 台積電 10 月 15 日法說證實評估德州；(3) 《Dallas Business Journal》10 月底取得的州政府文件（450 億美元、兩座廠、公司未具名）被解讀為台積電落腳 Sherman。只有第 (2) 項是官方口徑，第 (3) 項的「台積電＝該公司」目前是推論。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：台媒 10/31 起大量轉載的「雪曼擴廠、上看 1,200 億美元」皆改寫自 Bisnow，Bisnow 又引述 DBJ 與彭博，屬同一根源，不是多重獨立證實。</p>
+<ul>
+<li>【事實｜2026-10-15】魏哲家法說原話：「Texas is one. We send the teams to Texas to do all the evaluation.」並稱與 Terafab 客戶討論利用其產能，但「The fab has to be run by TSMC」。全程未提 Sherman、未提金額。2026 年資本支出重申 600 至 640 億美元。</li>
+<li>【事實｜2026-10-01】彭博報導後，台積電回應「對市場傳言不予評論」。彭博消息來源為一位知情人士，稱每座廠至少 200 億美元，且以國會延長先進製造稅收抵免為前提。</li>
+<li>【傳聞｜2026-10-29 前後】DBJ 取得的德州州政府文件：一家「國際公司」尋找兩座先進晶圓廠場址，投資 450 億美元、六年創造 5,000 個工作，最快下月定案、2029 年第四季投產；州政府備註 Sherman 為理想候選地。文件未點名台積電。本項僅據轉述摘錄，無法取得原文。</li>
+<li>【事實｜2026-10-30】Bisnow 報導 Sherman 市官員表示「尚未接獲台積電聯繫」。</li>
+<li>【機構估計】「1,200 億美元」是彭博「六座、每座 200 億」的乘積，彭博原文僅說「多座」，六座說法來自其他媒體延伸，非台積電數字。</li>
+<li>【事實｜2026-07】亞利桑那州總投資已增至 2,650 億美元（10 座晶圓廠、2 座封裝廠、1 研發中心），德州會是在此之外的第二園區。</li>
+<li>【傳聞｜2026-10-16】世界日報引述未具名消息人士稱亞利桑那州政府在水電配套上態度轉變，是台積電轉看德州的原因之一，單一來源。</li>
+<li>【事實】Terafab 位於德州 Grimes County（休士頓西北），已獲 8 件 JETI 減稅申請核准，與 Sherman（達拉斯以北）是兩個不同地點。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>對 TSM 本身</strong>：若德州第二園區成真，等於在 2,650 億美元的亞利桑那之外再加數百億至千億美元，財務長已預告海外廠毛利稀釋未來幾年擴大到 3 至 4 個百分點，德州會讓這個數字更難收斂。市場把「評估」解讀成「決定」是敘事失真之處；而且彭博明指投資以 35% 稅收抵免延長為前提，這個立法變數尚未落地。</p>
+<p><strong>受益方</strong>：環球晶 Sherman 廠（第一期月產能約 30 萬片）是最直接受益者，可「在地生產、在地交貨」；德州儀器、Coherent 已在當地形成聚落，水資源是 Sherman 相對其他德州場址的核心優勢。下游 NVDA、AMD、AVGO、AAPL 獲得更多美國本土產能選項，但實質產出最快也要 2029 年底。</p>
+<p><strong>潛在替代路線</strong>：Terafab 方案若談成（11 月初傳馬斯克軟化、同意台積電營運），台積電的德州產能可能落在 Grimes County 而非 Sherman，兩者不必然並存。</p>
+<p><strong>反方觀點</strong>：Daily Upside 形容計畫「all hat and no cattle」，彭博與路透皆稱處於「最早期階段」；台積電法說同時強調對 2027 年「審慎規劃」，並非無限擴張。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026 年 11 月至 12 月</strong>：州文件稱「最快下月定案」。若德州州長辦公室或 Sherman 市議會出現具名公告、JETI 或 Texas Semiconductor Innovation Fund 申請，可升級為【證實】；若 12 月前無動靜，應降級。</li>
+<li><strong>Grayson County 土地交易與 Sherman 市議會議程</strong>：出現大面積工業用地變更或水權協議，是先行訊號。</li>
+<li><strong>美國國會稅收抵免延長案</strong>：未通過則彭博版本的前提消失。</li>
+<li><strong>2027 年 1 月中台積電第四季法說</strong>：是否公布 2027 資本支出與德州決定；若魏哲家點名地點與金額即定案。</li>
+<li><strong>Terafab 談判結果</strong>：若台積電接手營運 Grimes County 廠，Sherman 機率反而下降。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>所有「Sherman」指向皆源自 DBJ 單一份州政府文件，公司名稱未揭露，本報告無法取得文件原文，只能據多家轉述。</li>
+<li>金額分歧明顯：450 億（州文件、兩座）、1,200 億（媒體推算、六座）、每座 200 億（彭博）。三者對象可能不同，不應相加或等同。</li>
+<li>彭博原文、DBJ 原文、WFAA 報導均為付費牆或拒絕存取，相關內容僅據摘錄。</li>
+<li>台媒自 10/31 起的「雪曼 1,200 億」報導為同源改寫，不構成交叉驗證。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.bisnow.com/news/dallas-ft-worth/industrial/taiwan-semiconductor-manufacturing-co-could-expand-in-north-texas">Taiwan Semiconductor Manufacturing Co. Could Expand In North Texas（Bisnow）</a>
+- <a href="https://www.commercialsearch.com/news/tsmc-eyes-north-texas-expansion/">TSMC Eyes Big Texas Expansion（Commercial Property Executive）</a>
+- <a href="https://www.wfaa.com/article/money/business/sherman-texas-chip-maker-tsmc-taiwan-development/287-4d6774a5-57a2-4e43-9bfa-4ffc35085c5d">Chip-maker could put mega-project in Sherman（WFAA，僅據摘錄）</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/15/tsmc-tsm-q3-2026-earnings-call-transcript/">TSMC (TSM) Q3 2026 Earnings Call Transcript（Motley Fool）</a>
+- <a href="https://www.trendforce.com/news/2026/10/15/news-tsmc-sends-team-to-assess-texas-fab-expansion-confirms-terafab-talks-but-insists-on-operating-control/">TSMC Sends Team to Assess Texas Fab Expansion（TrendForce）</a>
+- <a href="https://fortune.com/2026/10/15/elon-musk-tsmc-ai-texas-terafab/">TSMC confirms it's in talks with Elon Musk to join Terafab（Fortune）</a>
+- <a href="https://www.briefs.co/news/tsmc-eyes-texas-for-a-massive-multi-fab-buildout-as-ai-order/">TSMC Eyes Texas for a Massive Multi-Fab Buildout（Briefs）</a>
+- <a href="https://www.thedailyupside.com/technology/semiconductors/tsmc-considers-new-plant-in-lone-star-state/">TSMC Considers New Plant in Lone Star State（The Daily Upside）</a>
+- <a href="https://www.spartnerships.com/tsmc-texas-semiconductor-manufacturing-expansion/">Semiconductor giant TSMC explores Texas expansion opportunities（Strategic Partnerships）</a>
+- <a href="https://udn.com/news/story/7238/9817104">台積電證實評估赴德州興建晶圓廠 經長說話了（聯合新聞網）</a>
+- <a href="https://www.worldjournal.com/wj/story/121220/9819098">新聞幕後／台積電轉向德州 因亞利桑納州態度丕變（世界日報）</a>
+- <a href="https://udn.com/news/story/7240/9782214">台積傳德州建美國第二園區 環球晶擁地利優勢（經濟日報）</a>
+- <a href="https://udn.com/news/story/7240/9782165">環球晶德州廠 拚就地交貨台積（經濟日報）</a>
+- <a href="https://lifenews.com.tw/607491">台積電擬在美德州雪曼擴建晶圓廠 潛在投資上看1,200億美元（民生電子報）</a>
+- <a href="https://www.kbtx.com/2026/07/21/gov-abbott-signals-approval-spacexs-terafab-jeti-tax-agreements/">Gov. Abbott signals approval of SpaceX's Terafab JETI tax agreements（KBTX）</a>
+- <a href="https://qz.com/tsmc-100-billion-arizona-investment-ai-chip-demand-072026">TSMC adds $100 billion to Arizona investment（Quartz，僅據搜尋摘錄）</a></p>
         </div>
       </details>
       
