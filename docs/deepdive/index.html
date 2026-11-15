@@ -65,12 +65,12 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-11-15 08:56｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-11-15 20:52｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
-    <summary>📅 2026-11-15（3 題）</summary>
+    <summary>📅 2026-11-15（6 題）</summary>
     <div class="day-body">
       
       <details class="topic">
@@ -272,6 +272,209 @@
 - <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvda-20261111.htm">NVIDIA Form 8-K 2026-11-12（SEC）</a>
 - <a href="https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition">NVIDIA Announces CEO Transition（NVIDIA 新聞稿）</a>
 - <a href="https://www.aljazeera.com/news/2026/11/12/why-did-nvidia-ceo-jensen-huang-resign-and-who-is-colette-kress">Why did Nvidia CEO Jensen Huang resign（Al Jazeera）</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 前沿實驗室轉向AMD加速器
+          <span class="takeaway">部分證實｜Anthropic 確有此說，但原話範圍是「單一模型的 prompt processing 在 MI355X 上跑到可用效能」，不是整套訓練／推論遷移完成</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261115-2003@%E5%89%8D%E6%B2%BF%E5%AF%A6%E9%A9%97%E5%AE%A4%E8%BD%89%E5%90%91AMD%E5%8A%A0%E9%80%9F%E5%99%A8">2026-11-15 20:03 觀點彙整</a></p>
+          
+          <h2>深查：前沿實驗室轉向AMD加速器</h2>
+<p><strong>裁定</strong>：【部分證實】
+Anthropic 確有此說，但原話範圍是「單一模型的 prompt processing 在 MI355X 上跑到可用效能」，不是整套訓練／推論遷移完成。</p>
+<p>「3 天 vs 6–12 個月」兩個數字皆出自 Anthropic 自述，無第三方基準測試；唯一的旁證來自合作夥伴兼投資方 AMD，不算獨立來源。市場把「prompt processing 可用」放大成「CUDA 轉換成本歸零」，是主要失真點。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：宣稱的一手出處是 Anthropic IPO 路演影片「Approach to compute」章節（2026-11-10 上線，共同創辦人兼 Chief Compute Officer Tom Brown 發言），官方字幕檔原文：「In the past, bringing on a new chip platform took dozens of engineers months of work. This time we had Mythos try it out. It got Claude running on AMD in just three days with basically no human intervention. Claude ported or wrote almost 100% of the kernels.」前文另提到「this year we started working with AMD GPUs for the first time」以及「across all four major chip families… one fungible pool of compute」。The Decoder、Motley Fool、Yahoo Finance、台美各媒體均改寫自這段影片，屬同一來源。</p>
+<ul>
+<li>【事實｜2026-11-10】路演幻燈片註腳將「3 天」定義為「Claude Mythos Preview 為一個 Anthropic 模型在 AMD MI355X 上把 prompt processing 帶到可用效能水準的大約時間」。範圍限於 prefill 階段、單一模型、單一晶片型號，不含 decode、訓練與叢集規模。</li>
+<li>【傳聞｜2026-11-10】「傳統做法需 6–12 個月、數十名工程師」此一比較基準同樣來自 Anthropic 自述，無任何外部文件可核。</li>
+<li>【事實｜2026-11-03】AMD Q3 2026 法說會，Lisa Su 原話：「Anthropic highlighted that one engineer used Claude to bring up their latest model on Instinct MI355X racks over a single weekend with strong performance.」這是比路演早一週的平行說法，但 AMD 是 Anthropic 的供應商、投資方（承諾最高 50 億美元入股）與合作方，且用語是「Anthropic highlighted」，仍是轉述 Anthropic 說法。</li>
+<li>【事實｜2026-07-22】AMD 官方新聞稿：雙方將部署最高 2 GW 的 Instinct MI450 系列 Helios 機櫃，第一個 GW 於 2027 上半年開始，「builds on Anthropic's existing use of AMD Instinct MI355X GPUs」，並啟動多年工程合作「使用 Claude 加速 ROCm 軟體開發」。證實 Anthropic 2026 年起確實在用 MI355X，且 AMD 本身就是「用 Claude 寫 ROCm」的受益者。</li>
+<li>【事實｜2026-11-10】Anthropic S-1/A 修正稿揭露 AMD 參與 260 億美元私募配售，出資 25 億美元，計入前述 50 億美元承諾；S-1 中 AMD Helios 採購承諾預估超過 200 億美元。</li>
+<li>【機構估計｜2026-10】第三方依 S-1 推算 Anthropic 約 11 GW 合約算力中，Nvidia 約 4.7 GW、Google TPU 約 4.5 GW、AWS Trainium 約 1.2 GW、AMD 約 0.8 GW。AMD 占比最小，與「轉向 AMD」的標題敘事不符。</li>
+<li>【事實】AMD 在 7 月 AAI 2026 新聞稿與 11 月法說會都未提「3 天」或「6–12 個月」數字；AMD 法說會上無分析師追問 CUDA 護城河。</li>
+</ul>
+<p><strong>結論</strong>：查證支持「Anthropic 自稱 Mythos 以約 3 天完成 MI355X 單模型 prompt processing 的 bring-up」，不支持「AMD GPU 整體導入時間縮至 3 天」的擴大解讀。</p>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受益方</strong>：AMD 獲得第一線前沿實驗室背書，ROCm 10 搭配 ROCm.AI 的「AI 寫 kernel」路線得到實例；TSM 無論客戶選 NVDA 或 AMD 皆為代工方，中性偏多，若 MI450/Helios 2027 上半年如期出貨，CoWoS 需求結構更分散但總量不減。</p>
+<p><strong>受壓方</strong>：NVDA 的敘事風險上升，但實質威脅需區分：Anthropic 合約算力中 Nvidia 仍占最大份額，且 SpaceX.AI 提供的 1,205 億美元 Nvidia 算力合約顯示近期依賴未減。本案證明的是「kernel 移植門檻下降」，不是「Nvidia 系統級效能、互連與供應鏈優勢消失」。</p>
+<p><strong>市場失真之處</strong>：
+1. 「跑起來」與「可用於生產」被混為一談。Prompt processing 是運算最規則、最易移植的部分；decode 的記憶體頻寬最佳化、多節點訓練的通訊堆疊才是歷史上 ROCm 落後 CUDA 的主戰場，路演並未宣稱這些也在 3 天內完成。
+2. 把投資方旁證當獨立驗證。AMD 法說會的說法是轉述 Anthropic，而 AMD 同時是 Anthropic 股東，利益一致。
+3. 股價反應本身也不乾淨：11/11 AMD 漲約 7%、NVDA 也漲近 3%；11/12 AMD 反跌約 11%，主因是 AI 資本支出與 CoreWeave、Oracle 融資疑慮引發的晶片股拋售，而非這則敘事。</p>
+<p><strong>反方觀點</strong>：分析師 Ben Pouladian 認為「讓模型部分運算在 AMD 上跑，與在整個系統規模達到穩定、具成本效益、有競爭力的效能，是兩回事」；Cerity Partners 的 Jim Lebenthal 稱「每個開發者都建在 CUDA 上，無法取代」。Motley Fool 的 Geoffrey Seiler 雖以「AMD 好消息」為題，仍指出 Nvidia 仍有最佳整體生態系並鎖住大量 HBM 供給。正方則有 Replit 執行長 Amjad Masad 認為 Anthropic 已表明「不依賴 Nvidia」。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-11-17 Nvidia Q3 FY27 財報</strong>：若管理層被問及前沿實驗室多平台化而給出具體客戶留存數據或 CUDA 生態回應，可校準威脅程度；若毛利率指引下修伴隨訂價壓力，升級本結論。</li>
+<li><strong>2026-11-19 Anthropic 掛牌後首次公開揭露</strong>：若未來 10-Q 或投資人簡報公布 AMD 算力實際使用量或訓練工作負載上 AMD 的比例，可將「單模型 prefill」升級為「生產級導入」。</li>
+<li><strong>2027 上半年 MI450/Helios 首個 GW 交付</strong>：AMD 法說會若揭露 Anthropic 實際上線機櫃數與 Claude 訓練用例，可證實規模化；延遲或僅做推論則降級。</li>
+<li><strong>Anthropic 或 AMD 的工程部落格</strong>：若發布 ROCm 版本、kernel 覆蓋率、tokens/sec 對比等可重現數據，本案從【傳聞】基準升為【事實】；若始終只有路演口述，維持現評。</li>
+<li><strong>其他前沿實驗室（OpenAI、Meta）</strong> 是否出現類似「數天 bring-up」案例：第二家獨立實驗室證實才算 CUDA 轉換成本結構性下降。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>「3 天」與「6–12 個月」皆為單一來源（Anthropic 自述），AMD 法說會屬利害關係方轉述，故本報告未視為獨立交叉驗證。</li>
+<li>Anthropic S-1 全文過大無法直接讀取，S-1 內 AMD 承諾金額與算力占比依 Tom's Hardware、Futuriom 等轉述，標為機構估計。</li>
+<li>路演影片官方字幕檔已直接讀取，發言者身分依多家媒體一致標注為 Tom Brown；字幕檔本身未標名。</li>
+<li>台美媒體標題普遍使用「AMD 導入縮至 3 天」或「CUDA 護城河消失」，均省略幻燈片註腳的範圍限定。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://ipo.anthropic.com/video/us/roadshow/captions.vtt">Anthropic IPO 路演官方字幕檔</a>
+- <a href="https://ipo.anthropic.com/">Anthropic IPO 官網</a>
+- <a href="https://the-decoder.com/anthropic-says-ai-is-eroding-nvidias-cuda-lead-cutting-an-amd-chip-switch-from-months-to-three-days/">The Decoder：Anthropic says AI is eroding Nvidia's CUDA lead</a>
+- <a href="https://madrobot.blog/2026/11/11/anthropic-mythos-claude-amd-chips-three-days/">Madrobot：Anthropic says its Mythos AI got Claude running on AMD chips in three days</a>
+- <a href="https://fourweekmba.com/ai-anthropics-amd-bring-up-took-3-days-vs-6-12-months-before/">FourWeekMBA：Anthropic's AMD Bring-Up Took 3 Days vs 6-12 Months</a>
+- <a href="https://newsroom.amd.com/news/amd-anthropic-strategic-partnership/">AMD Newsroom：AMD and Anthropic Announce Strategic Partnership（2026-07-22）</a>
+- <a href="https://ir.amd.com/news-events/press-releases/detail/1294/aai-2026-amd-delivers-full-stack-compute-for-the-agentic-ai-era">AMD IR：AAI 2026 新聞稿</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/11/04/amd-amd-q3-2026-earnings-call-transcript/">Motley Fool：AMD Q3 2026 Earnings Call Transcript</a>
+- <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-amd-tops-q3-2026-estimates-as-stock-jumps-after-hours-93CH-4996894">Investing.com：AMD Q3 2026 earnings call transcript</a>
+- <a href="https://www.cnbc.com/2026/07/22/amd-anthropic-ai-chip-investment.html">CNBC：AMD to invest up to $5 billion in Anthropic</a>
+- <a href="https://explainx.ai/blog/claude-mythos-amd-mi355x-port-weekend-claimed-vs-verified-2026">explainx：Claude Mythos AMD MI355X 3-Day Port Claim Checked</a>
+- <a href="https://www.kucoin.com/news/flash/anthropic-claims-claude-model-ran-on-amd-gpu-in-3-days-challenging-nvidia-s-cuda-dominance">KuCoin News：Anthropic Claims Claude Model Ran on AMD GPU in 3 Days（含 Ben Pouladian 評論）</a>
+- <a href="https://finance.yahoo.com/video/anthropics-mythos-claim-may-put-nvidias-cuda-moat-in-a-vulnerable-spot-214346380.html">Yahoo Finance 影片：Anthropic's Mythos claim may put Nvidia's CUDA moat in a vulnerable spot</a>
+- <a href="https://finance.yahoo.com/technology/ai/articles/anthropic-model-taught-itself-run-160952316.html">Yahoo Finance/TIKR：Anthropic's Model Taught Itself to Run on AMD in "Three Days"</a>
+- <a href="https://www.fool.com/investing/2026/11/15/anthropic-just-delivered-great-news-for-amd-investors-and-bad-news-for-nvidia/">Motley Fool：Anthropic Just Delivered Great News for AMD Investors</a>
+- <a href="https://www.fool.com/coverage/stock-market-today/2026/11/10/stock-market-today-nov-10-amd-rises-on-plan-to-invest-usd2-5-billion-in-anthropic/">Motley Fool：Stock Market Today, Nov. 10</a>
+- <a href="https://www.fool.com/coverage/stock-market-today/2026/11/11/stock-market-today-nov-11-advanced-micro-devices-jumps-and-not-only-because-of-coreweave-s-results/">Motley Fool：Stock Market Today, Nov. 11</a>
+- <a href="https://www.theregister.com/ai-and-ml/2026/07/24/amd-vibe-codes-its-way-past-the-cuda-moat-with-rocmai/5278580">The Register：AMD vibe codes its way past the CUDA moat with ROCm.AI</a>
+- <a href="https://www.futuriom.com/articles/news/why-anthropic-is-banking-on-future-compute/2026/10">Futuriom：Anthropic's S-1 Reveals Complex Mosaic of Compute Contract Risks</a>
+- <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/anthropics-ipo-filing-shows-most-of-its-compute-goes-to-r-and-d-not-serving-customers-company-details-massive-usd800-billion-in-tpu-and-gpu-contracts">Tom's Hardware：Anthropic's IPO filing details $800 billion in TPU and GPU contracts</a>
+- <a href="https://www.marketbeat.com/earnings/reports/2026-11-17-nvidia-co-stock/">MarketBeat：NVIDIA Q3 FY2027 earnings date</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ 聯發科TPU成本大幅低於AVGO
+          <span class="takeaway">部分證實｜方向成立（聯發科路線確實讓 Google 省錢），但 8,434／16,996 美元這組數字找不到原始出處，且很可能是「不含 HBM」對「含 HBM」的錯位比較</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261115-2003@%E8%81%AF%E7%99%BC%E7%A7%91TPU%E6%88%90%E6%9C%AC%E5%A4%A7%E5%B9%85%E4%BD%8E%E6%96%BCAVGO">2026-11-15 20:03 觀點彙整</a></p>
+          
+          <h2>深查：聯發科TPU成本大幅低於AVGO</h2>
+<p><strong>裁定</strong>：【部分證實】
+方向成立（聯發科路線確實讓 Google 省錢），但 8,434／16,996 美元這組數字找不到原始出處，且很可能是「不含 HBM」對「含 HBM」的錯位比較。</p>
+<p>裁定細節：Bernstein 確有看多聯發科 TPU 的報告（9/15 目標價 4,380→5,500 元、ASIC 營收 2026–28 年 24／160／440 億美元），「V8T 以約 40% 毛利承接、Google 直採 HBM、對比博通約 60% 毛利模式，1–2 年可省約 500 億美元」的說法目前只見於 11/14 一份三手彙整電子報；單顆 8,434 vs 16,996 美元則在所有可取得的中英文來源中均未出現，該電子報僅寫「約 8,400 對 17,000 美元，差距主要來自 HBM」，且未明確歸給 Bernstein。</p>
+<h3>查證過程與證據</h3>
+<ul>
+<li>【事實｜2026-04-23】Google Cloud 官方技術文公布 TPU 8t（216GB HBM、12.6 PF FP4）與 8i（288GB HBM），全文未提任何設計夥伴。</li>
+<li>【事實｜2026-09-09】博通 Q3 FY26 法說，Hock Tan 原話：「Broadcom is now shipping the TPU version 8i ahead of the MediaTek version v8t, which, in fact, was initiated earlier.」這是「聯發科承接 v8t」最權威的一手證據；CFO 同場表示 XPU 記憶體含量上升正稀釋合併毛利率，等於確認博通營收採含 HBM 的 turnkey 口徑。</li>
+<li>【事實｜2026-06-04】博通 Q2 FY26 法說承認 Google「正在尋找其他供應商」，當日市值蒸發約 2,860 億美元。</li>
+<li>【事實｜2026-10-30】聯發科 Q3 法說：蔡力行稱 9 月開始出貨、Q4 雲端 ASIC 營收 25 億美元、2027 年約 160 億美元（約佔 AI 加速器 ASIC 市場 20%）；CFO 顧大為稱資料中心毛利率仍低於公司平均。全文未說明營收是否含 HBM。</li>
+<li>【機構估計｜2026-04-29】Counterpoint：TPU 8t 由 Google 設計運算 die、聯發科供 I/O die、Google 自採 HBM；博通 turnkey 模式對 HBM 加價 15–20%。2026 年聯發科出貨約 40 萬顆，2028 年近 500 萬顆。</li>
+<li>【機構估計｜2026-09-01】摩根大通：改採聯發科 semi-CoT 模組化方案每顆可省約 43%；美銀 Vivek Arya（2026-05）估雙軌本身已降本約 30%。</li>
+<li>【機構估計｜2026-10-05】Bernstein 另一份報告估 TPU v7 ASIC「不含 HBM」約 2.2 萬美元、博通毛利約 55%。若 v8t 博通方案「含 HBM」僅 16,996 美元，與此口徑明顯矛盾，顯示數字至少跨了不同世代或成本／售價定義。</li>
+<li>【機構估計｜2026-11】HBM3E 12-Hi 合約價約每 GB 12–16 美元，216GB 約 2,600–3,500 美元；省掉 15–20% 加價僅約 400–700 美元，解釋不了 8,562 美元的差距。較合理的解讀是：16,996 含 HBM 整包、8,434 僅為付給聯發科的晶片費用。</li>
+<li>【傳聞】4 月多家台媒寫聯發科做 8i 推論晶片、博通做 8t，與博通法說原話相反；台媒互相改寫明顯。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受益</strong>：2454 取得訓練晶片 v8t 且已量產，是確定事實；但若 HBM 由 Google 直採，聯發科每顆認列金額遠低於博通，營收規模放大有限、毛利率低於公司平均亦已由 CFO 承認。MU 等 HBM 廠的終端需求不變，但交易對手由博通改為 Google，議價結構改變。TSM 兩條路線皆用 N3P／CoWoS，Google 探詢直接 tape-out（郭明錤 5 月）對台積是中性偏多。</p>
+<p><strong>受害</strong>：AVGO 失去 HBM 轉售加價與獨家地位是真的，但「單顆被砍半」的敘事失真。反方：Morgan Stanley Joseph Moore（7/16）認為聯發科參與「真實但不具破壞性」，博通長期仍保約 80% Google TPU 份額、聯發科自身目標僅 15–20%；摩根大通 Harlan Sur（11/10）指 Google 最高階 TPU 專案仍由博通承接，路線圖排到 2031 年。另一個被忽略的點：HBM 現貨價已高於博通多年前鎖定的合約價，Google 直採未必省錢，HBM4 2027 年每顆約 1,300 美元更會壓縮這項「節省」。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026-12 中旬博通 Q4 FY26 法說：若管理層再提 v8t／聯發科進度與毛利稀釋幅度，可量化 HBM 口徑影響。</li>
+<li>2027-01 底聯發科 Q4 法說：Q4 是否交出 25 億美元、是否說明 ASIC 營收含不含記憶體；若含 HBM，則 8,434 美元的「不含 HBM」解讀需推翻。</li>
+<li>2027-01／2Q27：TPU v9（Humufish）tape-out 時點；工商時報稱出貨可能延到 1Q28，延誤會削弱聯發科份額上升敘事。</li>
+<li>2027 年 HBM4 合約價：若每顆逼近 1,300 美元，Google 直採的成本優勢將明顯縮小。</li>
+<li>Bernstein 原始模型若流出並確認 8,434／16,996 的定義，可直接升級或推翻本結論。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>8,434／16,996 美元：零個可取得來源，僅據 11/14 三手電子報的近似值轉述，無法取得 Bernstein 原文。</li>
+<li>Bernstein「40% vs 60% 毛利、省 500 億美元」：單一來源。</li>
+<li>聯發科做 8t 還是 8i：媒體說法分歧，本報告採博通法說原話。</li>
+<li>所有單顆成本皆為機構模型推估，Google、博通、聯發科皆未揭露任何單價。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://404kresearch.substack.com/p/456x-morning-brief-november-14-2026-91a">456X Morning Brief 2026-11-14: MediaTek Lifts Custom ASIC Outlook</a>
+- <a href="https://404kresearch.substack.com/p/456x-morning-brief-november-14-2026">456X Morning Brief 2026-11-14: Broadcom Falls 4.76%</a>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/09/09/broadcom-avgo-q3-2026-earnings-call-transcript/">Broadcom Q3 FY2026 Earnings Call Transcript (Motley Fool)</a>
+- <a href="https://technews.tw/2026/06/05/why-broadcoms-stock-is-falling-so-hard-after-earnings/">聯發科蠶食 Google TPU 市占？博通親釋毛利率趨勢（TechNews）</a>
+- <a href="https://udn.com/news/story/7240/9546945">博通首度證實掉了Google單（聯合新聞網）</a>
+- <a href="https://stockanalysis.com/quote/tpe/2454/transcripts/720948-q3-2026/">MediaTek Q3 2026 Earnings Call Transcript</a>
+- <a href="https://cloud.google.com/blog/products/compute/tpu-8t-and-tpu-8i-technical-deep-dive">TPU 8t and TPU 8i technical deep dive (Google Cloud)</a>
+- <a href="https://counterpointresearch.com/en/insights/MediaTek-to-Contribute-1-in-4-AI-ASIC-Server-Compute-Shipments-in-2028">MediaTek to Contribute 1 in 4 AI ASIC Server Compute Shipments in 2028 (Counterpoint)</a>
+- <a href="https://abmedia.io/google-tpu-mediatek-broadcom">摩根大通：Google TPU 訂單逐漸集中聯發科（ABMedia）</a>
+- <a href="https://www.aiposthub.com/google-tpu-v8-mediatek-tsmc-intel-supply-chain/">Google 擬繞過聯發科直接向台積電下 TPU 訂單（AIPostHub）</a>
+- <a href="https://www.ad-hoc-news.de/boerse/news/corporate-news/bernstein-raises-target-for-mediatek-stock-from-twd-4-380-00-to-twd-5-500-00/70232538">Bernstein raises target for MediaTek from TWD 4,380 to 5,500</a>
+- <a href="https://udn.com/news/story/7252/9781841">ASIC商機火熱 聯發科夠利（聯合新聞網）</a>
+- <a href="https://www.21jingji.com/article/20261010/herald/213bf65f7c309dd36e2bad1c1c692aa6.html">伯恩斯坦拆解AI基建成本（21世紀經濟報道）</a>
+- <a href="https://finance.biggo.com/news/95215e61-23e7-4057-baea-71291e662af1">Bernstein: AI Data Center Investment Reaches Up to $39.5 Billion per GW (BigGo)</a>
+- <a href="https://m.cnyes.com/news/id/6536943">大摩：博通將長期壟斷Google TPU約80%的市場（鉅亨網）</a>
+- <a href="https://finance.sina.com.cn/stock/hkstock/ggscyd/2026-11-10/doc-iniyfuyz2698533.shtml">小摩力挺博通：仍將操刀谷歌最強TPU項目（新浪財經）</a>
+- <a href="https://www.trendforce.com/news/2026/10/19/news-mediateks-google-tpu-v9-shipments-may-slip-to-1q28-asic-race-heats-up-as-taiwan-firms-eye-new-opportunities/">MediaTek's Google TPU v9 Shipments May Slip to 1Q28 (TrendForce)</a>
+- <a href="https://siliconanalysts.com/data/hbm-pricing">HBM Memory Pricing and Specifications 2026 (Silicon Analysts)</a>
+- <a href="https://thecomputechain.substack.com/p/why-google-is-handing-part-of-its">Why Google Is Handing Part of Its TPU to MediaTek (The Compute Chain)</a>
+- <a href="https://finance.biggo.com/news/tp8_Yp4BX0tZvRTvQvLG">MediaTek Seizes Lead in Google TPU Program; CLSA NT$5,922 Target (BigGo)</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ SK海力士新增HBM4產能
+          <span class="takeaway">部分證實｜P&amp;T6「月約2萬片」是ETNews今年2月已報過的同一案，11/15報導實為時程從2026下半年推遲到2027上半年的更新，並非額外新增供給</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261115-2003@SK%E6%B5%B7%E5%8A%9B%E5%A3%AB%E6%96%B0%E5%A2%9EHBM4%E7%94%A2%E8%83%BD">2026-11-15 20:03 觀點彙整</a></p>
+          
+          <h2>深查：SK海力士新增HBM4產能</h2>
+<p><strong>裁定</strong>：【部分證實】
+P&amp;T6「月約2萬片」是ETNews今年2月已報過的同一案，11/15報導實為時程從2026下半年推遲到2027上半年的更新，並非額外新增供給。</p>
+<p>細節補充：宣稱的數字、廠區與時程全部來自ETNews引述匿名設備業者，SK hynix從未在法說、SEC文件或新聞稿中確認過2萬片這個數字。方向（P&amp;T6轉做HBM4後段、設備持續下單）有官方與供應商公告佐證，但「新增」與「至少」兩個關鍵字在溯源後站不住。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：中文與英文轉述（IT之家、KuCoin、FourWeekMBA）全部指向ETNews 11/15單一報導，消息源為「多位半導體設備業者關係人」，無SK hynix發言。我無法取得11/15原文，僅據兩篇轉述比對，內容一致。</p>
+<ul>
+<li>【傳聞｜2026-02-12】ETNews首報：SK hynix開始對清州P&amp;T6（前身為M8廠）下設備採購單，無塵室最早3月開放，全面運轉後「月約2萬片」後段產能，公司總HBM產能2025年底估約15萬片/月。消息源同為匿名設備業者。</li>
+<li>【傳聞｜2026-11-15】ETNews再報：利用P&amp;T6閒置空間擴HBM4，全面運轉後「每月可額外生產2萬片以上」，目標2027上半年完成設備進機與調試，部分設備要求Q1前交貨。報導自稱是在「AI產業不確定性升高」下仍加速投資。</li>
+<li>【傳聞｜2026-10-14】Digitimes：部分HBM4後段設備由2026下半年推遲至2027。付費牆，僅見標題。這解釋了2月「下半年量產」為何變成11月的「明年上半年進機」。</li>
+<li>【事實｜2026-10-27】Q3法說：M15X年底達滿載；2027資本支出將「顯著高於」2026；2027年HBM量價談判已完成；長約覆蓋2027至2028年逾半產能；DRAM與HBM至2029年實質售罄。全程未提P&amp;T6或任何晶圓片數。</li>
+<li>【事實｜2026-07-09、07-22】SEC 424B4招股書提到M15X Q1投片、P&amp;T7預計2027年底完工；6-K公告P&amp;T7投資7.09兆韓元。皆無P&amp;T6。</li>
+<li>【事實｜2026-01-14、06-08】韓美半導體公告取得SK hynix TC bonder訂單96.5億與442億韓元（後者約15台）。1月批次裝在既有廠房而非M15X；6月批次未揭露去向。</li>
+<li>【機構估計｜2026-09-04】ETNews引業界估計：SK hynix與三星HBM產能各15至20萬片/月，Micron 4至5萬片，年底目標10萬片。Counterpoint Q2 2026營收份額：SK hynix 50%、三星32%、Micron 18%。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>規模感</strong>：2萬片相對SK hynix約15萬片的後段產能，約為13%增量，且是封裝測試端而非DRAM投片，有效產出受M15X與M16前段供給限制。對比Micron目標在同期把產能翻倍到10萬片，SK hynix這一塊並不改變2027年競爭格局。</p>
+<p><strong>對MU</strong>：2027年HBM量價雙方都已鎖定（SK hynix稱談判完成並反映HBM4價值，Micron稱逾75%的FY2027出貨已簽約且價格顯著上調），新增產能最快2027下半年才有效，對2027年定價影響有限，真正的壓力點在2028年合約談判。MU份額能否從18%提升，取決於自身台灣與新加坡擴產進度，而非SK hynix這2萬片。</p>
+<p><strong>對NVDA與AMD</strong>：轉述稱P&amp;T6是為供應NVIDIA的HBM4做最終封測。如果屬實，受益者是Rubin平台的HBM供給緊張緩解，對AMD與ASIC客戶的外溢有限。「驗證ASIC需求」這個挑題推論沒有證據支持，報導沒有提到任何ASIC客戶。</p>
+<p><strong>反方觀點</strong>：一是Digitimes的延後報導與執行長7月「產能擴張依確認需求彈性執行」的表態，顯示SK hynix在設備投資上是走走停停而非全力加碼。二是產能已售罄到2029年，這筆投資是填補已承諾訂單，不應解讀為供給過剩訊號。三是市場把「再次報導」當成「再加碼」，疊加計算了同一筆2萬片。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li>2026年12月至2027年Q1：韓美半導體、韓華Semitech在DART公告新的TC bonder訂單。若出現數百億韓元級訂單，升級為【證實方向】；若無，表示時程再延。</li>
+<li>2027年1月下旬SK hynix Q4法說：公布2027年資本支出數字與HBM產能展望。若點名P&amp;T6或給出片數，可把【傳聞】升級。</li>
+<li>2026年12月Micron FQ1 2027法說：若HBM份額與2027年定價維持上修，則SK hynix擴產未傷及MU議價力。</li>
+<li>2027年Q1 TrendForce或Counterpoint的Q4 2026 HBM份額：驗證三家相對地位。</li>
+<li>2027年上半年P&amp;T6實際投產與2027年底P&amp;T7完工：決定2028年供給曲線。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心數字「2萬片」自始至終為ETNews單一媒體、匿名來源。各語言轉述不構成獨立來源。</li>
+<li>未能讀到11/15 ETNews原文，依據IT之家與KuCoin兩篇轉述，兩者內容互相一致。</li>
+<li>Digitimes 10/14延後報導與11/13良率逾70%報導皆為付費牆，只據標題。</li>
+<li>Micron 10萬片目標、SK hynix 15至20萬片均為業界估計，公司未確認。</li>
+<li>15萬片總產能為2025年底估值，今年M15X放量後基數應已更高，13%增量比例可能被高估。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.etnews.com/20260212000125">SK하이닉스, HBM4 생산능력 확대…청주 패키징·테스트 라인 구축 시작 - 전자신문</a>
+- <a href="https://www.ithome.com/1/027/392.htm">消息称 SK 海力士加快设备投资进度，进一步扩大 HBM4 产能 - IT之家</a>
+- <a href="https://www.kucoin.com/news/flash/sk-hynix-to-accelerate-hbm4-production-capacity-expansion-in-2027">SK Hynix to Accelerate HBM4 Production Capacity Expansion in 2027 - KuCoin</a>
+- <a href="https://www.digitimes.com/news/a20261014VL213/equipment-hbm4-sk-hynix-2027-investment.html">SK Hynix HBM4 equipment installations reportedly face partial deferral to 2027 - Digitimes</a>
+- <a href="https://www.digitimes.com/news/a20261113VL217/sk-hynix-hbm4-production-packaging-samsung.html">SK Hynix's HBM4 yield tops 70% as Samsung expands chip packaging capacity - Digitimes</a>
+- <a href="https://www.investing.com/news/transcripts/earnings-call-transcript-sk-hynix-posts-record-q3-2026-results-shares-jump-after-hours-93CH-4977343">Earnings call transcript: SK hynix posts record Q3 2026 results - Investing.com</a>
+- <a href="https://www.etnews.com/20261028000257">SK하이닉스, 새역사… 분기 매출 104조 돌파 - 전자신문</a>
+- <a href="https://www.etnews.com/20260729000277">SK하이닉스, 분기 최대 실적 기록…AI 둔화 우려에도 40조원 '승부수' - 전자신문</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm">SK hynix Inc. - Form 424B4</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526311230/d121520d6k.htm">SK hynix Inc. - Form 6-K（P&amp;T7 投資公告）</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0002120882/000119312526354777/d147827d6k.htm">SK hynix Inc. - Form 6-K（2026 上半年報告）</a>
+- <a href="https://www.hankyung.com/article/202606083479i">SK하이닉스, HBM4 증설 시동…한미반도체에 442억 장비발주 - 한국경제</a>
+- <a href="https://www.etnews.com/20260114000302">SK하이닉스, 한미반도체·한화세미텍에 TC본더 발주 - 전자신문</a>
+- <a href="https://www.trendforce.com/news/2026/01/13/news-sk-hynix-to-build-cheongju-advanced-packaging-fab-boosting-hbm-output-by-2027/">SK hynix to Build Cheongju Advanced Packaging Fab, Boosting HBM Output by 2027 - TrendForce</a>
+- <a href="https://en.etnews.com/20260904200006">US Micron to Double HBM Capacity, Closing Gap with Samsung and SK - Electronic Times</a>
+- <a href="https://www.igorslab.de/en/micron-double-hbm-capacity-100000-wafers-per-month-hbm4-share-rise/">Micron: HBM capacity expected to rise to 100,000 wafer starts - igor'sLAB</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/memory-bottleneck-divide-sk-hynix-164535555.html">The Memory Bottleneck Divide: SK Hynix Sells out to Tier-1s, Micron Absorbs the Spills - Yahoo Finance</a></p>
         </div>
       </details>
       
