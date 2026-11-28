@@ -65,11 +65,227 @@
 </head>
 <body>
   <h1>🔬 深查報告</h1>
-  <p class="meta">最後更新：2026-11-27 20:49｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
+  <p class="meta">最後更新：2026-11-28 08:50｜對每日重要議題的溯源查證：裁定（✅ 證實／⚠️ 部分證實／❌ 查證不支持／❓ 證據不足）＋全文</p>
   <p class="navlinks"><a href="../index.html">← 回每日彙整</a></p>
 
   
   <details class="day" open>
+    <summary>📅 2026-11-28（3 題）</summary>
+    <div class="day-body">
+      
+      <details class="topic">
+        <summary>⚠️ TPU與Trainium推論性價比
+          <span class="takeaway">部分證實｜InferenceX 上確有 Google、Amazon 的提交且數字接近宣稱，但「每美元效能」優勢約九成來自 SemiAnalysis 自行建模的成本假設，而非硬體吞吐</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261128-0802@TPU%E8%88%87Trainium%E6%8E%A8%E8%AB%96%E6%80%A7%E5%83%B9%E6%AF%94">2026-11-28 08:02 觀點彙整</a></p>
+          
+          <h2>深查：TPU與Trainium推論性價比</h2>
+<p><strong>裁定</strong>：【部分證實】
+InferenceX 上確有 Google、Amazon 的提交且數字接近宣稱，但「每美元效能」優勢約九成來自 SemiAnalysis 自行建模的成本假設，而非硬體吞吐。</p>
+<p>細節：結果全部來自 SemiAnalysis 單一平台，標註「official preview」；Trainium3 的原始吞吐只領先 GB300 約 4%，2.28 倍幾乎全由 $1.05 對 $2.31 的每晶片小時 TCO 推出。宣稱中的「1.5 至 2.5 倍」區間與 SemiAnalysis 原文「1.2x 至 2.5x」不符，下限被改寫上調。沒有任何第三方復現，也沒有 GB300 之外的公開 run log。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：宣稱出處是 SemiAnalysis 經營的 InferenceX/AgentX 基準平台（前身 InferenceMAX），再經 SemiAnalysis 的 X 貼文與 OfficeChai、Snape Report 等媒體擴散。台美媒體十餘篇報導皆引自同一來源，實質為單一來源。X 原貼文為付費牆，僅據搜尋摘錄。</p>
+<ul>
+<li>【事實】2026-11-25：SemiAnalysis 宣布 Amazon 首次提交 Trainium3 UltraServer 結果至 AgentX，聲稱比 GB300 NVL72、B300、MI355X 每美元效能高 2.28 倍（曲線各點為 1.98x、2.18x、2.28x、2.01x）。測試模型 GLM-5.3、FP4、vLLM，標註「official preview」。</li>
+<li>【機構估計】成本基礎為 SemiAnalysis 估算的超大規模業者自有成本：Trainium3 每晶片小時 $1.05、GB300 $2.31。在 2.28x 的操作點，Trainium3 每晶片秒約 9,266 tokens，GB300 約 8,942，硬體差距僅約 4%。Trainium3 P90 首字延遲 4.5 秒，GB300 為 1.8 秒。（2026-11-27，SemiAnalysis Trainium3 文章與 DEV Community 分析）</li>
+<li>【事實】Google 於 2026-10-20 官方部落格宣布 TorchTPU 原生 vLLM/SGLang，並自述在 InferenceX 提交 Qwen3.5-397B FP8 結果，取得每百萬 tokens 2.01 美分；SemiAnalysis 11-05 文章稱此為 Google「首次官方提交」。</li>
+<li>【機構估計】TPU v7 對 GB300 的倍數高度依賴精度配對：Qwen3.5 FP8 對 FP8 在 200 tok/s/user 為 1.85x（外部 TCO）/2.17x（內部 TCO）；但對 GB300 FP4 時 GB300 反而領先 1.56x 到 1.84x。GLM-5.3 在 100 tok/s/user，GB300 FP4 達 TPU v7 的 3.6 倍。原因是 Ironwood 無原生 FP4，須待 2027 Q1 TPUv8。（InferenceX 結果頁 2026-10-19；SemiAnalysis 2026-11-05）</li>
+<li>【事實】Jensen Huang 2026-04-15 在 Dwarkesh 播客稱「TPU won't come, Trainium won't come」。七個月後兩者皆出現在平台，這部分媒體敘事成立。</li>
+<li>【傳聞】多篇媒體稱「NVIDIA 反擊 Vera Rubin 每美元 tokens 為 Trainium3 的 3.3 倍」。查證顯示此數字來自同一儀表板的內部成本基礎（Trainium3 $0.83 對 Vera Rubin $3.61），而非 NVIDIA 官方聲明。截至 11-28 未找到 NVIDIA 具名回應。</li>
+<li>【事實】SemiAnalysis 自述 Trainium3 測試由 AWS Annapurna Labs 提供架構指導與驗證，TPU 測試則與 Google TPU 團隊深度合作。這是「受測方協助調校」的結果，不是獨立第三方復現。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>受益方</strong>：AMZN 與 GOOG 取得可引用的外部背書，有助推銷自研晶片給外部客戶；AMZN 股價 11-27 上漲約 3%，但媒體提醒假期量薄。AVGO 作為 TPU 共同設計方間接受惠；TSM 無論勝方是誰皆代工，為中性受益。</p>
+<p><strong>受害方敘事被誇大</strong>：對 NVDA 的壓力被高估。首先，2.28x 的核心是 SemiAnalysis 假設 GB300 自有成本是 Trainium3 的 2.2 倍，外部客戶租用 Trainium 的實際價格並未揭露。其次，同一平台上 Vera Rubin 預覽結果在多模型上為 GB300 的 1.8x 到 10x，若以 Rubin 為對手，Trainium3 與 TPU v7 的優勢在 2027 年出貨後可能反轉。第三，TPU v7 在 FP4 模型上仍大幅落後。</p>
+<p><strong>反方觀點</strong>：DEV Community 分析指出「2.28x 是會計產物，不是速度」，且性價比排名會隨 TCO 基礎變動。另有研究報告指 SemiAnalysis 約六成營收來自業界客戶，缺乏公開的利益衝突政策，基準「反身性」風險存在。這不構成數字錯誤的證據，但說明單一平台的裁判角色需打折。</p>
+<p><strong>市場解讀失真處</strong>：媒體將「同一儀表板的不同成本假設」包裝為「NVIDIA 反擊」，又把 SemiAnalysis 的 1.2x 下限改寫為 1.5x，兩者皆讓敘事比原始資料更戲劇化。</p>
+<h3>可驗證節點</h3>
+<ul>
+<li><strong>2026-12 初 AWS re:Invent</strong>：若 AWS 公布 Trn3 外部客戶定價或引用 AgentX 數字，可用實際租價重算每美元效能，驗證或推翻 $1.05 假設。</li>
+<li><strong>SemiAnalysis 將 Trainium3 從「preview」轉為正式結果並附 run log</strong>：若附公開 commit 與日誌，可升級為【事實】；若數字下修，則降級。</li>
+<li><strong>MLPerf Inference 下一輪（預期 2027 上半年）</strong>：Trainium3 或 TPU v7 若在 MLCommons 獨立規範下提交，才算真正的第三方交叉驗證。</li>
+<li><strong>2027 Q1 TPUv8 與 Vera Rubin NVL72 量產數據</strong>：決定當前倍數是「世代領先」還是「過渡期套利」。</li>
+<li><strong>NVDA 2027-02 財報法說</strong>：管理層對超大規模客戶自研晶片滲透率與定價的表態。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>全部數據源自 SemiAnalysis 單一平台，受測方參與調校，無獨立復現。</li>
+<li>SemiAnalysis Trainium3 文章與 TPU 文章部分段落為付費牆，TCO 細項僅據摘錄。SemiAnalysis 與批評者的 X 貼文無法讀取原文。</li>
+<li>模型版本有分歧：儀表板標示 Trainium3 為 GLM 5.2 預覽，媒體與 SemiAnalysis 文章稱 GLM-5.3。</li>
+<li>內部與外部 TCO 兩套基礎在各報導中混用，比較倍數會隨基礎漂移 15% 至 20%。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://newsletter.semianalysis.com/p/trainium3-inferencex">AWS Challenger: Trainium3 Inference and Microarchitecture Deep Dive</a>
+- <a href="https://inferencex.semianalysis.com/hardware/tpu-v7-ironwood-vs-gb300-nvl72-agentx-results">TPU v7 (Ironwood) vs GB300 NVL72: AgentX Results</a>
+- <a href="https://inferencex.semianalysis.com/blog/tpu-inferencex-full-steam">TPU Inference Externalization Full Steam Ahead</a>
+- <a href="https://newsletter.semianalysis.com/p/tpu-strikes-the-king">The Iron(wood) Throne: Google's TPU Stakes Its Claim on Inference</a>
+- <a href="https://inferencex.semianalysis.com/hardware/vera-rubin-nvl72-vs-gb300-nvl72-agentx-results">Vera Rubin NVL72 vs GB300 NVL72: AgentX Results</a>
+- <a href="https://developers.googleblog.com/announcing-new-vllm-and-sglang-inference-engines-on-tpu/">Announcing New vLLM and SGLang Inference Engines on TPU - Google Developers Blog</a>
+- <a href="https://x.com/SemiAnalysis_/status/2125658708357128703">SemiAnalysis on X: Amazon has submitted its FIRST Trainium3 UltraServer results（僅據摘錄）</a>
+- <a href="https://dev.to/iiruchating/a-228x-speedup-that-wasnt-about-speed-how-to-read-an-inference-benchmark-in-2026-5hbo">A 2.28x speedup that wasn't about speed - DEV Community</a>
+- <a href="https://explainx.ai/blog/amazon-trainium3-ultraserver-agentx-performance-per-dollar-claimed-vs-verified-november-2026">Trainium3 2.28x vs GB300: What SemiAnalysis Shows - explainx</a>
+- <a href="https://magica.com/news/trainium3-tpu-nvidia-inference-cost-benchmark">Trainium3 vs Nvidia: what AgentX's 2.28x preview measures - magica</a>
+- <a href="https://nglobenews.com/en/article/us-amazon-trainium3-agentx-benchmark-nvidia-gb300-2026-11-26">Amazon's Trainium3 beats Nvidia's GB300 by up to 2.28x - N環球</a>
+- <a href="https://www.tokenpost.com/news/technology/63784">AWS Trainium3 Edges Nvidia GB300 in Inference Benchmark - TokenPost</a>
+- <a href="https://dev.to/fathomnews/amazons-own-chip-beats-nvidia-and-amd-on-cost-tests-show-gpc">Amazon's Own Chip Beats Nvidia And AMD On Cost - DEV Community</a>
+- <a href="https://snapereport.com/s/semianalysis-benchmarks-show-tpu-and-trainium-beating-nvidia-on-cost-per-token">SemiAnalysis InferenceMAX preview shows TPU and Trainium beating Nvidia - Snape Report</a>
+- <a href="https://www.tmtbreakout.com/p/tmtb-nvidias-ceo-jensen-on-dwarkesh">TMTB: Nvidia's CEO Jensen on Dwarkesh Podcast - Key quotes</a>
+- <a href="https://finance.biggo.com/news/1535d045-b74b-45de-9b85-ae8af6eb0cb9">Amazon Shares Rebound as Trainium3 Benchmark Claims 2.28x Cost Edge - BigGo Finance</a>
+- <a href="https://www.useluminix.com/reports/industry-analysis/understanding-dylan-patel-of-semianalyis-deep-dive-on-ai-compute-scaling-bottlenecks">Dylan Patel on AI Compute 2026: Claims vs. Evidence - Luminix</a>
+- <a href="https://inferencex.semianalysis.com/">InferenceX AI Accelerator System Benchmark 首頁</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>⚠️ SpaceX 2027算力擴建計畫
+          <span class="takeaway">部分證實｜「3GW→13GW」確為 Musk 在 10/20 財報會的口頭指引，但這是目標而非計畫文件；已取得的電力許可與 GPU 配額只支撐其中約一半</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261128-0802@SpaceX%202027%E7%AE%97%E5%8A%9B%E6%93%B4%E5%BB%BA%E8%A8%88%E7%95%AB">2026-11-28 08:02 觀點彙整</a></p>
+          
+          <h2>深查：SpaceX 2027 算力擴建計畫</h2>
+<p><strong>裁定</strong>：【部分證實】
+「3GW→13GW」確為 Musk 在 10/20 財報會的口頭指引，但這是目標而非計畫文件；已取得的電力許可與 GPU 配額只支撐其中約一半。</p>
+<p>裁定細節：宣稱的出處與數字無誤，市場敘事失真之處在於把「管理層信心區間」當成已落實的建置計畫。SEC 文件（8-K 財報新聞稿、S-1）皆未載明 13GW 目標；可查到的電力許可、GPU 配額、融資額度，對應的新增容量落在 4–7GW 區間，與 10GW 增量有明顯缺口。推升 NVL72 預估 14% 的 Nomura 報告本身就只採用 +7GW 的保守基準，並非照單全收。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源</strong>：原始出處為 SpaceX 2026 年 10 月 20 日第三季財報電話會（Motley Fool 逐字稿）。Musk 原話：「fairly confident of being able to bring an incremental 10 gigawatts of compute online in 2027」、「I would be surprised if we brought on less than 13 gigawatts」，並稱若一切順利可達 23GW，但「success is not guaranteed」。CFO Bret Johnsen 指引年底 nameplate 2.5–3GW。多家媒體（CNBC、Yahoo、OODAloop、remio）均引述同一場電話會，不構成獨立來源。</p>
+<ul>
+<li>【事實】Q3 末 nameplate 算力 1.7GW（Q2 為 1.4GW），Q3 SI 資本支出 164 億美元，現金 513 億、長債 361 億美元。來源：10/20 8-K 財報新聞稿（SEC），該文件未提及 2027 目標。</li>
+<li>【事實】目標上修軌跡：8/4 首次財報會宣布「2026 年底 2GW、2027 年底約 10GW」且獨家採用 Vera Rubin；10/20 上修至 13GW。S-1 時點 Colossus I+II 僅約 1.0GW。</li>
+<li>【事實】Q4 2026 資本支出指引 350–400 億美元；Q1 2027 營收指引 330–370 億美元（10/20 電話會）。</li>
+<li>【事實】電力許可一：密西西比州 Southaven 1.2GW 永久天然氣電廠（41 台固定渦輪），2026 年 3 月取得 Clean Air Act 許可，11/9–10 MDEQ 許可委員會駁回環團上訴（Action News 5、Mississippi Today、DeSoto County News 多獨立地方媒體）。69 台臨時渦輪需於 2027 年 7 月前移除（Gizmodo 轉述）。</li>
+<li>【事實】電力許可二：德州 TCEQ 11/16 核發 Starbase 空氣許可，35 台移動式燃氣渦輪約 750MW，為德州凍結後首張資料中心相關許可。Starbase 市委員會（3 人中 2 人為 SpaceX 高管）訂 12/9 表決 240 億美元專案的財產稅減免（Politico 報導，經 Yahoo 轉載）。</li>
+<li>【機構估計】SemiAnalysis 11/3–4 報告：追蹤到 &gt;9GW 站點管線、3.6GW 在建；Colossus 2 約 2.5GW、Starbase &gt;1GW、TeraFab 不明；Colossus 2 的 500kV 變電站目標 2026/12/31 完工，預估渦輪＋電網約 2.4GW、可能有 300MW 缺口需靠 5.9GWh 電池調度（僅免費段，付費牆後內容無法取得）。</li>
+<li>【機構估計】Nomura（11 月下旬）：2027 年 NVL72 出貨預估由 66,000 上修至 75,000 台（+13.6%），同時下修 2026 年至 60,000 台；SpaceX 基準假設為 +7GW，非公司指引的 +10GW。來源為 456x Research 整理，未見原始 note。</li>
+<li>【機構估計】GF Securities 分析師 Jeff Pu（10/27）：SpaceX 要求 3 萬台 VR200 機櫃、估僅獲配 2 萬台，為 2027 年最大買家；鴻海估拿 40–45% SpaceX 訂單，和碩、緯創承壓；全球 2027 年 VR200 市場約 96,000 台。</li>
+<li>【事實】融資：11/19 發行約 321 億美元 GPU 抵押債券（最大檔 251.7 億、殖利率 8.259%，KBRA 評等 A-），加計貸款與預付租金，整體套案約 427–440 億美元，由 Apollo、Goldman 主導，用於 2027 上半年交付的 Vera Rubin 系統；債權人限制設備不得送入軌道（TechRadar、TokenPost 多來源）。</li>
+<li>【事實】Anthropic S-1（10/26）：對 SpaceX 算力承諾上限 1,205 億美元至 2029 年，滿載後每月約 31 億美元，但雙方皆可 90 天通知終止（BigGo 轉述，未讀原文）。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>NVDA、TSM、MU</strong>：SpaceX 已成 2027 年 Vera Rubin 單一最大需求來源。若 Pu 的 2 萬台配額成立，SpaceX 佔全球 NVL72 約 21%，對 CoWoS 與 HBM4 需求是實質增量。但 Nomura 的上修已內含 3GW 折價，再加碼預期的空間有限；且 2026 出貨下修顯示元件瓶頸仍在。</p>
+<p><strong>2317 鴻海</strong>：受益最明確。SpaceX 繞過 Dell 直接向 ODM 採購、鴻海佔比 40–45%，加上 DSX Pod 模組化交付可縮短部署週期，與 SpaceX 的 91 天建置節奏契合。風險是訂單集中在單一客戶且客戶自身槓桿高。</p>
+<p><strong>SPCX 本身</strong>：市場把 13GW 當作營收路徑的基礎，但現有證據鏈是：年底約 3GW（高信度）、Southaven＋Starbase 新增自備電約 2GW＋Colossus 2 電網 1.2GW（已許可）、GPU 配額約 2 萬台、融資覆蓋上半年交付。要達 13GW，下半年還需再取得等量電力許可與第二輪數百億融資。</p>
+<p><strong>反方觀點</strong>：Jim Chanos 估 10GW 尖端資料中心需 5,000 億美元以上資本支出，是 2027 年共識資本支出的三倍，並質疑其中多少是地面而非軌道。Inc./Fast Company 的 Bethany McLean 提出「CoreWeave 問題」：高槓桿、客戶集中於 Anthropic 與 Google。Nomura 亦提到 CoreWeave 債券折價 26%、殖利率 16.9%，顯示 neocloud 融資環境惡化。正方則有 Bernstein 將 2027 年地面算力預估上修至 13GW、Barclays 認為 SpaceX「正證明有能力達成激進時程」，以及 SemiAnalysis 認為 9GW 管線使目標「可達成」。</p>
+<h3>可驛證節點</h3>
+<ul>
+<li><strong>2026/12/9 Starbase 市委員會表決</strong>：通過則 Starbase 第一期進入正式建置；否決或州議會通過終止減免法案，Starbase 時程延後。</li>
+<li><strong>2026/12/10 ERCOT 審計報告</strong>：若德州收緊自備電或併網規則，影響 Starbase 後續擴充與 TeraFab。</li>
+<li><strong>2026/12/31 Colossus 2 500kV 變電站</strong>：完工與否直接驗證 SemiAnalysis 的 2.4GW 供電模型。</li>
+<li><strong>2027/1 下旬 Q4 財報</strong>：nameplate 是否落在 2.5–3GW、Q4 資本支出是否達 350–400 億，是對 2027 指引可信度的第一次硬檢驗；留意是否給出 2027 全年資本支出數字。</li>
+<li><strong>2027 上半年</strong>：第二輪 GPU 融資是否出現，以及 Nomura、Pu 對配額的更新；若無新融資且無新增 GW 級電力許可，13GW 應下修至 7–9GW。</li>
+<li><strong>2027/7 臨時渦輪移除期限</strong>：若未按時移除，顯示永久電廠進度落後。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>13GW、23GW 均為電話會口頭表述，未見於 8-K 或 S-1；官方逐字稿 PDF 無法解析，依賴 Motley Fool 逐字稿。</li>
+<li>SemiAnalysis 報告為付費牆，站點數據僅據免費段落。</li>
+<li>Nomura 報告僅據第三方 Substack 整理，無法確認原始 note 用語與日期。</li>
+<li>Jeff Pu 的「2 萬台約合 10GW」換算與一般 NVL72 功耗（每櫃約 0.2MW）不符，疑為引述 SpaceX 目標而非機櫃換算，數字請保留。</li>
+<li>Anthropic S-1 的 1,205 億美元承諾僅據轉述，未讀原文。</li>
+<li>Bernstein 原始報告為付費內容，僅據 CNBC、Invezz 轉述。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.fool.com/earnings/call-transcripts/2026/10/20/spacex-spcx-q3-2026-earnings-call-transcript/">SpaceX (SPCX) Q3 2026 Earnings Call Transcript — Motley Fool</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/1181412/000162828026066482/spaceexplorationtechnologi.htm">Space Exploration Technologies - Q3 2026 Earnings Release (SEC 8-K Ex.99.1)</a>
+- <a href="https://www.cnbc.com/2026/10/21/spacex-stock-q3-earnings-analysts.html">SpaceX is ripping higher after strong earnings — CNBC</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/spacex-spcx-said-q3-earnings-000258513.html">What SpaceX (SPCX) Said on Its Q3 Earnings Call — Yahoo Finance</a>
+- <a href="https://newsletter.semianalysis.com/p/elon-is-doing-it-again-spacex-will">Elon Is Doing It Again: SpaceX Will Be The World's Biggest AI Cloud — SemiAnalysis</a>
+- <a href="https://www.remio.ai/post/spacex-ai-cloud-targets-13-gw-as-rocket-campuses-enter-the-buildout">SpaceX AI Cloud Targets 13 GW — remio.ai</a>
+- <a href="https://456xresearch.substack.com/p/nomura-lifts-nvidia-2027-nvl72-rack">Nomura Lifts Nvidia 2027 NVL72 Rack Forecast to 75,000 — 456x Research</a>
+- <a href="https://abmedia.io/spacex-largest-nvidia-vr200-buyer-foxconn">SpaceX 明年將成輝達 VR200 最大買家？鴻海吃香 — 鏈新聞 abmedia</a>
+- <a href="https://www.actionnews5.com/2026/11/11/state-rejects-appeal-over-spacexais-air-permit-southaven-facility/">State rejects appeal over SpaceXAI's air permit for Southaven facility — Action News 5</a>
+- <a href="https://mississippitoday.org/2026/11/12/spacexai-air-permits-data-center-southaven/">Permit board rejects appeal of SpaceXAI air permits in Southaven — Mississippi Today</a>
+- <a href="https://aiweekly.co/alerts/spacex-delays-removing-xais-69-memphis-turbines-until-2027">SpaceX Delays Removing xAI's 69 Memphis Turbines Until 2027 — AI Weekly</a>
+- <a href="https://finance.yahoo.com/economy/policy/articles/musk-seeking-tax-breaks-24b-180115679.html">Musk seeking tax breaks for $24B data center in SpaceX's hometown — Yahoo/Politico</a>
+- <a href="https://ifttt.itbehere.com/2026/11/25/texas-first-data-center-permit-after-the-freeze-went-to-spacexs-24b-starbase-project/">Texas' First Data-Center Permit After The Freeze Went To SpaceX's $24B Starbase Project</a>
+- <a href="https://techradar.com/pro/spacex-secures-usd44-billion-funding-deal-to-snap-up-nvidia-vera-rubin-chips">SpaceX secures $44 billion with help from Goldman Sachs and BlackRock — TechRadar</a>
+- <a href="https://www.tokenpost.com/news/business/63436">SpaceX Sells $32.1 Billion in Bonds Backed by Nvidia Systems — TokenPost</a>
+- <a href="https://finance.yahoo.com/markets/stocks/articles/jim-chanos-spacex-40-billion-183136278.html">Jim Chanos: SpaceX's $40 Billion Chip Debt Raises "a Pretty Material $500B Question" — Yahoo Finance</a>
+- <a href="https://finance.biggo.com/news/6de05186-ad6a-4be9-bdb5-245f6f827658">Anthropic's IPO Filing Reveals a $120.5 Billion Lifeline to SpaceX — BigGo Finance</a>
+- <a href="https://investor.nvidia.com/news/press-release-details/2026/SpaceXAI-Adopts-NVIDIA-Vera-CPU-to-Accelerate-Agentic-AI-at-Massive-Scale/default.aspx">SpaceXAI Adopts NVIDIA Vera CPU — NVIDIA Investor Relations</a>
+- <a href="https://oodaloop.com/briefs/technology/spacex-will-hit-13gw-of-ai-data-center-capacity-by-2027/">SpaceX Will Hit 13GW of AI Data Center Capacity by 2027 — OODAloop</a></p>
+        </div>
+      </details>
+      
+      <details class="topic">
+        <summary>❓ 聯發科切入Google第十代TPU
+          <span class="takeaway">證據不足｜「聯發科做 TPU v10 SerDes＋HBM5 base die」是韓媒單一獨家加券商路徑圖推演，連原文都只說「有力候選」，無任何公司確認</span>
+        </summary>
+        <div class="report">
+          
+          <p class="srclink">📄 挑題來源：<a href="../index.html#d-20261128-0802@%E8%81%AF%E7%99%BC%E7%A7%91%E5%88%87%E5%85%A5Google%E7%AC%AC%E5%8D%81%E4%BB%A3TPU">2026-11-28 08:02 觀點彙整</a></p>
+          
+          <h2>深查：聯發科切入 Google 第十代 TPU</h2>
+<p><strong>裁定</strong>：【證據不足】
+「聯發科做 TPU v10 SerDes＋HBM5 base die」是韓媒單一獨家加券商路徑圖推演，連原文都只說「有力候選」，無任何公司確認。</p>
+<p>需區分兩層：聯發科參與 Google TPU（v8t I/O die、v9 設計服務、EMIB-T 封裝）有公司法說與多家券商佐證，屬【部分證實】；但「第十代」「HBM5 base die」這兩個新增要素，目前只有 2026-11-27 的一條韓國消息，且 HBM5 本身預計 2028~2029 年才量產，距今約三年，宣稱本質是規劃情境而非設計定案。</p>
+<h3>查證過程與證據</h3>
+<p><strong>溯源結果</strong>：全部中英文報導（abmedia、17173、tokenpost、econotimes、Nomura 轉述）皆指向同一來源：韓國《이코노미트리뷴》(Economy Tribune) 2026-11-27 記者김용현的「單獨」報導，引用「業界消息人士」與「證券業界」。512GB HBM5、A14 製程、EMIB-T、2028 Q4 等規格出自凱基證券 11 月雲端 ASIC 路徑圖。因此這是「一條韓媒＋一份券商路徑圖」，而非多獨立來源。半導體觀察者 Jukan 在 X 上也質疑「為何此聯發科消息出自韓媒」。</p>
+<ul>
+<li>【傳聞｜2026-11-27】Economy Tribune 原文措辭為「미디어텍은…유력한 후보로 거론」（被提及為有力候選），非確定承包。文中稱聯發科「具 HBM5 base die 與 EMIB-T 實務經驗」，但未給出任何佐證，且 HBM5 尚無 JEDEC 定案標準、三星 2026-03 才啟動 2nm base die 開發，「HBM5 實務經驗」一說可信度低。</li>
+<li>【機構估計｜2026-11】凱基路徑圖列 TPU v10t：A14、512GB HBM5、EMIB-T、2028 Q4，設計服務欄為 Google＋聯發科。econotimes 轉述時明言「是規劃情境而非量產公告」。無法取得凱基原始報告，僅據轉述。</li>
+<li>【事實｜2026-07-31／08-02】聯發科執行長蔡力行於法說會證實「協助客戶運用 CoWoS 與 EMIB-T 開發超大晶片尺寸 ASIC」，未點名 Google 或 TPU。</li>
+<li>【事實｜2026-10-30】法說會：首顆 AI ASIC 9 月開始出貨、Q4 資料中心營收上修至 25 億美元、2027 年目標 160 億美元、第二專案維持 2028 Q1 量產、已取得第二家非中國雲端客戶。全程未提 HBM、base die、SerDes 世代或第十代 TPU。</li>
+<li>【機構估計｜2026-08-03】TrendForce 引工商／經濟日報與廣發蒲得宇：聯發科以 336G SerDes 取得 v9 主要份額，400G/448G SerDes IP 預計 2027 下半年就緒，才有資格競標 v10 等下一代案。此點顯示 v10 SerDes 對聯發科而言仍是「待驗證能力」。</li>
+<li>【機構估計｜2026-11-16】郭明錤：聯發科獨拿 v9（Humufish/Triggerfish）與 v10（Quillfish）設計訂單，2029 年占 TPU 供應 55~60%，v10 量產 2029。</li>
+<li>【機構估計｜2026-10-13】廣發證券：v9 因 Google 自行負責的 Core A 重設計延後約一季，tape-out 2027-01、量產 2027 Q2、出貨恐至 2028 Q1；v10 由「聯發科＋創意（3DIC）」供應，Icefish 採 A14。</li>
+<li>【事實｜2026-04-06／05-03】博通 8-K 揭露與 Google 長期協議至 2031 年；Q2 FY2026 10-Q 註記「本季新簽一份客製 AI 加速器長期合約」（未具名）。</li>
+</ul>
+<h3>供應鏈與持股意涵</h3>
+<p><strong>2454 聯發科</strong>：市場把「v10 HBM5 base die」解讀為營收選擇權再擴大，但真正可定價的是已確認的 v8t 放量與 2028 Q1 第二專案，v10 貢獻最早 2029 年。更關鍵的失真在於：各券商對 v10 的代號（Icefish vs Quillfish）、時程（2028 Q4 vs 2029）、封裝（8 月 technews 稱 CoWoS-L，11 月凱基稱 EMIB-T）、分工（創意 3DIC 參與 vs 聯發科獨拿）彼此矛盾，說明 v10 規格仍在流動。</p>
+<p><strong>AVGO 博通</strong>：反方觀點明確。博通與 Google 有至 2031 年的 SEC 揭露長約，v8i/8i Max 訓練晶片與 Anthropic 2028~29 約 1,400 萬顆需求仍在博通手上。vlsi.kr 將「Google 砍博通訂單轉聯發科」評為「待裁定」，指出單一年度機型組合調整與長期關係存續是不同層次的事實。400G SerDes 成熟後博通亦可能回搶 v10，騰旭程正樺 8 月已警告此風險。</p>
+<p><strong>TSM 台積電</strong>：v9 起若轉 Intel EMIB-T，CoWoS 在 TPU 的份額受壓，但晶圓（N2、A14）仍在台積電；廣發 10 月指 EMIB-T 基板良率僅 45~50%，Intel 封裝能否按時放量是台積電風險對沖點。</p>
+<p><strong>GOOG</strong>：Google 8t 採 COT 模式自購 HBM，加上 SK 海力士提議共同設計客製 HBM，顯示 Google 想把記憶體介面主導權握在自己與記憶體廠之間；聯發科做 base die 只是其中一種可能，HBM 廠自製（Nvidia NVHBM 模式）同樣可行。</p>
+<h3>可驯證節點</h3>
+<ul>
+<li><strong>2026-12 博通 FY Q4 法說</strong>：Hock Tan 對 2027 TPU 能見度與「來源多元化」措辭，若明示份額下滑則升級聯發科敘事。</li>
+<li><strong>2027-01 聯發科 Q4 法說</strong>：是否揭露第二專案客戶、224G→400G SerDes 進度、是否承認 HBM base die 業務線。任何 base die 字眼出現即可將本議題升為【部分證實】。</li>
+<li><strong>2027-01 v9 Humufish tape-out</strong>：再延期則 v10 整體時程後移，2028 Q4 說法失效。</li>
+<li><strong>2027 上半年 Intel EMIB-T 良率／三星、海力士客製 HBM 客戶公告</strong>：若 HBM 廠宣布自製 TPU 用 base die，等同推翻聯發科承接之說。</li>
+<li><strong>2027-04 Google Cloud Next</strong>：官方 TPU 路線圖是唯一可把「券商路徑圖」升級為【事實】的場合。</li>
+</ul>
+<h3>資料品質備註</h3>
+<ul>
+<li>核心宣稱為<strong>單一來源</strong>（Economy Tribune），其餘皆轉述；凱基原始報告、FourWeekMBA、中時／旺得富文章因付費牆或 403 無法讀取原文，僅據轉述。</li>
+<li>「聯發科具 HBM5 base die 實務經驗」在時間線上自相矛盾（HBM5 尚未量產），應視為記者推論。</li>
+<li>券商間 v10 代號、封裝、時程、分工四項數據互相衝突，任何單一版本都不應當作基準。</li>
+<li>LINE Today 轉載廣發報告頁面日期顯示異常，依 vlsi.kr 交叉確認為 2026-10-13。</li>
+</ul>
+<p><strong>引用來源</strong>
+- <a href="https://www.economytribune.co.kr/news/articleView.html?idxno=3904543">[단독] 구글, 차세대 TPU에 커스텀 HBM5 추진…미디어텍 베이스다이 설계 유력 - 이코노미트리뷴</a>
+- <a href="https://abmedia.io/google-tpu-v10-hbm5-mediatek">Google TPU v10 傳導入 512GB HBM5！聯發科或成潛在合作夥伴 - abmedia</a>
+- <a href="https://www.tokenpost.com/news/technology/63473">Google TPU v10t Roadmap Lists 512GB of HBM5 for 2028 - TokenPost</a>
+- <a href="https://econotimes.com/Google-s-TPU-v10t-Roadmap-Points-to-a-512GB-HBM5-Design-in-2028-1781065">Google's TPU v10t Roadmap Points to a 512GB HBM5 Design in 2028 - EconoTimes</a>
+- <a href="https://news.17173.com/content/11272026/193243165.shtml">曝谷歌第 10 代 TPU 芯片将配备 512GB 定制 HBM5 内存 - 17173</a>
+- <a href="https://x.com/jukan05/status/2126206413068480876">Jukan on X: Korean media report MediaTek potential partner for TPU v10 SerDes and HBM base die</a>
+- <a href="https://456xresearch.substack.com/p/nomura-lifts-nvidia-2027-nvl72-rack">Nomura Lifts Nvidia 2027 NVL72 Rack Forecast to 75,000 - 456x Research</a>
+- <a href="https://udn.com/news/story/7240/9666042">聯發科終於證實 ASIC案件採用英特爾EMIB-T先進封裝 - 經濟日報</a>
+- <a href="https://udn.com/news/story/7253/9474616">聯發科上修第一顆ASIC今年營收貢獻20億美元 第二顆明年量產 - 經濟日報</a>
+- <a href="https://www.ctee.com.tw/news/20261030701516-430201">《半導體》聯發科AI ASIC訂單旺！蔡力行揭第2專案進度、後年Q1量產 - 工商時報</a>
+- <a href="https://www.fountmedia.io/article/415706">聯發科攻Google TPU供應鏈！首代AI ASIC第四季量產 - 放言</a>
+- <a href="https://www.trendforce.com/news/2026/08/03/news-mediatek-advances-400g-serdes-on-2nm-targeting-google-tpu-v10-and-meta-ai-asic-orders/">MediaTek Advances 400G SerDes on 2nm, Targeting Google TPU v10 and Meta AI ASIC Orders - TrendForce</a>
+- <a href="https://abmedia.io/google-tpu-shipment-visibility-to-2029-mediatek-the-biggest-winner">Google TPU 能見度上看 2029！郭明錤：聯發科獨拿 v9、v10 訂單 - abmedia</a>
+- <a href="https://today.line.me/tw/v3/article/XYpny39">聯發科短期逆風股價有壓！外資：Google TPU v9延一季 - LINE Today</a>
+- <a href="https://cdn.technews.tw/ai-agent/guc-google-tpu-v10-asic/30461/">TPU v10 分工對 ASIC 影響？ - TechNews</a>
+- <a href="https://tw.news.yahoo.com/%E4%B8%8B%E7%8F%AD%E5%9C%8B%E9%9A%9B%E7%B7%9A-%E8%81%AF%E7%99%BC%E7%A7%91%E6%90%B6google-tpu%E5%A4%A7%E5%96%AE-v9%E7%8D%A8%E5%AE%B6%E5%82%B3%E8%A8%80-v10%E8%AE%8A%E7%9B%A4%E5%8D%B1%E6%A9%9F-123000893.html">下班國際線》聯發科搶Google TPU大單？v9獨家傳言、v10變盤危機 - Yahoo 新聞</a>
+- <a href="https://www.vlsi.kr/en/tpu-emib-mb-en/">Market Bulletin: Google TPU Ditches TSMC CoWoS for Intel EMIB-T - VLSI Korea</a>
+- <a href="https://www.vlsi.kr/en/google-tpu-order-shift-mediatek-verdict-en/">Google TPU Order Shift: Broadcom Cut vs MediaTek Rise, Graded - VLSI Korea</a>
+- <a href="https://www.vlsi.kr/en/google-tpu-hbm-direct-supply-en/">Google Buys HBM Directly for TPUs - VLSI Korea</a>
+- <a href="https://www.vlsi.kr/en/hbm5-explained-en/">What Is HBM5? Structure and Targets of Post-HBM4 Memory - VLSI Korea</a>
+- <a href="https://www.trendforce.com/news/2026/03/18/news-samsung-reportedly-eyes-2nm-base-die-for-hbm5-1d-dram-for-hbm5e-hbm4-to-exceed-50-of-output/">Samsung Reportedly Eyes 2nm Base Die for HBM5 - TrendForce</a>
+- <a href="https://xenospectrum.com/en/nvidia-nvhbm-custom-hbm/">NVIDIA Unveils NVHBM, a Custom HBM Design - XenoSpectrum</a>
+- <a href="https://www.sec.gov/Archives/edgar/data/0001730168/000173016826000054/avgo-20260503.htm">Broadcom Inc. Form 10-Q, quarter ended May 3, 2026 - SEC</a>
+- <a href="https://capacityglobal.com/news/broadcom-locks-in-long-term-google-tpu-deal/">Broadcom locks in long-term Google TPU deal through 2031 - Capacity</a></p>
+        </div>
+      </details>
+      
+    </div>
+  </details>
+  
+  <details class="day">
     <summary>📅 2026-11-27（5 題）</summary>
     <div class="day-body">
       
